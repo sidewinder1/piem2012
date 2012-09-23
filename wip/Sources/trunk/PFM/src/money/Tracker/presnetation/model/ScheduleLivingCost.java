@@ -1,15 +1,15 @@
 package money.Tracker.presnetation.model;
 
 public class ScheduleLivingCost {
-	private String categoryType;
+	private int categoryType;
 	private double budget;
 
-	public ScheduleLivingCost(String ipCategoryType, double ipBudget) {
+	public ScheduleLivingCost(int ipCategoryType, double ipBudget) {
 		categoryType = ipCategoryType;
 		budget = ipBudget;
 	}
 	
-	public String getCategory() {
+	public int getCategory() {
 		return categoryType;
 	}
 	
@@ -17,7 +17,7 @@ public class ScheduleLivingCost {
 		return budget;	
 	}
 	
-	public void setCategory(String category)
+	public void setCategory(int category)
 	{
 		categoryType = category;
 	}

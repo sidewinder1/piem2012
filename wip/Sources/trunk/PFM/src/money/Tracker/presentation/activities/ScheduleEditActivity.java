@@ -85,8 +85,8 @@ public class ScheduleEditActivity extends Activity {
 		{
 			initialValue = "0";
 		}
-		array.add(0, new ScheduleLivingCost("Category 1",// 12000));
-				Integer.parseInt(initialValue)));
+		array.add(0, new ScheduleLivingCost(0,
+				Double.parseDouble(initialValue)));
         livingCostAdapter.notifyDataSetChanged();
         
         
