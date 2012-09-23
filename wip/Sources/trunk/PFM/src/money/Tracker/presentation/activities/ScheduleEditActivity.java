@@ -8,10 +8,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ToggleButton;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
 import money.Tracker.presnetation.model.*;
 
@@ -20,22 +22,51 @@ public class ScheduleEditActivity extends Activity {
 	private int mMonth;
 	private int mDay;
 	private static final int DATE_DIALOG_ID = 0;
-	private EditText startDateET;
+	private EditText startDateEdit;
+	private EditText endDateEdit;
+	private ToggleButton periodic;
 	private ArrayList<ScheduleLivingCost> array;
 	private ScheduleLivingCostAdapter livingCostAdapter;
+	private EditText total_budget;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_edit);
 
-		startDateET = (EditText) findViewById(R.id.schedule_start_date);
-		startDateET.setOnClickListener(new View.OnClickListener() {
+		total_budget = (EditText) findViewById(R.id.schedule_total_budget); 
+		startDateEdit = (EditText) findViewById(R.id.schedule_start_date);
+		startDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
 
+		endDateEdit = (EditText) findViewById(R.id.schedule_end_date);
+		periodic = (ToggleButton) findViewById(R.id.periodic);
+		periodic.setOnCheckedChangeListener(new OnCheckedChangeListener() {			
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				String [] date = startDateEdit.getText().toString().split("-");
+				mMonth = Integer.parseInt(date[0]) - 1;
+				mDay = Integer.parseInt(date[1]);
+				mYear = Integer.parseInt(date[2].trim());
+				int day;
+				
+				if (periodic.isChecked())
+				{
+					day = 30;
+				}
+				else 
+				{
+					day = mDay + 5;
+				}
+
+				endDateEdit.setText(new StringBuilder().append(mMonth + 1).append("-")
+						.append(day).append("-").append(mYear).append(" "));
+			}
+		});
+		
 		// get the current date
 		final Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
@@ -49,18 +80,54 @@ public class ScheduleEditActivity extends Activity {
 		livingCostAdapter = new ScheduleLivingCostAdapter(this, 
                 R.layout.schedule_edit_item, array);
 		
-		array.add(0, new ScheduleLivingCost("Category 1", 200));
+		String initialValue = total_budget.getText().toString();
+		if (initialValue + "" == "")
+		{
+			initialValue = "0";
+		}
+		array.add(0, new ScheduleLivingCost("Category 1",// 12000));
+				Integer.parseInt(initialValue)));
         livingCostAdapter.notifyDataSetChanged();
+        
+        
 		final ListView list = (ListView) findViewById(R.id.schedule_item_list);
-        list.setAdapter(livingCostAdapter);     
+        list.setAdapter(livingCostAdapter);
+        
 	}
 
+	/*@Override
+	protected void onStart() 
+	{
+		String initialValue = total_budget.getText().toString();
+		if (initialValue + "" == "")
+		{
+			initialValue = "0";
+		}
+		array.add(0, new ScheduleLivingCost("Category 1",// 12000));
+				Integer.parseInt(initialValue)));
+        livingCostAdapter.notifyDataSetChanged();
+	}
+	*/
+	
 	// updates the date in the TextView
 	private void updateDisplay() {
-		startDateET.setText(new StringBuilder()
+		startDateEdit.setText(new StringBuilder()
 				// Month is 0 based so add 1
 				.append(mMonth + 1).append("-").append(mDay).append("-")
 				.append(mYear).append(" "));
+		int day;
+		
+		if (periodic.isChecked())
+		{
+			day = 30;
+		}
+		else 
+		{
+			day = mDay + 5;
+		}
+
+		endDateEdit.setText(new StringBuilder().append(mMonth + 1).append("-")
+				.append(day).append("-").append(mYear).append(" "));
 	}
 
 	// the callback received when the user "sets" the date in the dialog
