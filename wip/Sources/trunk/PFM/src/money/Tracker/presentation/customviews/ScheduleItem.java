@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.EditText;
 
 public class ScheduleItem extends LinearLayout {
 	public Spinner category;
-	public TextView budget;
+	public EditText budget;
 	public Button addBtn, removeBtn;
 	
 	public ScheduleItem(Context context)
@@ -21,7 +21,7 @@ public class ScheduleItem extends LinearLayout {
 		layoutInflater.inflate(R.layout.schedule_edit_item, this, true);
         
         category = (Spinner) findViewById(R.id.schedule_item_category);
-        budget = (TextView) findViewById(R.id.schedule_item_price);
+        budget = (EditText) findViewById(R.id.schedule_item_price);
         addBtn = (Button) findViewById(R.id.schedule_item_add);
         removeBtn = (Button) findViewById(R.id.schedule_item_remove);
 	}

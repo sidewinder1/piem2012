@@ -21,6 +21,7 @@ public final class R {
     }
     public static final class id {
         public static final int menu_settings=0x7f07000c;
+        public static final int periodic=0x7f070001;
         public static final int schedule_end_date=0x7f070003;
         public static final int schedule_item_add=0x7f070008;
         public static final int schedule_item_category=0x7f070006;
@@ -32,7 +33,6 @@ public final class R {
         public static final int tabsLayout=0x7f07000a;
         public static final int tabsText=0x7f07000b;
         public static final int textView1=0x7f070000;
-        public static final int toggleButton1=0x7f070001;
     }
     public static final class layout {
         public static final int borrow_lend_view=0x7f030000;
