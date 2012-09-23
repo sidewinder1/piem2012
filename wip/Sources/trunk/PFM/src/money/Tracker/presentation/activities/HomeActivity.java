@@ -1,4 +1,4 @@
-package money.Tracker.presentation;
+package money.Tracker.presentation.activities;
 
 import android.os.Bundle;
 import android.app.TabActivity;
@@ -21,7 +21,7 @@ public class HomeActivity extends TabActivity {
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 		
 		// Create tab and intent for schedule.
-		Intent scheduleIntent = new Intent(this, ScheduleViewActivity.class);
+		Intent scheduleIntent = new Intent(this, ScheduleEditActivity.class);
 		setupTab(scheduleIntent, "Schedule", mTabHost);
 		
 		// Create tab and intent for Borrowing and Lending.

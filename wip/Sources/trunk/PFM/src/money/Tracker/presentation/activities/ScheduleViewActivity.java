@@ -1,4 +1,4 @@
-package money.Tracker.presentation;
+package money.Tracker.presentation.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
