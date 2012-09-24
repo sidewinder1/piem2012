@@ -42,7 +42,6 @@ public class ScheduleEditActivity extends Activity {
 				// TODO Auto-generated method stub
 				if (total_budget.getText().toString() != "")
 				{
-					
 					for (ScheduleLivingCost item : array)
 					{
 						double value = item.getCategory();
@@ -101,7 +100,8 @@ public class ScheduleEditActivity extends Activity {
 		{
 			initialValue = "0";
 		}
-		array.add(0, new ScheduleLivingCost(0,
+		
+		array.add(new ScheduleLivingCost(0,
 				Double.parseDouble(initialValue)));
         livingCostAdapter.notifyDataSetChanged();
         
