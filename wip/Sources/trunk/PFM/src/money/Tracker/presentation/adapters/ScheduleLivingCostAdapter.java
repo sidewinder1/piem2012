@@ -15,6 +15,7 @@ import money.Tracker.presentation.customviews.*;
 
 public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
 	private ArrayList<ScheduleLivingCost> array;
+	private ArrayAdapter<CharSequence> categoryAdapter;
 	private int resource;
 	private Context context;
 	public ScheduleLivingCostAdapter(Context context, int resource, ArrayList<ScheduleLivingCost> objects) {
@@ -23,6 +24,14 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
 		this.context = context;
 		this.array = objects;
 		this.resource = resource;
+		
+		   // Create an ArrayAdapter using the string array and a default
+					// spinner layout
+					categoryAdapter = ArrayAdapter
+							.createFromResource(context, R.array.schedule_categories,
+									android.R.layout.simple_spinner_item);
+					// Specify the layout to use when the list of choices appears
+					categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	}
 	
 	@Override
@@ -42,16 +51,10 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
             Button removeButton = ((ScheduleItem) scheduleItemView).removeBtn;
            
             budget.setHint(livingCost.getBudget() + "");     
-            
-            // Create an ArrayAdapter using the string array and a default
-			// spinner layout
-			ArrayAdapter<CharSequence> adapter = ArrayAdapter
-					.createFromResource(context, R.array.schedule_categories,
-							android.R.layout.simple_spinner_item);
-			// Specify the layout to use when the list of choices appears
-			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// Apply the adapter to the spinner
-			category.setAdapter(adapter);
+			category.setAdapter(categoryAdapter);
+			category.setSelection(livingCost.getCategory());
+			
             // Add new schedule item.
             addButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
