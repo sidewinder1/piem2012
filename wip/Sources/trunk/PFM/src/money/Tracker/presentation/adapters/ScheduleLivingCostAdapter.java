@@ -56,8 +56,6 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
             addButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					array.add(new ScheduleLivingCost(0, 200));
-					notifyDataSetChanged();
 					String value = budget.getText().toString();
 					
 					if (value + "" == "")
@@ -72,6 +70,9 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
 					
 					livingCost.setBudget(Double.parseDouble(value));
 					livingCost.setCategory(category.getSelectedItemPosition());
+					category.setSelection(livingCost.getCategory());
+					array.add(new ScheduleLivingCost(0, 200));
+					notifyDataSetChanged();
 				}
 			});
             
