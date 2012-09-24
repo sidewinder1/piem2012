@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
@@ -35,6 +37,20 @@ public class ScheduleEditActivity extends Activity {
 		setContentView(R.layout.schedule_edit);
 
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget); 
+		total_budget.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+				if (total_budget.getText().toString() != "")
+				{
+					
+					for (ScheduleLivingCost item : array)
+					{
+						double value = item.getCategory();
+					}
+				}
+				return false;
+			}
+		});
 		startDateEdit = (EditText) findViewById(R.id.schedule_start_date);
 		startDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
