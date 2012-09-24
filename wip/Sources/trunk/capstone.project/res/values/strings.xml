@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">capstone.project</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_borrowing_and_lending">BorrowingAndLending</string>
+    <string name="title_activity_input">Input</string>
+    
+    <string-array name="BLType">
+        <item>Borrowing</item>
+        <item>Lending</item>
+    </string-array>
+    
+</resources>
