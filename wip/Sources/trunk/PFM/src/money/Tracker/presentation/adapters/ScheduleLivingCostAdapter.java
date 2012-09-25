@@ -18,6 +18,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
 	private ArrayAdapter<CharSequence> categoryAdapter;
 	private int resource;
 	private Context context;
+	
 	public ScheduleLivingCostAdapter(Context context, int resource, ArrayList<ScheduleLivingCost> objects) {
 		super(context, resource, objects);
 		// TODO Auto-generated constructor stub
@@ -50,6 +51,12 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
             Button addButton = ((ScheduleItem) scheduleItemView).addBtn;
             Button removeButton = ((ScheduleItem) scheduleItemView).removeBtn;
            
+            // Set tag to create a sign for removing later.
+            removeButton.setTag(position);
+           
+            // Set tag to create a sign for adding later.
+            addButton.setTag(position);
+            
             budget.setHint(livingCost.getBudget() + "");     
 			// Apply the adapter to the spinner
 			category.setAdapter(categoryAdapter);
@@ -74,8 +81,9 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
 					livingCost.setBudget(Double.parseDouble(value));
 					livingCost.setCategory(category.getSelectedItemPosition());
 					category.setSelection(livingCost.getCategory());
-					array.add(new ScheduleLivingCost(0, 200));
+					array.add(Integer.parseInt(((Button)v).getTag()+"") + 1, new ScheduleLivingCost(0, 200));
 					notifyDataSetChanged();
+					
 				}
 			});
             
@@ -83,7 +91,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<ScheduleLivingCost>{
             removeButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					array.remove(position);
+					array.remove(Integer.parseInt(((Button)v).getTag() + ""));
 					notifyDataSetChanged();
 				}
 			});
