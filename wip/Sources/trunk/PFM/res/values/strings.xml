@@ -12,11 +12,14 @@
     <string name="schedule_duration">Duration</string>
     <string name="schedule_monthly">Monthly</string>
     <string name="schedule_weekly">Weekly</string>
-<string-array name="schedule_categories">
-    <item>Food</item>
-    <item>Shopping</item>
-    <item>Birthday</item>
-    <item>Entertainment</item>
-    <item>Others</item>
-</string-array>
+     <string name="schedule_title">Schedule</string>
+
+    <string-array name="schedule_categories">
+        <item>Food</item>
+        <item>Shopping</item>
+        <item>Birthday</item>
+        <item>Entertainment</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>

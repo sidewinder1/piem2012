@@ -1,5 +1,6 @@
 package money.Tracker.presentation.activities;
 
+import money.Tracker.common.sql.SqlHelper;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
@@ -17,11 +18,14 @@ public class HomeActivity extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
+		// Create db connector
+		SqlHelper.instance = new SqlHelper(this);
+		
 		TabHost mTabHost = getTabHost();
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 		
 		// Create tab and intent for schedule.
-		Intent scheduleIntent = new Intent(this, ScheduleEditActivity.class);
+		Intent scheduleIntent = new Intent(this, ScheduleViewActivity.class);
 		setupTab(scheduleIntent, "Schedule", mTabHost);
 		
 		// Create tab and intent for Borrowing and Lending.
