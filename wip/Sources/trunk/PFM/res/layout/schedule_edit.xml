@@ -7,26 +7,33 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="40dp"
+        android:background="@drawable/title_background" >
 
-        <TextView android:text="@string/schedule_edit_title" 
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_gravity="left|center_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="30dp"
+            android:text="@string/schedule_edit_title" />
 
         <Button
             android:id="@+id/doneBtn"
-            android:layout_height="30dp"
-            android:layout_width="30dp"
-            android:onClick="doneBtnClicked"
-            android:background="@drawable/small_add_button"
-            android:layout_alignParentRight="true" />
-         <Button
+            android:layout_width="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/save_button"
+            android:onClick="doneBtnClicked" />
+
+        <Button
             android:id="@+id/cancelBtn"
-            android:layout_height="30dp"
-            android:layout_toLeftOf="@+id/doneBtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginRight="5dp"
-            android:layout_width="30dp"
-            android:background="@drawable/small_delete_button"/>
+            android:layout_toLeftOf="@+id/doneBtn"
+            android:background="@drawable/cancel_icon" />
     </RelativeLayout>
 
     <LinearLayout

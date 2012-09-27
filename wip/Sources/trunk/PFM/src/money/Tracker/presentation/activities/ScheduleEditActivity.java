@@ -44,9 +44,9 @@ public class ScheduleEditActivity extends Activity {
 				// TODO Auto-generated method stub
 				if (total_budget.getText().toString() != "")
 				{
-					for (ScheduleLivingCost item : array)
+					// for (ScheduleLivingCost item : array)
 					{
-						double value = item.getCategory();
+						// double value = item.getCategory();
 					}
 				}
 				return false;
