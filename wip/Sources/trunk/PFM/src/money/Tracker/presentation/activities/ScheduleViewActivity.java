@@ -1,7 +1,9 @@
 package money.Tracker.presentation.activities;
 
+import money.Tracker.common.sql.SqlHelper;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,4 +24,15 @@ public class ScheduleViewActivity extends Activity {
 			}
 		});
     }
+	
+	@Override
+	protected void onRestart() 
+	{
+		
+	}
+	
+	private void bindData()
+	{
+		Cursor data = SqlHelper.instance.select("Schedule", "Budget,Start_date,End_date", null);
+	}
 }

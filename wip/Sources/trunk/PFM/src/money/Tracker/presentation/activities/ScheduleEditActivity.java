@@ -16,8 +16,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ToggleButton;
+import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
 import money.Tracker.presnetation.model.*;
+import money.Tracker.repository.ScheduleRepository;
 
 public class ScheduleEditActivity extends Activity {
 	private int mYear;
@@ -35,7 +37,7 @@ public class ScheduleEditActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_edit);
-
+		new ScheduleRepository();
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget); 
 		total_budget.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -111,19 +113,15 @@ public class ScheduleEditActivity extends Activity {
         
 	}
 
-	/*@Override
-	protected void onStart() 
+	public void doneBtnClicked(View v) 
 	{
-		String initialValue = total_budget.getText().toString();
-		if (initialValue + "" == "")
-		{
-			initialValue = "0";
-		}
-		array.add(0, new ScheduleLivingCost("Category 1",// 12000));
-				Integer.parseInt(initialValue)));
-        livingCostAdapter.notifyDataSetChanged();
+		SqlHelper.instance.insert("Schedule", "Budget, Start_date, End_date", 
+				total_budget.getText().toString() + "," +
+		startDateEdit.getText().toString() + ","+
+						endDateEdit.getText().toString());
+		
+		this.finish();
 	}
-	*/
 	
 	// updates the date in the TextView
 	private void updateDisplay() {

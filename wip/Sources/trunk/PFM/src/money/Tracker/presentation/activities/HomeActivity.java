@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
 public class HomeActivity extends TabActivity {
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
