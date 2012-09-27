@@ -14,6 +14,7 @@
     <string name="schedule_weekly">Weekly</string>
     <string name="schedule_title">Schedule</string>
     <string name="schedule_edit_title">New Schedule</string>
+    <string name="no_data">No data</string>
 
     <string-array name="schedule_categories">
         <item>Food</item>

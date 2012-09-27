@@ -22,17 +22,18 @@ public class ScheduleViewActivity extends Activity {
 				// TODO Auto-generated method stub
 				startActivity(scheduleEditIntent);
 			}
-		});
+		});  
     }
 	
 	@Override
 	protected void onRestart() 
 	{
-		
+		// bindData();
 	}
 	
 	private void bindData()
 	{
 		Cursor data = SqlHelper.instance.select("Schedule", "Budget,Start_date,End_date", null);
+		data.getDouble(data.getColumnIndex("Budget"));
 	}
 }
