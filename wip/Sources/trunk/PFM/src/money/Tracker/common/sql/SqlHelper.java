@@ -52,6 +52,10 @@ public class SqlHelper {
 		{
 			whereCondition = new StringBuilder(" WHERE ").append(whereCondition).toString();
 		}
+		else
+		{
+			whereCondition = "";
+		}
 		
 		Cursor cursor = null;
 		try

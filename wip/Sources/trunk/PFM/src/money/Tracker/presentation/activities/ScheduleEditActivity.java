@@ -32,18 +32,17 @@ public class ScheduleEditActivity extends Activity {
 	private ArrayList<ScheduleLivingCost> array;
 	private ScheduleLivingCostAdapter livingCostAdapter;
 	private EditText total_budget;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_edit);
-		new ScheduleRepository();
-		total_budget = (EditText) findViewById(R.id.schedule_total_budget); 
+		// new ScheduleRepository();
+		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
 		total_budget.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				// TODO Auto-generated method stub
-				if (total_budget.getText().toString() != "")
-				{
+				if (total_budget.getText().toString() != "") {
 					// for (ScheduleLivingCost item : array)
 					{
 						// double value = item.getCategory();
@@ -61,29 +60,28 @@ public class ScheduleEditActivity extends Activity {
 
 		endDateEdit = (EditText) findViewById(R.id.schedule_end_date);
 		periodic = (ToggleButton) findViewById(R.id.periodic);
-		periodic.setOnCheckedChangeListener(new OnCheckedChangeListener() {			
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		periodic.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
 				// TODO Auto-generated method stub
-				String [] date = startDateEdit.getText().toString().split("-");
+				String[] date = startDateEdit.getText().toString().split("-");
 				mMonth = Integer.parseInt(date[0]) - 1;
 				mDay = Integer.parseInt(date[1]);
 				mYear = Integer.parseInt(date[2].trim());
 				int day;
-				
-				if (periodic.isChecked())
-				{
+
+				if (periodic.isChecked()) {
 					day = 30;
-				}
-				else 
-				{
+				} else {
 					day = mDay + 5;
 				}
 
-				endDateEdit.setText(new StringBuilder().append(mMonth + 1).append("-")
-						.append(day).append("-").append(mYear).append(" "));
+				endDateEdit.setText(new StringBuilder().append(mMonth + 1)
+						.append("-").append(day).append("-").append(mYear)
+						.append(" "));
 			}
 		});
-		
+
 		// get the current date
 		final Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
@@ -92,37 +90,34 @@ public class ScheduleEditActivity extends Activity {
 
 		// display the current date (this method is below)
 		updateDisplay();
-		 
+
 		array = new ArrayList<ScheduleLivingCost>();
-		livingCostAdapter = new ScheduleLivingCostAdapter(this, 
-                R.layout.schedule_edit_item, array);
-		
+		livingCostAdapter = new ScheduleLivingCostAdapter(this,
+				R.layout.schedule_edit_item, array);
+
 		String initialValue = total_budget.getText().toString();
-		if (initialValue + "" == "")
-		{
+		if (initialValue + "" == "") {
 			initialValue = "0";
 		}
-		
-		array.add(new ScheduleLivingCost(0,
-				Double.parseDouble(initialValue)));
-        livingCostAdapter.notifyDataSetChanged();
-        
-        
+
+		array.add(new ScheduleLivingCost(0, Double.parseDouble(initialValue)));
+		livingCostAdapter.notifyDataSetChanged();
+
 		final ListView list = (ListView) findViewById(R.id.schedule_item_list);
-        list.setAdapter(livingCostAdapter);
-        
+		list.setAdapter(livingCostAdapter);
+
 	}
 
-	public void doneBtnClicked(View v) 
-	{
-		SqlHelper.instance.insert("Schedule", "Budget, Start_date, End_date", 
-				total_budget.getText().toString() + "," +
-		startDateEdit.getText().toString() + ","+
-						endDateEdit.getText().toString());
-		
+	public void doneBtnClicked(View v) {
+		SqlHelper.instance.insert("Schedule", "Budget, Start_date, End_date",
+				total_budget.getText().toString() + ","
+						+ startDateEdit.getText().toString() + ","
+						+ endDateEdit.getText().toString());
+
+		setResult(100);
 		this.finish();
 	}
-	
+
 	// updates the date in the TextView
 	private void updateDisplay() {
 		startDateEdit.setText(new StringBuilder()
@@ -130,13 +125,10 @@ public class ScheduleEditActivity extends Activity {
 				.append(mMonth + 1).append("-").append(mDay).append("-")
 				.append(mYear).append(" "));
 		int day;
-		
-		if (periodic.isChecked())
-		{
+
+		if (periodic.isChecked()) {
 			day = 30;
-		}
-		else 
-		{
+		} else {
 			day = mDay + 5;
 		}
 
