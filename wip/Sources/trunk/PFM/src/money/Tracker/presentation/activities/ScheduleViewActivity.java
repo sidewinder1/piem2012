@@ -1,7 +1,6 @@
 package money.Tracker.presentation.activities;
 
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.repository.ScheduleRepository;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,13 +11,11 @@ import android.widget.Button;
 
 public class ScheduleViewActivity extends Activity {
 	Intent scheduleEditIntent;
-	Button addSchedule;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_view);
-		// new ScheduleRepository();
-		
-		addSchedule = (Button) findViewById(R.id.addSchedule);
+		Button addSchedule = (Button) findViewById(R.id.addSchedule);
 		scheduleEditIntent = new Intent(this, ScheduleEditActivity.class);
 		addSchedule.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -30,7 +27,6 @@ public class ScheduleViewActivity extends Activity {
 
 	@Override
 	protected void onRestart() {
-		super.onRestart();
 		bindData();
 	}
 

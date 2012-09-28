@@ -36,7 +36,7 @@ public class HomeActivity extends TabActivity {
 		setupTab(borrowAndLendIntent, "Report", mTabHost);
 	}
 
-	/// This method is used to setup a tab with Name tab and content of tab.
+	// This method is used to setup a tab with Name tab and content of tab.
 	private void setupTab(final Intent intent, final String tag, TabHost mTabHost) {
 		View tabview = createTabView(mTabHost.getContext(), tag);
 		TabSpec setContent = mTabHost.newTabSpec(tag).setIndicator(tabview);
