@@ -14,24 +14,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
+            android:text="@string/schedule_edit_title"
             android:textColor="@android:color/white"
-            android:textSize="30dp"
-            android:text="@string/schedule_edit_title" />
+            android:textSize="30dp" />
 
         <Button
             android:id="@+id/doneBtn"
             android:layout_width="25dp"
-            android:layout_marginTop="5dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
             android:background="@drawable/save_button"
             android:onClick="doneBtnClicked" />
 
         <Button
             android:id="@+id/cancelBtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="7dp"
+            android:onClick="cancelBtnClicked"
             android:layout_toLeftOf="@+id/doneBtn"
             android:background="@drawable/cancel_icon" />
     </RelativeLayout>

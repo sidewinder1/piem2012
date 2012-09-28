@@ -118,6 +118,11 @@ public class ScheduleEditActivity extends Activity {
 		this.finish();
 	}
 
+	public void cancelBtnClicked(View v)
+	{
+		setResult(100);
+		this.finish();
+	}
 	// updates the date in the TextView
 	private void updateDisplay() {
 		startDateEdit.setText(new StringBuilder()
