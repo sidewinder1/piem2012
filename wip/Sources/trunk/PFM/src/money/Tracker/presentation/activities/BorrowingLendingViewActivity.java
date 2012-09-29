@@ -1,6 +1,5 @@
 package money.Tracker.presentation.activities;
 
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;

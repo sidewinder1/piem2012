@@ -66,16 +66,17 @@ public class BorrowLendInsertActivity extends Activity {
 				
 				if (debtTypeButton.isChecked())
 				{
-					boolean check = SqlHelper.instance.insert("Borrowing", "Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_Phone, Person_address",
-							moneyEditText.getText().toString() + ", " +
-							"'" + interestTypeString + "', " +
-							Integer.parseInt(interestRate.getText().toString()) + ", " + 
-							"'" + startDateEditText.getText().toString() + "', " +
-							"'" + expiredDateEditText.getText().toString() + "', " +
-							"'" + nameEditText.getText().toString() + "', " +
-							"'" + phoneEditText.getText().toString() + "', " +
-							"'" + addressEditText.getText().toString() + "'");
-					if (check == true)
+					long check = SqlHelper.instance.insert("Borrowing",
+							new String[]{"Money", "Interest_type", "Interest_rate", "Start_date", "Expired_date", "Person_name", "Person_Phone", "Person_address"},
+							new String[]{ moneyEditText.getText().toString() , 
+							"'" + interestTypeString + "'", 
+							interestRate.getText().toString(), 
+							"'" + startDateEditText.getText().toString() + "'", 
+							"'" + expiredDateEditText.getText().toString() + "'",
+							"'" + nameEditText.getText().toString() + "'",
+							"'" + phoneEditText.getText().toString() + "'",
+							"'" + addressEditText.getText().toString() + "'"});
+					if (check != -1)
 					{
 						Log.d("Insert", "OK");
 					}
@@ -89,15 +90,18 @@ public class BorrowLendInsertActivity extends Activity {
 				}
 				else
 				{
-					SqlHelper.instance.insert("Lending", "Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_Phone, Person_address",
-							moneyEditText.getText().toString() + ", " +
-							interestTypeString + ", " +
-							interestRate.getText().toString() + ", " +
-							startDateEditText.getText().toString() + ", " +
-							expiredDateEditText.getText().toString() + ", " +
-							nameEditText.getText().toString() + ", " +
-							phoneEditText.getText().toString() + ", " +
-							addressEditText.getText().toString());
+					SqlHelper.instance.insert("Lending", 
+							new String[]{"Money", "Interest_type", "Interest_rate", "Start_date", "Expired_date", 
+							"Person_name", "Person_Phone", "Person_address"},
+					new String []{
+							moneyEditText.getText().toString(),
+							interestTypeString ,
+							interestRate.getText().toString(),
+							startDateEditText.getText().toString(),
+							expiredDateEditText.getText().toString(),
+							nameEditText.getText().toString(),
+							phoneEditText.getText().toString(),
+							addressEditText.getText().toString()});
 				}
 				
 				BorrowLendInsertActivity.this.finish();

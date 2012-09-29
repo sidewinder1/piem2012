@@ -1,11 +1,7 @@
 package money.Tracker.repository;
 
 import java.util.ArrayList;
-
-import android.database.Cursor;
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.Converter;
-import money.Tracker.presnetation.model.Schedule;
 
 public class BorrowingRepository implements IDataRepository {
 	public BorrowingRepository instance;
@@ -26,21 +22,6 @@ public class BorrowingRepository implements IDataRepository {
 
 	public ArrayList<Object> getData() {
 		ArrayList<Object> returnValues = new ArrayList<Object>();
-		Cursor data = SqlHelper.instance.select("Borrowing",
-				"Budget,Start_date,End_date", null);
-
-		if (data != null) {
-			if (data.moveToFirst()) {
-				do {
-					returnValues.add(new Schedule(data.getFloat(data
-							.getColumnIndex("Budget")), Converter.toDate(data
-							.getString(data.getColumnIndex("Start_date"))),
-							Converter.toDate(data.getString(data
-									.getColumnIndex("End_date")))));
-				} while (data.moveToNext());
-			}
-		}
-
 		return returnValues;
 	}
 }

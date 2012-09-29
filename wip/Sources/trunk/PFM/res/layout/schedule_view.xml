@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:text="@string/schedule_title"
-            android:textColor="@android:color/white"
+            android:textColor="@color/white_text_color"
             android:textSize="30dp" />
 
         <Button
@@ -41,19 +41,19 @@
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_weight="1"
+            android:background="@drawable/tab_bg_selector"
             android:gravity="center_horizontal"
             android:text="@string/schedule_monthly"
-            android:textColor="@android:color/white"
-            android:background="@drawable/tab_bg_selector" />
+            android:textColor="@color/white_text_color" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_weight="1"
+            android:background="@drawable/tab_bg_selector"
             android:gravity="center_horizontal"
             android:text="@string/schedule_weekly"
-            android:textColor="@android:color/white"
-            android:background="@drawable/tab_bg_selector"  />
+            android:textColor="@color/white_text_color" />
     </LinearLayout>
 
     <TextView
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_data"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/white_text_color" />
 
     <ListView
         android:id="@+id/schedule_view_list"
@@ -69,4 +69,8 @@
         android:layout_height="wrap_content" >
     </ListView>
 
+    <LinearLayout android:layout_height="50dp"
+        android:layout_width="fill_parent"
+        android:background="@color/gray_background"/>
+        
 </LinearLayout>
