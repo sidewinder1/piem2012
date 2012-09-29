@@ -24,8 +24,4 @@
         <item>Others</item>
     </string-array>
 
-    <string name="title_activity_borrow_view">BorrowViewActivity</string>
-    <string name="title_activity_lend_view">LendViewActivity</string>
-    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
-
 </resources>
