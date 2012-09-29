@@ -13,19 +13,17 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" >
+            android:label="@string/title_activity_home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ScheduleViewActivity" />
         <activity android:name=".ScheduleEditActivity" />
-        <activity android:name=".BorrowingLendingViewActivity" />
-        <activity android:name=".BorrowViewActivity" />
-        <activity android:name=".LendViewActivity" />
-        <activity android:name=".BorrowLendInsertActivity" />
+        <activity android:name=".BorrowingView" />
+        <activity android:name=".LendingView" />
+        <activity android:name=".BorrowingLendingInsert" />
     </application>
 
 </manifest>
