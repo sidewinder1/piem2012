@@ -93,7 +93,16 @@
         android:layout_marginRight="5dp"
         android:hint="Adress"
         android:inputType="text" />
-
+	
+    <EditText
+        android:id="@+id/money_edit_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:hint="Money"
+        android:inputType="number" />
+    
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent" 

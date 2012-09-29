@@ -3,6 +3,7 @@ package money.Tracker.common.sql;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import money.Tracker.repository.*;
 
 public class SqlConnector extends SQLiteOpenHelper {
 	private final static String dBName = "PFMDatabase";
