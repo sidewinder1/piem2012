@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
-import money.Tracker.presnetation.model.*;
+import money.Tracker.presentation.model.*;
 import money.Tracker.repository.ScheduleRepository;
 
 public class ScheduleEditActivity extends Activity {
@@ -118,6 +118,11 @@ public class ScheduleEditActivity extends Activity {
 		this.finish();
 	}
 
+	public void cancelBtnClicked(View v)
+	{
+		setResult(100);
+		this.finish();
+	}
 	// updates the date in the TextView
 	private void updateDisplay() {
 		startDateEdit.setText(new StringBuilder()
