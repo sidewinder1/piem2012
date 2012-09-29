@@ -2,6 +2,8 @@ package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -16,9 +18,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
-import money.Tracker.presnetation.model.*;
-import money.Tracker.repository.ScheduleRepository;
+import money.Tracker.presentation.model.DetailSchedule;
 
 public class ScheduleEditActivity extends Activity {
 	private int mYear;
@@ -28,7 +31,7 @@ public class ScheduleEditActivity extends Activity {
 	private EditText startDateEdit;
 	private EditText endDateEdit;
 	private ToggleButton periodic;
-	private ArrayList<ScheduleLivingCost> array;
+	private ArrayList<DetailSchedule> array;
 	private ScheduleLivingCostAdapter livingCostAdapter;
 	private EditText total_budget;
 
@@ -63,21 +66,7 @@ public class ScheduleEditActivity extends Activity {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				// TODO Auto-generated method stub
-				String[] date = startDateEdit.getText().toString().split("-");
-				mMonth = Integer.parseInt(date[0]) - 1;
-				mDay = Integer.parseInt(date[1]);
-				mYear = Integer.parseInt(date[2].trim());
-				int day;
-
-				if (periodic.isChecked()) {
-					day = 30;
-				} else {
-					day = mDay + 5;
-				}
-
-				endDateEdit.setText(new StringBuilder().append(mMonth + 1)
-						.append("-").append(day).append("-").append(mYear)
-						.append(" "));
+				updateDisplay();
 			}
 		});
 
@@ -90,7 +79,7 @@ public class ScheduleEditActivity extends Activity {
 		// display the current date (this method is below)
 		updateDisplay();
 
-		array = new ArrayList<ScheduleLivingCost>();
+		array = new ArrayList<DetailSchedule>();
 		livingCostAdapter = new ScheduleLivingCostAdapter(this,
 				R.layout.schedule_edit_item, array);
 
@@ -99,7 +88,7 @@ public class ScheduleEditActivity extends Activity {
 			initialValue = "0";
 		}
 
-		array.add(new ScheduleLivingCost(0, Double.parseDouble(initialValue)));
+		array.add(new DetailSchedule(0, Double.parseDouble(initialValue)));
 		livingCostAdapter.notifyDataSetChanged();
 
 		final ListView list = (ListView) findViewById(R.id.schedule_item_list);
@@ -108,31 +97,48 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public void doneBtnClicked(View v) {
-		SqlHelper.instance.insert("Schedule", "Budget, Start_date, End_date",
-				total_budget.getText().toString() + ","
-						+ startDateEdit.getText().toString() + ","
-						+ endDateEdit.getText().toString());
+		long newScheduleId = SqlHelper.instance.insert(
+				"Schedule",
+				new String[] { "Budget", "Start_date", "End_date" },
+				new String[] {
+						String.valueOf(total_budget.getText().toString()),
+						Converter.toString(Converter.toDate(startDateEdit
+								.getText().toString(), "MMMM dd, yyyy")),
+						Converter.toString(Converter.toDate(endDateEdit
+								.getText().toString(), "MMMM dd, yyyy")) });
 
+		for (DetailSchedule detailItem : array){
+			SqlHelper.instance.insert("ScheduleDetail", 
+				new String [] {"Budget", "Category_id", "Schedule_id"},
+				new String []{ String.valueOf(detailItem.getBudget()),
+					"0", String.valueOf(newScheduleId)});
+		}
+		
+		setResult(100);
+		this.finish();
+	}
+
+	public void cancelBtnClicked(View v) {
 		setResult(100);
 		this.finish();
 	}
 
 	// updates the date in the TextView
 	private void updateDisplay() {
-		startDateEdit.setText(new StringBuilder()
-				// Month is 0 based so add 1
-				.append(mMonth + 1).append("-").append(mDay).append("-")
-				.append(mYear).append(" "));
-		int day;
-
-		if (periodic.isChecked()) {
-			day = 30;
-		} else {
-			day = mDay + 5;
+		Date startDate = DateTimeHelper.getDate(mYear, mMonth, mDay);
+		startDateEdit.setText(Converter.toString(startDate, "MMMM dd, yyyy"));
+		Date endDate;
+		
+		if (periodic.isChecked()) 
+		{
+			endDate = DateTimeHelper.getLastDateOfMonth(mYear, mMonth);
+		} 
+		else 
+		{
+			endDate = DateTimeHelper.getLastDayOfWeek(startDate);
 		}
 
-		endDateEdit.setText(new StringBuilder().append(mMonth + 1).append("-")
-				.append(day).append("-").append(mYear).append(" "));
+		endDateEdit.setText(Converter.toString(endDate, "MMMM dd, yyyy"));
 	}
 
 	// the callback received when the user "sets" the date in the dialog

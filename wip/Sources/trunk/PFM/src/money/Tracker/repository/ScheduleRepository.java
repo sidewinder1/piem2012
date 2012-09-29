@@ -7,13 +7,13 @@ import android.util.Log;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
-import money.Tracker.presnetation.model.Schedule;
+import money.Tracker.presentation.model.DetailSchedule;
+import money.Tracker.presentation.model.Schedule;
 
 public class ScheduleRepository implements IDataRepository {
 	public ScheduleRepository instance;
-	
-	public ScheduleRepository() 
-	{
+
+	public ScheduleRepository() {
 		createTable();
 	}
 
@@ -21,24 +21,51 @@ public class ScheduleRepository implements IDataRepository {
 		SqlHelper.instance.createTable("Schedule",
 				new StringBuilder("Id INTEGER PRIMARY KEY, Budget FLOAT,")
 						.append("Start_date DATE, End_date DATE").toString());
+		SqlHelper.instance.createTable("ScheduleDetail",
+				new StringBuilder("Id INTEGER PRIMARY KEY, Budget FLOAT,")
+						.append("Category_Id INTEGER, Schedule_Id INTEGER")
+						.toString());
 	}
-	
-	public ArrayList<Object> getData()
-	{
-		ArrayList<Object> returnValues = new ArrayList<Object>();
-		Cursor data = SqlHelper.instance.select("Schedule",
-				"Budget,Start_date,End_date", null);
 
-		if (data != null) {
-			if (data.moveToFirst()) {
-				do { 
-					returnValues.add(new Schedule(data.getFloat(data.getColumnIndex("Budget")),
-							Converter.toDate(data.getString(data.getColumnIndex("Start_date"))), 
-							Converter.toDate(data.getString(data.getColumnIndex("End_date")))));
-				} while (data.moveToNext());
+	public ArrayList<Object> getData() {
+		ArrayList<Object> returnValues = new ArrayList<Object>();
+		Cursor scheduleData = SqlHelper.instance.select("Schedule",
+				"Id, Budget,Start_date,End_date", null);
+
+		if (scheduleData != null) {
+			if (scheduleData.moveToFirst()) {
+				do {
+					ArrayList<DetailSchedule> details = new ArrayList<DetailSchedule>();
+					Cursor detailData = SqlHelper.instance.select(
+							"ScheduleDetail",
+							"*",
+							"Schedule_Id = "
+									+ scheduleData.getInt(scheduleData
+											.getColumnIndex("Id")));
+					if (detailData != null) {
+						if (detailData.moveToFirst()) {
+							
+							do 
+							{
+								details.add(new DetailSchedule(detailData.getInt(detailData.getColumnIndex("Category_Id")), 
+										detailData.getDouble(detailData.getColumnIndex("Budget"))));
+							} while (detailData.moveToNext());
+						}
+					}
+					
+					returnValues.add(new Schedule(scheduleData.getInt(scheduleData.getColumnIndex("Id")),
+							scheduleData.getFloat(scheduleData.getColumnIndex("Budget")), 
+							Converter.toDate(scheduleData.getString(scheduleData
+											.getColumnIndex("Start_date"))),
+							Converter.toDate(scheduleData
+									.getString(scheduleData
+											.getColumnIndex("End_date"))), details));
+					
+
+				} while (scheduleData.moveToNext());
 			}
 		}
-		
+
 		return returnValues;
 	}
 }

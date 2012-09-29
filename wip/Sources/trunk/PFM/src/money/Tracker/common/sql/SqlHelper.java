@@ -1,5 +1,6 @@
 package money.Tracker.common.sql;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,24 +29,26 @@ public class SqlHelper {
 		return true;
 	}
 	
-	public boolean insert(String tableName, String columnNames, String columnValues)
+	public long insert(String tableName, String [] columnNames, String [] columnValues)
 	{
-		StringBuilder sql =  new StringBuilder("insert into ").append(tableName).
-				append(" (").append(columnNames).append(") values (").
-				append(columnValues).append(")");
+		ContentValues contentValues = new ContentValues();
+		
+		for (int index = 0; index < columnNames.length; index++)
+		{
+			contentValues.put(columnNames[index], columnValues[index++]);	
+		}
+
 		try
 		{
-			currentDb.execSQL(sql.toString());
+			return currentDb.insert(tableName, null, contentValues);
 		}
 		catch(Exception e)
 		{
 			// to do add to log file.
-			return false;
+			return -1;
 		}
-		
-		return true;
 	}
-	
+
 	public Cursor select(String tableName, String selectedColumns, String whereCondition)
 	{
 		if (whereCondition != null)

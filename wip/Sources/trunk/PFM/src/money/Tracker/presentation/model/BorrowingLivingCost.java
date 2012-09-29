@@ -1,4 +1,4 @@
-package money.Tracker.presnetation.model;
+package money.Tracker.presentation.model;
 
 public class BorrowingLivingCost {
 	private int money;

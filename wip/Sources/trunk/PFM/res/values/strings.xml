@@ -15,6 +15,10 @@
     <string name="schedule_title">Schedule</string>
     <string name="schedule_edit_title">New Schedule</string>
     <string name="no_data">No data</string>
+    <string name="dummy_data">Dummy data</string>
+    <string name="title_activity_borrow_view">BorrowViewActivity</string>
+    <string name="title_activity_lend_view">LendViewActivity</string>
+    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
 
     <string-array name="schedule_categories">
         <item>Food</item>
@@ -23,9 +27,7 @@
         <item>Entertainment</item>
         <item>Others</item>
     </string-array>
-
-    <string name="title_activity_borrow_view">BorrowViewActivity</string>
-    <string name="title_activity_lend_view">LendViewActivity</string>
-    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
-
+    <color name="white_text_color">#F9FFFFFF</color>
+    <color name="gray_background">#F9000000</color>
+  
 </resources>
