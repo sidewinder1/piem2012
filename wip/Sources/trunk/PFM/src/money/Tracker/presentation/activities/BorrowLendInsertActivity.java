@@ -2,8 +2,8 @@ package money.Tracker.presentation.activities;
 
 import java.util.Calendar;
 import java.util.TooManyListenersException;
-
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.repository.*;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -44,6 +44,9 @@ public class BorrowLendInsertActivity extends Activity {
 		startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
 		
+		new BorrowingRepository();
+		new LendingRepository();
+		
 		// Hand on Save button
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -63,26 +66,24 @@ public class BorrowLendInsertActivity extends Activity {
 				
 				if (debtTypeButton.isChecked())
 				{
-					String[] key_name = {"Money", "Interest_type", "Interest_rate", "Start_date", "Expired_date", "Person_name", "Person_Phone", "Person_address"};
-					String[] value = {
-							moneyEditText.getText().toString(), 
-							interestTypeString, 
-							interestRate.getText().toString(), 
-							startDateEditText.getText().toString(), 
-							expiredDateEditText.getText().toString(), 
-							nameEditText.getText().toString(), 
-							phoneEditText.getText().toString(), 
-							addressEditText.getText().toString()};
-					SqlHelper.instance.insert("Borrowing", "Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_Phone, Person_address",
+					boolean check = SqlHelper.instance.insert("Borrowing", "Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_Phone, Person_address",
 							moneyEditText.getText().toString() + ", " +
-							interestTypeString + ", " +
-							interestRate.getText().toString() + ", " + 
-							startDateEditText.getText().toString() + ", " +
-							expiredDateEditText.getText().toString() + ", " +
-							nameEditText.getText().toString() + ", " +
-							phoneEditText.getText().toString() + ", " +
-							addressEditText.getText().toString());
-
+							"'" + interestTypeString + "', " +
+							Integer.parseInt(interestRate.getText().toString()) + ", " + 
+							"'" + startDateEditText.getText().toString() + "', " +
+							"'" + expiredDateEditText.getText().toString() + "', " +
+							"'" + nameEditText.getText().toString() + "', " +
+							"'" + phoneEditText.getText().toString() + "', " +
+							"'" + addressEditText.getText().toString() + "'");
+					if (check == true)
+					{
+						Log.d("Insert", "OK");
+					}
+					else
+					{
+						Log.d("Insert", "Chay sao duoc");
+					}
+					
 					setResult(100);
 					BorrowLendInsertActivity.this.finish();
 				}
