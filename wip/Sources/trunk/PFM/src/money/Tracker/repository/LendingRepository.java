@@ -21,7 +21,7 @@ public class LendingRepository implements IDataRepository {
 						+ "Person_address TEXT);");
 	}
 	
-	public ArrayList<Object> getData() {
+	public ArrayList<Object> getData(String param) {
 		ArrayList<Object> returnValues = new ArrayList<Object>();
 		return returnValues;
 	}

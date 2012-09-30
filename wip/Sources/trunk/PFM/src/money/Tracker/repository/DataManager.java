@@ -11,7 +11,7 @@ public class DataManager {
 	}
 
 	// This method is used to get data from database with specified table name.
-	public static void updateData(String tableName) {
+	public static void updateData(String tableName, String param) {
 		IDataRepository dataRepository = new ScheduleRepository();
 
 		if (tableName != null) {
@@ -20,12 +20,12 @@ public class DataManager {
 				repository.remove(tableName);
 			}
 			
-			repository.put(tableName, dataRepository.getData());
+			repository.put(tableName, dataRepository.getData(param));
 		}
 	}
 
-	public static ArrayList<Object> getObjects(String tableName) {
-		updateData(tableName);
+	public static ArrayList<Object> getObjects(String tableName, String param) {
+		updateData(tableName, param);
 		return repository.get(tableName);
 	}
 }

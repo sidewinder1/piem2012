@@ -17,19 +17,20 @@ import android.widget.TextView;
 public class ScheduleViewActivity extends Activity {
 	TextView displayText;
 	LinearLayout chart_legend;
-	
+
 	private ScheduleViewAdapter scheduleAdapter;
 
 	boolean isMonthly;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_view);
-		
+
 		Bundle extras = getIntent().getExtras();
 		isMonthly = extras.getBoolean("Monthly");
-		
+
 		displayText = (TextView) findViewById(R.id.no_data_edit);
-		
+
 		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
 
 		bindData();
@@ -42,7 +43,15 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	private void bindData() {
-		ArrayList<Object> values = DataManager.getObjects("Schedule");
+		String whereCondition;
+		if (isMonthly) {
+			whereCondition = "For_Month = 1";
+		} else {
+			whereCondition = "For_Month = 0";
+		}
+		
+		ArrayList<Object> values = DataManager.getObjects("Schedule",
+				whereCondition);
 		if (values.size() == 0) {
 			chart_legend.setVisibility(View.GONE);
 			displayText.setVisibility(View.VISIBLE);
@@ -53,7 +62,7 @@ public class ScheduleViewActivity extends Activity {
 		chart_legend.setVisibility(View.VISIBLE);
 		scheduleAdapter = new ScheduleViewAdapter(this,
 				R.layout.schedule_edit_item, values);
-		
+
 		scheduleAdapter.notifyDataSetChanged();
 		final ListView list = (ListView) findViewById(R.id.schedule_view_list);
 		list.setAdapter(scheduleAdapter);

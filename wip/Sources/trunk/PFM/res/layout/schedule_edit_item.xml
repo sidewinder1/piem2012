@@ -10,16 +10,16 @@
         android:layout_weight="5"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="1dp"
+        android:layout_marginRight="2dp"
         android:background="@color/gray_background"
         android:layout_height="24dp" />
 
     <EditText
         android:inputType="numberDecimal"
         android:id="@+id/schedule_item_price"
-        android:layout_marginLeft="1dp"
+        android:layout_marginLeft="2dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="1dp"
+        android:layout_marginRight="2dp"
         android:layout_weight="3"
         android:background="@color/gray_background"
         android:layout_width="0dp"
@@ -30,10 +30,10 @@
         android:id="@+id/schedule_item_add"
         android:layout_gravity="center_vertical"
         android:layout_weight="0"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:background="@drawable/small_add_button" />
 
     <Button
@@ -41,9 +41,9 @@
         android:layout_gravity="center_vertical"
         android:layout_marginRight="5dp"
         android:layout_weight="0"
-        android:layout_width="20dp"
+        android:layout_width="22dp"
         android:layout_marginLeft="5dp"
-        android:layout_height="20dp"
+        android:layout_height="22dp"
         android:background="@drawable/small_delete_button"/>
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class SqlHelper {
 	public static SqlHelper instance;
@@ -45,13 +46,14 @@ public class SqlHelper {
 		catch(Exception e)
 		{
 			// to do add to log file.
+			Log.e("SQLHelper", "Exception: " + e.getMessage());
 			return -1;
 		}
 	}
 
 	public Cursor select(String tableName, String selectedColumns, String whereCondition)
 	{
-		if (whereCondition != null)
+		if (!"".equals(whereCondition))
 		{
 			whereCondition = new StringBuilder(" WHERE ").append(whereCondition).toString();
 		}
