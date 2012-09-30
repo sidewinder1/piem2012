@@ -26,9 +26,9 @@
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="left|center_vertical"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/small_add_button" >
+            android:background="@drawable/add_new_icon" >
         </Button>
     </RelativeLayout>
 <TabHost android:id="@android:id/tabhost"

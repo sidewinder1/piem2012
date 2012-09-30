@@ -15,6 +15,7 @@
     <string name="schedule_title">Schedule</string>
     <string name="schedule_edit_title">New Schedule</string>
     <string name="no_data">No data</string>
+    <string name="schedule_view_detail_title">View Schedule</string>
     <string name="dummy_data">Dummy data</string>
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
     <string name="title_activity_lend_view">LendViewActivity</string>
@@ -31,7 +32,8 @@
         <item>₫</item>
         <item>$</item>
     </string-array>
+
     <color name="white_text_color">#F9FFFFFF</color>
     <color name="gray_background">#432230FF</color>
-  
+
 </resources>
