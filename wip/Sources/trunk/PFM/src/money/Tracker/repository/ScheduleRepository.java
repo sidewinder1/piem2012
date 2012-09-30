@@ -25,10 +25,11 @@ public class ScheduleRepository implements IDataRepository {
 						.toString());
 	}
 
-	public ArrayList<Object> getData() {
+	public ArrayList<Object> getData(String param) {
 		ArrayList<Object> returnValues = new ArrayList<Object>();
+
 		Cursor scheduleData = SqlHelper.instance.select("Schedule",
-				"Id, Budget,Start_date,End_date", null);
+				"*", "");
 
 		if (scheduleData != null) {
 			if (scheduleData.moveToFirst()) {
@@ -42,23 +43,28 @@ public class ScheduleRepository implements IDataRepository {
 											.getColumnIndex("Id")));
 					if (detailData != null) {
 						if (detailData.moveToFirst()) {
-							
-							do 
-							{
-								details.add(new DetailSchedule(detailData.getInt(detailData.getColumnIndex("Category_Id")), 
-										detailData.getDouble(detailData.getColumnIndex("Budget"))));
+
+							do {
+								details.add(new DetailSchedule(
+										detailData.getInt(detailData
+												.getColumnIndex("Category_Id")),
+										detailData.getDouble(detailData
+												.getColumnIndex("Budget"))));
 							} while (detailData.moveToNext());
 						}
 					}
-					
-					returnValues.add(new Schedule(scheduleData.getInt(scheduleData.getColumnIndex("Id")),
-							scheduleData.getFloat(scheduleData.getColumnIndex("Budget")), 
-							Converter.toDate(scheduleData.getString(scheduleData
+
+					returnValues.add(new Schedule(scheduleData
+							.getInt(scheduleData.getColumnIndex("Id")),
+							scheduleData.getFloat(scheduleData
+									.getColumnIndex("Budget")), Converter
+									.toDate(scheduleData.getString(scheduleData
 											.getColumnIndex("Start_date"))),
 							Converter.toDate(scheduleData
 									.getString(scheduleData
-											.getColumnIndex("End_date"))), details));
-					
+											.getColumnIndex("End_date"))),
+							/*scheduleData.getInt(scheduleData
+									.getColumnIndex("for_month")),*/ details));
 
 				} while (scheduleData.moveToNext());
 			}

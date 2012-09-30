@@ -97,21 +97,28 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public void doneBtnClicked(View v) {
-		long newScheduleId = SqlHelper.instance.insert(
-				"Schedule",
-				new String[] { "Budget", "Start_date", "End_date" },
-				new String[] {
-						String.valueOf(total_budget.getText().toString()),
-						Converter.toString(Converter.toDate(startDateEdit
-								.getText().toString(), "MMMM dd, yyyy")),
-						Converter.toString(Converter.toDate(endDateEdit
-								.getText().toString(), "MMMM dd, yyyy")) });
-
-		for (DetailSchedule detailItem : array){
-			SqlHelper.instance.insert("ScheduleDetail", 
-				new String [] {"Budget", "Category_id", "Schedule_id"},
-				new String []{ String.valueOf(detailItem.getBudget()),
-					"0", String.valueOf(newScheduleId)});
+		long newScheduleId = SqlHelper.instance
+				.insert("Schedule",
+						new String[] { "Budget", "Start_date", "End_date"/*
+																		 * ,
+																		 * "For_Month"
+																		 */},
+						new String[] {
+								String.valueOf(total_budget.getText()
+										.toString()),
+								Converter.toString(Converter.toDate(
+										startDateEdit.getText().toString(),
+										"MMMM dd, yyyy")),
+								Converter.toString(Converter.toDate(endDateEdit
+										.getText().toString(), "MMMM dd, yyyy")),
+						/* String.valueOf(periodic.isChecked() ? 1 : 0) */});
+		if (newScheduleId != -1) {
+			for (DetailSchedule detailItem : array) {
+				SqlHelper.instance.insert("ScheduleDetail", new String[] {
+						"Budget", "Category_id", "Schedule_id" },
+						new String[] { String.valueOf(detailItem.getBudget()),
+								"0", String.valueOf(newScheduleId) });
+			}
 		}
 		
 		setResult(100);
@@ -128,13 +135,10 @@ public class ScheduleEditActivity extends Activity {
 		Date startDate = DateTimeHelper.getDate(mYear, mMonth, mDay);
 		startDateEdit.setText(Converter.toString(startDate, "MMMM dd, yyyy"));
 		Date endDate;
-		
-		if (periodic.isChecked()) 
-		{
+
+		if (periodic.isChecked()) {
 			endDate = DateTimeHelper.getLastDateOfMonth(mYear, mMonth);
-		} 
-		else 
-		{
+		} else {
 			endDate = DateTimeHelper.getLastDayOfWeek(startDate);
 		}
 

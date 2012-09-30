@@ -78,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
+            android:paddingLeft="2dp"
             android:layout_marginRight="1dp"
             android:layout_weight="1"
             android:textSize="15dp"
@@ -90,8 +91,9 @@
             android:id="@+id/schedule_end_date"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="7dp"
+            android:paddingLeft="5dp"
             android:textSize="15dp"
             android:background="@color/gray_background"
             android:layout_weight="1"
@@ -127,6 +129,8 @@
     <ListView
         android:id="@+id/schedule_item_list"
         android:layout_width="fill_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:background="#29F5"
         android:layout_height="wrap_content" >
     </ListView>

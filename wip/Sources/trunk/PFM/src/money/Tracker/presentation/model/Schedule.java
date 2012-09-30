@@ -8,12 +8,17 @@ public class Schedule {
 	public Date start_date;
 	public Date end_date;
 	public double budget;
+	public int for_month;
+	
 	public ArrayList<DetailSchedule> details = new ArrayList<DetailSchedule>();
 	
-	public Schedule(int id, double budget,Date start_date, Date end_date, ArrayList<DetailSchedule> details)
+	public Schedule(int id, double budget,Date start_date,
+			Date end_date, /*int for_month,*/
+			ArrayList<DetailSchedule> details)
 	{
 		this.id = id;
 		this.budget = budget;
+		// this.for_month = for_month;
 		this.start_date = start_date;
 		this.end_date = end_date;
 		this.details = details;
