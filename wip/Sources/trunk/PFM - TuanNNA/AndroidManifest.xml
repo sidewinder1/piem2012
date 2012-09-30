@@ -1,0 +1,52 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="money.Tracker.presentation.activities"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="15" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/title_activity_home" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ScheduleViewActivity" />
+        <activity android:name=".ScheduleMainViewActivity" />
+        <activity android:name=".ScheduleEditActivity" />
+        <activity android:name=".BorrowingLendingMainViewActivity" />
+        <activity android:name=".BorrowViewActivity" />
+        <activity android:name=".LendViewActivity" />
+        <activity android:name=".BorrowLendInsertActivity" />
+        <activity android:name="money.Tracker.presentation.customviews.BorrowingViewItem" />
+        <activity android:name="money.Tracker.presentation.customviews.BorrowingViewDetailItem" />
+        <activity
+            android:name=".BorrowLendViewActivity"
+            android:label="@string/title_activity_borrow_lend_view" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="money.Tracker.presentation.customviews.BorrowLendViewItem"
+            android:label="@string/title_activity_borrow_lend_view_item" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
