@@ -3,8 +3,6 @@ package money.Tracker.repository;
 import java.util.ArrayList;
 
 import android.database.Cursor;
-import android.util.Log;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.model.DetailSchedule;

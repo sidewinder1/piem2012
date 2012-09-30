@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScheduleViewActivity" />
+        <activity android:name=".ScheduleMainViewActivity" />
         <activity android:name=".ScheduleEditActivity" />
         <activity android:name=".BorrowingLendingViewActivity" />
         <activity android:name=".BorrowViewActivity" />

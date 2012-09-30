@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="30dp"
     android:orientation="horizontal" >
 
     <Spinner
         android:id="@+id/schedule_item_category"
-        android:layout_width="150dp"
-        android:background="@android:color/transparent"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="1dp"
+        android:background="@color/gray_background"
+        android:layout_height="24dp" />
 
     <EditText
         android:inputType="numberDecimal"
         android:id="@+id/schedule_item_price"
-        android:background="@android:color/transparent"
-        android:layout_width="100dp"
+        android:layout_marginLeft="1dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="1dp"
+        android:layout_weight="3"
+        android:background="@color/gray_background"
+        android:layout_width="0dp"
+        android:textColor="@color/white_text_color"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/schedule_item_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/small_add_button" />
 
     <Button
         android:id="@+id/schedule_item_remove"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        android:layout_width="20dp"
         android:layout_marginLeft="5dp"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:background="@drawable/small_delete_button"/>
 
 </LinearLayout>
