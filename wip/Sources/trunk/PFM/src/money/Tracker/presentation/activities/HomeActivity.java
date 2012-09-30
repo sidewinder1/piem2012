@@ -1,7 +1,6 @@
 package money.Tracker.presentation.activities;
 
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.ViewHelper;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
