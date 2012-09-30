@@ -97,12 +97,11 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public void doneBtnClicked(View v) {
+		String Time_id = (periodic.isChecked() ? "1" : "0");
 		long newScheduleId = SqlHelper.instance
 				.insert("Schedule",
-						new String[] { "Budget", "Start_date", "End_date"/*
-																		 * ,
-																		 * "For_Month"
-																		 */},
+						new String[] { "Budget", "Start_date", 
+									"End_date", "Time_Id" },
 						new String[] {
 								String.valueOf(total_budget.getText()
 										.toString()),
@@ -111,7 +110,7 @@ public class ScheduleEditActivity extends Activity {
 										"MMMM dd, yyyy")),
 								Converter.toString(Converter.toDate(endDateEdit
 										.getText().toString(), "MMMM dd, yyyy")),
-						/* String.valueOf(periodic.isChecked() ? 1 : 0) */});
+										Time_id});
 		if (newScheduleId != -1) {
 			for (DetailSchedule detailItem : array) {
 				SqlHelper.instance.insert("ScheduleDetail", new String[] {

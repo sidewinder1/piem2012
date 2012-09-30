@@ -45,9 +45,9 @@ public class ScheduleViewActivity extends Activity {
 	private void bindData() {
 		String whereCondition;
 		if (isMonthly) {
-			whereCondition = "For_Month = 1";
+			whereCondition = "Time_Id = 1";
 		} else {
-			whereCondition = "For_Month = 0";
+			whereCondition = "Time_Id = 0";
 		}
 		
 		ArrayList<Object> values = DataManager.getObjects("Schedule",
