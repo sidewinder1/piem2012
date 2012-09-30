@@ -5,11 +5,18 @@ public class DetailSchedule {
 	private double budget;
 	private int schedule_id;
 	
+	public DetailSchedule(int category_id, double budget, int schedule_id) {
+		this.category_id = category_id;
+		this.budget = budget;
+		this.schedule_id = schedule_id;
+	}
+	
 	public DetailSchedule(int category_id, double budget) {
+		// TODO Auto-generated constructor stub
 		this.category_id = category_id;
 		this.budget = budget;
 	}
-	
+
 	public int getCategory() {
 		return category_id;
 	}

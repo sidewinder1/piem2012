@@ -16,11 +16,15 @@ public class ScheduleRepository implements IDataRepository {
 	}
 
 	protected void createTable() {
-		SqlHelper.instance.createTable("Schedule",
-				new StringBuilder("Id INTEGER PRIMARY KEY, Budget FLOAT,")
-						.append("Start_date DATE, End_date DATE").toString());
+		SqlHelper.instance
+				.createTable(
+						"Schedule",
+						new StringBuilder(
+								"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Time_Id INTEGER,")
+								.append("Start_date DATE, End_date DATE")
+								.toString());
 		SqlHelper.instance.createTable("ScheduleDetail",
-				new StringBuilder("Id INTEGER PRIMARY KEY, Budget FLOAT,")
+				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT,")
 						.append("Category_Id INTEGER, Schedule_Id INTEGER")
 						.toString());
 	}
@@ -28,12 +32,13 @@ public class ScheduleRepository implements IDataRepository {
 	public ArrayList<Object> getData(String param) {
 		ArrayList<Object> returnValues = new ArrayList<Object>();
 
-		Cursor scheduleData = SqlHelper.instance.select("Schedule",
-				"*", "");
+		Cursor scheduleData = SqlHelper.instance.select("Schedule", "*", param);
 
 		if (scheduleData != null) {
 			if (scheduleData.moveToFirst()) {
 				do {
+					if (!param.contains(scheduleData.getInt(scheduleData
+							  .getColumnIndex("Time_Id")) + "")){continue;}
 					ArrayList<DetailSchedule> details = new ArrayList<DetailSchedule>();
 					Cursor detailData = SqlHelper.instance.select(
 							"ScheduleDetail",
@@ -49,7 +54,9 @@ public class ScheduleRepository implements IDataRepository {
 										detailData.getInt(detailData
 												.getColumnIndex("Category_Id")),
 										detailData.getDouble(detailData
-												.getColumnIndex("Budget"))));
+												.getColumnIndex("Budget")),
+										detailData.getInt(detailData
+												.getColumnIndex("Schedule_Id"))));
 							} while (detailData.moveToNext());
 						}
 					}
@@ -63,8 +70,10 @@ public class ScheduleRepository implements IDataRepository {
 							Converter.toDate(scheduleData
 									.getString(scheduleData
 											.getColumnIndex("End_date"))),
-							/*scheduleData.getInt(scheduleData
-									.getColumnIndex("for_month")),*/ details));
+							
+							  scheduleData.getInt(scheduleData
+							  .getColumnIndex("Time_Id")),
+							 details));
 
 				} while (scheduleData.moveToNext());
 			}

@@ -42,14 +42,15 @@ public class ScheduleViewAdapter extends ArrayAdapter<Object> {
 			// Set content to budget
 			final TextView budget = ((ScheduleViewItem) scheduleItemView).total_budget;
 			budget.setText(String.valueOf(schedule.budget));
-			
+			scheduleItemView.stacked_bar_chart.removeAllViews();
 			Random random = new Random();
 			// Prepare and display stacked bar chart:
 			for (int i=0; i <schedule.details.size(); i++)
 			{
 				View stackItem = new View(getContext());
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					    LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, Float.parseFloat(schedule.budget + ""));
+					    0, LayoutParams.FILL_PARENT, 
+					    Float.parseFloat(schedule.details.get(i).getBudget() + ""));
 				stackItem.setBackgroundColor(Color.argb(200, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
 				scheduleItemView.stacked_bar_chart.addView(stackItem, params);
 			}
