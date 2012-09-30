@@ -6,32 +6,31 @@ import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.repository.DataManager;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class ScheduleViewActivity extends Activity {
-	Intent scheduleEditIntent;
 	TextView displayText;
+	LinearLayout chart_legend;
 	
 	private ScheduleViewAdapter scheduleAdapter;
 
+	boolean isMonthly;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_view);
+		
+		Bundle extras = getIntent().getExtras();
+		isMonthly = extras.getBoolean("Monthly");
+		
 		displayText = (TextView) findViewById(R.id.no_data_edit);
-		Button addSchedule = (Button) findViewById(R.id.addSchedule);
-		scheduleEditIntent = new Intent(this, ScheduleEditActivity.class);
-		addSchedule.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				startActivityForResult(scheduleEditIntent, 100);
-			}
-		});
+		
+		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
 
 		bindData();
 	}
@@ -45,11 +44,13 @@ public class ScheduleViewActivity extends Activity {
 	private void bindData() {
 		ArrayList<Object> values = DataManager.getObjects("Schedule");
 		if (values.size() == 0) {
+			chart_legend.setVisibility(View.GONE);
 			displayText.setVisibility(View.VISIBLE);
 			return;
 		}
 
 		displayText.setVisibility(View.GONE);
+		chart_legend.setVisibility(View.VISIBLE);
 		scheduleAdapter = new ScheduleViewAdapter(this,
 				R.layout.schedule_edit_item, values);
 		
