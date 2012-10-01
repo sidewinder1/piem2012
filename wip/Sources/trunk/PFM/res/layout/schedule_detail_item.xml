@@ -12,15 +12,15 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:textColor="@color/white_text_color"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/schedule_detail_item_budget_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="right|center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:textColor="@color/white_text_color"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
     </LinearLayout>
