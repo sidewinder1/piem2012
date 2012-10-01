@@ -60,7 +60,11 @@ public class BorrowLendRepository {
 					bole.setStartDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Start_date")),
-							"d MMM yyyy"));
+							"dd/MM/yyyy"));
+					Log.d("Date Time", String.valueOf(Converter.toDate(borrowLendData
+							.getString(borrowLendData
+									.getColumnIndex("Start_date")),
+							"dd/MM/yyyy")));
 					bole.setExpiredDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Expired_date")),
@@ -77,6 +81,47 @@ public class BorrowLendRepository {
 			}
 		}
 		return returnValues;
+	}
+	
+	public BorrowLend getDetailData(String tableName, String condition) {
+		BorrowLend bole = new BorrowLend();
+		Cursor borrowLendData = SqlHelper.instance.select(tableName, "*", condition);
+
+		if (borrowLendData != null) {
+			if (borrowLendData.moveToFirst()) {
+				do {
+					bole.setId(borrowLendData.getInt(borrowLendData
+							.getColumnIndex("ID")));
+					bole.setMoney(borrowLendData.getDouble(borrowLendData
+							.getColumnIndex("Money")));
+					bole.setInterestType(borrowLendData
+							.getString(borrowLendData
+									.getColumnIndex("Interest_type")));
+					bole.setInterestRate(borrowLendData.getInt(borrowLendData
+							.getColumnIndex("Interest_rate")));
+					bole.setStartDate(Converter.toDate(borrowLendData
+							.getString(borrowLendData
+									.getColumnIndex("Start_date")),
+							"dd/MM/yyyy"));
+					Log.d("Date Time", String.valueOf(Converter.toDate(borrowLendData
+							.getString(borrowLendData
+									.getColumnIndex("Start_date")),
+							"dd/MM/yyyy")));
+					bole.setExpiredDate(Converter.toDate(borrowLendData
+							.getString(borrowLendData
+									.getColumnIndex("Expired_date")),
+							"d MMM yyyy"));
+					bole.setPersonName(borrowLendData.getString(borrowLendData
+							.getColumnIndex("Person_name")));
+					bole.setPersonPhone(borrowLendData.getString(borrowLendData
+							.getColumnIndex("Person_Phone")));
+					bole.setPersonAddress(borrowLendData
+							.getString(borrowLendData
+									.getColumnIndex("Person_address")));
+				} while (borrowLendData.moveToNext());
+			}
+		}
+		return bole;
 	}
 
 }
