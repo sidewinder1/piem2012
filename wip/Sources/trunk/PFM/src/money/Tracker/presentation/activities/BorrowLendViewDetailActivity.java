@@ -3,6 +3,7 @@ package money.Tracker.presentation.activities;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.widget.TextView;
 
 public class BorrowLendViewDetailActivity extends Activity {
 
@@ -10,6 +11,12 @@ public class BorrowLendViewDetailActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_borrow_lend_view_detail);
+        TextView personName = (TextView) findViewById(R.id.borrow_lend_detail_view_name);
+        
+        Bundle extras = getIntent().getExtras();
+		int borrow_lend_id = extras.getInt("schedule_id");
+		
+		personName.setText(String.valueOf(borrow_lend_id));
     }
 
     @Override
