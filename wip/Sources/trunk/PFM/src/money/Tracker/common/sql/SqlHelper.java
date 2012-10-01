@@ -18,7 +18,7 @@ public class SqlHelper {
 
 	public boolean createTable(String tableName, String columnsInfo) {
 		try {
-			currentDb.execSQL(new StringBuilder("CREATE TABLE ")
+			currentDb.execSQL(new StringBuilder("CREATE TABLE IF NOT EXISTS ")
 					.append(tableName).append("(").append(columnsInfo)
 					.append(")").toString());
 		} catch (Exception e) {

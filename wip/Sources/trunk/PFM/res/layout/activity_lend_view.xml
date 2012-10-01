@@ -4,11 +4,17 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/no_lend_data"
+        android:layout_width="fill_parent"
+        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Lending view"
-        tools:context=".LendViewActivity" />
+        android:text="@string/no_data"
+        android:textColor="@color/white_text_color" />
+
+    <ListView
+        android:id="@+id/borrow_lend_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </RelativeLayout>
