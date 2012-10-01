@@ -7,6 +7,7 @@ import java.util.Date;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
@@ -53,6 +55,7 @@ public class ScheduleEditActivity extends Activity {
 				return false;
 			}
 		});
+
 		startDateEdit = (EditText) findViewById(R.id.schedule_start_date);
 		startDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -97,20 +100,28 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public void doneBtnClicked(View v) {
+		Cursor scheduleCursor = SqlHelper.instance.select(
+				"Schedule",
+				"End_date",
+				"End_date = '"
+						+ Converter.toString(Converter.toDate(endDateEdit
+								.getText().toString(), "MMMM dd, yyyy"))+"'");
+		if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
+			Toast.makeText(this, "A schedule for this time is existing!",
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
 		String Time_id = (periodic.isChecked() ? "1" : "0");
-		long newScheduleId = SqlHelper.instance
-				.insert("Schedule",
-						new String[] { "Budget", "Start_date", 
-									"End_date", "Time_Id" },
-						new String[] {
-								String.valueOf(total_budget.getText()
-										.toString()),
-								Converter.toString(Converter.toDate(
-										startDateEdit.getText().toString(),
-										"MMMM dd, yyyy")),
-								Converter.toString(Converter.toDate(endDateEdit
-										.getText().toString(), "MMMM dd, yyyy")),
-										Time_id});
+		long newScheduleId = SqlHelper.instance.insert(
+				"Schedule",
+				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
+				new String[] {
+						String.valueOf(total_budget.getText().toString()),
+						Converter.toString(Converter.toDate(startDateEdit
+								.getText().toString(), "MMMM dd, yyyy")),
+						Converter.toString(Converter.toDate(endDateEdit
+								.getText().toString(), "MMMM dd, yyyy")),
+						Time_id });
 		if (newScheduleId != -1) {
 			for (DetailSchedule detailItem : array) {
 				SqlHelper.instance.insert("ScheduleDetail", new String[] {
@@ -118,8 +129,13 @@ public class ScheduleEditActivity extends Activity {
 						new String[] { String.valueOf(detailItem.getBudget()),
 								"0", String.valueOf(newScheduleId) });
 			}
+
+			Toast.makeText(this, "Save sucessfully", Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(this, "Can not save data", Toast.LENGTH_SHORT)
+					.show();
 		}
-		
+
 		setResult(100);
 		this.finish();
 	}

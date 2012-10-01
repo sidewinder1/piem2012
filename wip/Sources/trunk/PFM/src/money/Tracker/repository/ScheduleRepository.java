@@ -16,17 +16,7 @@ public class ScheduleRepository implements IDataRepository {
 	}
 
 	protected void createTable() {
-		SqlHelper.instance
-				.createTable(
-						"Schedule",
-						new StringBuilder(
-								"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Time_Id INTEGER,")
-								.append("Start_date DATE, End_date DATE")
-								.toString());
-		SqlHelper.instance.createTable("ScheduleDetail",
-				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT,")
-						.append("Category_Id INTEGER, Schedule_Id INTEGER")
-						.toString());
+		
 	}
 
 	public ArrayList<Object> getData(String param) {
