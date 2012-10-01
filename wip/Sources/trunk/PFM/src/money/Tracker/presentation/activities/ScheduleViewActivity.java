@@ -3,13 +3,13 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
+import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.DataManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class ScheduleViewActivity extends Activity {
 	TextView displayText;
 	LinearLayout chart_legend;
-
+	ListView list;
 	private ScheduleViewAdapter scheduleAdapter;
 
 	boolean isMonthly;
@@ -32,9 +32,25 @@ public class ScheduleViewActivity extends Activity {
 		displayText = (TextView) findViewById(R.id.no_data_edit);
 
 		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
-
+		list = (ListView) findViewById(R.id.schedule_view_list);
+		list.setOnItemClickListener(onListClick);
+		
 		bindData();
 	}
+	
+	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+		public void onItemClick(AdapterView<?> listView, View view, int position,
+				long id) {
+			// TODO Auto-generated method stub
+			Schedule schedule = (Schedule)listView.getAdapter().getItem(position);
+			if (schedule != null)
+			{
+				Intent scheduleDetail =new Intent(ScheduleViewActivity.this ,ScheduleDetailViewActivity.class);
+				scheduleDetail.putExtra("schedule_id", schedule.id);
+				startActivity(scheduleDetail);
+			}
+		}
+	};
 
 	@Override
 	protected void onRestart() {
@@ -64,7 +80,7 @@ public class ScheduleViewActivity extends Activity {
 				R.layout.schedule_edit_item, values);
 
 		scheduleAdapter.notifyDataSetChanged();
-		final ListView list = (ListView) findViewById(R.id.schedule_view_list);
+		
 		list.setAdapter(scheduleAdapter);
 	}
 }
