@@ -1,7 +1,6 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
-
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.DataManager;
