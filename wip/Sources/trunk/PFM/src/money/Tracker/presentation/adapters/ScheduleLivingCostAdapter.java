@@ -2,8 +2,11 @@ package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,7 +37,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 	
 	@Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View scheduleItemView = convertView;
+		ScheduleItem scheduleItemView = (ScheduleItem)convertView;
       
 		if (scheduleItemView == null) {
 			scheduleItemView = new ScheduleItem(getContext());
@@ -55,9 +58,20 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 			addButton.setTag(position);
 
 			budget.setHint(String.valueOf(livingCost.getBudget()));
+			budget.setTag(position);
 			// Apply the adapter to the spinner
 			category.setAdapter(categoryAdapter);
 			category.setSelection(livingCost.getCategory());
+			
+			budget.setOnKeyListener(new OnKeyListener() {
+				
+				public boolean onKey(View v, int keyCode, KeyEvent event) {
+					// TODO Auto-generated method stub
+					DetailSchedule item = array.get(Integer.parseInt(String.valueOf(v.getTag())));
+					item.setBudget(Double.parseDouble(String.valueOf(((EditText)v).getText())));
+					return false;
+				}
+			});
 			
             // Add new schedule item.
             addButton.setOnClickListener(new OnClickListener() {

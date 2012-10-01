@@ -22,16 +22,9 @@ public class ScheduleViewItem extends LinearLayout {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.schedule_view_item, this, true);
 
+		
 		schedule_item_title = (TextView)findViewById(R.id.schedule_item_name);
 		total_budget = (TextView)findViewById(R.id.schedule_total_budget);
 		stacked_bar_chart = (LinearLayout)findViewById(R.id.stacked_bar_chart);
-		
-		this.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 	}
 }

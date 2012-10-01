@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_background"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -44,8 +45,8 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/schedule_detail_budget_title"
             android:layout_width="0dp"
+            android:text="@string/schedule_detail_budget_title"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="10dp"
@@ -67,6 +68,7 @@
     <ListView
         android:id="@+id/schedule_detail_item_list"
         android:layout_width="fill_parent"
+        android:focusable="false"
         android:layout_height="0dp"
         android:layout_weight="6" />
 
