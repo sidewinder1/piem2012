@@ -19,7 +19,6 @@
             android:textSize="30dp"
             android:text="New Borrow" />
 
-
         <Button
             android:id="@+id/saveButton"
             android:layout_width="25dp"
@@ -66,16 +65,34 @@
             android:textSize="12dp" />
 
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/name_edit_text"
+	
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:hint="Name"
-        android:inputType="text" />
+        android:orientation="horizontal" >
 
+        <EditText
+            android:id="@+id/name_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.84"
+            android:hint="Name"
+            android:inputType="text" />
+
+        <Spinner
+            android:id="@+id/borrowLendPhoneContact"
+            android:layout_width="50dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:checked="true"
+            android:paddingBottom="-20dp"
+            android:text="Contact"
+            android:textSize="8dp" />
+    </LinearLayout>
+	
     <EditText
         android:id="@+id/phone_edit_text"
         android:layout_width="fill_parent"
@@ -168,12 +185,15 @@
 
         <EditText
             android:id="@+id/start_date_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:ems="10"
-            android:inputType="date" />
+            android:inputType="date" >
+
+            <requestFocus />
+        </EditText>
 
     </LinearLayout>
     

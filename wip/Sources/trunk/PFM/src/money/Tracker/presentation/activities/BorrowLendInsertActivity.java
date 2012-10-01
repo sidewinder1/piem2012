@@ -5,15 +5,20 @@ import java.util.TooManyListenersException;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.repository.*;
 import android.os.Bundle;
+import android.provider.Contacts;
+import android.provider.Contacts.People;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -26,11 +31,12 @@ public class BorrowLendInsertActivity extends Activity {
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_borrow_lend_insert);
-		
+
 		final Button saveButton = (Button) findViewById(R.id.saveButton);
 		final Button cancelButton = (Button) findViewById(R.id.cancelButton);
 		final TextView debtTypeTextView = (TextView) findViewById(R.id.title_text_view);
@@ -43,68 +49,96 @@ public class BorrowLendInsertActivity extends Activity {
 		final EditText interestRate = (EditText) findViewById(R.id.interest_rate_edit_text);
 		startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
-		
+		final Spinner getContact = (Spinner) findViewById(R.id.borrowLendPhoneContact);
 		new BorrowLendRepository();
-		
+
+		// Get contact to spinner
+		final Cursor cusorSpinner = managedQuery(Contacts.People.CONTENT_URI,
+				null, null, null, null);
+		if (cusorSpinner.getCount() > 0) {
+			while (cusorSpinner.moveToNext()) {
+				// get name
+				String username = cusorSpinner.getString(cusorSpinner
+						.getColumnIndex(Contacts.People.NAME));
+				if (username != null)
+					Log.i("Contact name ", username);
+				// get phone
+				String phone = cusorSpinner.getString(cusorSpinner
+						.getColumnIndex(Contacts.People.NUMBER));
+				if (phone != null)
+					Log.i("Contact name ", phone);
+			}
+		}
+
+		// Hand on Contact spinner
+		getContact.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		// Hand on Save button
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+
 				String interestTypeString;
-				
-				if (interestType.isChecked())
-				{
+
+				if (interestType.isChecked()) {
 					interestTypeString = "Simple";
-				}
-				else
-				{
+				} else {
 					interestTypeString = "Compound interest";
 				}
-				
-				if (debtTypeButton.isChecked())
-				{
+
+				if (debtTypeButton.isChecked()) {
 					long check = SqlHelper.instance.insert("Borrowing",
-							new String[]{"Money", "Interest_type", "Interest_rate", "Start_date", "Expired_date", "Person_name", "Person_Phone", "Person_address"},
-							new String[]{ moneyEditText.getText().toString() , 
-							"'" + interestTypeString + "'", 
-							interestRate.getText().toString(), 
-							"'" + startDateEditText.getText().toString() + "'", 
-							"'" + expiredDateEditText.getText().toString() + "'",
-							"'" + nameEditText.getText().toString() + "'",
-							"'" + phoneEditText.getText().toString() + "'",
-							"'" + addressEditText.getText().toString() + "'"});
-					if (check != -1)
-					{
+							new String[] { "Money", "Interest_type",
+									"Interest_rate", "Start_date",
+									"Expired_date", "Person_name",
+									"Person_Phone", "Person_address" },
+							new String[] {
+									moneyEditText.getText().toString(),
+									"'" + interestTypeString + "'",
+									interestRate.getText().toString(),
+									"'"
+											+ startDateEditText.getText()
+													.toString() + "'",
+									"'"
+											+ expiredDateEditText.getText()
+													.toString() + "'",
+									"'" + nameEditText.getText().toString()
+											+ "'",
+									"'" + phoneEditText.getText().toString()
+											+ "'",
+									"'" + addressEditText.getText().toString()
+											+ "'" });
+					if (check != -1) {
 						Log.d("Insert", "OK");
-					}
-					else
-					{
+					} else {
 						Log.d("Insert", "Chay sao duoc");
 					}
-					
-					
+
 					setResult(100);
 					Log.d("Insert", "Check 1");
 					BorrowLendInsertActivity.this.finish();
-				}
-				else
-				{
-					SqlHelper.instance.insert("Lending", 
-							new String[]{"Money", "Interest_type", "Interest_rate", "Start_date", "Expired_date", 
-							"Person_name", "Person_Phone", "Person_address"},
-					new String []{
+				} else {
+					SqlHelper.instance.insert("Lending", new String[] {
+							"Money", "Interest_type", "Interest_rate",
+							"Start_date", "Expired_date", "Person_name",
+							"Person_Phone", "Person_address" }, new String[] {
 							moneyEditText.getText().toString(),
-							interestTypeString ,
+							interestTypeString,
 							interestRate.getText().toString(),
 							startDateEditText.getText().toString(),
 							expiredDateEditText.getText().toString(),
 							nameEditText.getText().toString(),
 							phoneEditText.getText().toString(),
-							addressEditText.getText().toString()});
+							addressEditText.getText().toString() });
 				}
-				
+
 				setResult(100);
 				BorrowLendInsertActivity.this.finish();
 			}
@@ -161,8 +195,7 @@ public class BorrowLendInsertActivity extends Activity {
 				showDialog(DATE_DIALOG_ID1);
 			}
 		});
-		
-		
+
 	}
 
 	// updates the date in the TextView
@@ -192,17 +225,17 @@ public class BorrowLendInsertActivity extends Activity {
 	};
 
 	// the callback received when the user "sets" the date in the dialog
-		private DatePickerDialog.OnDateSetListener mDateSetListenerExpiredDate = new DatePickerDialog.OnDateSetListener() {
+	private DatePickerDialog.OnDateSetListener mDateSetListenerExpiredDate = new DatePickerDialog.OnDateSetListener() {
 
-			public void onDateSet(DatePicker view, int year, int monthOfYear,
-					int dayOfMonth) {
-				mYear = year;
-				mMonth = monthOfYear;
-				mDay = dayOfMonth;
-				updateDisplayExpiredDate();
-			}
-		};
-	
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+			mYear = year;
+			mMonth = monthOfYear;
+			mDay = dayOfMonth;
+			updateDisplayExpiredDate();
+		}
+	};
+
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
 		case DATE_DIALOG_ID:
@@ -218,11 +251,11 @@ public class BorrowLendInsertActivity extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DATE_DIALOG_ID:
-			return new DatePickerDialog(this, mDateSetListenerStartDate, mYear, mMonth,
-					mDay);
+			return new DatePickerDialog(this, mDateSetListenerStartDate, mYear,
+					mMonth, mDay);
 		case DATE_DIALOG_ID1:
-			return new DatePickerDialog(this, mDateSetListenerExpiredDate, mYear, mMonth,
-					mDay);
+			return new DatePickerDialog(this, mDateSetListenerExpiredDate,
+					mYear, mMonth, mDay);
 		}
 		return null;
 	}

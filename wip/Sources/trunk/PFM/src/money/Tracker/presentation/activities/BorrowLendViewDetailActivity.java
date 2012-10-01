@@ -8,6 +8,8 @@ import money.Tracker.repository.BorrowLendRepository;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class BorrowLendViewDetailActivity extends Activity {
@@ -25,6 +27,7 @@ public class BorrowLendViewDetailActivity extends Activity {
         TextView interestType = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_type);
         TextView startDate = (TextView) findViewById(R.id.borrow_lend_detail_view_start_date);
         TextView expriedDate = (TextView) findViewById(R.id.borrow_lend_expired_date);
+        Button cancelButton = (Button) findViewById(R.id.view_detail_cancel_button);
         
         Bundle extras = getIntent().getExtras();
 		int borrow_lend_id = extras.getInt("borrowLendID");
@@ -47,6 +50,14 @@ public class BorrowLendViewDetailActivity extends Activity {
 		interestType.setText(String.valueOf(values.getInterestType()));
 		startDate.setText(String.valueOf(values.getStartDate()));
 		expriedDate.setText(String.valueOf(values.getExpiredDate()));
+		
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				BorrowLendViewDetailActivity.this.finish();
+			}
+		});
     }
 
     @Override
