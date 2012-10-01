@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -64,11 +63,14 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 			category.setSelection(livingCost.getCategory());
 			
 			budget.setOnKeyListener(new OnKeyListener() {
-				
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
 					// TODO Auto-generated method stub
-					DetailSchedule item = array.get(Integer.parseInt(String.valueOf(v.getTag())));
-					item.setBudget(Double.parseDouble(String.valueOf(((EditText)v).getText())));
+					if (((EditText)v).getText()+""!="")
+					{
+						DetailSchedule item = array.get(Integer.parseInt(String.valueOf(v.getTag())));
+						item.setBudget(Double.parseDouble(String.valueOf(((EditText)v).getText())));	
+					}
+					
 					return false;
 				}
 			});
