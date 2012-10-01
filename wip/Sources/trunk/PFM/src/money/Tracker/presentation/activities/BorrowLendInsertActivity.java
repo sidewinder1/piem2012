@@ -31,7 +31,7 @@ public class BorrowLendInsertActivity extends Activity {
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
 
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,34 +51,35 @@ public class BorrowLendInsertActivity extends Activity {
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
 		final Spinner getContact = (Spinner) findViewById(R.id.borrowLendPhoneContact);
 		new BorrowLendRepository();
+		Log.d("Insert", "Check 1");
 
 		// Get contact to spinner
-		final Cursor cusorSpinner = managedQuery(Contacts.People.CONTENT_URI,
-				null, null, null, null);
-		if (cusorSpinner.getCount() > 0) {
-			while (cusorSpinner.moveToNext()) {
-				// get name
-				String username = cusorSpinner.getString(cusorSpinner
-						.getColumnIndex(Contacts.People.NAME));
-				if (username != null)
-					Log.i("Contact name ", username);
-				// get phone
-				String phone = cusorSpinner.getString(cusorSpinner
-						.getColumnIndex(Contacts.People.NUMBER));
-				if (phone != null)
-					Log.i("Contact name ", phone);
-			}
-		}
+//		final Cursor cusorSpinner = managedQuery(Contacts.People.CONTENT_URI,
+//				null, null, null, null);
+//		if (cusorSpinner.getCount() > 0) {
+//			while (cusorSpinner.moveToNext()) {
+//				// get name
+//				String username = cusorSpinner.getString(cusorSpinner
+//						.getColumnIndex(Contacts.People.NAME));
+//				if (username != null)
+//					Log.i("Contact name ", username);
+//				// get phone
+//				String phone = cusorSpinner.getString(cusorSpinner
+//						.getColumnIndex(Contacts.People.NUMBER));
+//				if (phone != null)
+//					Log.i("Contact name ", phone);
+//			}
+//		}
 
 		// Hand on Contact spinner
-		getContact.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
+//		getContact.setOnClickListener(new View.OnClickListener() {
+//
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
+		Log.d("Insert", "Check 2");
 		// Hand on Save button
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
