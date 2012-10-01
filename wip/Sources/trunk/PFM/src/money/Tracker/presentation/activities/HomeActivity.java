@@ -20,6 +20,7 @@ public class HomeActivity extends TabActivity {
 		
 		// Create db connector
 		SqlHelper.instance = new SqlHelper(this);
+		SqlHelper.instance.initializeTable();
 		
 		TabHost mTabHost = getTabHost();
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);

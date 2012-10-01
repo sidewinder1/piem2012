@@ -2,13 +2,10 @@ package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
 
-import org.apache.http.conn.scheme.SchemeRegistry;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.adapters.ScheduleDetailViewAdapter;
 import money.Tracker.presentation.model.DetailSchedule;
-import money.Tracker.presentation.model.Schedule;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;

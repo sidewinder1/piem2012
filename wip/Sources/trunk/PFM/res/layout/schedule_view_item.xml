@@ -7,39 +7,36 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:focusable="false"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/schedule_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_weight="3"
-            android:text="@string/dummy_data"
             android:textColor="@color/white_text_color"
+            android:text="@string/dummy_data"
+            android:layout_marginLeft="10dp"
             android:textSize="22dp" />
 
         <TextView
             android:id="@+id/schedule_total_budget"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="2"
-            android:gravity="right"
-            android:text="@string/dummy_data"
             android:textColor="@color/white_text_color"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/dummy_data"
             android:textSize="17dp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/stacked_bar_chart"
-        android:layout_width="fill_parent"
-        android:layout_height="20dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/gray_background"
-        android:focusable="false" />
+        android:id="@+id/stacked_bar_chart"
+        android:background="#7991"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp" />
 
 </LinearLayout>
