@@ -1,7 +1,6 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
-
 import money.Tracker.presentation.adapters.BorrowLendAdapter;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.model.BorrowLend;
@@ -76,7 +75,8 @@ public class BorrowLendViewActivity extends Activity {
 			if (borrowLend != null)
 			{
 				Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
-				borrowLendDetail.putExtra("schedule_id", borrowLend.getId());
+				borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
+				borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
 				startActivity(borrowLendDetail);
 			}
 		}

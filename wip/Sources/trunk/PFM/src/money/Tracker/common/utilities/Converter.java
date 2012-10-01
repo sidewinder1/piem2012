@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.util.Log;
+
 public class Converter {
 	private static final String dateFormatString = "yyyy-MM-dd hh:mm:ss";
 
@@ -18,14 +20,21 @@ public class Converter {
 	}
 
 	public static Date toDate(String date, String inputFormatString) {
-		java.text.DateFormat inputFormat = new SimpleDateFormat(
+		SimpleDateFormat inputFormat = new SimpleDateFormat(
 				inputFormatString);
+		Log.d("Date Format", inputFormatString);
 		Date parsed = new Date();
 		try {
 			parsed = inputFormat.parse(date);
+			Log.d("Date format", "Check 1");
 		} catch (ParseException e) {
-			// TODO Add log
+			// TODO Auto-generated catch block
+			Log.d("Date format", "Check 2");
 		}
+		
+			
+		
+		Log.d("Date Format", String.valueOf(parsed));
 
 		return parsed;
 	}
