@@ -29,7 +29,7 @@ public class HomeActivity extends TabActivity {
 		setupTab(scheduleIntent, "Schedule", mTabHost);
 		
 		// Create tab and intent for Borrowing and Lending.
-		Intent borrowAndLendIntent = new Intent(this, BorrowingLendingViewActivity.class);
+		Intent borrowAndLendIntent = new Intent(this, BorrowLendMainViewActivity.class);
 		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost);
 		
 		// Temporary tabs.

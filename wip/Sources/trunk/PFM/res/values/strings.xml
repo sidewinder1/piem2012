@@ -37,4 +37,8 @@
     <color name="white_text_color">#F9FFFFFF</color>
     <color name="gray_background">#432230FF</color>
 
+    <string name="title_activity_borrow_lend_view">BorrowLendViewActivity</string>
+    <string name="title_activity_borrow_lend_view_item">BorrowLendViewItemActivity</string>
+    <string name="title_activity_borrow_lend_view_detail">BorrowLendViewDetailActivity</string>
+
 </resources>

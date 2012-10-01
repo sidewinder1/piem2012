@@ -44,8 +44,7 @@ public class BorrowLendInsertActivity extends Activity {
 		startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
 		
-		new BorrowingRepository();
-		new LendingRepository();
+		new BorrowLendRepository();
 		
 		// Hand on Save button
 		saveButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +84,9 @@ public class BorrowLendInsertActivity extends Activity {
 						Log.d("Insert", "Chay sao duoc");
 					}
 					
+					
 					setResult(100);
+					Log.d("Insert", "Check 1");
 					BorrowLendInsertActivity.this.finish();
 				}
 				else
@@ -104,6 +105,7 @@ public class BorrowLendInsertActivity extends Activity {
 							addressEditText.getText().toString()});
 				}
 				
+				setResult(100);
 				BorrowLendInsertActivity.this.finish();
 			}
 		});
