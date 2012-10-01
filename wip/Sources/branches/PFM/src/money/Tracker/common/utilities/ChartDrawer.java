@@ -1,27 +1,28 @@
 package money.Tracker.common.utilities;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+////import org.achartengine.*;
+////#import org.achartengine.chart.AbstractChart;
+////import org.achartengine.renderer.SimpleSeriesRenderer;
+////import org.achartengine.renderer.XYMultipleSeriesRenderer;
+//
+//import android.content.Context;
+//import android.content.Intent;
+//import android.graphics.Canvas;
+//import android.graphics.Color;
+//import android.graphics.Paint;
 
-import org.achartengine.*;
-import org.achartengine.chart.AbstractChart;
-import org.achartengine.renderer.SimpleSeriesRenderer;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
+//public class ChartDrawer  extends AbstractChart {
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
-public class ChartDrawer  extends AbstractChart {
-
-	@Override
-	public void draw(Canvas arg0, int arg1, int arg2, int arg3, int arg4,
-			Paint arg5) {
-		// TODO Auto-generated method stub
-		
-	}
-
+//	@Override
+//	public void draw(Canvas arg0, int arg1, int arg2, int arg3, int arg4,
+//			Paint arg5) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
 //	public Intent getIntent(Context context) {
 //
 //	    String[] titles = new String[] { "Good", "Defect", "Repair" };
@@ -55,20 +56,20 @@ public class ChartDrawer  extends AbstractChart {
 //	    renderer.setBarSpacing(0.5f);
 //	    return ChartFactory.getBarChartIntent(context,
 //	            buildBarDataset(titles, values), renderer, Type.STACKED);
-
+//
 //	}
-	
-	@Override
-	public void drawLegendShape(Canvas arg0, SimpleSeriesRenderer arg1,
-			float arg2, float arg3, int arg4, Paint arg5) {
-		// TODO Auto-generated method stub
-		
-	}
+//	
+//	@Override
+//	public void drawLegendShape(Canvas arg0, SimpleSeriesRenderer arg1,
+//			float arg2, float arg3, int arg4, Paint arg5) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public int getLegendShapeWidth(int arg0) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
 
-	@Override
-	public int getLegendShapeWidth(int arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-}
+//}

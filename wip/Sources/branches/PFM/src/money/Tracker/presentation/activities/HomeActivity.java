@@ -17,6 +17,7 @@ public class HomeActivity extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
+		
 		// Create db connector
 		SqlHelper.instance = new SqlHelper(this);
 		
@@ -24,20 +25,19 @@ public class HomeActivity extends TabActivity {
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 		
 		// Create tab and intent for schedule.
-		Intent scheduleIntent = new Intent(this, ScheduleViewActivity.class);
+		Intent scheduleIntent = new Intent(this, ScheduleMainViewActivity.class);
 		setupTab(scheduleIntent, "Schedule", mTabHost);
 		
 		// Create tab and intent for Borrowing and Lending.
-		Intent borrowAndLendIntent = new Intent(this, BorrowingLendingViewActivity.class);
+		Intent borrowAndLendIntent = new Intent(this, BorrowLendMainViewActivity.class);
 		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost);
 		
 		// Temporary tabs.
 		setupTab(scheduleIntent, "Expenses\n& Incomes", mTabHost);
 		setupTab(borrowAndLendIntent, "Report", mTabHost);
 	}
-
-	/// This method is used to setup a tab with Name tab and content of tab.
-	private void setupTab(final Intent intent, final String tag, TabHost mTabHost) {
+	
+	public static void setupTab(final Intent intent, final String tag, TabHost mTabHost) {
 		View tabview = createTabView(mTabHost.getContext(), tag);
 		TabSpec setContent = mTabHost.newTabSpec(tag).setIndicator(tabview);
 		setContent.setContent(intent);   
