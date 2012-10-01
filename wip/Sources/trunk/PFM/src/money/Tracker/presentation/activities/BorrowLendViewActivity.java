@@ -10,6 +10,7 @@ import money.Tracker.repository.DataManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -72,11 +73,15 @@ public class BorrowLendViewActivity extends Activity {
 				long id) {
 			// TODO Auto-generated method stub
 			BorrowLend borrowLend = (BorrowLend)list.getAdapter().getItem(position);
+			Log.d("BLV", "Check 1");
 			if (borrowLend != null)
 			{
 				Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
+				Log.d("BLV", "Check 2");
 				borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
+				Log.d("BLV", "Check 3");
 				borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
+				Log.d("BLV", "Check 4");
 				startActivity(borrowLendDetail);
 			}
 		}
