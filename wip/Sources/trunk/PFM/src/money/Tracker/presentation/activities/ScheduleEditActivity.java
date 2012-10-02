@@ -127,7 +127,7 @@ public class ScheduleEditActivity extends Activity {
 				SqlHelper.instance.insert("ScheduleDetail", new String[] {
 						"Budget", "Category_id", "Schedule_id" },
 						new String[] { String.valueOf(detailItem.getBudget()),
-								"0", String.valueOf(newScheduleId) });
+								String.valueOf(detailItem.getCategory()), String.valueOf(newScheduleId) });
 			}
 
 			Toast.makeText(this, "Save sucessfully", Toast.LENGTH_SHORT).show();

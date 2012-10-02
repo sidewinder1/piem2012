@@ -58,7 +58,7 @@ public class SqlHelper {
 
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
-		if (whereCondition != null && !"".equals(whereCondition)) {
+ 		if (whereCondition != null && !"".equals(whereCondition)) {
 			whereCondition = new StringBuilder(" WHERE ")
 					.append(whereCondition).toString();
 		} else {
@@ -100,8 +100,8 @@ public class SqlHelper {
 						+ "Interest_type TEXT," + "Interest_rate INTEGERL,"
 						+ "Start_date TEXT," + "Expired_date TEXT,"
 						+ "Person_name TEXT," + "Person_Phone TEXT,"
-						+ "Person_address TEXT);");
-
+						+ "Person_address TEXT");
+		
 		// Create table for Borrowing.
 		createTable("Borrowing",
 				"ID INTEGER PRIMARY KEY autoincrement," + "Money INTEGER,"
@@ -110,6 +110,9 @@ public class SqlHelper {
 						+ "Person_name TEXT," + "Person_Phone TEXT,"
 						+ "Person_address TEXT");
 
+	
+		
+		
 		// Create table for Category.
 		createTable("Category",
 				new StringBuilder(
@@ -117,10 +120,10 @@ public class SqlHelper {
 						.append("User_Color TEXT").toString());
 		String[] names = { "Birthday", "Food", "Entertainment", "Shopping",
 				"Others" };
-		String[] colors = { "#FF0000", "#00FFFF", "#0000FF", "#0000A0",
-				"#ADD8E6" };
+		String[] colors = { "#99FF0000", "#9900FFFF", "#990000FF", "#990000A0",
+				"#99ADD8E6" };
 		
-		Cursor categoryCheck = select("Category", "*", "Name='Birthday' AND User_Color='#FF0000'");
+		Cursor categoryCheck = select("Category", "*", "Name='Birthday' AND User_Color='#99FF0000'");
 		
 		if (categoryCheck != null && categoryCheck.moveToFirst())
 		{

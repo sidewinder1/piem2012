@@ -24,19 +24,6 @@ public class BorrowLendRepository {
 	}
 
 	private void createTable() {
-		SqlHelper.instance.createTable("Borrowing",
-				"ID INTEGER PRIMARY KEY autoincrement," + "Money INTEGER,"
-						+ "Interest_type TEXT," + "Interest_rate INTEGER,"
-						+ "Start_date TEXT," + "Expired_date TEXT,"
-						+ "Person_name TEXT," + "Person_Phone TEXT,"
-						+ "Person_address TEXT);");
-
-		SqlHelper.instance.createTable("Lending",
-				"ID INTEGER PRIMARY KEY autoincrement," + "Money INTEGER,"
-						+ "Interest_type TEXT," + "Interest_rate INTEGERL,"
-						+ "Start_date TEXT," + "Expired_date TEXT,"
-						+ "Person_name TEXT," + "Person_Phone TEXT,"
-						+ "Person_address TEXT);");
 	}
 
 	public ArrayList<BorrowLend> getData(String tableName) {

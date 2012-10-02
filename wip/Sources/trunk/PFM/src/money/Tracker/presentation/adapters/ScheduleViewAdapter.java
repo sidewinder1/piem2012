@@ -2,9 +2,12 @@ package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.customviews.ScheduleViewItem;
 import money.Tracker.presentation.model.Schedule;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.text.format.DateFormat;
@@ -43,14 +46,19 @@ public class ScheduleViewAdapter extends ArrayAdapter<Object> {
 			final TextView budget = ((ScheduleViewItem) scheduleItemView).total_budget;
 			budget.setText(String.valueOf(schedule.budget));
 			
-			Random random = new Random();
 			// Prepare and display stacked bar chart:
 			for (int i=0; i <schedule.details.size(); i++)
 			{
 				View stackItem = new View(getContext());
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					    LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, Float.parseFloat(schedule.budget + ""));
-				stackItem.setBackgroundColor(Color.argb(200, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+				Cursor categoryCursor = SqlHelper.instance.select("Category", "Id, User_Color",  "Id = " + schedule.details.get(i).getCategory());
+				
+				if (categoryCursor!=null && categoryCursor.moveToFirst())
+				{
+					stackItem.setBackgroundColor(Color.parseColor(categoryCursor.getString(1)));	
+				}
+				
 				scheduleItemView.stacked_bar_chart.addView(stackItem, params);
 			}
 		}

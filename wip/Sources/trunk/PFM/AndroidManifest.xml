@@ -29,15 +29,7 @@
         <activity android:name=".LendViewActivity" />
         <activity android:name=".BorrowLendInsertActivity" />
         <activity android:name=".BorrowLendViewActivity" />
-        <activity
-            android:name=".BorrowLendViewDetailActivity"
-            android:label="@string/title_activity_borrow_lend_view_detail" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".BorrowLendViewDetailActivity"/>
     </application>
 
 </manifest>
