@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 
 public class Converter {
@@ -26,10 +27,9 @@ public class Converter {
 		Date parsed = new Date();
 		try {
 			parsed = inputFormat.parse(date);
-			Log.d("Date format", "Check 1");
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			Log.d("Date format", "Check 2");
 		}
 		
 			
@@ -44,12 +44,35 @@ public class Converter {
 				dateFormatString);
 		Date parsed = new Date();
 		try {
-			parsed = inputFormat.parse(date);
+			parsed = inputFormat.parse(date);			
 		} catch (Exception e) {
-			// TODO Add log
-			
+			// TODO Add log			
 		}
 
 		return parsed;
+	}
+	
+	public static Date convertDate(Date dateConvert)
+	{
+		String formatDate = "MMM dd, yyyy";
+		
+		DateFormat df = new DateFormat();
+		
+		return (Date) df.format(formatDate, dateConvert); 
+	}
+	
+	public static Date convertDate(String dateConvert)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");		
+		    Date convertedDate;
+		    try {
+		        convertedDate = dateFormat.parse(dateConvert);
+		        Log.i("SocialFeedLatestBuzz", "convertedDate =  " + convertedDate);
+		    } catch (ParseException e) {
+		        e.printStackTrace();
+		        return null;
+		    }		
+		    return convertedDate;
+ 
 	}
 }

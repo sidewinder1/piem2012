@@ -59,8 +59,7 @@ public class ScheduleRepository implements IDataRepository {
 											.getColumnIndex("Start_date"))),
 							Converter.toDate(scheduleData
 									.getString(scheduleData
-											.getColumnIndex("End_date"))),
-							
+											.getColumnIndex("End_date"))),							
 							  scheduleData.getInt(scheduleData
 							  .getColumnIndex("Time_Id")),
 							 details));

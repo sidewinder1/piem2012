@@ -1,6 +1,7 @@
 package money.Tracker.repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.ContentResolver;
 import android.database.CharArrayBuffer;
@@ -44,18 +45,15 @@ public class BorrowLendRepository {
 									.getColumnIndex("Interest_type")));
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData
 							.getColumnIndex("Interest_rate")));
-					bole.setStartDate(Converter.toDate(borrowLendData
+					bole.setStartDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date")),
-							"dd/MM/yyyy"));
-					Log.d("Date Time", String.valueOf(Converter.toDate(borrowLendData
+									.getColumnIndex("Start_date"))));
+					bole.setExpiredDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date")),
-							"dd/MM/yyyy")));
-					bole.setExpiredDate(Converter.toDate(borrowLendData
+									.getColumnIndex("Expired_date"))));
+					Log.d("Date", borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date")),
-							"d MMM yyyy"));
+									.getColumnIndex("Expired_date")));
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData
@@ -86,18 +84,12 @@ public class BorrowLendRepository {
 									.getColumnIndex("Interest_type")));
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData
 							.getColumnIndex("Interest_rate")));
-					bole.setStartDate(Converter.toDate(borrowLendData
+					bole.setStartDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date")),
-							"dd/MM/yyyy"));
-					Log.d("Date Time", String.valueOf(Converter.toDate(borrowLendData
+									.getColumnIndex("Start_date"))));
+					bole.setExpiredDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date")),
-							"dd/MM/yyyy")));
-					bole.setExpiredDate(Converter.toDate(borrowLendData
-							.getString(borrowLendData
-									.getColumnIndex("Expired_date")),
-							"d MMM yyyy"));
+									.getColumnIndex("Expired_date"))));
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData
