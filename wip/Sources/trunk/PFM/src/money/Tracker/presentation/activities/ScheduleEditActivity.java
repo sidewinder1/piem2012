@@ -99,6 +99,16 @@ public class ScheduleEditActivity extends Activity {
 
 	}
 
+	public double getTotalBudget()
+	{
+		String budget_value = total_budget.getText().toString();
+		if (budget_value == "")
+		{
+			budget_value = "0";
+		}
+		return Double.parseDouble(budget_value);
+	}
+	
 	public void doneBtnClicked(View v) {
 		Cursor scheduleCursor = SqlHelper.instance.select(
 				"Schedule",
