@@ -47,13 +47,13 @@ public class BorrowLendRepository {
 							.getColumnIndex("Interest_rate")));
 					bole.setStartDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date"))));
+									.getColumnIndex("Start_date")).trim()));
 					bole.setExpiredDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date"))));
+									.getColumnIndex("Expired_date")).trim()));
 					Log.d("Date", borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date")));
+									.getColumnIndex("Expired_date")).trim());
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData
@@ -86,10 +86,10 @@ public class BorrowLendRepository {
 							.getColumnIndex("Interest_rate")));
 					bole.setStartDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date"))));
+									.getColumnIndex("Start_date")).trim()));
 					bole.setExpiredDate(Converter.convertDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date"))));
+									.getColumnIndex("Expired_date")).trim()));
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData

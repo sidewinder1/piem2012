@@ -63,16 +63,15 @@ public class Converter {
 	
 	public static Date convertDate(String dateConvert)
 	{
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");		
-		    Date convertedDate;
-		    try {
-		        convertedDate = dateFormat.parse(dateConvert);
-		        Log.i("SocialFeedLatestBuzz", "convertedDate =  " + convertedDate);
-		    } catch (ParseException e) {
-		        e.printStackTrace();
-		        return null;
-		    }		
-		    return convertedDate;
- 
+		SimpleDateFormat curFormater = new SimpleDateFormat("dd/MM/yyyy");
+		Date dateObj = new Date();
+		try {
+			 dateObj = curFormater.parse(dateConvert);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		
+		return dateObj;
 	}
 }

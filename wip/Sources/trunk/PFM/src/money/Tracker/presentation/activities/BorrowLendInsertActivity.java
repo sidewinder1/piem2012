@@ -102,12 +102,10 @@ public class BorrowLendInsertActivity extends Activity {
 									moneyEditText.getText().toString(),
 									"'" + interestTypeString + "'",
 									interestRate.getText().toString(),
-									"'"
-											+ startDateEditText.getText()
-													.toString() + "'",
-									"'"
-											+ expiredDateEditText.getText()
-													.toString() + "'",
+									startDateEditText.getText()
+													.toString().trim(),
+									expiredDateEditText.getText()
+													.toString().trim(),
 									"'" + nameEditText.getText().toString()
 											+ "'",
 									"'" + phoneEditText.getText().toString()
