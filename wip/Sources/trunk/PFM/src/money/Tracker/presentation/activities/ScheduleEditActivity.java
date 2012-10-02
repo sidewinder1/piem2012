@@ -9,9 +9,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
@@ -43,19 +43,19 @@ public class ScheduleEditActivity extends Activity {
 		setContentView(R.layout.schedule_edit);
 		// new ScheduleRepository();
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
-		total_budget.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// TODO Auto-generated method stub
-				if (total_budget.getText().toString() != "") {
-					// for (ScheduleLivingCost item : array)
-					{
-						// double value = item.getCategory();
-					}
-				}
-				return false;
+		total_budget.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			public void afterTextChanged(Editable s) {
+				livingCostAdapter.updateHint();
 			}
 		});
-
+		
 		startDateEdit = (EditText) findViewById(R.id.schedule_start_date);
 		startDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -102,11 +102,30 @@ public class ScheduleEditActivity extends Activity {
 	public double getTotalBudget()
 	{
 		String budget_value = total_budget.getText().toString();
-		if (budget_value == "")
+		if ("".equals(budget_value))
 		{
-			budget_value = "0";
+			budget_value = total_budget.getHint().toString();
+			
+			if ("".equals(budget_value))
+			{
+				budget_value = "0";
+			}
 		}
+		
 		return Double.parseDouble(budget_value);
+	}
+	
+	public void updateTotalBudget()
+	{
+		if ("".equals(total_budget.getText().toString()))
+		{
+			double total = 0;
+			for (DetailSchedule detail : array)
+			{
+				total += detail.getBudget();
+			}
+			total_budget.setHint(String.valueOf(total));
+		}
 	}
 	
 	public void doneBtnClicked(View v) {

@@ -59,7 +59,7 @@ public class CategoryRepository {
 			}
 		}
 		
-		return "#FFFFFFFF";
+		return "#FF000000";
 	}
 	
 	public static CategoryRepository getInstance() {
