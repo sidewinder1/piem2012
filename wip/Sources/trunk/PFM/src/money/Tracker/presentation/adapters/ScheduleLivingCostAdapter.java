@@ -2,17 +2,22 @@ package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.database.Cursor;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.EditText;
+import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.customviews.*;
+import money.Tracker.presentation.model.Category;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.repository.CategoryRepository;
 
@@ -29,7 +34,8 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 		// Create an ArrayAdapter using the string array and a default
 		// spinner layout
 		categoryAdapter = new CategoryAdapter(getContext(),
-				R.layout.dropdown_list_item, CategoryRepository.getInstance().categories);
+				R.layout.dropdown_list_item,
+				CategoryRepository.getInstance().categories);
 
 		categoryAdapter.notifyDataSetChanged();
 	}
@@ -62,6 +68,21 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 			category.setAdapter(categoryAdapter);
 			category.setSelection(livingCost.getCategory());
 
+			category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int pos, long id) {
+					Category item = (Category) parent.getItemAtPosition(pos);
+					if (item != null) {
+						parent.setTag(item.getId());
+					}
+				}
+
+				public void onNothingSelected(AdapterView<?> arg0) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
 			budget.setOnKeyListener(new OnKeyListener() {
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
 					// TODO Auto-generated method stub
@@ -91,10 +112,12 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					}
 
 					livingCost.setBudget(Double.parseDouble(value));
-					livingCost.setCategory(category.getSelectedItemPosition());
-					category.setSelection(livingCost.getCategory());
+					livingCost.setCategory(Integer.parseInt(String.valueOf(category.getTag())));
+					
+					// category.setSelection(livingCost.getCategory());
+
 					array.add(Integer.parseInt(((Button) v).getTag() + "") + 1,
-							new DetailSchedule(0, 200));
+							new DetailSchedule(0, 2000));
 					notifyDataSetChanged();
 
 				}
