@@ -75,7 +75,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					if (item != null) {
 						parent.setTag(item.getId());
 					}
-				}
+  				}
 
 				public void onNothingSelected(AdapterView<?> arg0) {
 					// TODO Auto-generated method stub

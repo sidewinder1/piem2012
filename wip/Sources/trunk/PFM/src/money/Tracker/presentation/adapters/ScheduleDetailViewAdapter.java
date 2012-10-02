@@ -6,7 +6,9 @@ import money.Tracker.presentation.customviews.ScheduleDetailViewItem;
 import money.Tracker.presentation.customviews.ScheduleViewItem;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.Schedule;
+import money.Tracker.repository.CategoryRepository;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,13 +32,19 @@ public class ScheduleDetailViewAdapter extends ArrayAdapter<DetailSchedule> {
 			scheduleItemView = new ScheduleDetailViewItem(getContext());
 		}
 
-		final DetailSchedule scheduleDetail = (DetailSchedule) array.get(position);
+		final DetailSchedule scheduleDetail = (DetailSchedule) array
+				.get(position);
 
 		if (scheduleDetail != null) {
-			scheduleItemView.budget.setText(String.valueOf(scheduleDetail.getBudget()));
-			scheduleItemView.title.setText(String.valueOf(scheduleDetail.getCategory()));
+			scheduleItemView.budget.setText(String.valueOf(scheduleDetail
+					.getBudget()));
+			scheduleItemView.title.setText(CategoryRepository.getInstance()
+					.getName((scheduleDetail.getCategory())));
+			scheduleItemView.setBackgroundColor(Color
+					.parseColor(CategoryRepository.getInstance().getColor(
+							scheduleDetail.getCategory())));
 		}
-		
+
 		return scheduleItemView;
 	}
 }
