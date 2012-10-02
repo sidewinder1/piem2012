@@ -37,7 +37,7 @@ public class ScheduleDetailViewActivity extends Activity {
 					Converter.toDate(schedule.getString(2)), format))
 					.append("-")
 					.append(Converter.toString(
-							Converter.toDate(schedule.getString(2)), format))
+							Converter.toDate(schedule.getString(3)), format))
 					.toString());
 
 			TextView budget_value = (TextView) findViewById(R.id.schedule_detail_budget_value);
