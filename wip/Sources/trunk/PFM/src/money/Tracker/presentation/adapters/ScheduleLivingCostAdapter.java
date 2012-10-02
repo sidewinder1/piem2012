@@ -3,6 +3,8 @@ package money.Tracker.presentation.adapters;
 import java.util.ArrayList;
 import android.content.Context;
 import android.database.Cursor;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.EditText;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.CustomTextWatcher;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.activities.ScheduleEditActivity;
 import money.Tracker.presentation.customviews.*;
@@ -25,7 +28,8 @@ import money.Tracker.repository.CategoryRepository;
 public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 	private ArrayList<DetailSchedule> array;
 	private CategoryAdapter categoryAdapter;
-
+	private int lastPosition;
+	private EditText lastBudget;
 	public ScheduleLivingCostAdapter(Context context, int resource,
 			ArrayList<DetailSchedule> objects) {
 		super(context, resource, objects);
@@ -40,7 +44,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 		categoryAdapter.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ScheduleItem scheduleItemView = (ScheduleItem) convertView;
@@ -62,39 +66,46 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 			// Set tag to create a sign for adding later.
 			addButton.setTag(position);
-
-			budget.setHint(String.valueOf(livingCost.getBudget()));
+			
+			if ("".equals(budget.getText().toString())) {
+				budget.setHint(String.valueOf(livingCost.getBudget()));
+			}
+			
 			budget.setTag(position);
+			
+			if (position == lastPosition)
+			{
+				lastBudget = budget;
+			}
+			
 			// Apply the adapter to the spinner
 			category.setAdapter(categoryAdapter);
 			category.setSelection(livingCost.getCategory());
-
+			category.setTag(position);
 			category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int pos, long id) {
 					Category item = (Category) parent.getItemAtPosition(pos);
 					if (item != null) {
-						parent.setTag(item.getId());
+						DetailSchedule detail = array.get(Integer.parseInt(String.valueOf(parent.getTag())));
+						detail.setCategory(item.getId());
 					}
 				}
 
 				public void onNothingSelected(AdapterView<?> arg0) {
-					// TODO Auto-generated method stub
-
 				}
 			});
 
-			budget.setOnKeyListener(new OnKeyListener() {
-				public boolean onKey(View v, int keyCode, KeyEvent event) {
-					// TODO Auto-generated method stub
-					if (((EditText) v).getText() + "" != "") {
+			budget.addTextChangedListener(new CustomTextWatcher(budget) {
+				public void afterTextChanged(Editable s) {
+					if (s + "" != "") {
 						DetailSchedule item = array.get(Integer.parseInt(String
-								.valueOf(v.getTag())));
+								.valueOf(mEditText.getTag())));
 						item.setBudget(Double.parseDouble(String
-								.valueOf(((EditText) v).getText())));
+								.valueOf(s)));
+						
+						((ScheduleEditActivity)getContext()).updateTotalBudget();
 					}
-
-					return false;
 				}
 			});
 
@@ -114,16 +125,15 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 					int selectedIndex = Integer.parseInt(((Button) v).getTag()
 							+ "");
+					lastPosition = selectedIndex + 1;
+
 					DetailSchedule detailSchedule = array.get(selectedIndex);
 					if (detailSchedule != null) {
 						detailSchedule.setBudget(Double.parseDouble(value));
-						detailSchedule.setCategory(Integer.parseInt(String
-								.valueOf(category.getTag())));
 					}
-					
-					// category.setSelection(livingCost.getCategory());
 
-					array.add(selectedIndex + 1, new DetailSchedule(0, getNextHint()));
+					array.add(selectedIndex + 1, new DetailSchedule(0,
+							getNextHint()));
 					notifyDataSetChanged();
 
 				}
@@ -141,15 +151,20 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 		return scheduleItemView;
 	}
-	 
-	public double getNextHint()
-	{
-		double total = ((ScheduleEditActivity)getContext()).getTotalBudget();
-		for (DetailSchedule item : array)
+
+	public void updateHint() {
+		if ("".equals(lastBudget.getText().toString()))
 		{
+			lastBudget.setHint(String.valueOf(getNextHint()));
+		}
+	}
+
+	public double getNextHint() {
+		double total = ((ScheduleEditActivity) getContext()).getTotalBudget();
+		for (DetailSchedule item : array) {
 			total -= item.getBudget();
 		}
-		
+
 		return total;
 	}
 }
