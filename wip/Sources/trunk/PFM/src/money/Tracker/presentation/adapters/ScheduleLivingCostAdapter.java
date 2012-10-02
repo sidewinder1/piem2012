@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.EditText;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.activities.R;
+import money.Tracker.presentation.activities.ScheduleEditActivity;
 import money.Tracker.presentation.customviews.*;
 import money.Tracker.presentation.model.Category;
 import money.Tracker.presentation.model.DetailSchedule;
@@ -39,7 +40,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 		categoryAdapter.notifyDataSetChanged();
 	}
-
+	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ScheduleItem scheduleItemView = (ScheduleItem) convertView;
@@ -75,7 +76,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					if (item != null) {
 						parent.setTag(item.getId());
 					}
-  				}
+				}
 
 				public void onNothingSelected(AdapterView<?> arg0) {
 					// TODO Auto-generated method stub
@@ -111,13 +112,18 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 						value = "0";
 					}
 
-					livingCost.setBudget(Double.parseDouble(value));
-					livingCost.setCategory(Integer.parseInt(String.valueOf(category.getTag())));
+					int selectedIndex = Integer.parseInt(((Button) v).getTag()
+							+ "");
+					DetailSchedule detailSchedule = array.get(selectedIndex);
+					if (detailSchedule != null) {
+						detailSchedule.setBudget(Double.parseDouble(value));
+						detailSchedule.setCategory(Integer.parseInt(String
+								.valueOf(category.getTag())));
+					}
 					
 					// category.setSelection(livingCost.getCategory());
 
-					array.add(Integer.parseInt(((Button) v).getTag() + "") + 1,
-							new DetailSchedule(0, 2000));
+					array.add(selectedIndex + 1, new DetailSchedule(0, getNextHint()));
 					notifyDataSetChanged();
 
 				}
@@ -134,5 +140,16 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 		}
 
 		return scheduleItemView;
+	}
+	 
+	public double getNextHint()
+	{
+		double total = ((ScheduleEditActivity)getContext()).getTotalBudget();
+		for (DetailSchedule item : array)
+		{
+			total -= item.getBudget();
+		}
+		
+		return total;
 	}
 }

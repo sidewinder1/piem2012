@@ -3,9 +3,7 @@ package money.Tracker.presentation.adapters;
 import java.util.ArrayList;
 
 import money.Tracker.presentation.customviews.ScheduleDetailViewItem;
-import money.Tracker.presentation.customviews.ScheduleViewItem;
 import money.Tracker.presentation.model.DetailSchedule;
-import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.CategoryRepository;
 import android.content.Context;
 import android.graphics.Color;
