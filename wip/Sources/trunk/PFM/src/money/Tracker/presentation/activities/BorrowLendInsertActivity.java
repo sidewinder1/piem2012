@@ -31,7 +31,7 @@ public class BorrowLendInsertActivity extends Activity {
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
 
-	//@SuppressWarnings("deprecation")
+	// @SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,35 +51,33 @@ public class BorrowLendInsertActivity extends Activity {
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
 		final Spinner getContact = (Spinner) findViewById(R.id.borrowLendPhoneContact);
 		new BorrowLendRepository();
-		Log.d("Insert", "Check 1");
 
 		// Get contact to spinner
-//		final Cursor cusorSpinner = managedQuery(Contacts.People.CONTENT_URI,
-//				null, null, null, null);
-//		if (cusorSpinner.getCount() > 0) {
-//			while (cusorSpinner.moveToNext()) {
-//				// get name
-//				String username = cusorSpinner.getString(cusorSpinner
-//						.getColumnIndex(Contacts.People.NAME));
-//				if (username != null)
-//					Log.i("Contact name ", username);
-//				// get phone
-//				String phone = cusorSpinner.getString(cusorSpinner
-//						.getColumnIndex(Contacts.People.NUMBER));
-//				if (phone != null)
-//					Log.i("Contact name ", phone);
-//			}
-//		}
+		// final Cursor cusorSpinner = managedQuery(Contacts.People.CONTENT_URI,
+		// null, null, null, null);
+		// if (cusorSpinner.getCount() > 0) {
+		// while (cusorSpinner.moveToNext()) {
+		// // get name
+		// String username = cusorSpinner.getString(cusorSpinner
+		// .getColumnIndex(Contacts.People.NAME));
+		// if (username != null)
+		// Log.i("Contact name ", username);
+		// // get phone
+		// String phone = cusorSpinner.getString(cusorSpinner
+		// .getColumnIndex(Contacts.People.NUMBER));
+		// if (phone != null)
+		// Log.i("Contact name ", phone);
+		// }
+		// }
 
 		// Hand on Contact spinner
-//		getContact.setOnClickListener(new View.OnClickListener() {
-//
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
-		Log.d("Insert", "Check 2");
+		// getContact.setOnClickListener(new View.OnClickListener() {
+		//
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
 		// Hand on Save button
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -116,15 +114,8 @@ public class BorrowLendInsertActivity extends Activity {
 											+ "'",
 									"'" + addressEditText.getText().toString()
 											+ "'" });
-					if (check != -1) {
-						Log.d("Insert", "OK");
-					} else {
-						Log.d("Insert", "Chay sao duoc");
-					}
-
-					setResult(100);
-					Log.d("Insert", "Check 1");
-					BorrowLendInsertActivity.this.finish();
+					Log.d("Insert", startDateEditText.getText().toString());
+					Log.d("Insert", expiredDateEditText.getText().toString());
 				} else {
 					SqlHelper.instance.insert("Lending", new String[] {
 							"Money", "Interest_type", "Interest_rate",
@@ -201,16 +192,15 @@ public class BorrowLendInsertActivity extends Activity {
 
 	// updates the date in the TextView
 	private void updateDisplayStartDate() {
-		startDateEditText
-				.setText(new StringBuilder().append(mMonth + 1).append("-")
-						.append(mDay).append("-").append(mYear).append(" "));
+		startDateEditText.setText(new StringBuilder().append(mDay).append("/")
+				.append(mMonth + 1).append("/").append(mYear).append(" "));
 	}
 
 	// updates the date in the TextView
 	private void updateDisplayExpiredDate() {
-		expiredDateEditText
-				.setText(new StringBuilder().append(mMonth + 1).append("-")
-						.append(mDay).append("-").append(mYear).append(" "));
+		expiredDateEditText.setText(new StringBuilder().append(mDay)
+				.append("/").append(mMonth + 1).append("/").append(mYear)
+				.append(" "));
 	}
 
 	// the callback received when the user "sets" the date in the dialog

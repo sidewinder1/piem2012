@@ -1,12 +1,15 @@
 package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.customviews.BorrowLendViewItemActivity;
 import money.Tracker.presentation.model.BorrowLend;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +52,9 @@ public class BorrowLendAdapter extends BaseAdapter {
 		
 		borrowLendViewItem.personNameTextView.setText(entry.getPersonName());
 		borrowLendViewItem.moneyTextView.setText(String.valueOf(entry.getMoney()));
-		borrowLendViewItem.startDateTextView.setText(String.valueOf(entry.getStartDate()));
-		borrowLendViewItem.expiredDateTextView.setText(String.valueOf(entry.getExpiredDate()));
+		borrowLendViewItem.startDateTextView.setText(String.valueOf(Converter.convertDate(entry.getStartDate())));
+		borrowLendViewItem.expiredDateTextView.setText(String.valueOf(Converter.convertDate(entry.getExpiredDate())));
 		
 		return borrowLendViewItem;
 	}
-
 }

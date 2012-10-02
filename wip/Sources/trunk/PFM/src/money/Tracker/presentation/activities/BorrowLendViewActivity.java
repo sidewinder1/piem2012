@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 public class BorrowLendViewActivity extends Activity {
 	private TextView displayText;
-	private ListView list;
+	private ListView borrowLendList;
 	private BorrowLendAdapter borrowLendAdapter;
 
 	boolean checkBorrowing;
@@ -34,10 +34,29 @@ public class BorrowLendViewActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		checkBorrowing = extras.getBoolean("Borrow");
 		// displayText = (TextView) findViewById(R.id.no_borrow_lend_data);
-		list = (ListView) findViewById(R.id.borrow_lend_list_view);
-		list.setOnItemClickListener(onListClick);			
+		borrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
 		bindData();
+		Log.d("On Click Item", "Check 1");
+		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> listView, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				Log.d("On Click Item", "Check 3");
+				BorrowLend borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);
+				Log.d("On Click Item", "Check 4");
+				if (borrowLend != null)
+				{
+					Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
+					borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
+					borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
+					startActivity(borrowLendDetail);
+				}
+				Log.d("On Click Item", "Check 5");
+			}
+		});
+		Log.d("On Click Item", "Check 2");
 	}
+
 
 	@Override
 	protected void onRestart() {
@@ -65,28 +84,9 @@ public class BorrowLendViewActivity extends Activity {
 		borrowLendAdapter = new BorrowLendAdapter(this, values);
 		borrowLendAdapter.notifyDataSetChanged();
 
-		list.setAdapter(borrowLendAdapter);
+		borrowLendList.setAdapter(borrowLendAdapter);
 	}
 	
-	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
-		public void onItemClick(AdapterView<?> listView, View view, int position,
-				long id) {
-			// TODO Auto-generated method stub
-			BorrowLend borrowLend = (BorrowLend)list.getAdapter().getItem(position);
-			Log.d("BLV", "Check 1");
-			if (borrowLend != null)
-			{
-				Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
-				Log.d("BLV", "Check 2");
-				borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
-				Log.d("BLV", "Check 3");
-				borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
-				Log.d("BLV", "Check 4");
-				startActivity(borrowLendDetail);
-			}
-		}
-	};
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_borrow_lend_view, menu);

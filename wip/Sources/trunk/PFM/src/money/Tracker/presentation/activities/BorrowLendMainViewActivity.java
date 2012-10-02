@@ -23,17 +23,13 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		
 		// Create tab and intent for schedule.
 		Intent borrowViewIntent = new Intent(this, BorrowLendViewActivity.class);
-		Log.d("BLMV", "Check 1");
 		borrowViewIntent.putExtra("Borrow", true);
-		Log.d("BLMV", "Check 2");
 		setupTab(borrowViewIntent, "Borrow", mTabHost);
-		Log.d("BLMV", "Create tab ok");
 		
 		// Create tab and intent for Borrowing and Lending.
 		Intent lendViewIntent = new Intent(this, BorrowLendViewActivity.class);
 		lendViewIntent.putExtra("Borrow", false);
-		setupTab(lendViewIntent, "Lend", mTabHost);
-		Log.d("BLMV", "Create tab 2 ok");
+		setupTab(lendViewIntent, "Lend", mTabHost);		
 		
 		Button addBorrowLend = (Button) findViewById(R.id.addBorrowAndLend);
 		

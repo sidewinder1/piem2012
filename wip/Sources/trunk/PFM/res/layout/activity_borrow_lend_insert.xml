@@ -190,6 +190,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:ems="10"
+            android:editable="false"
+            android:focusable="false"
             android:inputType="date" >
 
             <requestFocus />
@@ -216,6 +218,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:editable="false"
+            android:focusable="false"
             android:inputType="date" />
     </LinearLayout>
 
