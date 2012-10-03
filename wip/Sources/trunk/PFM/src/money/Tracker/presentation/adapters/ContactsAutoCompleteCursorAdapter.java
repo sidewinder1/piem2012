@@ -34,11 +34,9 @@ public class ContactsAutoCompleteCursorAdapter extends CursorAdapter implements
 	@Override 
 	public void bindView(View view, Context context, Cursor cursor) 
 	{
-		int nameIdx = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-		int typeIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+		int nameIdx = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);		
 		int numberIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-		String name = cursor.getString(nameIdx);     
-		int type = cursor.getInt(typeIdx);     
+		String name = cursor.getString(nameIdx);     		
 		String number = cursor.getString(numberIdx);      
 		
 		mName = (TextView) view.findViewById(R.id.name);     
@@ -66,7 +64,7 @@ public class ContactsAutoCompleteCursorAdapter extends CursorAdapter implements
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone._ID,
 				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-				ContactsContract.CommonDataKinds.Phone.TYPE,
+				//ContactsContract.CommonDataKinds.Phone.C,
 				ContactsContract.CommonDataKinds.Phone.NUMBER };
 		return mContent.query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
