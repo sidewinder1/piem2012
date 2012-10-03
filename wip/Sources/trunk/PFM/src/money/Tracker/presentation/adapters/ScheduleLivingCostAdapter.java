@@ -25,13 +25,14 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 	private CategoryAdapter categoryAdapter;
 	private int lastPosition;
 	private EditText lastBudget;
+	private boolean editMode;
 
 	public ScheduleLivingCostAdapter(Context context, int resource,
-			ArrayList<DetailSchedule> objects) {
+			ArrayList<DetailSchedule> objects, boolean editMode) {
 		super(context, resource, objects);
 		// TODO Auto-generated constructor stub
 		this.array = objects;
-
+		this.editMode = editMode;
 		// Create an ArrayAdapter using the string array and a default
 		// spinner layout
 		categoryAdapter = new CategoryAdapter(getContext(),
@@ -62,11 +63,13 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 			// Set tag to create a sign for adding later.
 			addButton.setTag(position);
-
-			if ("".equals(budget.getText().toString())) {
-				budget.setHint(String.valueOf(livingCost.getBudget()));
+			if (editMode) {
+				budget.setText(String.valueOf(livingCost.getBudget()));
+			} else {
+				if ("".equals(budget.getText().toString())) {
+					budget.setHint(String.valueOf(livingCost.getBudget()));
+				}
 			}
-
 			budget.setTag(position);
 
 			if (position == lastPosition) {
@@ -91,14 +94,14 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 			budget.addTextChangedListener(new CustomTextWatcher(budget) {
 				public void afterTextChanged(Editable s) {
+					if (editMode){return;}
 					if (s + "" != "") {
 						DetailSchedule item = array.get(Integer.parseInt(String
 								.valueOf(mEditText.getTag())));
 						item.setBudget(Double.parseDouble(String.valueOf(s)));
 
 						if (!((ScheduleEditActivity) getContext())
-								.updateTotalBudget())
-						{
+								.updateTotalBudget()) {
 							mEditText.setText(s.subSequence(0, s.length() - 1));
 						}
 					}
@@ -129,15 +132,14 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					}
 
 					// Check before create new item.
-					for (DetailSchedule detail : array)
-					{
-						if (detail.getBudget() == 0)
-						{
-							Toast.makeText(getContext(), "A slot is empty!", Toast.LENGTH_SHORT).show();
+					for (DetailSchedule detail : array) {
+						if (detail.getBudget() == 0) {
+							Toast.makeText(getContext(), "A slot is empty!",
+									Toast.LENGTH_SHORT).show();
 							return;
 						}
 					}
-					
+
 					// Create new item.
 					array.add(selectedIndex + 1, new DetailSchedule(0,
 							getNextHint()));
