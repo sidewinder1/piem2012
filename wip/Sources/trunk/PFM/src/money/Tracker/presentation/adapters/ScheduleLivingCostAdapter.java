@@ -2,21 +2,16 @@ package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
 import android.content.Context;
-import android.database.Cursor;
 import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.EditText;
-import money.Tracker.common.sql.SqlHelper;
+import android.widget.Toast;
 import money.Tracker.common.utilities.CustomTextWatcher;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.activities.ScheduleEditActivity;
@@ -30,6 +25,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 	private CategoryAdapter categoryAdapter;
 	private int lastPosition;
 	private EditText lastBudget;
+
 	public ScheduleLivingCostAdapter(Context context, int resource,
 			ArrayList<DetailSchedule> objects) {
 		super(context, resource, objects);
@@ -50,7 +46,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 		ScheduleItem scheduleItemView = (ScheduleItem) convertView;
 
 		if (scheduleItemView == null) {
-			scheduleItemView = new ScheduleItem(getContext());
+			scheduleItemView = new ScheduleItem(getContext(), categoryAdapter);
 		}
 
 		final DetailSchedule livingCost = array.get(position);
@@ -66,28 +62,25 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 			// Set tag to create a sign for adding later.
 			addButton.setTag(position);
-			
+
 			if ("".equals(budget.getText().toString())) {
 				budget.setHint(String.valueOf(livingCost.getBudget()));
 			}
-			
+
 			budget.setTag(position);
-			
-			if (position == lastPosition)
-			{
+
+			if (position == lastPosition) {
 				lastBudget = budget;
 			}
-			
-			// Apply the adapter to the spinner
-			category.setAdapter(categoryAdapter);
-			category.setSelection(livingCost.getCategory());
+
 			category.setTag(position);
 			category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int pos, long id) {
 					Category item = (Category) parent.getItemAtPosition(pos);
 					if (item != null) {
-						DetailSchedule detail = array.get(Integer.parseInt(String.valueOf(parent.getTag())));
+						DetailSchedule detail = array.get(Integer
+								.parseInt(String.valueOf(parent.getTag())));
 						detail.setCategory(item.getId());
 					}
 				}
@@ -101,10 +94,13 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					if (s + "" != "") {
 						DetailSchedule item = array.get(Integer.parseInt(String
 								.valueOf(mEditText.getTag())));
-						item.setBudget(Double.parseDouble(String
-								.valueOf(s)));
-						
-						((ScheduleEditActivity)getContext()).updateTotalBudget();
+						item.setBudget(Double.parseDouble(String.valueOf(s)));
+
+						if (!((ScheduleEditActivity) getContext())
+								.updateTotalBudget())
+						{
+							mEditText.setText(s.subSequence(0, s.length() - 1));
+						}
 					}
 				}
 			});
@@ -112,7 +108,6 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 			// Add new schedule item.
 			addButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					String value = budget.getText().toString();
 
 					if (value + "" == "") {
@@ -127,15 +122,26 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 							+ "");
 					lastPosition = selectedIndex + 1;
 
+					// Save value from view to model;
 					DetailSchedule detailSchedule = array.get(selectedIndex);
 					if (detailSchedule != null) {
 						detailSchedule.setBudget(Double.parseDouble(value));
 					}
 
+					// Check before create new item.
+					for (DetailSchedule detail : array)
+					{
+						if (detail.getBudget() == 0)
+						{
+							Toast.makeText(getContext(), "A slot is empty!", Toast.LENGTH_SHORT).show();
+							return;
+						}
+					}
+					
+					// Create new item.
 					array.add(selectedIndex + 1, new DetailSchedule(0,
 							getNextHint()));
 					notifyDataSetChanged();
-
 				}
 			});
 
@@ -153,8 +159,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 	}
 
 	public void updateHint() {
-		if ("".equals(lastBudget.getText().toString()))
-		{
+		if ("".equals(lastBudget.getText().toString())) {
 			lastBudget.setHint(String.valueOf(getNextHint()));
 		}
 	}

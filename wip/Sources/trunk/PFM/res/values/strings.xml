@@ -21,7 +21,9 @@
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
     <string name="title_activity_lend_view">LendViewActivity</string>
     <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
-<string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
+    <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
+    <string name="schedule_menu_title">Menu</string>
+
     <string-array name="schedule_categories">
         <item>Food</item>
         <item>Shopping</item>
@@ -30,8 +32,12 @@
         <item>Others</item>
     </string-array>
     <string-array name="currency_symbol">
-        <item>₫</item>
-        <item>$</item>
+        <item>VND</item>
+        <item>USD</item>
+    </string-array>
+    <string-array name="schedule_context_menu_item">
+        <item>Edit</item>
+        <item>Delete</item>
     </string-array>
 
     <color name="white_text_color">#F9FFFFFF</color>

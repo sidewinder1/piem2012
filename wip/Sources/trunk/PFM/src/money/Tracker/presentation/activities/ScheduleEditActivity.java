@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
@@ -24,6 +26,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
 import money.Tracker.presentation.model.DetailSchedule;
+import money.Tracker.repository.DetailScheduleRepository;
 
 public class ScheduleEditActivity extends Activity {
 	private int mYear;
@@ -36,26 +39,31 @@ public class ScheduleEditActivity extends Activity {
 	private ArrayList<DetailSchedule> array;
 	private ScheduleLivingCostAdapter livingCostAdapter;
 	private EditText total_budget;
+	private int passed_schedule_id = -1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_edit);
 		// new ScheduleRepository();
+		Bundle extras = getIntent().getExtras();
+		passed_schedule_id = extras.getInt("schedule_id");
+
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
 		total_budget.addTextChangedListener(new TextWatcher() {
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 			}
-			
+
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 			}
-			
+
 			public void afterTextChanged(Editable s) {
 				livingCostAdapter.updateHint();
 			}
 		});
-		
+
 		startDateEdit = (EditText) findViewById(R.id.schedule_start_date);
 		startDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -90,51 +98,66 @@ public class ScheduleEditActivity extends Activity {
 		if (initialValue + "" == "") {
 			initialValue = "0";
 		}
-
-		array.add(new DetailSchedule(0, Double.parseDouble(initialValue)));
+		if (passed_schedule_id == -1) {
+			array.add(new DetailSchedule(0, Double.parseDouble(initialValue)));
+		} else {
+			array = DetailScheduleRepository.getInstance().getData(
+					"Schedule_Id = " + passed_schedule_id);
+		}
+		
 		livingCostAdapter.notifyDataSetChanged();
 
 		final ListView list = (ListView) findViewById(R.id.schedule_item_list);
 		list.setAdapter(livingCostAdapter);
 
+		Spinner currency = (Spinner) findViewById(R.id.currency_symbol);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				this, R.array.currency_symbol, R.layout.spinner_dropdown);
+
+		adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+
+		currency.setAdapter(adapter);
 	}
 
-	public double getTotalBudget()
-	{
+	public double getTotalBudget() {
 		String budget_value = total_budget.getText().toString();
-		if ("".equals(budget_value))
-		{
+		if ("".equals(budget_value)) {
 			budget_value = total_budget.getHint().toString();
-			
-			if ("".equals(budget_value))
-			{
+
+			if ("".equals(budget_value) || budget_value.contains(" ")) {
 				budget_value = "0";
 			}
 		}
-		
+
 		return Double.parseDouble(budget_value);
 	}
-	
-	public void updateTotalBudget()
-	{
-		if ("".equals(total_budget.getText().toString()))
-		{
-			double total = 0;
-			for (DetailSchedule detail : array)
-			{
-				total += detail.getBudget();
-			}
-			total_budget.setHint(String.valueOf(total));
+
+	public boolean updateTotalBudget() {
+		double total = 0;
+
+		for (DetailSchedule detail : array) {
+			total += detail.getBudget();
 		}
+
+		if ("".equals(total_budget.getText().toString())) {
+			total_budget.setHint(String.valueOf(total));
+		} else {
+			if (Double.parseDouble(total_budget.getText().toString()) < total) {
+				Toast.makeText(this, "Over budget!", Toast.LENGTH_SHORT).show();
+				return false;
+			}
+		}
+
+		return true;
 	}
-	
+
 	public void doneBtnClicked(View v) {
 		Cursor scheduleCursor = SqlHelper.instance.select(
 				"Schedule",
 				"End_date",
 				"End_date = '"
 						+ Converter.toString(Converter.toDate(endDateEdit
-								.getText().toString(), "MMMM dd, yyyy"))+"'");
+								.getText().toString(), "MMMM dd, yyyy")) + "'");
 		if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
 			Toast.makeText(this, "A schedule for this time is existing!",
 					Toast.LENGTH_SHORT).show();
@@ -156,7 +179,8 @@ public class ScheduleEditActivity extends Activity {
 				SqlHelper.instance.insert("ScheduleDetail", new String[] {
 						"Budget", "Category_id", "Schedule_id" },
 						new String[] { String.valueOf(detailItem.getBudget()),
-								String.valueOf(detailItem.getCategory()), String.valueOf(newScheduleId) });
+								String.valueOf(detailItem.getCategory()),
+								String.valueOf(newScheduleId) });
 			}
 
 			Toast.makeText(this, "Save sucessfully", Toast.LENGTH_SHORT).show();
