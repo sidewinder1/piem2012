@@ -49,7 +49,7 @@ public class ScheduleViewAdapter extends ArrayAdapter<Object> {
 			{
 				View stackItem = new View(getContext());
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					    LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, Float.parseFloat(schedule.budget + ""));
+					    0, LayoutParams.FILL_PARENT, Float.parseFloat(schedule.details.get(i).getBudget() + ""));
 				Cursor categoryCursor = SqlHelper.instance.select("Category", "Id, User_Color",  "Id = " + schedule.details.get(i).getCategory());
 				
 				if (categoryCursor!=null && categoryCursor.moveToFirst())

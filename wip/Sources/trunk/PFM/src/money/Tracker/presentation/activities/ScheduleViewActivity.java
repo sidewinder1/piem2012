@@ -1,6 +1,8 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.model.Schedule;
@@ -117,7 +119,8 @@ public class ScheduleViewActivity extends Activity {
 			list.setVisibility(View.GONE);
 			return;
 		}
-		
+
+		sort();
 		list.setVisibility(View.VISIBLE);
 		displayText.setVisibility(View.GONE);
 		chart_legend.setVisibility(View.VISIBLE);
@@ -127,5 +130,22 @@ public class ScheduleViewActivity extends Activity {
 		scheduleAdapter.notifyDataSetChanged();
 
 		list.setAdapter(scheduleAdapter);
+	}
+
+	private void sort() {
+		int i, j;
+		int length = values.size();
+		Schedule t = new Schedule();
+		for (i = 0; i < length; i++) {
+			for (j = 1; j < (length - i); j++) {
+				if (((Schedule)values.get(j - 1)).end_date.compareTo(((Schedule)values.get(j)).end_date) < 0) 
+				{
+					t.setValue((Schedule)values.get(j - 1));
+					((Schedule)values.get(j - 1)).setValue((Schedule) values.get(j));
+					((Schedule)values.get(j)).setValue(t);
+				}
+			}
+		}
+
 	}
 }
