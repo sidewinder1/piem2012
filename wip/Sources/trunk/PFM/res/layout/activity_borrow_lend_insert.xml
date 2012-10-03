@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@drawable/app_background">
-    
+    android:background="@drawable/app_background"
+    android:orientation="vertical" >
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="40dp"
@@ -15,17 +15,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
+            android:text="New Borrow"
             android:textColor="@android:color/white"
-            android:textSize="30dp"
-            android:text="New Borrow" />
+            android:textSize="30dp" />
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="25dp"
-            android:layout_marginTop="5dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
-            android:background="@drawable/save_button"/>
+            android:layout_marginTop="5dp"
+            android:background="@drawable/save_button" />
 
         <Button
             android:id="@+id/cancelButton"
@@ -35,22 +35,20 @@
             android:layout_marginRight="14dp"
             android:layout_toLeftOf="@+id/saveButton"
             android:background="@drawable/cancel_icon" />
-
     </RelativeLayout>
-    
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:textColor="@android:color/white"
-            android:text="Debt Type" />
+            android:text="Debt Type"
+            android:textColor="@android:color/white" />
 
         <ToggleButton
             android:id="@+id/borrowLendType"
@@ -63,36 +61,16 @@
             android:textOff="Lending"
             android:textOn="Borrowing"
             android:textSize="12dp" />
-
     </LinearLayout>
-	
-    <LinearLayout
+
+    <AutoCompleteTextView
+        android:id="@+id/name_edit_text"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:hint="Name"
+        android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/name_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="0.84"
-            android:hint="Name"
-            android:inputType="text" />
-
-        <Spinner
-            android:id="@+id/borrowLendPhoneContact"
-            android:layout_width="50dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:checked="true"
-            android:paddingBottom="-20dp"
-            android:text="Contact"
-            android:textSize="8dp" />
-    </LinearLayout>
-	
     <EditText
         android:id="@+id/phone_edit_text"
         android:layout_width="fill_parent"
@@ -110,7 +88,7 @@
         android:layout_marginRight="5dp"
         android:hint="Adress"
         android:inputType="text" />
-	
+
     <EditText
         android:id="@+id/money_edit_text"
         android:layout_width="fill_parent"
@@ -119,19 +97,19 @@
         android:layout_marginRight="5dp"
         android:hint="Money"
         android:inputType="number" />
-    
+
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:textColor="@android:color/white"
-            android:text="Interest Type" />
+            android:text="Interest Type"
+            android:textColor="@android:color/white" />
 
         <ToggleButton
             android:id="@+id/interestType"
@@ -144,21 +122,20 @@
             android:textOff="Compound interest"
             android:textOn="Simple"
             android:textSize="12dp" />
-
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:textColor="@android:color/white"
-            android:text="Interest Rate" />
+            android:text="Interest Rate"
+            android:textColor="@android:color/white" />
 
         <EditText
             android:id="@+id/interest_rate_edit_text"
@@ -169,19 +146,19 @@
             android:hint="                                  %"
             android:inputType="number" />
     </LinearLayout>
-    
+
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:textColor="@android:color/white"
-            android:text="Start Date   " />
+            android:text="Start Date   "
+            android:textColor="@android:color/white" />
 
         <EditText
             android:id="@+id/start_date_edit_text"
@@ -189,28 +166,26 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:ems="10"
             android:editable="false"
-            android:focusable="false"
+            android:ems="10"
             android:inputType="date" >
 
             <requestFocus />
         </EditText>
-
     </LinearLayout>
-    
+
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content">
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:textColor="@android:color/white"
-            android:text="Expired Date " />
+            android:text="Expired Date "
+            android:textColor="@android:color/white" />
 
         <EditText
             android:id="@+id/expired_date_edit_text"

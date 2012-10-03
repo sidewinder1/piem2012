@@ -1,12 +1,16 @@
 package money.Tracker.presentation.activities;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TooManyListenersException;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.presentation.adapters.ContactsAutoCompleteCursorAdapter;
+import money.Tracker.presentation.model.Contact;
 import money.Tracker.repository.*;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.provider.Contacts.People;
+import android.provider.ContactsContract;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -14,7 +18,9 @@ import android.database.Cursor;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -31,7 +37,15 @@ public class BorrowLendInsertActivity extends Activity {
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
 
-	// @SuppressWarnings("deprecation")
+	private EditText phoneEditText;
+	private EditText addressEditText;
+
+	private String[] COUNTRIES = { "belgium", "france", "italy", "germany",
+			"spain", "viet Nam", "china", "Japan", "Korean", "Russian",
+			"Canada", "Afghanistan", "Albania", "Algeria", "American Samoa",
+			"Andorra", "angola", "argentina", "armenia", "aruba", "australia",
+			"austria", "Azerbaijan", "Zimbabwe" };
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,44 +55,70 @@ public class BorrowLendInsertActivity extends Activity {
 		final Button cancelButton = (Button) findViewById(R.id.cancelButton);
 		final TextView debtTypeTextView = (TextView) findViewById(R.id.title_text_view);
 		final ToggleButton debtTypeButton = (ToggleButton) findViewById(R.id.borrowLendType);
-		final EditText nameEditText = (EditText) findViewById(R.id.name_edit_text);
-		final EditText phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
-		final EditText addressEditText = (EditText) findViewById(R.id.address_edit_text);
+		final AutoCompleteTextView nameEditText = (AutoCompleteTextView) findViewById(R.id.name_edit_text);
+		phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
+		addressEditText = (EditText) findViewById(R.id.address_edit_text);
 		final EditText moneyEditText = (EditText) findViewById(R.id.money_edit_text);
 		final ToggleButton interestType = (ToggleButton) findViewById(R.id.interestType);
 		final EditText interestRate = (EditText) findViewById(R.id.interest_rate_edit_text);
 		startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
-		final Spinner getContact = (Spinner) findViewById(R.id.borrowLendPhoneContact);
+
 		new BorrowLendRepository();
 
-		// Get contact to spinner
-		// final Cursor cusorSpinner = managedQuery(Contacts.People.CONTENT_URI,
-		// null, null, null, null);
-		// if (cusorSpinner.getCount() > 0) {
-		// while (cusorSpinner.moveToNext()) {
-		// // get name
-		// String username = cusorSpinner.getString(cusorSpinner
-		// .getColumnIndex(Contacts.People.NAME));
-		// if (username != null)
-		// Log.i("Contact name ", username);
-		// // get phone
-		// String phone = cusorSpinner.getString(cusorSpinner
-		// .getColumnIndex(Contacts.People.NUMBER));
-		// if (phone != null)
-		// Log.i("Contact name ", phone);
-		// }
-		// }
+		final ContactInfoRepository cont = new ContactInfoRepository(getApplicationContext());
+		Cursor contacts = cont.getContacts2(null);
+		startManagingCursor(contacts);
+		ContactsAutoCompleteCursorAdapter adapter = new ContactsAutoCompleteCursorAdapter(
+				this, contacts);
+		nameEditText.setAdapter(adapter);
+		nameEditText
+				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						Cursor cursor = (Cursor) arg0.getItemAtPosition(arg2);
+						String number = cursor.getString(cursor
+								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+						nameEditText.setText(number);
+					}
+				});
 
-		// Hand on Contact spinner
-		// getContact.setOnClickListener(new View.OnClickListener() {
-		//
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
-		// Hand on Save button
+		Log.d("Get contact", "Check 1");
+		final Cursor cu = managedQuery(Contacts.People.CONTENT_URI, null, null,
+				null, null);
+		Log.d("Get contact", "Check 2");
+		String[] from = new String[] { People.NAME };
+		Log.d("Get contact", "Check 3");
+		String username = "";
+		String phone = "";
+
+		if (cu.getCount() > 0) {
+			while (cu.moveToNext()) {
+				// lay ten trong danh ba
+				username = "";
+				username += cu.getString(cu
+						.getColumnIndex(Contacts.People.NAME));
+				Log.d("Get contact", "Check 4");
+				// lay so phone
+				phone = "";
+				phone += cu
+						.getString(cu.getColumnIndex(Contacts.People.NUMBER));
+				Log.d("Get contact", "Check 5");
+			}
+		}
+		phoneEditText.setText(phone);
+		Log.d("Get contact", "Check 6");
+		Log.d("Get contact", phone);
+		addressEditText.setText(username);
+		Log.d("Get contact", "Check 7");
+		Log.d("Get contact", username);
+
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//				android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+//		nameEditText.setThreshold(1);
+//		nameEditText.setDropDownHeight(200);
+//		nameEditText.setAdapter(adapter);
+
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -102,10 +142,10 @@ public class BorrowLendInsertActivity extends Activity {
 									moneyEditText.getText().toString(),
 									"'" + interestTypeString + "'",
 									interestRate.getText().toString(),
-									startDateEditText.getText()
-													.toString().trim(),
-									expiredDateEditText.getText()
-													.toString().trim(),
+									startDateEditText.getText().toString()
+											.trim(),
+									expiredDateEditText.getText().toString()
+											.trim(),
 									"'" + nameEditText.getText().toString()
 											+ "'",
 									"'" + phoneEditText.getText().toString()
@@ -186,6 +226,28 @@ public class BorrowLendInsertActivity extends Activity {
 			}
 		});
 
+	}
+
+	private void getColumnData(Cursor cur) {
+		String name = "";
+		String phoneNumber = "";
+
+		if (cur.moveToFirst()) {
+
+			int nameColumn = cur.getColumnIndex(People.NAME);
+			int phoneColumn = cur.getColumnIndex(People.NUMBER);
+			String imagePath;
+
+			do {
+				// Get the field values
+				name += cur.getString(nameColumn);
+				phoneNumber += cur.getString(phoneColumn);
+
+			} while (cur.moveToNext());
+
+		}
+		phoneEditText.setText(name);
+		addressEditText.setText(phoneNumber);
 	}
 
 	// updates the date in the TextView
