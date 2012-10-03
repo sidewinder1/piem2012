@@ -19,7 +19,8 @@ public class DateTimeHelper {
 	}
 	
 	public static Date getLastDayOfWeek(Date date) {
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = new GregorianCalendar(date.getYear(), date.getMonth(),
+				Calendar.DAY_OF_MONTH);
 		calendar.setTime(date);
 		calendar.set(Calendar.DAY_OF_WEEK, 1);
 		calendar.add(Calendar.DAY_OF_WEEK, 7);

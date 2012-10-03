@@ -15,7 +15,7 @@ public class SqlHelper {
 		openHelper = new SqlConnector(context);
 		currentDb = openHelper.getWritableDatabase();
 	}
-	
+
 	public boolean createTable(String tableName, String columnsInfo) {
 		try {
 			currentDb.execSQL(new StringBuilder("CREATE TABLE IF NOT EXISTS ")
@@ -46,19 +46,29 @@ public class SqlHelper {
 		}
 	}
 
+	public boolean delete(String tableName, String whereCondition) {
+		StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName)
+				.append(whereCondition);
+		try {
+			currentDb.execSQL(sql.toString());
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
 	public boolean drop(String tableName) {
 		try {
 			currentDb.execSQL("DROP TABLE IF EXISTS " + tableName);
 			return true;
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
 
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
- 		if (whereCondition != null && !"".equals(whereCondition)) {
+		if (whereCondition != null && !"".equals(whereCondition)) {
 			whereCondition = new StringBuilder(" WHERE ")
 					.append(whereCondition).toString();
 		} else {
@@ -67,25 +77,24 @@ public class SqlHelper {
 
 		Cursor cursor = null;
 		try {
-			 cursor = currentDb.rawQuery(
-			 new StringBuilder("SELECT ").append(selectedColumns)
-			 .append(" FROM ").append(tableName)
-			 .append(whereCondition).toString(), null);
+			cursor = currentDb.rawQuery(
+					new StringBuilder("SELECT ").append(selectedColumns)
+							.append(" FROM ").append(tableName)
+							.append(whereCondition).toString(), null);
 		} catch (Exception e) {
 			// to do add log file.
 		}
 
 		return cursor;
 	}
-	
+
 	public void initializeTable() {
 		// Create table for Schedule.
 		createTable(
-						"Schedule",
-						new StringBuilder(
-								"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Time_Id INTEGER,")
-								.append("Start_date DATE, End_date DATE")
-								.toString());
+				"Schedule",
+				new StringBuilder(
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Time_Id INTEGER,")
+						.append("Start_date DATE, End_date DATE").toString());
 
 		// Create table for Schedule Detail.
 		createTable("ScheduleDetail",
@@ -95,24 +104,19 @@ public class SqlHelper {
 						.toString());
 
 		// Create table for Lending.
-		createTable("Lending",
-				"ID INTEGER PRIMARY KEY autoincrement," + "Money INTEGER,"
-						+ "Interest_type TEXT," + "Interest_rate INTEGERL,"
-						+ "Start_date TEXT," + "Expired_date TEXT,"
-						+ "Person_name TEXT," + "Person_Phone TEXT,"
-						+ "Person_address TEXT");
-		
-		// Create table for Borrowing.
-		createTable("Borrowing",
-				"ID INTEGER PRIMARY KEY autoincrement," + "Money INTEGER,"
-						+ "Interest_type TEXT," + "Interest_rate INTEGER,"
-						+ "Start_date TEXT," + "Expired_date TEXT,"
-						+ "Person_name TEXT," + "Person_Phone TEXT,"
-						+ "Person_address TEXT");
+		createTable("Lending", "ID INTEGER PRIMARY KEY autoincrement,"
+				+ "Money INTEGER," + "Interest_type TEXT,"
+				+ "Interest_rate INTEGERL," + "Start_date TEXT,"
+				+ "Expired_date TEXT," + "Person_name TEXT,"
+				+ "Person_Phone TEXT," + "Person_address TEXT");
 
-	
-		
-		
+		// Create table for Borrowing.
+		createTable("Borrowing", "ID INTEGER PRIMARY KEY autoincrement,"
+				+ "Money INTEGER," + "Interest_type TEXT,"
+				+ "Interest_rate INTEGER," + "Start_date TEXT,"
+				+ "Expired_date TEXT," + "Person_name TEXT,"
+				+ "Person_Phone TEXT," + "Person_address TEXT");
+
 		// Create table for Category.
 		createTable("Category",
 				new StringBuilder(
@@ -122,14 +126,14 @@ public class SqlHelper {
 				"Others" };
 		String[] colors = { "#99FF0000", "#9900FFFF", "#990000FF", "#990000A0",
 				"#99ADD8E6" };
-		
-		Cursor categoryCheck = select("Category", "*", "Name='Birthday' AND User_Color='#99FF0000'");
-		
-		if (categoryCheck != null && categoryCheck.moveToFirst())
-		{
+
+		Cursor categoryCheck = select("Category", "*",
+				"Name='Birthday' AND User_Color='#99FF0000'");
+
+		if (categoryCheck != null && categoryCheck.moveToFirst()) {
 			return;
 		}
-		
+
 		for (int index = 0; index < names.length; index++) {
 			SqlHelper.instance.insert("Category", new String[] { "Name",
 					"User_Color" },
