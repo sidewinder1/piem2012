@@ -95,28 +95,29 @@ public class ScheduleEditActivity extends Activity {
 		if (initialValue + "" == "") {
 			initialValue = "0";
 		}
-		
+
 		// New Mode
-		if (passed_schedule_id == -1) 
-		{
+		if (passed_schedule_id == -1) {
 			array = new ArrayList<DetailSchedule>();
 			// display the current date (this method is below)
 			updateDisplay();
 			array.add(new DetailSchedule(0, Double.parseDouble(initialValue)));
-		}
-		else { // Edit mode
-			Schedule schedule = (Schedule)ScheduleRepository.getInstance().getData("Id = " + passed_schedule_id).get(0);
-			if (schedule != null)
-			{
-				startDateEdit.setText(Converter.toString(schedule.start_date, "MMMM dd, yyyy"));
-				endDateEdit.setText(Converter.toString(schedule.end_date, "MMMM dd, yyyy"));
+		} else { // Edit mode
+			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
+					.getData("Id = " + passed_schedule_id).get(0);
+			if (schedule != null) {
+				periodic.setChecked(schedule.time_id == 1);
+				startDateEdit.setText(Converter.toString(schedule.start_date,
+						"MMMM dd, yyyy"));
+				endDateEdit.setText(Converter.toString(schedule.end_date,
+						"MMMM dd, yyyy"));
 				total_budget.setText(String.valueOf(schedule.budget));
 			}
-			
+
 			array = DetailScheduleRepository.getInstance().getData(
 					"Schedule_Id = " + passed_schedule_id);
 		}
-		
+
 		livingCostAdapter = new ScheduleLivingCostAdapter(this,
 				R.layout.schedule_edit_item, array, passed_schedule_id != -1);
 
@@ -158,7 +159,8 @@ public class ScheduleEditActivity extends Activity {
 			total_budget.setHint(String.valueOf(total));
 		} else {
 			if (Double.parseDouble(total_budget.getText().toString()) < total) {
-				Toast toast = Toast.makeText(this, "Over budget!", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(this, "Over budget!",
+						Toast.LENGTH_SHORT);
 				toast.show();
 				return false;
 			}
@@ -168,23 +170,47 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public void doneBtnClicked(View v) {
+		String Time_id = (periodic.isChecked() ? "1" : "0");
 		Cursor scheduleCursor = SqlHelper.instance.select(
 				"Schedule",
 				"End_date",
-				"End_date = '"
-						+ Converter.toString(Converter.toDate(endDateEdit
-								.getText().toString(), "MMMM dd, yyyy")) + "'");
+				new StringBuilder("Time_Id = ")
+						.append(Time_id)
+						.append(" AND End_date = '")
+						.append(Converter.toString(Converter.toDate(endDateEdit
+								.getText().toString(), "MMMM dd, yyyy")))
+						.append("'").toString());
+		if (passed_schedule_id != -1)
+		{
+			// Update schedule record.
+			
+			return;
+		}
+		
 		if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
 			Toast.makeText(this, "A schedule for this time is existing!",
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
-		String Time_id = (periodic.isChecked() ? "1" : "0");
+
+		// Add new schedule.
+		addSchedule(Time_id);
+		
+		setResult(100);
+		this.finish();
+	}
+
+	private void addSchedule(String Time_id) {
+		String budget_value = String.valueOf(total_budget.getText().toString());
+		if ("".equals(budget_value))
+		{
+			budget_value = String.valueOf(total_budget.getHint().toString());
+		}
 		long newScheduleId = SqlHelper.instance.insert(
 				"Schedule",
 				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
 				new String[] {
-						String.valueOf(total_budget.getText().toString()),
+						budget_value,
 						Converter.toString(Converter.toDate(startDateEdit
 								.getText().toString(), "MMMM dd, yyyy")),
 						Converter.toString(Converter.toDate(endDateEdit
@@ -204,9 +230,6 @@ public class ScheduleEditActivity extends Activity {
 			Toast.makeText(this, "Can not save data", Toast.LENGTH_SHORT)
 					.show();
 		}
-
-		setResult(100);
-		this.finish();
 	}
 
 	public void cancelBtnClicked(View v) {

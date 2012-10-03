@@ -21,20 +21,20 @@
 
         <Button
             android:id="@+id/doneBtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/save_button"
             android:onClick="doneBtnClicked" />
 
         <Button
             android:id="@+id/cancelBtn"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="7dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
             android:onClick="cancelBtnClicked"
             android:layout_toLeftOf="@+id/doneBtn"
             android:background="@drawable/cancel_icon" />

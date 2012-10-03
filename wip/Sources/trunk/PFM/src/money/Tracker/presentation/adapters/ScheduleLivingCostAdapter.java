@@ -42,6 +42,11 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 		categoryAdapter.notifyDataSetChanged();
 	}
 
+	public void setEditMode(boolean editMode)
+	{
+		this.editMode = editMode;
+	}
+	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ScheduleItem scheduleItemView = (ScheduleItem) convertView;

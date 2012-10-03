@@ -46,6 +46,22 @@ public class SqlHelper {
 		}
 	}
 
+	public int update(String tableName, String[] columns,
+			String[] newValues, String whereCondition) {
+
+		ContentValues newValueContent = new ContentValues();
+
+		for (int i = 0; i < columns.length; i++) {
+			newValueContent.put(columns[i], newValues[i]);
+		}
+
+		try {
+			return currentDb.update(tableName, newValueContent, whereCondition, null);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
 	public boolean delete(String tableName, String whereCondition) {
 		StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName)
 				.append(" WHERE ").append(whereCondition);
