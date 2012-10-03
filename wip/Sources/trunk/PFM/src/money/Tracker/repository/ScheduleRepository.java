@@ -9,14 +9,13 @@ import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.Schedule;
 
 public class ScheduleRepository implements IDataRepository {
-	public ScheduleRepository instance;
+	public static ScheduleRepository instance;
 
 	public ScheduleRepository() {
-		createTable();
 	}
 
-	protected void createTable() {
-		
+	public static ScheduleRepository getInstance() {
+		return instance == null ? new ScheduleRepository() : instance;
 	}
 
 	public ArrayList<Object> getData(String param) {
@@ -27,8 +26,6 @@ public class ScheduleRepository implements IDataRepository {
 		if (scheduleData != null) {
 			if (scheduleData.moveToFirst()) {
 				do {
-					if (!param.contains(scheduleData.getInt(scheduleData
-							  .getColumnIndex("Time_Id")) + "")){continue;}
 					ArrayList<DetailSchedule> details = new ArrayList<DetailSchedule>();
 					Cursor detailData = SqlHelper.instance.select(
 							"ScheduleDetail",

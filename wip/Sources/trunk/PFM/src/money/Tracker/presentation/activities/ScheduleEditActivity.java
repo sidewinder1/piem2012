@@ -26,7 +26,9 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
 import money.Tracker.presentation.model.DetailSchedule;
+import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.DetailScheduleRepository;
+import money.Tracker.repository.ScheduleRepository;
 
 public class ScheduleEditActivity extends Activity {
 	private int mYear;
@@ -60,7 +62,9 @@ public class ScheduleEditActivity extends Activity {
 			}
 
 			public void afterTextChanged(Editable s) {
-				livingCostAdapter.updateHint();
+				if (livingCostAdapter != null) {
+					livingCostAdapter.updateHint();
+				}
 			}
 		});
 
@@ -87,27 +91,38 @@ public class ScheduleEditActivity extends Activity {
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 
-		// display the current date (this method is below)
-		updateDisplay();
-
-		array = new ArrayList<DetailSchedule>();
-		livingCostAdapter = new ScheduleLivingCostAdapter(this,
-				R.layout.schedule_edit_item, array);
-
 		String initialValue = total_budget.getText().toString();
 		if (initialValue + "" == "") {
 			initialValue = "0";
 		}
-		if (passed_schedule_id == -1) {
+		
+		// New Mode
+		if (passed_schedule_id == -1) 
+		{
+			array = new ArrayList<DetailSchedule>();
+			// display the current date (this method is below)
+			updateDisplay();
 			array.add(new DetailSchedule(0, Double.parseDouble(initialValue)));
-		} else {
+		}
+		else { // Edit mode
+			Schedule schedule = (Schedule)ScheduleRepository.getInstance().getData("Id = " + passed_schedule_id).get(0);
+			if (schedule != null)
+			{
+				startDateEdit.setText(Converter.toString(schedule.start_date, "MMMM dd, yyyy"));
+				endDateEdit.setText(Converter.toString(schedule.end_date, "MMMM dd, yyyy"));
+				total_budget.setText(String.valueOf(schedule.budget));
+			}
+			
 			array = DetailScheduleRepository.getInstance().getData(
 					"Schedule_Id = " + passed_schedule_id);
 		}
 		
+		livingCostAdapter = new ScheduleLivingCostAdapter(this,
+				R.layout.schedule_edit_item, array, passed_schedule_id != -1);
+
 		livingCostAdapter.notifyDataSetChanged();
 
-		final ListView list = (ListView) findViewById(R.id.schedule_item_list);
+		ListView list = (ListView) findViewById(R.id.schedule_item_list);
 		list.setAdapter(livingCostAdapter);
 
 		Spinner currency = (Spinner) findViewById(R.id.currency_symbol);
@@ -143,7 +158,8 @@ public class ScheduleEditActivity extends Activity {
 			total_budget.setHint(String.valueOf(total));
 		} else {
 			if (Double.parseDouble(total_budget.getText().toString()) < total) {
-				Toast.makeText(this, "Over budget!", Toast.LENGTH_SHORT).show();
+				Toast toast = Toast.makeText(this, "Over budget!", Toast.LENGTH_SHORT);
+				toast.show();
 				return false;
 			}
 		}
