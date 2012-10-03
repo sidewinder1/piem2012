@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_background"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -37,165 +36,175 @@
             android:background="@drawable/cancel_icon" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Debt Type"
-            android:textColor="@android:color/white" />
-
-        <ToggleButton
-            android:id="@+id/borrowLendType"
-            android:layout_width="140dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:checked="true"
-            android:paddingBottom="-20dp"
-            android:textOff="Lending"
-            android:textOn="Borrowing"
-            android:textSize="12dp" />
-    </LinearLayout>
-
-    <AutoCompleteTextView
-        android:id="@+id/name_edit_text"
-        android:layout_width="fill_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:hint="Name"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/phone_edit_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:hint="Phone"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/address_edit_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:hint="Adress"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/money_edit_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:hint="Money"
-        android:inputType="number" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Interest Type"
-            android:textColor="@android:color/white" />
-
-        <ToggleButton
-            android:id="@+id/interestType"
-            android:layout_width="140dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:checked="true"
-            android:paddingBottom="-20dp"
-            android:textOff="Compound interest"
-            android:textOn="Simple"
-            android:textSize="12dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Interest Rate"
-            android:textColor="@android:color/white" />
-
-        <EditText
-            android:id="@+id/interest_rate_edit_text"
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:hint="                                  %"
-            android:inputType="number" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:background="@drawable/app_background"
+            android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Start Date   "
-            android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Debt Type"
+                    android:textColor="@android:color/white" />
 
-        <EditText
-            android:id="@+id/start_date_edit_text"
-            android:layout_width="206dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:editable="false"
-            android:ems="10"
-            android:inputType="date" >
+                <ToggleButton
+                    android:id="@+id/borrowLendType"
+                    android:layout_width="140dp"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:checked="true"
+                    android:paddingBottom="-20dp"
+                    android:textOff="Lending"
+                    android:textOn="Borrowing"
+                    android:textSize="12dp" />
+            </LinearLayout>
 
-            <requestFocus />
-        </EditText>
-    </LinearLayout>
+            <AutoCompleteTextView
+                android:id="@+id/name_edit_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:hint="Name" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+            <EditText
+                android:id="@+id/phone_edit_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:hint="Phone"
+                android:inputType="number" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Expired Date "
-            android:textColor="@android:color/white" />
+            <EditText
+                android:id="@+id/address_edit_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:hint="Adress"
+                android:inputType="text" />
 
-        <EditText
-            android:id="@+id/expired_date_edit_text"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:editable="false"
-            android:focusable="false"
-            android:inputType="date" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/money_edit_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:hint="Money"
+                android:inputType="number" />
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Interest Type"
+                    android:textColor="@android:color/white" />
+
+                <ToggleButton
+                    android:id="@+id/interestType"
+                    android:layout_width="140dp"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:checked="true"
+                    android:paddingBottom="-20dp"
+                    android:textOff="Compound interest"
+                    android:textOn="Simple"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Interest Rate"
+                    android:textColor="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/interest_rate_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:hint="                                  %"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Start Date   "
+                    android:textColor="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/start_date_edit_text"
+                    android:layout_width="206dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:editable="false"
+                    android:ems="10"
+                    android:inputType="date" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Expired Date "
+                    android:textColor="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/expired_date_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:inputType="date" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
