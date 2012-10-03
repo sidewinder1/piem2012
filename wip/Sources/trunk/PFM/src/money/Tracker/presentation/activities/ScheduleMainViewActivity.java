@@ -42,6 +42,7 @@ public class ScheduleMainViewActivity extends TabActivity {
 				Intent scheduleEditIntent = new Intent(
 						ScheduleMainViewActivity.this,
 						ScheduleEditActivity.class);
+				scheduleEditIntent.putExtra("schedule_id", -1);
 				startActivityForResult(scheduleEditIntent, 100);
 			}
 		});
