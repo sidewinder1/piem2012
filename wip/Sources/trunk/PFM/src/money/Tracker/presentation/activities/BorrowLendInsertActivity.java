@@ -77,18 +77,17 @@ public class BorrowLendInsertActivity extends Activity {
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						phoneEditText.setText(number);
 						
-						String id = cont.findContact(name, number);
-								
-						Cursor cursor1 = cont.getContactAddress(id);
-						String address = "";
-						while (cursor1.moveToNext()) {
-							address = "";
-							address += cursor1
-								.getString(cursor1
-										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-						}     
-						cursor1.close(); 
-						addressEditText.setText(address);
+						//String id = cont.findContact(name, number);
+						String id =cursor.getString(cursor
+								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone._ID));
+						
+//						Cursor cursor1 = cont.getContactAddress(id);
+//						String address = cursor1
+//								.getString(cursor1
+//										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+//						//cursor1.close(); 
+//						addressEditText.setText(address);
+						//addressEditText.setText(id);
 					}
 				});
 

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
+import android.widget.EditText;
 
 public class ContactInfoRepository {
 	private Context ctx;
@@ -40,30 +41,6 @@ public class ContactInfoRepository {
 				ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE };
 		 Cursor addrCur = ctx.getContentResolver().query(ContactsContract.Data.CONTENT_URI, null,
 				addrWhere, addrWhereParameters, null);
-		while (addrCur.moveToNext()) {
-			String poBox = addrCur
-					.getString(addrCur
-							.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POBOX));
-			String street = addrCur
-					.getString(addrCur
-							.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-			String city = addrCur
-					.getString(addrCur
-							.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-			String state = addrCur
-					.getString(addrCur
-							.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-			String postalCode = addrCur
-					.getString(addrCur
-							.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
-			String country = addrCur
-					.getString(addrCur
-							.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-			String type = addrCur
-					.getString(addrCur
-							.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE));
-		}
-		addrCur.close();
 		
 		return addrCur;
 	}
