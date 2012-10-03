@@ -35,26 +35,21 @@ public class BorrowLendViewActivity extends Activity {
 		checkBorrowing = extras.getBoolean("Borrow");
 		// displayText = (TextView) findViewById(R.id.no_borrow_lend_data);
 		borrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
-		bindData();
-		Log.d("On Click Item", "Check 1");
+		bindData();		
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
-				Log.d("On Click Item", "Check 3");
-				BorrowLend borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);
-				Log.d("On Click Item", "Check 4");
+				BorrowLend borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);				
 				if (borrowLend != null)
 				{
 					Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
 					borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
 					borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
 					startActivity(borrowLendDetail);
-				}
-				Log.d("On Click Item", "Check 5");
+				}				
 			}
-		});
-		Log.d("On Click Item", "Check 2");
+		});		
 	}
 
 

@@ -4,6 +4,7 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -30,13 +31,12 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		lendViewIntent.putExtra("Borrow", false);
 		setupTab(lendViewIntent, "Lend", mTabHost);		
 		
-		Button addBorrowLend = (Button) findViewById(R.id.addBorrowAndLend);
-		
+		Button addBorrowLend = (Button) findViewById(R.id.addBorrowAndLend);		
 		addBorrowLend.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent borrowLendInsert = new Intent(BorrowLendMainViewActivity.this, BorrowLendInsertActivity.class);
+				// TODO Auto-generated method stub				
+				Intent borrowLendInsert = new Intent(BorrowLendMainViewActivity.this, BorrowLendInsertActivity.class);				
 				startActivity(borrowLendInsert);
 			}
 		});

@@ -30,13 +30,5 @@ public class BorrowLendViewItemActivity extends LinearLayout {
 		moneyTextView = (TextView) findViewById(R.id.borrow_lend_money);
 		startDateTextView = (TextView) findViewById(R.id.borrow_lend_start_date);
 		expiredDateTextView = (TextView) findViewById(R.id.borrow_lend_expired_date);
-		
-		this.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 	}
 }
