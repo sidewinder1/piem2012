@@ -22,8 +22,7 @@ public class Converter {
 
 	public static Date toDate(String date, String inputFormatString) {
 		SimpleDateFormat inputFormat = new SimpleDateFormat(
-				inputFormatString);
-		Log.d("Date Format", inputFormatString);
+				inputFormatString);		
 		Date parsed = new Date();
 		try {
 			parsed = inputFormat.parse(date);
@@ -31,10 +30,6 @@ public class Converter {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 		}
-		
-			
-		
-		Log.d("Date Format", String.valueOf(parsed));
 
 		return parsed;
 	}
@@ -50,28 +45,5 @@ public class Converter {
 		}
 
 		return parsed;
-	}
-	
-	public static Date convertDate(Date dateConvert)
-	{
-		String formatDate = "MMM dd, yyyy";
-		
-		DateFormat df = new DateFormat();
-		
-		return (Date) df.format(formatDate, dateConvert); 
-	}
-	
-	public static Date convertDate(String dateConvert)
-	{
-		SimpleDateFormat curFormater = new SimpleDateFormat("dd/MM/yyyy");
-		Date dateObj = new Date();
-		try {
-			 dateObj = curFormater.parse(dateConvert);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}  
-		
-		return dateObj;
 	}
 }

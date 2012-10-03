@@ -44,16 +44,13 @@ public class BorrowLendRepository {
 							.getString(borrowLendData
 									.getColumnIndex("Interest_type")));
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData
-							.getColumnIndex("Interest_rate")));
-					bole.setStartDate(Converter.convertDate(borrowLendData
+							.getColumnIndex("Interest_rate")));					
+					bole.setStartDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date")).trim()));
-					bole.setExpiredDate(Converter.convertDate(borrowLendData
+									.getColumnIndex("Start_date")).trim(), "dd/MM/yyyy"));
+					bole.setExpiredDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date")).trim()));
-					Log.d("Date", borrowLendData
-							.getString(borrowLendData
-									.getColumnIndex("Expired_date")).trim());
+									.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData
@@ -84,12 +81,12 @@ public class BorrowLendRepository {
 									.getColumnIndex("Interest_type")));
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData
 							.getColumnIndex("Interest_rate")));
-					bole.setStartDate(Converter.convertDate(borrowLendData
+					bole.setStartDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Start_date")).trim()));
-					bole.setExpiredDate(Converter.convertDate(borrowLendData
+									.getColumnIndex("Start_date")).trim(), "dd/MM/yyyy"));
+					bole.setExpiredDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date")).trim()));
+									.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData

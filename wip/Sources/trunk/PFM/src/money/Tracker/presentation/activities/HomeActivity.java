@@ -39,7 +39,7 @@ public class HomeActivity extends TabActivity {
 		setupTab(scheduleIntent, "Expenses\n& Incomes", mTabHost);
 		setupTab(borrowAndLendIntent, "Report", mTabHost);
 		
-		Log.d("Convert Date", String.valueOf(Converter.convertDate("4/10/2012")));
+		Log.d("CD", String.valueOf(Converter.toDate("8/9/2012", "MMM dd,yyyy")));
 	}
 	
 	public static void setupTab(final Intent intent, final String tag, TabHost mTabHost) {
