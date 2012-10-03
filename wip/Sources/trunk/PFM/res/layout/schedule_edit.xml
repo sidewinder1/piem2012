@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/app_background"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="33dp"
         android:background="@drawable/title_background" >
 
         <TextView
@@ -17,7 +16,7 @@
             android:layout_marginLeft="10dp"
             android:text="@string/schedule_edit_title"
             android:textColor="@color/white_text_color"
-            android:textSize="30dp" />
+            android:textSize="27dp" />
 
         <Button
             android:id="@+id/doneBtn"
@@ -35,106 +34,116 @@
             android:layout_height="25dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:onClick="cancelBtnClicked"
             android:layout_toLeftOf="@+id/doneBtn"
-            android:background="@drawable/cancel_icon" />
+            android:background="@drawable/cancel_icon"
+            android:onClick="cancelBtnClicked" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="1dp"
-            android:layout_weight="1"
-            android:text="@string/schedule_duration"
-            android:textColor="@color/white_text_color"
-            android:textSize="21dp" />
+            android:background="@drawable/app_background"
+            android:orientation="vertical" >
 
-        <ToggleButton
-            android:id="@+id/periodic"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:checked="true"
-            android:textOff="@string/schedule_weekly"
-            android:textOn="@string/schedule_monthly"
-            android:textSize="12dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:text="@string/schedule_duration"
+                    android:textColor="@color/white_text_color"
+                    android:textSize="20dp" />
 
-        <EditText
-            android:id="@+id/schedule_start_date"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="5dp"
-            android:paddingLeft="2dp"
-            android:layout_marginRight="1dp"
-            android:layout_weight="1"
-            android:textSize="15dp"
-            android:layout_gravity="center_vertical"
-            android:editable="false"
-            android:focusable="false"
-            android:inputType="date" />
+                <ToggleButton
+                    android:id="@+id/periodic"
+                    android:layout_width="0dp"
+                    android:layout_height="41dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:textOff="@string/schedule_weekly"
+                    android:textOn="@string/schedule_monthly"
+                    android:textSize="12dp" />
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/schedule_end_date"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="7dp"
-            android:paddingLeft="5dp"
-            android:textSize="15dp"
-            android:textColor="@color/white_text_color"
-            android:background="@color/gray_background"
-            android:layout_weight="1"
-            android:editable="false"
-            android:focusable="false"
-            android:inputType="date" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/schedule_start_date"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:paddingLeft="2dp"
+                    android:textSize="15dp" />
 
-        <EditText
-            android:id="@+id/schedule_total_budget"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="1dp"
-            android:layout_weight="3"
-            android:textSize="16dp"
-            android:hint="@string/schedule_budget"
-            android:inputType="number" />
+                <EditText
+                    android:id="@+id/schedule_end_date"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray_background"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/white_text_color"
+                    android:textSize="15dp" />
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/currency_symbol"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-    <ListView
-        android:id="@+id/schedule_item_list"
-        android:layout_width="fill_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="#29F5"
-        android:layout_height="wrap_content" >
-    </ListView>
+                <EditText
+                    android:id="@+id/schedule_total_budget"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="3"
+                    android:hint="@string/schedule_budget"
+                    android:inputType="number"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/currency_symbol"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/schedule_item_list"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:paddingBottom="-2dp"
+                android:paddingTop="-2dp"
+                android:layout_marginRight="5dp"
+                android:background="#29F5" >
+            </ListView>
+        </LinearLayout>
 
 </LinearLayout>
