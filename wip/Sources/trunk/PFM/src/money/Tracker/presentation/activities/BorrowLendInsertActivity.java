@@ -37,14 +37,6 @@ public class BorrowLendInsertActivity extends Activity {
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
 
-	private EditText phoneEditText;
-	private EditText addressEditText;
-
-	private String[] COUNTRIES = { "belgium", "france", "italy", "germany",
-			"spain", "viet Nam", "china", "Japan", "Korean", "Russian",
-			"Canada", "Afghanistan", "Albania", "Algeria", "American Samoa",
-			"Andorra", "angola", "argentina", "armenia", "aruba", "australia",
-			"austria", "Azerbaijan", "Zimbabwe" };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +48,8 @@ public class BorrowLendInsertActivity extends Activity {
 		final TextView debtTypeTextView = (TextView) findViewById(R.id.title_text_view);
 		final ToggleButton debtTypeButton = (ToggleButton) findViewById(R.id.borrowLendType);
 		final AutoCompleteTextView nameEditText = (AutoCompleteTextView) findViewById(R.id.name_edit_text);
-		phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
-		addressEditText = (EditText) findViewById(R.id.address_edit_text);
+		final EditText phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
+		final EditText addressEditText = (EditText) findViewById(R.id.address_edit_text);
 		final EditText moneyEditText = (EditText) findViewById(R.id.money_edit_text);
 		final ToggleButton interestType = (ToggleButton) findViewById(R.id.interestType);
 		final EditText interestRate = (EditText) findViewById(R.id.interest_rate_edit_text);
@@ -72,52 +64,20 @@ public class BorrowLendInsertActivity extends Activity {
 		ContactsAutoCompleteCursorAdapter adapter = new ContactsAutoCompleteCursorAdapter(
 				this, contacts);
 		nameEditText.setAdapter(adapter);
+		nameEditText.setThreshold(1);
 		nameEditText
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
 						Cursor cursor = (Cursor) arg0.getItemAtPosition(arg2);
+						String name = cursor.getString(cursor
+								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+						nameEditText.setText(name);
 						String number = cursor.getString(cursor
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
-						nameEditText.setText(number);
+						phoneEditText.setText(number);
 					}
 				});
-
-		Log.d("Get contact", "Check 1");
-		final Cursor cu = managedQuery(Contacts.People.CONTENT_URI, null, null,
-				null, null);
-		Log.d("Get contact", "Check 2");
-		String[] from = new String[] { People.NAME };
-		Log.d("Get contact", "Check 3");
-		String username = "";
-		String phone = "";
-
-		if (cu.getCount() > 0) {
-			while (cu.moveToNext()) {
-				// lay ten trong danh ba
-				username = "";
-				username += cu.getString(cu
-						.getColumnIndex(Contacts.People.NAME));
-				Log.d("Get contact", "Check 4");
-				// lay so phone
-				phone = "";
-				phone += cu
-						.getString(cu.getColumnIndex(Contacts.People.NUMBER));
-				Log.d("Get contact", "Check 5");
-			}
-		}
-		phoneEditText.setText(phone);
-		Log.d("Get contact", "Check 6");
-		Log.d("Get contact", phone);
-		addressEditText.setText(username);
-		Log.d("Get contact", "Check 7");
-		Log.d("Get contact", username);
-
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//				android.R.layout.simple_dropdown_item_1line, COUNTRIES);
-//		nameEditText.setThreshold(1);
-//		nameEditText.setDropDownHeight(200);
-//		nameEditText.setAdapter(adapter);
 
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -226,28 +186,6 @@ public class BorrowLendInsertActivity extends Activity {
 			}
 		});
 
-	}
-
-	private void getColumnData(Cursor cur) {
-		String name = "";
-		String phoneNumber = "";
-
-		if (cur.moveToFirst()) {
-
-			int nameColumn = cur.getColumnIndex(People.NAME);
-			int phoneColumn = cur.getColumnIndex(People.NUMBER);
-			String imagePath;
-
-			do {
-				// Get the field values
-				name += cur.getString(nameColumn);
-				phoneNumber += cur.getString(phoneColumn);
-
-			} while (cur.moveToNext());
-
-		}
-		phoneEditText.setText(name);
-		addressEditText.setText(phoneNumber);
 	}
 
 	// updates the date in the TextView

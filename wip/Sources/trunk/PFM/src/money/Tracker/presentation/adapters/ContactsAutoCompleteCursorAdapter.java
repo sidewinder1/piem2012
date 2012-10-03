@@ -70,7 +70,7 @@ public class ContactsAutoCompleteCursorAdapter extends CursorAdapter implements
 		return mContent.query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
 				"UPPER(" + ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
-						+ ") LIKE '" + constraint.toString().toUpperCase()
+						+ ") LIKE '%" + constraint.toString().toUpperCase()
 						+ "%'", null, ContactsContract.Contacts.DISPLAY_NAME
 						+ " COLLATE LOCALIZED ASC");
 	}
