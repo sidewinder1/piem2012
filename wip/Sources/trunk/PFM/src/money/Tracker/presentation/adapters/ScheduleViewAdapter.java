@@ -1,8 +1,6 @@
 package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
-import java.util.Random;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.customviews.ScheduleViewItem;
 import money.Tracker.presentation.model.Schedule;

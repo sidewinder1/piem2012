@@ -48,7 +48,7 @@ public class SqlHelper {
 
 	public boolean delete(String tableName, String whereCondition) {
 		StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName)
-				.append(whereCondition);
+				.append(" WHERE ").append(whereCondition);
 		try {
 			currentDb.execSQL(sql.toString());
 		} catch (Exception e) {
