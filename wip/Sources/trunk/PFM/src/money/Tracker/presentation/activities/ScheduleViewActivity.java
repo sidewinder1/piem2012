@@ -1,7 +1,6 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.model.Schedule;
@@ -71,7 +70,6 @@ public class ScheduleViewActivity extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		if (v.getId() == R.id.schedule_view_list) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			menu.setHeaderTitle(getResources().getString(
 					R.string.schedule_menu_title));
 			String[] menuItems = getResources().getStringArray(
@@ -116,9 +114,11 @@ public class ScheduleViewActivity extends Activity {
 		if (values.size() == 0) {
 			chart_legend.setVisibility(View.GONE);
 			displayText.setVisibility(View.VISIBLE);
+			list.setVisibility(View.GONE);
 			return;
 		}
-
+		
+		list.setVisibility(View.VISIBLE);
 		displayText.setVisibility(View.GONE);
 		chart_legend.setVisibility(View.VISIBLE);
 		scheduleAdapter = new ScheduleViewAdapter(this,
