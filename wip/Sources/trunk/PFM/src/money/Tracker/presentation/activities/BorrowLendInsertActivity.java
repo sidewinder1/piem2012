@@ -8,6 +8,7 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.adapters.ContactsAutoCompleteCursorAdapter;
+import money.Tracker.presentation.model.BorrowLend;
 import money.Tracker.presentation.model.Contact;
 import money.Tracker.repository.*;
 import android.os.Bundle;
@@ -63,10 +64,49 @@ public class BorrowLendInsertActivity extends Activity {
 		final EditText interestRate = (EditText) findViewById(R.id.interest_rate_edit_text);
 		startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
-
+		
 		alert = new Alert();
 
 		new BorrowLendRepository();
+		
+		// get information from view detail intent
+		Bundle extras = getIntent().getExtras();
+		boolean checkBorrowing = true;
+		int borrow_lend_id = -1;
+		try
+		{
+			borrow_lend_id = extras.getInt("borrowLendID");
+			checkBorrowing = extras.getBoolean("checkBorrowing");
+		} catch (Exception e)
+		{
+			
+		}
+		
+		if (borrow_lend_id != -1)
+		{
+			debtTypeButton.setClickable(false);
+		
+			final String tableName;
+			if(checkBorrowing)
+				tableName="Borrowing";
+			else
+				tableName="Lending";
+			
+			debtTypeButton.setText(tableName);
+			debtTypeTextView.setText("Edit " + tableName);
+					
+			BorrowLendRepository bolere = new BorrowLendRepository();		
+			BorrowLend values = bolere.getDetailData(tableName, "ID=" + borrow_lend_id);
+			
+			nameEditText.setText(String.valueOf(values.getPersonName()));
+			phoneEditText.setText(String.valueOf(values.getPersonPhone()));
+			addressEditText.setText(String.valueOf(values.getPersonAddress()));
+			moneyEditText.setText(String.valueOf(values.getMoney()));
+			interestType.setText(String.valueOf(values.getInterestType()));
+			interestRate.setText(String.valueOf(values.getInterestRate()));
+			startDateEditText.setText(Converter.toString(values.getStartDate(), "dd/MM/yyyy"));
+			expiredDateEditText.setText(Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
+		}
 
 		final ContactInfoRepository cont = new ContactInfoRepository(
 				getApplicationContext());
@@ -127,32 +167,14 @@ public class BorrowLendInsertActivity extends Activity {
 											"Expired_date", "Person_name",
 											"Person_Phone", "Person_address" },
 											new String[] {
-													moneyEditText.getText()
-															.toString(),
-													"'" + interestTypeString
-															+ "'",
-													interestRate.getText()
-															.toString(),
-													startDateEditText.getText()
-															.toString().trim(),
-													expiredDateEditText
-															.getText()
-															.toString().trim(),
-													"'"
-															+ nameEditText
-																	.getText()
-																	.toString()
-															+ "'",
-													"'"
-															+ phoneEditText
-																	.getText()
-																	.toString()
-															+ "'",
-													"'"
-															+ addressEditText
-																	.getText()
-																	.toString()
-															+ "'" });
+													moneyEditText.getText().toString(),
+													interestTypeString,
+													interestRate.getText().toString(),
+													startDateEditText.getText().toString().trim(),
+													expiredDateEditText.getText().toString().trim(),
+													nameEditText.getText().toString(),
+													phoneEditText.getText().toString(),
+													addressEditText.getText().toString()});
 							Log.d("Insert", startDateEditText.getText()
 									.toString());
 							Log.d("Insert", expiredDateEditText.getText()
@@ -172,7 +194,7 @@ public class BorrowLendInsertActivity extends Activity {
 									phoneEditText.getText().toString(),
 									addressEditText.getText().toString() });
 						}
-						
+
 					}
 				}
 
@@ -294,8 +316,7 @@ public class BorrowLendInsertActivity extends Activity {
 				updateDisplayExpiredDate();
 				Log.d("errorDateTime", "Check 6");
 			} else {
-				alert.show(getApplicationContext(),
-						"Wrong input. Try again");
+				alert.show(getApplicationContext(), "Wrong input. Try again");
 				// get the current date
 				final Calendar c = Calendar.getInstance();
 				expiredDate_Year = c.get(Calendar.YEAR);
