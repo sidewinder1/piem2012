@@ -99,7 +99,9 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 			budget.addTextChangedListener(new CustomTextWatcher(budget) {
 				public void afterTextChanged(Editable s) {
-					if (editMode){return;}
+					if (editMode){
+						return;
+						}
 					if (s + "" != "") {
 						DetailSchedule item = array.get(Integer.parseInt(String
 								.valueOf(mEditText.getTag())));
@@ -146,7 +148,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					}
 
 					// Create new item.
-					array.add(selectedIndex + 1, new DetailSchedule(0,
+					array.add(selectedIndex + 1, new DetailSchedule(0, 0,
 							getNextHint()));
 					notifyDataSetChanged();
 				}
@@ -155,7 +157,11 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 			// Remove this schedule item.
 			removeButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
+					if (array.size() < 2)
+					{
+						return;
+					}
+					
 					array.remove(Integer.parseInt(((Button) v).getTag() + ""));
 					notifyDataSetChanged();
 				}

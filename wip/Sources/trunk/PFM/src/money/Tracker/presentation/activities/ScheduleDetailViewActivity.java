@@ -47,11 +47,12 @@ public class ScheduleDetailViewActivity extends Activity {
 			ListView list = (ListView) findViewById(R.id.schedule_detail_item_list);
 			ArrayList<DetailSchedule> data = new ArrayList<DetailSchedule>();
 			Cursor detail_schedule = SqlHelper.instance.select(
-					"ScheduleDetail", "category_id, budget, schedule_id",
+					"ScheduleDetail", "category_id, budget, schedule_id, Id",
 					"schedule_id = " + schedule_id);
 			if (detail_schedule != null && detail_schedule.moveToFirst()) {
 				do {
-					data.add(new DetailSchedule(detail_schedule.getInt(0),
+					data.add(new DetailSchedule(detail_schedule.getInt(3),
+							detail_schedule.getInt(0),
 							detail_schedule.getDouble(1), detail_schedule
 									.getInt(2)));
 				} while (detail_schedule.moveToNext());

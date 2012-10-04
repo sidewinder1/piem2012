@@ -8,7 +8,7 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.model.DetailSchedule;
 
 public class DetailScheduleRepository {
-	private static  DetailScheduleRepository instance;
+	private static DetailScheduleRepository instance;
 	ArrayList<DetailSchedule> detailSchedules;
 
 	public DetailScheduleRepository() {
@@ -26,6 +26,7 @@ public class DetailScheduleRepository {
 			detailSchedules = new ArrayList<DetailSchedule>();
 			do {
 				detailSchedules.add(new DetailSchedule(detail.getInt(detail
+						.getColumnIndex("Id")), detail.getInt(detail
 						.getColumnIndex("Category_Id")), detail
 						.getDouble(detail.getColumnIndex("Budget")), detail
 						.getInt(detail.getColumnIndex("Schedule_Id"))));
