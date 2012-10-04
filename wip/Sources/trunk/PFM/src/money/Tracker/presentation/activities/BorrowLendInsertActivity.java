@@ -73,6 +73,8 @@ public class BorrowLendInsertActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		boolean checkBorrowing = true;
 		int borrow_lend_id = -1;
+		String tableName = "";
+		
 		try
 		{
 			borrow_lend_id = extras.getInt("borrowLendID");
@@ -86,11 +88,10 @@ public class BorrowLendInsertActivity extends Activity {
 		{
 			debtTypeButton.setClickable(false);
 		
-			final String tableName;
 			if(checkBorrowing)
-				tableName="Borrowing";
+				tableName += "Borrowing";
 			else
-				tableName="Lending";
+				tableName += "Lending";
 			
 			debtTypeButton.setText(tableName);
 			debtTypeTextView.setText("Edit " + tableName);
@@ -106,8 +107,14 @@ public class BorrowLendInsertActivity extends Activity {
 			interestRate.setText(String.valueOf(values.getInterestRate()));
 			startDateEditText.setText(Converter.toString(values.getStartDate(), "dd/MM/yyyy"));
 			expiredDateEditText.setText(Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
+			
 		}
-
+		
+		final int borrowLendID;
+		borrowLendID = borrow_lend_id;
+		final String _tableName;
+		_tableName = tableName;
+		
 		final ContactInfoRepository cont = new ContactInfoRepository(
 				getApplicationContext());
 		Cursor contacts = cont.getContacts2(null);
@@ -145,6 +152,9 @@ public class BorrowLendInsertActivity extends Activity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				
+				if (borrowLendID != 1)
+					SqlHelper.instance.delete(_tableName, "ID = " + borrowLendID);
 
 				String interestTypeString;
 
