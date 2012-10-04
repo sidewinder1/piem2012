@@ -38,6 +38,7 @@ public class BorrowLendViewActivity extends Activity {
 		bindData();		
 		//borrowLendList.setTextFilterEnabled(true);
 		borrowLendList.setClickable(true);
+		borrowLendList.setItemsCanFocus(false);
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position,
 					long id) {

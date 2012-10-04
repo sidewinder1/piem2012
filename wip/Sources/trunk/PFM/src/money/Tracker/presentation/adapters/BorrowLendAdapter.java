@@ -47,11 +47,14 @@ public class BorrowLendAdapter extends ArrayAdapter<Object> {
 		// get selected entry
 		BorrowLend entry = (BorrowLend) arrayListBorrowLend.get(pos);
 		BorrowLendViewItemActivity borrowLendViewItem = (BorrowLendViewItemActivity) convertView;
+		//borrowLendViewItem.setClickable(true);
+		//borrowLendViewItem.setFocusable(true);
+		
 		if(borrowLendViewItem == null)
 		{
 			borrowLendViewItem = new BorrowLendViewItemActivity(mContext);
 		}
-		
+	    
 		borrowLendViewItem.personNameTextView.setText(entry.getPersonName());
 		borrowLendViewItem.moneyTextView.setText(String.valueOf(entry.getMoney()));
 		borrowLendViewItem.startDateTextView.setText(Converter.toString(entry.getStartDate(), "MMM dd, yyyy"));
