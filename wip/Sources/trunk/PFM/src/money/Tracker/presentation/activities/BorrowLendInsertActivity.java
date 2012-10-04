@@ -295,7 +295,7 @@ public class BorrowLendInsertActivity extends Activity {
 				Log.d("errorDateTime", "Check 6");
 			} else {
 				alert.show(getApplicationContext(),
-						"You are stupid. Wrong input. Try again");
+						"Wrong input. Try again");
 				// get the current date
 				final Calendar c = Calendar.getInstance();
 				expiredDate_Year = c.get(Calendar.YEAR);
