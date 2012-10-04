@@ -127,9 +127,10 @@
                     android:layout_marginRight="5dp"
                     android:checked="true"
                     android:paddingBottom="-20dp"
-                    android:textOff="Compound interest"
+                    android:textOff="Compound"
                     android:textOn="Simple"
                     android:textSize="12dp" />
+                
             </LinearLayout>
 
             <LinearLayout
@@ -147,12 +148,21 @@
 
                 <EditText
                     android:id="@+id/interest_rate_edit_text"
-                    android:layout_width="fill_parent"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:hint="                                  %"
-                    android:inputType="number" />
+                    android:text="%"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -170,16 +180,14 @@
 
                 <EditText
                     android:id="@+id/start_date_edit_text"
-                    android:layout_width="206dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:editable="false"
                     android:ems="10"
-                    android:inputType="date" >
+                    android:inputType="date" />
 
-                    <requestFocus />
-                </EditText>
             </LinearLayout>
 
             <LinearLayout
@@ -202,7 +210,6 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:editable="false"
-                    android:focusable="false"
                     android:inputType="date" />
             </LinearLayout>
         </LinearLayout>

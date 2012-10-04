@@ -36,6 +36,7 @@ public class BorrowLendViewActivity extends Activity {
 		// displayText = (TextView) findViewById(R.id.no_borrow_lend_data);
 		borrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
 		bindData();		
+		
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position,
 					long id) {
