@@ -17,7 +17,7 @@
             android:textColor="@color/white_text_color"
             android:text="@string/dummy_data"
             android:layout_marginLeft="10dp"
-            android:textSize="22dp" />
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/schedule_total_budget"
@@ -37,6 +37,6 @@
         android:id="@+id/stacked_bar_chart"
         android:background="#7991"
         android:layout_width="fill_parent"
-        android:layout_height="25dp" />
+        android:layout_height="10dp" />
 
 </LinearLayout>
