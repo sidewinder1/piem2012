@@ -36,7 +36,8 @@ public class BorrowLendViewActivity extends Activity {
 		// displayText = (TextView) findViewById(R.id.no_borrow_lend_data);
 		borrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
 		bindData();		
-		
+		//borrowLendList.setTextFilterEnabled(true);
+		borrowLendList.setClickable(true);
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position,
 					long id) {
@@ -69,7 +70,7 @@ public class BorrowLendViewActivity extends Activity {
 		}
 
 		BorrowLendRepository bolere = new BorrowLendRepository();
-		ArrayList<BorrowLend> values = bolere.getData(tableName);
+		ArrayList<Object> values = bolere.getData(tableName);
 
 		// if (values.size() == 0) {
 		// displayText.setVisibility(View.VISIBLE);
@@ -77,15 +78,14 @@ public class BorrowLendViewActivity extends Activity {
 		// }
 		//
 		// displayText.setVisibility(View.GONE);
-		borrowLendAdapter = new BorrowLendAdapter(this, values);
+		borrowLendAdapter = new BorrowLendAdapter(this, R.layout.activity_borrow_lend_view_item, values);
+		if (values.size() == 0) {						
+			borrowLendList.setVisibility(View.GONE);
+			return;
+		}
+		
+		borrowLendList.setVisibility(View.VISIBLE);
 		borrowLendAdapter.notifyDataSetChanged();
-
 		borrowLendList.setAdapter(borrowLendAdapter);
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_borrow_lend_view, menu);
-		return true;
 	}
 }

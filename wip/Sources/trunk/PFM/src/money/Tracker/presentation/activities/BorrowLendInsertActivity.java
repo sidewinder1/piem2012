@@ -33,7 +33,7 @@ public class BorrowLendInsertActivity extends Activity {
 	private int mMonth;
 	private int mDay;
 	private static final int DATE_DIALOG_ID = 0;
-	private static final int DATE_DIALOG_ID1 = 1;
+	private static final int DATE_DIALOG_ID1 = 10;
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
 
@@ -81,12 +81,12 @@ public class BorrowLendInsertActivity extends Activity {
 						String id =cursor.getString(cursor
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone._ID));
 						
-//						Cursor cursor1 = cont.getContactAddress(id);
-//						String address = cursor1
-//								.getString(cursor1
-//										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-//						//cursor1.close(); 
-//						addressEditText.setText(address);
+						Cursor cursor1 = cont.getContactAddress(id);
+						String address = cursor1
+								.getString(cursor1
+										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+						//cursor1.close(); 
+						addressEditText.setText(address);
 						//addressEditText.setText(id);
 					}
 				});
@@ -184,16 +184,18 @@ public class BorrowLendInsertActivity extends Activity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				Log.d("st", "Check 1");
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
 
 		// make dialog for expired date
-		EditText expiredDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
+		EditText expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
 		expiredDateEditText.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				Log.d("ex", "Check 1");
 				showDialog(DATE_DIALOG_ID1);
 			}
 		});
@@ -202,12 +204,14 @@ public class BorrowLendInsertActivity extends Activity {
 
 	// updates the date in the TextView
 	private void updateDisplayStartDate() {
+		Log.d("st", "Check 2");
 		startDateEditText.setText(new StringBuilder().append(mDay).append("/")
 				.append(mMonth + 1).append("/").append(mYear).append(" "));
 	}
 
 	// updates the date in the TextView
 	private void updateDisplayExpiredDate() {
+		Log.d("ex", "Check 2");
 		expiredDateEditText.setText(new StringBuilder().append(mDay)
 				.append("/").append(mMonth + 1).append("/").append(mYear)
 				.append(" "));
@@ -221,6 +225,7 @@ public class BorrowLendInsertActivity extends Activity {
 			mYear = year;
 			mMonth = monthOfYear;
 			mDay = dayOfMonth;
+			Log.d("st", "Check 3");
 			updateDisplayStartDate();
 		}
 	};
@@ -230,6 +235,7 @@ public class BorrowLendInsertActivity extends Activity {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
+			Log.d("ex", "Check 3");
 			mYear = year;
 			mMonth = monthOfYear;
 			mDay = dayOfMonth;
@@ -240,9 +246,11 @@ public class BorrowLendInsertActivity extends Activity {
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
 		case DATE_DIALOG_ID:
+			Log.d("st", "Check 4");
 			((DatePickerDialog) dialog).updateDate(mYear, mMonth, mDay);
 			break;
 		case DATE_DIALOG_ID1:
+			Log.d("ex", "Check 4");
 			((DatePickerDialog) dialog).updateDate(mYear, mMonth, mDay);
 			break;
 		}
@@ -252,18 +260,14 @@ public class BorrowLendInsertActivity extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DATE_DIALOG_ID:
+			Log.d("st", "Check 5");
 			return new DatePickerDialog(this, mDateSetListenerStartDate, mYear,
 					mMonth, mDay);
 		case DATE_DIALOG_ID1:
+			Log.d("ex", "Check 5");
 			return new DatePickerDialog(this, mDateSetListenerExpiredDate,
 					mYear, mMonth, mDay);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_borrow_lend_insert, menu);
-		return true;
 	}
 }

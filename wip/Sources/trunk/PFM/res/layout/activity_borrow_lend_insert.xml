@@ -177,17 +177,19 @@
                     android:layout_marginRight="5dp"
                     android:text="Start Date   "
                     android:textColor="@android:color/white" />
-
+				
                 <EditText
                     android:id="@+id/start_date_edit_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:layout_weight="1"
                     android:editable="false"
-                    android:ems="10"
-                    android:inputType="date" />
-
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:paddingLeft="5dp"
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -205,13 +207,19 @@
 
                 <EditText
                     android:id="@+id/expired_date_edit_text"
-                    android:layout_width="fill_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:layout_weight="1"
                     android:editable="false"
-                    android:inputType="date" />
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:paddingLeft="5dp"
+                    android:textSize="15dp" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

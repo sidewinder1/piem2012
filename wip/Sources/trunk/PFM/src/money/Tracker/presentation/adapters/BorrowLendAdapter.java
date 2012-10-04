@@ -13,13 +13,15 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 
-public class BorrowLendAdapter extends BaseAdapter {
+public class BorrowLendAdapter extends ArrayAdapter<Object> {
 	private Context mContext;
-	private ArrayList<BorrowLend> arrayListBorrowLend;
+	private ArrayList<Object> arrayListBorrowLend;
 	
-	public BorrowLendAdapter(Context context, ArrayList<BorrowLend> object) {
+	public BorrowLendAdapter(Context context, int resource, ArrayList<Object> object) {
+		super(context, resource, object);
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
 		this.arrayListBorrowLend = object;
@@ -43,7 +45,7 @@ public class BorrowLendAdapter extends BaseAdapter {
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		// get selected entry
-		BorrowLend entry = arrayListBorrowLend.get(pos);
+		BorrowLend entry = (BorrowLend) arrayListBorrowLend.get(pos);
 		BorrowLendViewItemActivity borrowLendViewItem = (BorrowLendViewItemActivity) convertView;
 		if(borrowLendViewItem == null)
 		{
