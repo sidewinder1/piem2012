@@ -20,7 +20,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -28,9 +28,12 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
+import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
+import money.Tracker.presentation.customviews.ScheduleItem;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.Schedule;
+import money.Tracker.repository.CategoryRepository;
 import money.Tracker.repository.DetailScheduleRepository;
 import money.Tracker.repository.ScheduleRepository;
 
@@ -42,11 +45,11 @@ public class ScheduleEditActivity extends Activity {
 	private EditText startDateEdit;
 	private EditText endDateEdit;
 	private ToggleButton periodic;
-	private ArrayList<DetailSchedule> array;
-	private ScheduleLivingCostAdapter livingCostAdapter;
 	private EditText total_budget;
 	private int passed_schedule_id = -1;
-
+	LinearLayout list;
+	private CategoryAdapter categoryAdapter;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +58,15 @@ public class ScheduleEditActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		passed_schedule_id = extras.getInt("schedule_id");
 
+		// Add item for detail schedule.
+		categoryAdapter = new CategoryAdapter(this,
+				R.layout.dropdown_list_item,
+				CategoryRepository.getInstance().categories);
+
+		categoryAdapter.notifyDataSetChanged();
+
+		list = (LinearLayout) findViewById(R.id.list);
+		
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
 		
 		total_budget.addTextChangedListener(new TextWatcher() {
@@ -64,9 +76,7 @@ public class ScheduleEditActivity extends Activity {
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				if (livingCostAdapter != null) {
-					livingCostAdapter.updateHint();
-				}
+				updateHint();
 			}
 
 			public void afterTextChanged(Editable s) {
@@ -103,10 +113,9 @@ public class ScheduleEditActivity extends Activity {
 
 		// New Mode
 		if (passed_schedule_id == -1) {
-			array = new ArrayList<DetailSchedule>();
-			// display the current date (this method is below)
 			updateDisplay();
-			array.add(new DetailSchedule(0, 0, Double.parseDouble(initialValue)));
+			addToList(new DetailSchedule(0, 0, Double.parseDouble(initialValue)), -1, false);
+			
 		} else { // Edit mode
 			TextView title = (TextView) findViewById(R.id.schedule_edit_tilte);
 			title.setText("Schedule");
@@ -122,28 +131,23 @@ public class ScheduleEditActivity extends Activity {
 				total_budget.setText(String.valueOf(schedule.budget));
 			}
 
-			array = DetailScheduleRepository.getInstance().getData(
+			ArrayList<DetailSchedule> values = DetailScheduleRepository.getInstance().getData(
 					"Schedule_Id = " + passed_schedule_id);
+			for(DetailSchedule value : values)
+			{
+				addToList(value, -1, true);
+			}
 		}
-
-		livingCostAdapter = new ScheduleLivingCostAdapter(this,
-				R.layout.schedule_edit_item, array, passed_schedule_id != -1);
-
-		livingCostAdapter.notifyDataSetChanged();
 
 		Button cancelButton = (Button) findViewById(R.id.cancelBtn);
 		cancelButton.setFocusableInTouchMode(true);
 		cancelButton.requestFocus();
 		cancelButton.setOnFocusChangeListener(new OnFocusChangeListener() {
 			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus && livingCostAdapter != null) {
-					livingCostAdapter.setEditMode(false);
-				}
 			}
 		});
 
-		ListView list = (ListView) findViewById(R.id.schedule_item_list);
-		list.setAdapter(livingCostAdapter);
+		// list.setAdapter(livingCostAdapter);
 
 		Spinner currency = (Spinner) findViewById(R.id.currency_symbol);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -154,6 +158,75 @@ public class ScheduleEditActivity extends Activity {
 		currency.setAdapter(adapter);
 	}
 
+	int lastAddedItem;
+	private void addToList(DetailSchedule detail, int index, boolean init)
+	{
+		ScheduleItem itemView = new ScheduleItem(this, categoryAdapter);
+		
+		if (init)
+		{
+			itemView.budget.setText(String.valueOf(detail.getBudget()));
+		}
+		else
+		{
+			itemView.budget.setHint(String.valueOf(detail.getBudget()));
+		}
+		
+		itemView.category.setSelection(CategoryRepository.getInstance().getIndex(detail.getCategory()));
+		if(index < 0)
+		{
+			list.addView(itemView);
+		}
+		else
+		{
+			list.addView(itemView, index);
+		}
+		
+		
+		itemView.addBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				for (int index = 0; index < list.getChildCount(); index++)
+				{
+					if (list.getChildAt(index) == v.getParent().getParent())
+					{
+						lastAddedItem = index + 1;
+						addToList(new DetailSchedule(0,0, getNextHint()), lastAddedItem, false);
+					}
+				}
+			}
+		});
+		
+		itemView.removeBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				list.removeView((View)v.getParent().getParent());
+				
+			}
+		});
+	}
+	
+	public void updateHint() {
+		if (list.getChildCount() == 0){return;}
+		
+		EditText lastBudget = ((ScheduleItem)list.getChildAt(lastAddedItem)).budget;
+		if (lastBudget == null)
+		{
+			return;
+		}
+		
+		if ("".equals(lastBudget.getText().toString())) {
+			lastBudget.setHint(String.valueOf(getNextHint()));
+		}
+	}
+
+	public double getNextHint() {
+		double total = getTotalBudget();
+		for (int index = 0;index < list.getChildCount(); index++) {
+			total -= ((ScheduleItem)list.getChildAt(index)).getBudget();
+		}
+
+		return total;
+	}
+	
 	public double getTotalBudget() {
 		String budget_value = total_budget.getText().toString();
 		if ("".equals(budget_value)) {
@@ -168,17 +241,12 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public boolean updateTotalBudget() {
-		double total = 0;
-
-		for (DetailSchedule detail : array) {
-			total += detail.getBudget();
-		}
+		double total = getNextHint();
 
 		if ("".equals(total_budget.getText().toString())) {
 			total_budget.setHint(String.valueOf(total));
 		} else {
 			if (Double.parseDouble(total_budget.getText().toString()) < total) {
-				final double final_total = total;
 				Alert.getInstance().showDialog(this, "Over budget! Add more?",
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
@@ -290,7 +358,8 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	private void saveDetailSchedule(long newScheduleId) {
-		for (DetailSchedule detailItem : array) {
+		for (int index = 0; index < list.getChildCount();index++) {
+			ScheduleItem detailItem = (ScheduleItem)list.getChildAt(index);
 			if (detailItem.getBudget() == 0) {
 				continue;
 			}

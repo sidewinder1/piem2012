@@ -23,6 +23,11 @@ public class CategoryRepository {
 		}
 	}
 	
+	public int getId(int index)
+	{
+		return categories.get(index).getId();
+	}
+	
 	public int getId(String name)
 	{
 		for (Category category : categories)
