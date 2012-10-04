@@ -2,8 +2,11 @@ package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TooManyListenersException;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Alert;
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.adapters.ContactsAutoCompleteCursorAdapter;
 import money.Tracker.presentation.model.Contact;
 import money.Tracker.repository.*;
@@ -14,6 +17,7 @@ import android.provider.ContactsContract;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.Menu;
@@ -26,17 +30,21 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class BorrowLendInsertActivity extends Activity {
-	private int mYear;
-	private int mMonth;
-	private int mDay;
+	private int startDate_Year;
+	private int startDate_Month;
+	private int startDate_Day;
+	private int expiredDate_Year;
+	private int expiredDate_Month;
+	private int expiredDate_Day;
 	private static final int DATE_DIALOG_ID = 0;
 	private static final int DATE_DIALOG_ID1 = 10;
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
-
+	private Alert alert;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +64,12 @@ public class BorrowLendInsertActivity extends Activity {
 		startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
 		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
 
+		alert = new Alert();
+
 		new BorrowLendRepository();
 
-		final ContactInfoRepository cont = new ContactInfoRepository(getApplicationContext());
+		final ContactInfoRepository cont = new ContactInfoRepository(
+				getApplicationContext());
 		Cursor contacts = cont.getContacts2(null);
 		startManagingCursor(contacts);
 		ContactsAutoCompleteCursorAdapter adapter = new ContactsAutoCompleteCursorAdapter(
@@ -76,18 +87,17 @@ public class BorrowLendInsertActivity extends Activity {
 						String number = cursor.getString(cursor
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						phoneEditText.setText(number);
-						
-						//String id = cont.findContact(name, number);
-						String id =cursor.getString(cursor
+
+						// String id = cont.findContact(name, number);
+						String id = cursor.getString(cursor
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone._ID));
-						
+
 						Cursor cursor1 = cont.getContactAddress(id);
-						String address = cursor1
-								.getString(cursor1
-										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-						//cursor1.close(); 
+						String address = cursor1.getString(cursor1
+								.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+						// cursor1.close();
 						addressEditText.setText(address);
-						//addressEditText.setText(id);
+						// addressEditText.setText(id);
 					}
 				});
 
@@ -101,44 +111,69 @@ public class BorrowLendInsertActivity extends Activity {
 				if (interestType.isChecked()) {
 					interestTypeString = "Simple";
 				} else {
-					interestTypeString = "Compound interest";
+					interestTypeString = "Compound";
 				}
 
-				if (debtTypeButton.isChecked()) {
-					long check = SqlHelper.instance.insert("Borrowing",
-							new String[] { "Money", "Interest_type",
-									"Interest_rate", "Start_date",
-									"Expired_date", "Person_name",
-									"Person_Phone", "Person_address" },
-							new String[] {
+				if (!nameEditText.getText().toString().equals("")) {
+					if ((!interestRate.getText().toString().equals("") && !expiredDateEditText
+							.getText().toString().equals(""))
+							|| (interestRate.getText().toString().equals("") && expiredDateEditText
+									.getText().toString().equals(""))) {
+						if (debtTypeButton.isChecked()) {
+							long check = SqlHelper.instance
+									.insert("Borrowing", new String[] {
+											"Money", "Interest_type",
+											"Interest_rate", "Start_date",
+											"Expired_date", "Person_name",
+											"Person_Phone", "Person_address" },
+											new String[] {
+													moneyEditText.getText()
+															.toString(),
+													"'" + interestTypeString
+															+ "'",
+													interestRate.getText()
+															.toString(),
+													startDateEditText.getText()
+															.toString().trim(),
+													expiredDateEditText
+															.getText()
+															.toString().trim(),
+													"'"
+															+ nameEditText
+																	.getText()
+																	.toString()
+															+ "'",
+													"'"
+															+ phoneEditText
+																	.getText()
+																	.toString()
+															+ "'",
+													"'"
+															+ addressEditText
+																	.getText()
+																	.toString()
+															+ "'" });
+							Log.d("Insert", startDateEditText.getText()
+									.toString());
+							Log.d("Insert", expiredDateEditText.getText()
+									.toString());
+						} else {
+							SqlHelper.instance.insert("Lending", new String[] {
+									"Money", "Interest_type", "Interest_rate",
+									"Start_date", "Expired_date",
+									"Person_name", "Person_Phone",
+									"Person_address" }, new String[] {
 									moneyEditText.getText().toString(),
-									"'" + interestTypeString + "'",
+									interestTypeString,
 									interestRate.getText().toString(),
-									startDateEditText.getText().toString()
-											.trim(),
-									expiredDateEditText.getText().toString()
-											.trim(),
-									"'" + nameEditText.getText().toString()
-											+ "'",
-									"'" + phoneEditText.getText().toString()
-											+ "'",
-									"'" + addressEditText.getText().toString()
-											+ "'" });
-					Log.d("Insert", startDateEditText.getText().toString());
-					Log.d("Insert", expiredDateEditText.getText().toString());
-				} else {
-					SqlHelper.instance.insert("Lending", new String[] {
-							"Money", "Interest_type", "Interest_rate",
-							"Start_date", "Expired_date", "Person_name",
-							"Person_Phone", "Person_address" }, new String[] {
-							moneyEditText.getText().toString(),
-							interestTypeString,
-							interestRate.getText().toString(),
-							startDateEditText.getText().toString(),
-							expiredDateEditText.getText().toString(),
-							nameEditText.getText().toString(),
-							phoneEditText.getText().toString(),
-							addressEditText.getText().toString() });
+									startDateEditText.getText().toString(),
+									expiredDateEditText.getText().toString(),
+									nameEditText.getText().toString(),
+									phoneEditText.getText().toString(),
+									addressEditText.getText().toString() });
+						}
+						
+					}
 				}
 
 				setResult(100);
@@ -170,13 +205,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 		// get the current date
 		final Calendar c = Calendar.getInstance();
-		mYear = c.get(Calendar.YEAR);
-		mMonth = c.get(Calendar.MONTH);
-		mDay = c.get(Calendar.DAY_OF_MONTH);
+		expiredDate_Year = startDate_Year = c.get(Calendar.YEAR);
+		expiredDate_Month = startDate_Month = c.get(Calendar.MONTH);
+		expiredDate_Day = startDate_Day = c.get(Calendar.DAY_OF_MONTH);
 
 		// display the current date (this method is below)
 		updateDisplayStartDate();
-		updateDisplayExpiredDate();
+		// updateDisplayExpiredDate();
 
 		// make dialog for start date
 		EditText startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
@@ -205,16 +240,16 @@ public class BorrowLendInsertActivity extends Activity {
 	// updates the date in the TextView
 	private void updateDisplayStartDate() {
 		Log.d("st", "Check 2");
-		startDateEditText.setText(new StringBuilder().append(mDay).append("/")
-				.append(mMonth + 1).append("/").append(mYear).append(" "));
+		startDateEditText.setText(new StringBuilder().append(startDate_Day)
+				.append("/").append(startDate_Month + 1).append("/")
+				.append(startDate_Year).append(" "));
 	}
 
 	// updates the date in the TextView
 	private void updateDisplayExpiredDate() {
-		Log.d("ex", "Check 2");
-		expiredDateEditText.setText(new StringBuilder().append(mDay)
-				.append("/").append(mMonth + 1).append("/").append(mYear)
-				.append(" "));
+		expiredDateEditText.setText(new StringBuilder().append(expiredDate_Day)
+				.append("/").append(expiredDate_Month + 1).append("/")
+				.append(expiredDate_Year).append(" "));
 	}
 
 	// the callback received when the user "sets" the date in the dialog
@@ -222,10 +257,9 @@ public class BorrowLendInsertActivity extends Activity {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
-			mYear = year;
-			mMonth = monthOfYear;
-			mDay = dayOfMonth;
-			Log.d("st", "Check 3");
+			startDate_Year = year;
+			startDate_Month = monthOfYear;
+			startDate_Day = dayOfMonth;
 			updateDisplayStartDate();
 		}
 	};
@@ -235,11 +269,39 @@ public class BorrowLendInsertActivity extends Activity {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
-			Log.d("ex", "Check 3");
-			mYear = year;
-			mMonth = monthOfYear;
-			mDay = dayOfMonth;
-			updateDisplayExpiredDate();
+			expiredDate_Year = year;
+			expiredDate_Month = monthOfYear;
+			expiredDate_Year = dayOfMonth;
+
+			Log.d("errorDateTime", "Check 1");
+			String startDateString = startDate_Day + "/"
+					+ (startDate_Month + 1) + "/" + startDate_Year;
+			Log.d("errorDateTime", startDateString);
+			Date _startDate = Converter.toDate(startDateString, "dd/MM/yyyy");
+			Log.d("errorDateTime", "Check 2");
+			String expiredDateString = expiredDate_Day + "/"
+					+ (expiredDate_Month + 1) + "/" + expiredDate_Year;
+			Log.d("errorDateTime", expiredDateString);
+			Date _expiredDate = Converter.toDate(expiredDateString,
+					"dd/MM/yyyy");
+			Log.d("errorDateTime", "Check 3");
+			Long startDate = _startDate.getTime();
+			Log.d("errorDateTime", "Check 4");
+			Long expiredDate = _expiredDate.getTime();
+			Log.d("errorDateTime", "Check 5");
+
+			if (expiredDate > startDate || expiredDate == startDate) {
+				updateDisplayExpiredDate();
+				Log.d("errorDateTime", "Check 6");
+			} else {
+				alert.show(getApplicationContext(),
+						"You are stupid. Wrong input. Try again");
+				// get the current date
+				final Calendar c = Calendar.getInstance();
+				expiredDate_Year = c.get(Calendar.YEAR);
+				expiredDate_Month = c.get(Calendar.MONTH);
+				expiredDate_Day = c.get(Calendar.DAY_OF_MONTH);
+			}
 		}
 	};
 
@@ -247,11 +309,13 @@ public class BorrowLendInsertActivity extends Activity {
 		switch (id) {
 		case DATE_DIALOG_ID:
 			Log.d("st", "Check 4");
-			((DatePickerDialog) dialog).updateDate(mYear, mMonth, mDay);
+			((DatePickerDialog) dialog).updateDate(startDate_Year,
+					startDate_Month, startDate_Day);
 			break;
 		case DATE_DIALOG_ID1:
 			Log.d("ex", "Check 4");
-			((DatePickerDialog) dialog).updateDate(mYear, mMonth, mDay);
+			((DatePickerDialog) dialog).updateDate(expiredDate_Year,
+					expiredDate_Month, expiredDate_Day);
 			break;
 		}
 	}
@@ -261,12 +325,12 @@ public class BorrowLendInsertActivity extends Activity {
 		switch (id) {
 		case DATE_DIALOG_ID:
 			Log.d("st", "Check 5");
-			return new DatePickerDialog(this, mDateSetListenerStartDate, mYear,
-					mMonth, mDay);
+			return new DatePickerDialog(this, mDateSetListenerStartDate,
+					startDate_Year, startDate_Month, startDate_Day);
 		case DATE_DIALOG_ID1:
 			Log.d("ex", "Check 5");
 			return new DatePickerDialog(this, mDateSetListenerExpiredDate,
-					mYear, mMonth, mDay);
+					expiredDate_Year, expiredDate_Month, expiredDate_Day);
 		}
 		return null;
 	}

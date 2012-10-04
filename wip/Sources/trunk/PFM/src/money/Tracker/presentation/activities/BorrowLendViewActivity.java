@@ -39,18 +39,25 @@ public class BorrowLendViewActivity extends Activity {
 		//borrowLendList.setTextFilterEnabled(true);
 		borrowLendList.setClickable(true);
 		borrowLendList.setItemsCanFocus(false);
+		borrowLendList.setFocusableInTouchMode(false);
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
-				BorrowLend borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);				
+				Log.d("On Click Item", "Check 1");
+				BorrowLend borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);
+				Log.d("On Click Item", "Check 2");
 				if (borrowLend != null)
 				{
 					Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
+					Log.d("On Click Item", "Check 3");
 					borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
+					Log.d("On Click Item", "Check 4");
 					borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
+					Log.d("On Click Item", "Check 5");
 					startActivity(borrowLendDetail);
 				}				
+				Log.d("On Click Item", "Check 6");
 			}
 		});		
 	}
