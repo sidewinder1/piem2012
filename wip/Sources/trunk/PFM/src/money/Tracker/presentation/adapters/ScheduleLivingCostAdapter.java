@@ -73,15 +73,20 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 				if ("".equals(budget.getText().toString())) {
 					budget.setHint(String.valueOf(livingCost.getBudget()));
 				}
+				else
+				{
+					budget.setText(String.valueOf(livingCost.getBudget()));
+				}
+				if (position == lastPosition) {
+					lastBudget = budget;
+					lastBudget.setFocusable(true);
+					lastBudget.requestFocus();
+				}
 			}
 
 			category.setSelection(CategoryRepository.getInstance().getIndex(
 					livingCost.getCategory()));
 			budget.setTag(position);
-
-			if (position == lastPosition) {
-				lastBudget = budget;
-			}
 
 			category.setTag(position);
 			category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

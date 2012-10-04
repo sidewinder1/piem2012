@@ -1,13 +1,16 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.DataManager;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -24,6 +27,7 @@ public class ScheduleViewActivity extends Activity {
 	TextView displayText;
 	LinearLayout chart_legend;
 	ListView list;
+	public static ScheduleViewActivity context;
 	ArrayList<Object> values;
 	private ScheduleViewAdapter scheduleAdapter;
 
@@ -32,7 +36,7 @@ public class ScheduleViewActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule_view);
-
+		context = this;
 		Bundle extras = getIntent().getExtras();
 		isMonthly = extras.getBoolean("Monthly");
 
@@ -87,7 +91,7 @@ public class ScheduleViewActivity extends Activity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 		int menuItemIndex = item.getItemId();
-		int schedule_id = ((Schedule) values.get(info.position)).id;
+		final int schedule_id = ((Schedule) values.get(info.position)).id;
 		switch (menuItemIndex) {
 		case 0: // Edit
 			Intent edit = new Intent(this, ScheduleEditActivity.class);
@@ -95,9 +99,14 @@ public class ScheduleViewActivity extends Activity {
 			startActivity(edit);
 			break;
 		case 1: // Delete
+			Alert.getInstance().showDialog(getParent(),
+					"Delete selected schedule?", new OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							SqlHelper.instance.delete("Schedule", "Id = " + schedule_id);
+							bindData();
+						}
+					});
 
-			SqlHelper.instance.delete("Schedule", "Id = " + schedule_id);
-			bindData();
 			break;
 		}
 
@@ -138,11 +147,12 @@ public class ScheduleViewActivity extends Activity {
 		Schedule t = new Schedule();
 		for (i = 0; i < length; i++) {
 			for (j = 1; j < (length - i); j++) {
-				if (((Schedule)values.get(j - 1)).end_date.compareTo(((Schedule)values.get(j)).end_date) < 0) 
-				{
-					t.setValue((Schedule)values.get(j - 1));
-					((Schedule)values.get(j - 1)).setValue((Schedule) values.get(j));
-					((Schedule)values.get(j)).setValue(t);
+				if (((Schedule) values.get(j - 1)).end_date
+						.compareTo(((Schedule) values.get(j)).end_date) < 0) {
+					t.setValue((Schedule) values.get(j - 1));
+					((Schedule) values.get(j - 1)).setValue((Schedule) values
+							.get(j));
+					((Schedule) values.get(j)).setValue(t);
 				}
 			}
 		}

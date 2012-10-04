@@ -7,6 +7,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.adapters.ScheduleDetailViewAdapter;
 import money.Tracker.presentation.model.DetailSchedule;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 public class ScheduleDetailViewActivity extends Activity {
 	ScheduleDetailViewAdapter detailAdapter;
-
+	int schedule_id;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -23,7 +24,7 @@ public class ScheduleDetailViewActivity extends Activity {
 		setContentView(R.layout.schedule_view_detail);
 
 		Bundle extras = getIntent().getExtras();
-		int schedule_id = extras.getInt("schedule_id");
+		schedule_id = extras.getInt("schedule_id");
 
 		Cursor schedule = SqlHelper.instance.select("Schedule",
 				"id, budget, start_date, end_date, time_id", "id = "
@@ -68,6 +69,8 @@ public class ScheduleDetailViewActivity extends Activity {
 	}
 
 	public void editBtnClicked(View v) {
-		finish();
+		Intent edit = new Intent(this, ScheduleEditActivity.class);
+		edit.putExtra("schedule_id", schedule_id);
+		startActivity(edit);
 	}
 }
