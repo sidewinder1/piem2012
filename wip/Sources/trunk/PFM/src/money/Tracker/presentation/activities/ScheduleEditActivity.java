@@ -101,7 +101,7 @@ public class ScheduleEditActivity extends Activity {
 			array = new ArrayList<DetailSchedule>();
 			// display the current date (this method is below)
 			updateDisplay();
-			array.add(new DetailSchedule(0, Double.parseDouble(initialValue)));
+			array.add(new DetailSchedule(0, 0, Double.parseDouble(initialValue)));
 		} else { // Edit mode
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
 					.getData("Id = " + passed_schedule_id).get(0);
@@ -171,39 +171,70 @@ public class ScheduleEditActivity extends Activity {
 
 	public void doneBtnClicked(View v) {
 		String Time_id = (periodic.isChecked() ? "1" : "0");
-		Cursor scheduleCursor = SqlHelper.instance.select(
-				"Schedule",
-				"End_date",
-				new StringBuilder("Time_Id = ")
-						.append(Time_id)
-						.append(" AND End_date = '")
-						.append(Converter.toString(Converter.toDate(endDateEdit
-								.getText().toString(), "MMMM dd, yyyy")))
-						.append("'").toString());
-		if (passed_schedule_id != -1)
-		{
-			// Update schedule record.
-			
-			return;
-		}
 		
-		if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
-			Toast.makeText(this, "A schedule for this time is existing!",
-					Toast.LENGTH_SHORT).show();
-			return;
-		}
+		if (passed_schedule_id != -1) {
+			String budget_value = String.valueOf(total_budget.getText()
+					.toString());
+			if ("".equals(budget_value)) {
+				budget_value = String
+						.valueOf(total_budget.getHint().toString());
+			}
 
-		// Add new schedule.
-		addSchedule(Time_id);
+			// Update schedule record.
+			updateSchedule(Time_id, budget_value);
+		} 
+		else {
+			// Add new mode.
+			Cursor scheduleCursor = SqlHelper.instance.select(
+					"Schedule",
+					"End_date",
+					new StringBuilder("Time_Id = ")
+							.append(Time_id)
+							.append(" AND End_date = '")
+							.append(Converter.toString(Converter.toDate(endDateEdit
+									.getText().toString(), "MMMM dd, yyyy")))
+							.append("'").toString());
+			if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
+				Toast.makeText(this, "A schedule for this time is existing!",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			// Add new schedule.
+			addSchedule(Time_id);
+		}
 		
 		setResult(100);
 		this.finish();
 	}
 
+	private void updateSchedule(String Time_id, String budget_value) {
+		SqlHelper.instance.update(
+				"Schedule",
+				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
+				new String[] {
+						budget_value,
+						Converter.toString(Converter.toDate(startDateEdit
+								.getText().toString(), "MMMM dd, yyyy")),
+						Converter.toString(Converter.toDate(endDateEdit
+								.getText().toString(), "MMMM dd, yyyy")),
+						Time_id },
+				new StringBuilder("Id = ").append(passed_schedule_id)
+						.toString());
+
+		// Delete all records that have schedule id equals
+		// passed_schedule_id
+		SqlHelper.instance.delete("ScheduleDetail", new StringBuilder(
+				"Schedule_Id = ").append(passed_schedule_id).toString());
+		// Insert new.
+		saveDetailSchedule(passed_schedule_id);
+		Toast.makeText(this, "Updated 1 record sucessfully", Toast.LENGTH_SHORT)
+				.show();
+	}
+
 	private void addSchedule(String Time_id) {
 		String budget_value = String.valueOf(total_budget.getText().toString());
-		if ("".equals(budget_value))
-		{
+		if ("".equals(budget_value)) {
 			budget_value = String.valueOf(total_budget.getHint().toString());
 		}
 		long newScheduleId = SqlHelper.instance.insert(
@@ -217,18 +248,23 @@ public class ScheduleEditActivity extends Activity {
 								.getText().toString(), "MMMM dd, yyyy")),
 						Time_id });
 		if (newScheduleId != -1) {
-			for (DetailSchedule detailItem : array) {
-				SqlHelper.instance.insert("ScheduleDetail", new String[] {
-						"Budget", "Category_id", "Schedule_id" },
-						new String[] { String.valueOf(detailItem.getBudget()),
-								String.valueOf(detailItem.getCategory()),
-								String.valueOf(newScheduleId) });
-			}
+			saveDetailSchedule(newScheduleId);
 
 			Toast.makeText(this, "Save sucessfully", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(this, "Can not save data", Toast.LENGTH_SHORT)
 					.show();
+		}
+	}
+
+	private void saveDetailSchedule(long newScheduleId) {
+		for (DetailSchedule detailItem : array) {
+			SqlHelper.instance.insert(
+					"ScheduleDetail",
+					new String[] { "Budget", "Category_id", "Schedule_id" },
+					new String[] { String.valueOf(detailItem.getBudget()),
+							String.valueOf(detailItem.getCategory()),
+							String.valueOf(newScheduleId) });
 		}
 	}
 

@@ -39,6 +39,8 @@ public class ScheduleRepository implements IDataRepository {
 							do {
 								details.add(new DetailSchedule(
 										detailData.getInt(detailData
+												.getColumnIndex("Id")),
+										detailData.getInt(detailData
 												.getColumnIndex("Category_Id")),
 										detailData.getDouble(detailData
 												.getColumnIndex("Budget")),
