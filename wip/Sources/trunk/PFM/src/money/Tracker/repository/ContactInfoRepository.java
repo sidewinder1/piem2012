@@ -34,7 +34,7 @@ public class ContactInfoRepository {
 	}
 
 	public Cursor getContactAddress(String id) {
-		String addrWhere = ContactsContract.Data.CONTACT_ID + " = ? AND "
+		String addrWhere = ContactsContract.Data._ID + " = ? AND "
 				+ ContactsContract.Data.MIMETYPE + " = ?";
 		String[] addrWhereParameters = new String[] {
 				id,
