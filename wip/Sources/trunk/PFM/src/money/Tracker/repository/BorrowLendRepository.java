@@ -68,32 +68,42 @@ public class BorrowLendRepository {
 	public BorrowLend getDetailData(String tableName, String condition) {
 		BorrowLend bole = new BorrowLend();
 		Cursor borrowLendData = SqlHelper.instance.select(tableName, "*", condition);
-
+		Log.d("condition", condition);
 		if (borrowLendData != null) {
 			if (borrowLendData.moveToFirst()) {
 				do {
+					Log.d("Select", "Check 1");
 					bole.setId(borrowLendData.getInt(borrowLendData
 							.getColumnIndex("ID")));
+					Log.d("Select", "Check 2");
 					bole.setMoney(borrowLendData.getDouble(borrowLendData
 							.getColumnIndex("Money")));
+					Log.d("Select", "Check 3");
 					bole.setInterestType(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Interest_type")));
+					Log.d("Select", "Check 4");
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData
 							.getColumnIndex("Interest_rate")));
+					Log.d("Select", "Check 5");
 					bole.setStartDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Start_date")).trim(), "dd/MM/yyyy"));
+					Log.d("Select", "Check 6");
 					bole.setExpiredDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
+					Log.d("Select", "Check 7");
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
+					Log.d("Select", "Check 8");
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_Phone")));
+					Log.d("Select", "Check 9");
 					bole.setPersonAddress(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Person_address")));
+					Log.d("Select", "Check 10");
 				} while (borrowLendData.moveToNext());
 			}
 		}
