@@ -2,12 +2,17 @@ package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
 
+import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.model.BorrowLend;
 import money.Tracker.repository.BorrowLendRepository;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -29,40 +34,60 @@ public class BorrowLendViewDetailActivity extends Activity {
         TextView interestType = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_type);
         TextView startDate = (TextView) findViewById(R.id.borrow_lend_detail_view_start_date);
         TextView expriedDate = (TextView) findViewById(R.id.borrow_lend_detail_view_expired_date);
-        Button cancelButton = (Button) findViewById(R.id.view_detail_cancel_button);
+        Button cancelButton = (Button) findViewById(R.id.borrow_lend_detail_view_cancel_button);
+        Button editButton = (Button) findViewById(R.id.borrow_lend_detail_view_edit_button);
+        Button deleteButton = (Button) findViewById(R.id.borrow_lend_detail_view_delete_button);
         
         Bundle extras = getIntent().getExtras();
-		int borrow_lend_id = extras.getInt("borrowLendID");
-		boolean checkBorrowing = extras.getBoolean("checkBorrowing");
+		final int borrow_lend_id = extras.getInt("borrowLendID");
+		final boolean checkBorrowing = extras.getBoolean("checkBorrowing");
 		
-		String tableName;
+		final String tableName;
 		if(checkBorrowing)
 			tableName="Borrowing";
 		else
 			tableName="Lending";
-		
-		Log.d("Deatil", "Check 1");
-		BorrowLendRepository bolere = new BorrowLendRepository();
-		Log.d("Deatil", "Check 2");
+				
+		BorrowLendRepository bolere = new BorrowLendRepository();		
 		BorrowLend values = bolere.getDetailData(tableName, "ID=" + borrow_lend_id);
-		Log.d("Deatil", "Check 3");
 		personName.setText(String.valueOf(values.getPersonName()));
-		Log.d("Deatil", "Check 4");
 		personPhone.setText(String.valueOf(values.getPersonPhone()));
-		Log.d("Deatil", "Check 5");
 		personAddress.setText(String.valueOf(values.getPersonAddress()));
-		Log.d("Deatil", "Check 6");
 		total.setText(String.valueOf(values.getMoney()));
-		Log.d("Deatil", "Check 7");
 		interest.setText(String.valueOf(values.getInterestRate()));
-		Log.d("Deatil", "Check 8");
 		interestType.setText(String.valueOf(values.getInterestType()));
-		Log.d("Deatil", "Check 9");
 		startDate.setText(Converter.toString(values.getStartDate(), "MMM dd, yyyy"));
-		Log.d("Deatil", "Check 10");
 		expriedDate.setText(Converter.toString(values.getExpiredDate(), "MMM dd, yyyy"));
-		Log.d("Deatil", "Check 11");
 		
+		// Handle edit button
+		editButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent borrowLendEdit = new Intent(BorrowLendViewDetailActivity.this, BorrowLendInsertActivity.class);
+				borrowLendEdit.putExtra("checkBorrowing", checkBorrowing);
+				borrowLendEdit.putExtra("borrowLendID", borrow_lend_id);
+				startActivity(borrowLendEdit);
+			}
+		});
+		
+		// Handle delete button
+		deleteButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Alert.getInstance().showDialog(getParent(),
+						"Delete selected schedule?", new OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								SqlHelper.instance.delete(tableName, "ID = " + borrow_lend_id);
+							}
+						});
+				
+				BorrowLendViewDetailActivity.this.finish();
+			}
+		});
+		
+		// Handle cancel button
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
