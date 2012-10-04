@@ -2,6 +2,7 @@ package money.Tracker.presentation.customviews;
 
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.adapters.CategoryAdapter;
+import money.Tracker.repository.CategoryRepository;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.Button;
@@ -28,5 +29,18 @@ public class ScheduleItem extends LinearLayout {
 		// Apply the adapter to the spinner
 		category.setAdapter(categoryAdapter);
 
+	}
+
+	public int getCategory()
+	{
+		return CategoryRepository.getInstance().getId(category.getSelectedItemPosition());
+	}
+	
+	public double getBudget() {
+		String budgetValue = String.valueOf(budget.getText());
+		if ("".equals(budgetValue)) {
+			budgetValue = "0";
+		}
+		return Double.parseDouble(budgetValue);
 	}
 }

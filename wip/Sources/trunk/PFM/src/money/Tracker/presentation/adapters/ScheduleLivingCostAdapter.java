@@ -112,6 +112,7 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					if (editMode) {
 						return;
 					}
+					
 					if (s + "" != "") {
 						DetailSchedule item = array.get(Integer.parseInt(String
 								.valueOf(mEditText.getTag())));
