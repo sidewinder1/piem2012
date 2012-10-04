@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.EditText;
-import android.widget.Toast;
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.CustomTextWatcher;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.activities.ScheduleEditActivity;
@@ -42,11 +42,10 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 		categoryAdapter.notifyDataSetChanged();
 	}
 
-	public void setEditMode(boolean editMode)
-	{
+	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
 	}
-	
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ScheduleItem scheduleItemView = (ScheduleItem) convertView;
@@ -75,6 +74,9 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					budget.setHint(String.valueOf(livingCost.getBudget()));
 				}
 			}
+
+			category.setSelection(CategoryRepository.getInstance().getIndex(
+					livingCost.getCategory()));
 			budget.setTag(position);
 
 			if (position == lastPosition) {
@@ -99,9 +101,9 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 
 			budget.addTextChangedListener(new CustomTextWatcher(budget) {
 				public void afterTextChanged(Editable s) {
-					if (editMode){
+					if (editMode) {
 						return;
-						}
+					}
 					if (s + "" != "") {
 						DetailSchedule item = array.get(Integer.parseInt(String
 								.valueOf(mEditText.getTag())));
@@ -141,8 +143,8 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 					// Check before create new item.
 					for (DetailSchedule detail : array) {
 						if (detail.getBudget() == 0) {
-							Toast.makeText(getContext(), "A slot is empty!",
-									Toast.LENGTH_SHORT).show();
+							Alert.getInstance().show(getContext(),
+									"A slot is empty!");
 							return;
 						}
 					}
@@ -157,11 +159,10 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 			// Remove this schedule item.
 			removeButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					if (array.size() < 2)
-					{
+					if (array.size() < 2) {
 						return;
 					}
-					
+
 					array.remove(Integer.parseInt(((Button) v).getTag() + ""));
 					notifyDataSetChanged();
 				}

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/app_background"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -14,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="10dp"
+            android:id="@+id/schedule_edit_tilte"
             android:text="@string/schedule_edit_title"
             android:textColor="@color/white_text_color"
             android:textSize="27dp" />
@@ -42,12 +44,11 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1.2">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -135,7 +136,7 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1.5" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -14,5 +14,5 @@
         android:text="@string/dummy_data"
         android:layout_gravity="center_vertical|center_horizontal"
         android:textColor="@drawable/tab_text_selector"
-        android:textSize="15dip" />
+        android:textSize="18dip" />
 </LinearLayout>

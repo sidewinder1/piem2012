@@ -140,7 +140,7 @@ public class SqlHelper {
 						.append("User_Color TEXT").toString());
 		String[] names = { "Birthday", "Food", "Entertainment", "Shopping",
 				"Others" };
-		String[] colors = { "#99FF0000", "#9900FFFF", "#990000FF", "#990000A0",
+		String[] colors = { "#99FF0000", "#9900FFFF", "#990000FF", "#9900A0A0",
 				"#99ADD8E6" };
 
 		Cursor categoryCheck = select("Category", "*",
