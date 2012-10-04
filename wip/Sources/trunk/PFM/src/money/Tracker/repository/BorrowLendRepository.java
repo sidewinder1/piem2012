@@ -27,8 +27,8 @@ public class BorrowLendRepository {
 	private void createTable() {
 	}
 
-	public ArrayList<BorrowLend> getData(String tableName) {
-		ArrayList<BorrowLend> returnValues = new ArrayList<BorrowLend>();
+	public ArrayList<Object> getData(String tableName) {
+		ArrayList<Object> returnValues = new ArrayList<Object>();
 		Cursor borrowLendData = SqlHelper.instance.select(tableName, "*", "");
 
 		if (borrowLendData != null) {
