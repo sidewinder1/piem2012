@@ -79,8 +79,11 @@ public class ScheduleLivingCostAdapter extends ArrayAdapter<DetailSchedule> {
 				}
 				if (position == lastPosition) {
 					lastBudget = budget;
-					lastBudget.setFocusable(true);
-					lastBudget.requestFocus();
+					if (array.size() != 1)
+					{
+						lastBudget.setFocusable(true);
+						lastBudget.requestFocus();
+					}
 				}
 			}
 

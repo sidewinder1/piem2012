@@ -56,6 +56,7 @@ public class ScheduleEditActivity extends Activity {
 		passed_schedule_id = extras.getInt("schedule_id");
 
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
+		
 		total_budget.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
@@ -63,12 +64,12 @@ public class ScheduleEditActivity extends Activity {
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-			}
-
-			public void afterTextChanged(Editable s) {
 				if (livingCostAdapter != null) {
 					livingCostAdapter.updateHint();
 				}
+			}
+
+			public void afterTextChanged(Editable s) {
 			}
 		});
 
@@ -182,8 +183,8 @@ public class ScheduleEditActivity extends Activity {
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-								total_budget.setText(String
-										.valueOf(final_total));
+//								total_budget.setText(String
+//										.valueOf(final_total));
 								total_budget.setFocusable(true);
 								total_budget.requestFocus();
 							}
@@ -203,6 +204,11 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public void doneBtnClicked(View v) {
+		if (getTotalBudget() == 0) {
+			Alert.getInstance().show(this, "Input somethings.");
+			return;
+		}
+		
 		String Time_id = (periodic.isChecked() ? "1" : "0");
 
 		if (passed_schedule_id != -1) {
@@ -241,11 +247,6 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	private void updateSchedule(String Time_id, String budget_value) {
-		if ("".equals(budget_value)) {
-			Alert.getInstance().show(this, "Input somethings.");
-			return;
-		}
-
 		SqlHelper.instance.update(
 				"Schedule",
 				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
@@ -269,21 +270,11 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	private void addSchedule(String Time_id) {
-		String budget_value = String.valueOf(total_budget.getText().toString());
-		if ("".equals(budget_value)) {
-			budget_value = String.valueOf(total_budget.getHint().toString());
-		}
-
-		if ("".equals(budget_value)) {
-			Alert.getInstance().show(this, "Input somethings.");
-			return;
-		}
-
 		long newScheduleId = SqlHelper.instance.insert(
 				"Schedule",
 				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
 				new String[] {
-						budget_value,
+						String.valueOf(getTotalBudget()),
 						Converter.toString(Converter.toDate(startDateEdit
 								.getText().toString(), "MMMM dd, yyyy")),
 						Converter.toString(Converter.toDate(endDateEdit
