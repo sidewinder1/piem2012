@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
@@ -29,7 +30,6 @@ import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.adapters.CategoryAdapter;
-import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
 import money.Tracker.presentation.customviews.ScheduleItem;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.Schedule;
@@ -76,10 +76,10 @@ public class ScheduleEditActivity extends Activity {
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				updateHint();
 			}
 
 			public void afterTextChanged(Editable s) {
+				updateHint();
 			}
 		});
 
@@ -172,6 +172,26 @@ public class ScheduleEditActivity extends Activity {
 			itemView.budget.setHint(String.valueOf(detail.getBudget()));
 		}
 		
+		itemView.budget.setFocusable(true);
+		itemView.budget.requestFocus();
+		
+		itemView.budget.addTextChangedListener(new TextWatcher() {
+			
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			public void afterTextChanged(Editable s) {
+				if (!"".equals(s.toString()))
+				{
+					updateTotalBudget();
+				}
+			}
+		});
+		
 		itemView.category.setSelection(CategoryRepository.getInstance().getIndex(detail.getCategory()));
 		if(index < 0)
 		{
@@ -185,20 +205,31 @@ public class ScheduleEditActivity extends Activity {
 		
 		itemView.addBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				int lastItem = 0;
 				for (int index = 0; index < list.getChildCount(); index++)
 				{
 					if (list.getChildAt(index) == v.getParent().getParent())
 					{
-						lastAddedItem = index + 1;
-						addToList(new DetailSchedule(0,0, getNextHint()), lastAddedItem, false);
+						lastItem = index + 1;
+					}
+					
+					if (((ScheduleItem)list.getChildAt(index)).getBudget() == 0)
+					{
+						return;
 					}
 				}
+				
+				lastAddedItem = lastItem;
+				addToList(new DetailSchedule(0,0, getNextHint()), lastAddedItem, false);
 			}
 		});
 		
 		itemView.removeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				list.removeView((View)v.getParent().getParent());
+				if (list.getChildCount() > 1)
+				{
+					list.removeView((View)v.getParent().getParent());
+				}
 				
 			}
 		});
@@ -251,8 +282,6 @@ public class ScheduleEditActivity extends Activity {
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-//								total_budget.setText(String
-//										.valueOf(final_total));
 								total_budget.setFocusable(true);
 								total_budget.requestFocus();
 							}
