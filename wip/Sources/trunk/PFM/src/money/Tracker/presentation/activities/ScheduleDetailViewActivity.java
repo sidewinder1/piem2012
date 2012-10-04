@@ -30,10 +30,9 @@ public class ScheduleDetailViewActivity extends Activity {
 						+ schedule_id);
 
 		if (schedule != null && schedule.moveToFirst()) {
-			String format = schedule.getInt(4) == 1 ? "dd/MM/yyyy"
-					: "MMMM dd, yyyy";
+			String format = "dd/MM/yyyy";
 			TextView main_title = (TextView) findViewById(R.id.schedule_detail_main_title);
-			main_title.setText(new StringBuilder(Converter.toString(
+			main_title.setText(new StringBuilder(schedule.getInt(4) == 1 ? "Month: " : "Week: ").append(Converter.toString(
 					Converter.toDate(schedule.getString(2)), format))
 					.append("-")
 					.append(Converter.toString(

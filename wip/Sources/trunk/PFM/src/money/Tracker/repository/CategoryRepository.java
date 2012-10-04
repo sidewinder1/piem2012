@@ -62,7 +62,23 @@ public class CategoryRepository {
 		return "#FF000000";
 	}
 	
+	public int getIndex(int id)
+	{
+		for (int index =0; index < categories.size(); index++)
+		{
+			if (categories.get(index).getId() == id)
+			{
+				return index;
+			}
+		}
+		
+		return 0;
+	}
+	
 	public static CategoryRepository getInstance() {
-		return instance == null ? new CategoryRepository() : instance;
+		if (instance == null) {
+			instance = new CategoryRepository();
+		}
+		return instance;
 	}
 }

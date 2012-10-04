@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.database.Cursor;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.Schedule;
@@ -15,7 +16,10 @@ public class ScheduleRepository implements IDataRepository {
 	}
 
 	public static ScheduleRepository getInstance() {
-		return instance == null ? new ScheduleRepository() : instance;
+		if (instance == null) {
+			instance = new ScheduleRepository();
+		}
+		return instance;
 	}
 
 	public ArrayList<Object> getData(String param) {

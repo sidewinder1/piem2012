@@ -38,7 +38,15 @@ public class ScheduleViewAdapter extends ArrayAdapter<Object> {
 		if (schedule != null) {
 			// Set content to item title:
 			final TextView item_title = ((ScheduleViewItem) scheduleItemView).schedule_item_title;
-			item_title.setText(DateFormat.format("MMMM yyyy", schedule.end_date));
+			if (schedule.time_id == 1)
+			{
+				item_title.setText(DateFormat.format("MMMM yyyy", schedule.end_date));
+			}
+			else
+			{
+				item_title.setText(new StringBuilder(DateFormat.format("dd/MM", schedule.start_date)).append("-")
+						.append(DateFormat.format("dd/MM/yyyy", schedule.end_date)).toString());
+			}
 			
 			// Set content to budget
 			final TextView budget = ((ScheduleViewItem) scheduleItemView).total_budget;

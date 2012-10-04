@@ -3,7 +3,6 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -12,16 +11,19 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.adapters.ScheduleLivingCostAdapter;
@@ -103,6 +105,9 @@ public class ScheduleEditActivity extends Activity {
 			updateDisplay();
 			array.add(new DetailSchedule(0, 0, Double.parseDouble(initialValue)));
 		} else { // Edit mode
+			TextView title = (TextView) findViewById(R.id.schedule_edit_tilte);
+			title.setText("Schedule");
+			
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
 					.getData("Id = " + passed_schedule_id).get(0);
 			if (schedule != null) {
@@ -123,6 +128,18 @@ public class ScheduleEditActivity extends Activity {
 
 		livingCostAdapter.notifyDataSetChanged();
 
+		Button cancelButton = (Button)findViewById(R.id.cancelBtn);
+		cancelButton.setFocusableInTouchMode(true);
+		cancelButton.requestFocus();
+		cancelButton.setOnFocusChangeListener(new OnFocusChangeListener() {
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus && livingCostAdapter != null)
+				{
+					livingCostAdapter.setEditMode(false);
+				}
+			}
+		});
+		
 		ListView list = (ListView) findViewById(R.id.schedule_item_list);
 		list.setAdapter(livingCostAdapter);
 
@@ -159,9 +176,11 @@ public class ScheduleEditActivity extends Activity {
 			total_budget.setHint(String.valueOf(total));
 		} else {
 			if (Double.parseDouble(total_budget.getText().toString()) < total) {
-				Toast toast = Toast.makeText(this, "Over budget!",
-						Toast.LENGTH_SHORT);
-				toast.show();
+				if (!Alert.getInstance().show(this, "Over budget!"))
+				{
+					total_budget.setText(String.valueOf(total));
+				}
+				
 				return false;
 			}
 		}
@@ -195,8 +214,7 @@ public class ScheduleEditActivity extends Activity {
 									.getText().toString(), "MMMM dd, yyyy")))
 							.append("'").toString());
 			if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
-				Toast.makeText(this, "A schedule for this time is existing!",
-						Toast.LENGTH_SHORT).show();
+				Alert.getInstance().show(this, "A schedule for this time is existing!");
 				return;
 			}
 
@@ -208,7 +226,15 @@ public class ScheduleEditActivity extends Activity {
 		this.finish();
 	}
 
+	
+	
 	private void updateSchedule(String Time_id, String budget_value) {
+		if ("".equals(budget_value))
+		{
+			Alert.getInstance().show(this, "Input somethings.");
+			return;
+		}
+		
 		SqlHelper.instance.update(
 				"Schedule",
 				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
@@ -228,8 +254,7 @@ public class ScheduleEditActivity extends Activity {
 				"Schedule_Id = ").append(passed_schedule_id).toString());
 		// Insert new.
 		saveDetailSchedule(passed_schedule_id);
-		Toast.makeText(this, "Updated 1 record sucessfully", Toast.LENGTH_SHORT)
-				.show();
+		Alert.getInstance().show(this, "Updated 1 record sucessfully");
 	}
 
 	private void addSchedule(String Time_id) {
@@ -237,6 +262,13 @@ public class ScheduleEditActivity extends Activity {
 		if ("".equals(budget_value)) {
 			budget_value = String.valueOf(total_budget.getHint().toString());
 		}
+		
+		if ("".equals(budget_value))
+		{
+			Alert.getInstance().show(this, "Input somethings.");
+			return;
+		}
+		
 		long newScheduleId = SqlHelper.instance.insert(
 				"Schedule",
 				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
@@ -250,15 +282,19 @@ public class ScheduleEditActivity extends Activity {
 		if (newScheduleId != -1) {
 			saveDetailSchedule(newScheduleId);
 
-			Toast.makeText(this, "Save sucessfully", Toast.LENGTH_SHORT).show();
+			Alert.getInstance().show(this, "Save sucessfully");
 		} else {
-			Toast.makeText(this, "Can not save data", Toast.LENGTH_SHORT)
-					.show();
+			Alert.getInstance().show(this, "Can not save data");
 		}
 	}
 
 	private void saveDetailSchedule(long newScheduleId) {
 		for (DetailSchedule detailItem : array) {
+			if (detailItem.getBudget() == 0)
+			{
+				continue;
+			}
+			
 			SqlHelper.instance.insert(
 					"ScheduleDetail",
 					new String[] { "Budget", "Category_id", "Schedule_id" },
