@@ -77,7 +77,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:hint="Name" />
+                android:hint="Name"
+                android:maxLength="30"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/phone_edit_text"
@@ -86,6 +88,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Phone"
+                android:maxLength="13"
                 android:inputType="number" />
 
             <EditText
@@ -94,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:hint="Adress"
+                android:hint="Address"
                 android:inputType="text" />
 
             <EditText
@@ -104,6 +107,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Money"
+                android:maxLength="20"
                 android:inputType="number" />
 
             <LinearLayout
@@ -152,6 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
+                    android:maxLength="3"
                     android:inputType="number" />
 
                 <TextView

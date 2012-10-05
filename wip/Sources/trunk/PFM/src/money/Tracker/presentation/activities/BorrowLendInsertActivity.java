@@ -135,7 +135,7 @@ public class BorrowLendInsertActivity extends Activity {
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						phoneEditText.setText(number);
 
-						// String id = cont.findContact(name, number);
+						/*// String id = cont.findContact(name, number);
 						String id = cursor.getString(cursor
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone._ID));
 
@@ -144,7 +144,7 @@ public class BorrowLendInsertActivity extends Activity {
 								.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
 						// cursor1.close();
 						addressEditText.setText(address);
-						// addressEditText.setText(id);
+						// addressEditText.setText(id);*/
 					}
 				});
 
@@ -153,7 +153,7 @@ public class BorrowLendInsertActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				if (borrowLendID != 1)
+				if (borrowLendID != -1)
 					SqlHelper.instance.delete(_tableName, "ID = " + borrowLendID);
 
 				String interestTypeString;
@@ -164,7 +164,8 @@ public class BorrowLendInsertActivity extends Activity {
 					interestTypeString = "Compound";
 				}
 
-				if (!nameEditText.getText().toString().equals("")) {
+				if (!nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals("")) 
+				{
 					if ((!interestRate.getText().toString().equals("") && !expiredDateEditText
 							.getText().toString().equals(""))
 							|| (interestRate.getText().toString().equals("") && expiredDateEditText
@@ -204,12 +205,19 @@ public class BorrowLendInsertActivity extends Activity {
 									phoneEditText.getText().toString(),
 									addressEditText.getText().toString() });
 						}
-
+						
+						setResult(100);
+						BorrowLendInsertActivity.this.finish();
+					}
+					else
+					{
+						alert.show(getApplicationContext(), "You have to input or not interest rate and expired date");
 					}
 				}
-
-				setResult(100);
-				BorrowLendInsertActivity.this.finish();
+				else
+				{
+					alert.show(getApplicationContext(), "You have to input name and total of money");
+				}
 			}
 		});
 
@@ -303,7 +311,7 @@ public class BorrowLendInsertActivity extends Activity {
 				int dayOfMonth) {
 			expiredDate_Year = year;
 			expiredDate_Month = monthOfYear;
-			expiredDate_Year = dayOfMonth;
+			expiredDate_Day = dayOfMonth;
 
 			Log.d("errorDateTime", "Check 1");
 			String startDateString = startDate_Day + "/"
@@ -318,9 +326,9 @@ public class BorrowLendInsertActivity extends Activity {
 					"dd/MM/yyyy");
 			Log.d("errorDateTime", "Check 3");
 			Long startDate = _startDate.getTime();
-			Log.d("errorDateTime", "Check 4");
+			Log.d("errorDateTime", startDate.toString());
 			Long expiredDate = _expiredDate.getTime();
-			Log.d("errorDateTime", "Check 5");
+			Log.d("errorDateTime", expiredDate.toString());
 
 			if (expiredDate > startDate || expiredDate == startDate) {
 				updateDisplayExpiredDate();

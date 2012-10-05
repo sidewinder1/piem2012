@@ -48,9 +48,18 @@ public class BorrowLendRepository {
 					bole.setStartDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Start_date")).trim(), "dd/MM/yyyy"));
-					bole.setExpiredDate(Converter.toDate(borrowLendData
+					if (!borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
+									.getColumnIndex("Expired_date")).trim().equals(""))
+					{
+						bole.setExpiredDate(Converter.toDate(borrowLendData
+								.getString(borrowLendData
+										.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
+					}
+					else
+					{
+						bole.setExpiredDate(null);
+					}
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData
@@ -72,38 +81,43 @@ public class BorrowLendRepository {
 		if (borrowLendData != null) {
 			if (borrowLendData.moveToFirst()) {
 				do {
-					Log.d("Select", "Check 1");
 					bole.setId(borrowLendData.getInt(borrowLendData
 							.getColumnIndex("ID")));
-					Log.d("Select", "Check 2");
 					bole.setMoney(borrowLendData.getDouble(borrowLendData
-							.getColumnIndex("Money")));
-					Log.d("Select", "Check 3");
+							.getColumnIndex("Money")));					
 					bole.setInterestType(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Interest_type")));
-					Log.d("Select", "Check 4");
+									.getColumnIndex("Interest_type")));					
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData
 							.getColumnIndex("Interest_rate")));
-					Log.d("Select", "Check 5");
 					bole.setStartDate(Converter.toDate(borrowLendData
 							.getString(borrowLendData
 									.getColumnIndex("Start_date")).trim(), "dd/MM/yyyy"));
-					Log.d("Select", "Check 6");
-					bole.setExpiredDate(Converter.toDate(borrowLendData
+					Log.d("Select", "Check 1");
+					if (!borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
-					Log.d("Select", "Check 7");
+									.getColumnIndex("Expired_date")).trim().equals(""))
+					{
+						Log.d("Select", "Check 2");
+						bole.setExpiredDate(Converter.toDate(borrowLendData
+								.getString(borrowLendData
+										.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
+						Log.d("Select", "Check 3");
+					}
+					else
+					{
+						Log.d("Select", "Check 4");
+						bole.setExpiredDate(null);
+						Log.d("Select", "Check 5");
+					}
+					Log.d("Select", "Check 6");
 					bole.setPersonName(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_name")));
-					Log.d("Select", "Check 8");
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Person_Phone")));
-					Log.d("Select", "Check 9");
 					bole.setPersonAddress(borrowLendData
 							.getString(borrowLendData
-									.getColumnIndex("Person_address")));
-					Log.d("Select", "Check 10");
+									.getColumnIndex("Person_address")));					
 				} while (borrowLendData.moveToNext());
 			}
 		}
