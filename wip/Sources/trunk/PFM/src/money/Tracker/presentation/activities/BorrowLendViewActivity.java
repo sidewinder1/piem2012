@@ -39,7 +39,7 @@ public class BorrowLendViewActivity extends Activity {
 		//borrowLendList.setTextFilterEnabled(true);
 		borrowLendList.setClickable(true);
 		borrowLendList.setItemsCanFocus(false);
-		borrowLendList.setFocusableInTouchMode(false);
+		//borrowLendList.setFocusableInTouchMode(false);
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position,
 					long id) {
@@ -52,9 +52,9 @@ public class BorrowLendViewActivity extends Activity {
 					Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
 					Log.d("On Click Item", "Check 3");
 					borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
-					Log.d("On Click Item", "Check 4");
+					Log.d("On Click Item", "Check 4 - " + borrowLend.getId());
 					borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
-					Log.d("On Click Item", "Check 5");
+					Log.d("On Click Item", "Check 5 - " + checkBorrowing);
 					startActivity(borrowLendDetail);
 				}				
 				Log.d("On Click Item", "Check 6");

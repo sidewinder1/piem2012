@@ -58,7 +58,10 @@ public class BorrowLendAdapter extends ArrayAdapter<Object> {
 		borrowLendViewItem.personNameTextView.setText(entry.getPersonName());
 		borrowLendViewItem.moneyTextView.setText(String.valueOf(entry.getMoney()));
 		borrowLendViewItem.startDateTextView.setText(Converter.toString(entry.getStartDate(), "MMM dd, yyyy"));
-		borrowLendViewItem.expiredDateTextView.setText(Converter.toString(entry.getExpiredDate(), "MMM dd, yyyy"));
+		if (entry.getExpiredDate() != null)
+			borrowLendViewItem.expiredDateTextView.setText(Converter.toString(entry.getExpiredDate(), "MMM dd, yyyy"));
+		else
+			borrowLendViewItem.expiredDateTextView.setText("");
 		
 		return borrowLendViewItem;
 	}
