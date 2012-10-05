@@ -255,7 +255,7 @@ public class ScheduleEditActivity extends Activity {
 			total -= ((ScheduleItem)list.getChildAt(index)).getBudget();
 		}
 
-		return total;
+		return Math.max(0, total);
 	}
 	
 	public double getTotalBudget() {
@@ -268,7 +268,7 @@ public class ScheduleEditActivity extends Activity {
 			}
 		}
 
-		return Double.parseDouble(budget_value);
+		return Math.max(0, Double.parseDouble(budget_value));
 	}
 
 	public boolean updateTotalBudget() {
