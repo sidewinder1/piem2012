@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
+import android.util.Log;
 import android.widget.EditText;
 
 public class ContactInfoRepository {
@@ -21,7 +22,6 @@ public class ContactInfoRepository {
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone._ID,
 				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-				ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY,
 				ContactsContract.CommonDataKinds.Phone.NUMBER };
 		Cursor people = ctx.getContentResolver().query(
 				uri,
@@ -33,34 +33,72 @@ public class ContactInfoRepository {
 		return people;
 	}
 
-	public Cursor getContactAddress(Context context, String id) {
-		ContentResolver mContent = context.getContentResolver();
-		String[] projection = new String[] {
-				ContactsContract.CommonDataKinds.StructuredPostal.STREET,
-				ContactsContract.CommonDataKinds.StructuredPostal.DISPLAY_NAME};
-		return mContent.query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
-				"UPPER(" + ContactsContract.CommonDataKinds.StructuredPostal.DISPLAY_NAME
-						+ ") LIKE '" + id.toString().toUpperCase()
-						+ "'", null, ContactsContract.Contacts.DISPLAY_NAME
-						+ " COLLATE LOCALIZED ASC");
+	public Cursor getContactAddress(String id) {
+		String[] projection = new String[] { ContactsContract.CommonDataKinds.StructuredPostal.STREET };
+		// ContactsContract.CommonDataKinds.StructuredPostal.DISPLAY_NAME};
+		Log.d("Contact", id);
+		Cursor returnCursor = ctx.getContentResolver().query(
+				ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI,
+				projection, null, null, null);
+		Log.d("Contact", "Get contact completed");
+		return returnCursor;
 	}
-	
-	public String findContact(String display_name, String phone_number) 
-	{      
-		ContentResolver contentResolver = ctx.getContentResolver();     
-		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI;     
-		String[] projection = new String[] { PhoneLookup._ID };     
-		String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ? AND " + ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?";     
-		String[] selectionArguments = {display_name, phone_number};     
-		Cursor cursor = contentResolver.query(uri, projection, selection, selectionArguments, null);      
-		if (cursor != null) 
-		{         
-			while (cursor.moveToNext()) 
-			{             
-				return cursor.getString(0);         
-			}     
-		}     
-		return ""; 
-	} 
+
+	public String getAddress(String _name) {
+		String returnNameAddress = "";
+
+		ContentResolver cr = ctx.getContentResolver();
+
+		Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
+				null, null, null);
+
+		if (cur.getCount() > 0) {
+			while (cur.moveToNext()) {
+				String id = cur.getString(cur
+						.getColumnIndex(ContactsContract.Contacts._ID));
+				String name = cur
+						.getString(cur
+								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+				if (name.equals(_name)) {
+					// Get Postal Address....
+
+					String addrWhere = ContactsContract.Data.CONTACT_ID
+							+ " = ? AND " + ContactsContract.Data.MIMETYPE
+							+ " = ?";
+					String[] addrWhereParams = new String[] {
+							id,
+							ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE };
+					// Cursor addrCur =
+					// cr.query(ContactsContract.Data.CONTENT_URI,
+					// null, null, null, null);
+					Cursor addrCur = cr.query(
+							ContactsContract.Data.CONTENT_URI, null, addrWhere,
+							addrWhereParams, null);
+
+					while (addrCur.moveToNext()) {
+						String poBox = addrCur
+								.getString(addrCur
+										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POBOX));
+						String street = addrCur
+								.getString(addrCur
+										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+						String city = addrCur
+								.getString(addrCur
+										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+						String country = addrCur
+								.getString(addrCur
+										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+
+						// Do something with these....
+						returnNameAddress = street;
+
+					}
+					addrCur.close();
+				}
+			}
+		}
+
+		return returnNameAddress;
+	}
 }

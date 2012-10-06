@@ -129,6 +129,8 @@ public class BorrowLendViewActivity extends Activity {
 		totalMoneyTextView.setText("" + totalMoney);
 		if (!latesExpiredDateString.equals("1/1/1900"))
 			latesExpiredDateTextView.setText(latesExpiredDateString);
+		else
+			latesExpiredDateTextView.setText("");
 	}
 
 
