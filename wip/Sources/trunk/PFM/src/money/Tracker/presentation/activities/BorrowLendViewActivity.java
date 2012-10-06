@@ -179,7 +179,7 @@ public class BorrowLendViewActivity extends Activity {
 		borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(info.position);
 		switch (menuItemIndex) {
 		case 0: // Edit
-			Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
+			Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendInsertActivity.class);
 			borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
 			borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
 			startActivity(borrowLendDetail);
