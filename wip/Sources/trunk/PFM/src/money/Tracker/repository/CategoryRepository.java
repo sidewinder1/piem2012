@@ -11,6 +11,10 @@ public class CategoryRepository {
 	private static CategoryRepository instance;
 	public ArrayList<Category> categories = new ArrayList<Category>();
 	public CategoryRepository() {
+		updateData();
+	}
+
+	public void updateData() {
 		Cursor categoryCursor = SqlHelper.instance.select("Category", "*", null);
 		if (categoryCursor != null && categoryCursor.moveToFirst())
 		{

@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -51,7 +52,7 @@ public class ScheduleEditActivity extends Activity {
 	private int passed_schedule_id = -1;
 	LinearLayout list;
 	private CategoryAdapter categoryAdapter;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,18 +69,18 @@ public class ScheduleEditActivity extends Activity {
 		categoryAdapter.notifyDataSetChanged();
 
 		list = (LinearLayout) findViewById(R.id.list);
-		
+
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
-		
+
 		total_budget.setOnFocusChangeListener(new OnFocusChangeListener() {
 			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus && getTotalBudget() < getTotalDetailBudget())
-				{
-					Alert.getInstance().show(getBaseContext(), "Budget is not enough!");
+				if (!hasFocus && getTotalBudget() < getTotalDetailBudget()) {
+					Alert.getInstance().show(getBaseContext(),
+							"Budget is not enough!");
 				}
 			}
 		});
-		
+
 		total_budget.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
@@ -125,8 +126,10 @@ public class ScheduleEditActivity extends Activity {
 		// New Mode
 		if (passed_schedule_id == -1) {
 			updateDisplay();
-			addToList(new DetailSchedule(0, 0, Double.parseDouble(initialValue)), -1, false);
-			
+			addToList(
+					new DetailSchedule(0, 0, Double.parseDouble(initialValue)),
+					-1, false);
+
 		} else { // Edit mode
 			TextView title = (TextView) findViewById(R.id.schedule_edit_tilte);
 			title.setText("Schedule");
@@ -142,10 +145,10 @@ public class ScheduleEditActivity extends Activity {
 				total_budget.setText(String.valueOf(schedule.budget));
 			}
 
-			ArrayList<DetailSchedule> values = DetailScheduleRepository.getInstance().getData(
-					"Schedule_Id = " + passed_schedule_id);
-			for(DetailSchedule value : values)
-			{
+			ArrayList<DetailSchedule> values = DetailScheduleRepository
+					.getInstance().getData(
+							"Schedule_Id = " + passed_schedule_id);
+			for (DetailSchedule value : values) {
 				addToList(value, -1, true);
 			}
 		}
@@ -160,111 +163,145 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	int lastAddedItem;
-	private void addToList(DetailSchedule detail, int index, boolean init)
-	{
+
+	private void addToList(DetailSchedule detail, int index, boolean init) {
 		ScheduleItem itemView = new ScheduleItem(this, categoryAdapter);
 		itemView.category.setTag(itemView.category_edit);
-		
-		if (init)
-		{
+
+		if (init) {
 			itemView.budget.setText(String.valueOf(detail.getBudget()));
-		}
-		else
-		{
+		} else {
 			itemView.budget.setHint(String.valueOf(detail.getBudget()));
 		}
-		
+
 		itemView.budget.requestFocus();
-		
+
 		itemView.budget.addTextChangedListener(new TextWatcher() {
 			double sValue = 0;
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 			}
-			
+
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				if (!"".equals(s.toString()))
-				{
+				if (!"".equals(s.toString())) {
 					sValue = Double.parseDouble(s.toString());
 				}
 			}
-			
+
 			public void afterTextChanged(Editable s) {
-				if (!"".equals(s.toString()) && Double.parseDouble(s.toString()) > sValue)
-				{
+				if (!"".equals(s.toString())
+						&& Double.parseDouble(s.toString()) > sValue) {
 					updateTotalBudget();
 				}
 			}
 		});
-		
-		itemView.category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int pos, long id) {
-				Category item = (Category) parent.getItemAtPosition(pos);
-				if (item != null && "Others".equals(item.getName())) {
-					parent.setVisibility(View.GONE);
-					View text = (View)parent.getTag();
-					text.setVisibility(View.VISIBLE);
-				}
-			}
 
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
-		
-		itemView.category.setSelection(CategoryRepository.getInstance().getIndex(detail.getCategory()));
-		if(index < 0)
-		{
+		itemView.category
+				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int pos, long id) {
+						Category item = (Category) parent
+								.getItemAtPosition(pos);
+						if (item != null && "Others".equals(item.getName())) {
+							parent.setVisibility(View.GONE);
+							View text = (View) parent.getTag();
+							text.setVisibility(View.VISIBLE);
+							text.requestFocus();
+
+							// Change color for new category.
+							Cursor color = SqlHelper.instance.select(
+									"UserColor", "User_Color", null);
+							if (color != null && color.moveToFirst()) {
+								text.setBackgroundColor(Color.parseColor(color
+										.getString(0)));
+								text.setTag(color.getString(0));
+								SqlHelper.instance.delete("UserColor",
+										new StringBuilder("User_Color = '")
+												.append(color.getString(0))
+												.append("'").toString());
+							}
+						}
+					}
+
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				});
+
+		itemView.category.setSelection(CategoryRepository.getInstance()
+				.getIndex(detail.getCategory()));
+		if (index < 0) {
 			list.addView(itemView);
-		}
-		else
-		{
+		} else {
 			list.addView(itemView, index);
 		}
-		
-		
+
 		itemView.addBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				int lastItem = 0;
-				for (int index = 0; index < list.getChildCount(); index++)
-				{
-					if (list.getChildAt(index) == v.getParent().getParent())
-					{
+				for (int index = 0; index < list.getChildCount(); index++) {
+					if (list.getChildAt(index) == v.getParent().getParent()) {
 						lastItem = index + 1;
 					}
-					
-					if (((ScheduleItem)list.getChildAt(index)).getBudget() <= 0)
-					{
-						Alert.getInstance().show(getBaseContext(), "A slot is empty");
+					ScheduleItem item = (ScheduleItem) list.getChildAt(index);
+					if (item.getBudget() <= 0) {
+						Alert.getInstance().show(getBaseContext(),
+								"A slot is empty");
+						item.budget.requestFocus();
+						return;
+					}
+
+					if (item.category_edit.getVisibility() == View.VISIBLE
+							&& "".equals(item.category_edit.getText()
+									.toString())) {
+						Alert.getInstance().show(getBaseContext(),
+								"New category is empty");
+						item.category_edit.requestFocus();
 						return;
 					}
 				}
-				
+
 				lastAddedItem = lastItem;
-				addToList(new DetailSchedule(0,0, getNextHint()), lastAddedItem, false);
+				addToList(new DetailSchedule(0, 0, getNextHint()),
+						lastAddedItem, false);
 			}
 		});
-		
+
 		itemView.removeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (list.getChildCount() > 1)
-				{
-					list.removeView((View)v.getParent().getParent());
+				if (list.getChildCount() > 1) {
+
+					ScheduleItem item = (ScheduleItem) v.getParent()
+							.getParent();
+
+					if (item == null) {
+						return;
+					}
+
+					// Insert userColor to db again.
+					SqlHelper.instance.insert("UserColor",
+							new String[] { "User_Color" },
+							new String[] { String.valueOf(item.category_edit
+									.getTag()) });
+
+					list.removeView(item);
 				}
-				
+
 			}
 		});
 	}
-	
+
 	public void updateHint() {
-		if (list.getChildCount() == 0){return;}
-		
-		EditText lastBudget = ((ScheduleItem)list.getChildAt(lastAddedItem)).budget;
-		if (lastBudget == null)
-		{
+		if (list.getChildCount() == 0) {
 			return;
 		}
-		
+
+		EditText lastBudget = ((ScheduleItem) list.getChildAt(lastAddedItem)).budget;
+		if (lastBudget == null) {
+			return;
+		}
+
 		if ("".equals(lastBudget.getText().toString())) {
 			lastBudget.setHint(String.valueOf(getNextHint()));
 		}
@@ -273,17 +310,16 @@ public class ScheduleEditActivity extends Activity {
 	public double getNextHint() {
 		return Math.max(0, getTotalBudget() - getTotalDetailBudget());
 	}
-	
-	public double getTotalDetailBudget()
-	{
+
+	public double getTotalDetailBudget() {
 		double total = 0;
-		for (int index = 0;index < list.getChildCount(); index++) {
-			total += ((ScheduleItem)list.getChildAt(index)).getBudget();
+		for (int index = 0; index < list.getChildCount(); index++) {
+			total += ((ScheduleItem) list.getChildAt(index)).getBudget();
 		}
 
 		return Math.max(0, total);
 	}
-	
+
 	public double getTotalBudget() {
 		String budget_value = total_budget.getText().toString();
 		if ("".equals(budget_value)) {
@@ -330,12 +366,16 @@ public class ScheduleEditActivity extends Activity {
 			Alert.getInstance().show(this, "Total budget!");
 			return;
 		}
-		
+
 		if (getTotalBudget() < getTotalDetailBudget()) {
 			Alert.getInstance().show(this, "Total budget not enough!");
 			return;
 		}
-		
+
+		if (!hasNewCategory()) {
+			return;
+		}
+
 		String Time_id = (periodic.isChecked() ? "1" : "0");
 
 		if (passed_schedule_id != -1) {
@@ -368,7 +408,8 @@ public class ScheduleEditActivity extends Activity {
 			// Add new schedule.
 			addSchedule(Time_id);
 		}
-
+		
+		CategoryRepository.getInstance().updateData();
 		setResult(100);
 		this.finish();
 	}
@@ -416,18 +457,42 @@ public class ScheduleEditActivity extends Activity {
 		}
 	}
 
+	public boolean hasNewCategory() {
+		for (int index = 0; index < list.getChildCount(); index++) {
+			ScheduleItem item = (ScheduleItem) list.getChildAt(index);
+			if (item.category_edit.getVisibility() == View.VISIBLE
+					&& "".equals(item.category_edit.getText().toString())) {
+				Alert.getInstance().show(this, "Category is empty");
+				item.category_edit.requestFocus();
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	private void saveDetailSchedule(long newScheduleId) {
-		for (int index = 0; index < list.getChildCount();index++) {
-			ScheduleItem detailItem = (ScheduleItem)list.getChildAt(index);
+		for (int index = 0; index < list.getChildCount(); index++) {
+			ScheduleItem detailItem = (ScheduleItem) list.getChildAt(index);
 			if (detailItem.getBudget() == 0) {
 				continue;
 			}
 
+			long category_id = detailItem.getCategory();
+			if (detailItem.category_edit.getVisibility() == View.VISIBLE) {
+				category_id = SqlHelper.instance.insert(
+						"Category",
+						new String[] { "Name", "User_Color" },
+						new String[] {
+								detailItem.category_edit.getText().toString(),
+								String.valueOf(detailItem.category_edit
+										.getTag()) });
+			}
 			SqlHelper.instance.insert(
 					"ScheduleDetail",
 					new String[] { "Budget", "Category_id", "Schedule_id" },
 					new String[] { String.valueOf(detailItem.getBudget()),
-							String.valueOf(detailItem.getCategory()),
+							String.valueOf(category_id),
 							String.valueOf(newScheduleId) });
 		}
 	}

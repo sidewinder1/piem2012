@@ -173,7 +173,7 @@ public class SqlHelper {
 
 		if (colorCheck != null && !colorCheck.moveToFirst()) {
 			for (int index = 0; index < color_codes.length; index++) {
-				SqlHelper.instance.insert("Color", new String[] {
+				SqlHelper.instance.insert("UserColor", new String[] {
 						"User_Color" }, new String[] {
 						color_codes[index] });
 			}

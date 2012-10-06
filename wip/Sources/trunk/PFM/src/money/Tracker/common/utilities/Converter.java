@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.graphics.Color;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -14,7 +15,13 @@ public class Converter {
 		return String.valueOf(android.text.format.DateFormat.format(format,
 				date));
 	}
-
+	
+	public static String toString(Color color)
+	{
+		
+		return "#99000000";
+	}
+	
 	public static String toString(Date date) {
 		return String.valueOf(android.text.format.DateFormat.format(
 				dateFormatString, date));
