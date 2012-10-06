@@ -92,6 +92,10 @@ public class ScheduleEditActivity extends Activity {
 
 			public void afterTextChanged(Editable s) {
 				updateHint();
+				if (!"".equals(total_budget.getText().toString()) && String.valueOf(s).endsWith("."))
+				{
+					total_budget.setText(Converter.toString(Double.parseDouble(s.toString())));
+				}
 			}
 		});
 
@@ -142,7 +146,7 @@ public class ScheduleEditActivity extends Activity {
 						"MMMM dd, yyyy"));
 				endDateEdit.setText(Converter.toString(schedule.end_date,
 						"MMMM dd, yyyy"));
-				total_budget.setText(String.valueOf(schedule.budget));
+				total_budget.setText(Converter.toString(schedule.budget));
 			}
 
 			ArrayList<DetailSchedule> values = DetailScheduleRepository
@@ -169,12 +173,12 @@ public class ScheduleEditActivity extends Activity {
 		itemView.category.setTag(itemView.category_edit);
 
 		if (init) {
-			itemView.budget.setText(String.valueOf(detail.getBudget()));
+			itemView.budget.setText(Converter.toString(detail.getBudget()));
 		} else {
-			itemView.budget.setHint(String.valueOf(detail.getBudget()));
+			itemView.budget.setHint(Converter.toString(detail.getBudget()));
 		}
 
-		itemView.budget.requestFocus();
+		// itemView.budget.requestFocus();
 
 		itemView.budget.addTextChangedListener(new TextWatcher() {
 			double sValue = 0;
@@ -304,7 +308,7 @@ public class ScheduleEditActivity extends Activity {
 		}
 
 		if ("".equals(lastBudget.getText().toString())) {
-			lastBudget.setHint(String.valueOf(getNextHint()));
+			lastBudget.setHint(Converter.toString(getNextHint()));
 		}
 	}
 
@@ -338,7 +342,7 @@ public class ScheduleEditActivity extends Activity {
 		double totalDetail = getTotalDetailBudget();
 
 		if ("".equals(total_budget.getText().toString())) {
-			total_budget.setHint(String.valueOf(totalDetail));
+			total_budget.setHint(Converter.toString(totalDetail));
 		} else {
 			if (getTotalBudget() < totalDetail) {
 				Alert.getInstance().showDialog(this, "Over budget! Add more?",
@@ -381,8 +385,7 @@ public class ScheduleEditActivity extends Activity {
 		String Time_id = (periodic.isChecked() ? "1" : "0");
 
 		if (passed_schedule_id != -1) {
-			String budget_value = String.valueOf(total_budget.getText()
-					.toString());
+			String budget_value = String.valueOf(total_budget.getText());
 			if ("".equals(budget_value)) {
 				budget_value = String
 						.valueOf(total_budget.getHint().toString());
@@ -444,7 +447,7 @@ public class ScheduleEditActivity extends Activity {
 				"Schedule",
 				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
 				new String[] {
-						String.valueOf(getTotalBudget()),
+						Converter.toString(getTotalBudget()),
 						Converter.toString(Converter.toDate(startDateEdit
 								.getText().toString(), "MMMM dd, yyyy")),
 						Converter.toString(Converter.toDate(endDateEdit
@@ -493,7 +496,7 @@ public class ScheduleEditActivity extends Activity {
 			SqlHelper.instance.insert(
 					"ScheduleDetail",
 					new String[] { "Budget", "Category_id", "Schedule_id" },
-					new String[] { String.valueOf(detailItem.getBudget()),
+					new String[] { Converter.toString(detailItem.getBudget()),
 							String.valueOf(category_id),
 							String.valueOf(newScheduleId) });
 		}

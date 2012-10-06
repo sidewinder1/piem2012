@@ -2,6 +2,7 @@ package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.customviews.ScheduleViewItem;
 import money.Tracker.presentation.model.Schedule;
 import android.content.Context;
@@ -50,7 +51,7 @@ public class ScheduleViewAdapter extends ArrayAdapter<Object> {
 			
 			// Set content to budget
 			final TextView budget = ((ScheduleViewItem) scheduleItemView).total_budget;
-			budget.setText(String.valueOf(schedule.budget));
+			budget.setText(Converter.toString(schedule.budget));
 			
 			// Prepare and display stacked bar chart:
 			for (int i=0; i <schedule.details.size(); i++)

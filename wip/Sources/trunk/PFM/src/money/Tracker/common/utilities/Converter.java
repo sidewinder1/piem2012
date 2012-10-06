@@ -26,7 +26,6 @@ public class Converter {
 	
 	public static String toString(Color color)
 	{
-		
 		return "#99000000";
 	}
 	
