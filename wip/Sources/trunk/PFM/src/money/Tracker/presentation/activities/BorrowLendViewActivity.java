@@ -37,7 +37,9 @@ public class BorrowLendViewActivity extends Activity {
 	private BorrowLendAdapter borrowLendAdapter;
 	private BorrowLend borrowLend;
 	private String tableName = "";
-	boolean checkBorrowing;
+	private boolean checkBorrowing;
+	private TextView totalMoneyTextView;
+	private TextView latesExpiredDateTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,8 +75,8 @@ public class BorrowLendViewActivity extends Activity {
 			}
 		});		
 		
-		TextView totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_view_total_money);
-		TextView latesExpiredDateTextView = (TextView) findViewById(R.id.borrow_lend_view_lates_expired_date);
+		totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_view_total_money);
+		latesExpiredDateTextView = (TextView) findViewById(R.id.borrow_lend_view_lates_expired_date);
 		
 		if (checkBorrowing) {
 			tableName = "Borrowing";
@@ -82,9 +84,19 @@ public class BorrowLendViewActivity extends Activity {
 			tableName = "Lending";
 		}
 		
+		getTotalInformatation();
+		
+		registerForContextMenu(borrowLendList);
+
+	}
+	
+	private void getTotalInformatation()
+	{
 		Cursor borrowLendData = SqlHelper.instance.select(tableName, "*", "");
+		
 		double totalMoney = 0;
 		String latesExpiredDateString = "1/1/1900";
+		
 		if (borrowLendData != null) {
 			if (borrowLendData.moveToFirst()) {
 				do {
@@ -112,14 +124,11 @@ public class BorrowLendViewActivity extends Activity {
 					}
 				} while (borrowLendData.moveToNext());
 			}
-			
-			totalMoneyTextView.setText("" + totalMoney);
-			if (!latesExpiredDateString.equals("1/1/1900"))
-				latesExpiredDateTextView.setText(latesExpiredDateString);
 		}
 		
-		registerForContextMenu(borrowLendList);
-
+		totalMoneyTextView.setText("" + totalMoney);
+		if (!latesExpiredDateString.equals("1/1/1900"))
+			latesExpiredDateTextView.setText(latesExpiredDateString);
 	}
 
 
@@ -192,7 +201,7 @@ public class BorrowLendViewActivity extends Activity {
 							bindData();
 						}
 					});
-
+			getTotalInformatation();
 			break;
 		}
 

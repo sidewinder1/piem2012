@@ -145,19 +145,29 @@ public class BorrowLendInsertActivity extends Activity {
 								.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						phoneEditText.setText(number);
 
-						/*
-						 * // String id = cont.findContact(name, number); String
-						 * id = cursor.getString(cursor
-						 * .getColumnIndexOrThrow(ContactsContract
-						 * .CommonDataKinds.Phone._ID));
-						 * 
-						 * Cursor cursor1 = cont.getContactAddress(id); String
-						 * address = cursor1.getString(cursor1
-						 * .getColumnIndex(ContactsContract
-						 * .CommonDataKinds.StructuredPostal.STREET)); //
-						 * cursor1.close(); addressEditText.setText(address); //
-						 * addressEditText.setText(id);
-						 */
+						
+						 // String id = cont.findContact(name, number); 
+						String id = name;
+						String address = "No data";
+						try
+						{
+							Cursor cursor1 = cont.getContactAddress(getApplicationContext(), id);
+							if (cursor != null) 
+							{         
+								while (cursor.moveToNext()) 
+								{             
+									address = cursor1.getString(cursor1
+											 .getColumnIndex(ContactsContract
+											 .CommonDataKinds.StructuredPostal.STREET));          
+								}     
+							}
+						 cursor1.close();
+						} catch (Exception e)
+						{
+							address = e.getMessage();
+						}
+						 addressEditText.setText(address);
+						 
 					}
 				});
 
@@ -221,8 +231,8 @@ public class BorrowLendInsertActivity extends Activity {
 									phoneEditText.getText().toString(),
 									addressEditText.getText().toString() });
 						}
-							Intent home =new Intent(BorrowLendInsertActivity.this, HomeActivity.class);
-							startActivity(home);						
+						setResult(100);
+						BorrowLendInsertActivity.this.finish();						
 					} else {
 						alert.show(getApplicationContext(),
 								"You have to input or not interest rate and expired date");
