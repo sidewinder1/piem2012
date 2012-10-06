@@ -2,6 +2,9 @@ package money.Tracker.presentation.activities;
 
 //import java.util.ArrayList;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import money.Tracker.common.sql.SqlHelper;
 //import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
@@ -21,15 +24,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class BorrowLendViewDetailActivity extends Activity {
+	
+	private double totalInterestCaculate = 0;
+	private double totalMoney = 0;
+	private long leftDate = 0;
+	private BorrowLend values; 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("View Detail", "Check 00");
         setContentView(R.layout.activity_borrow_lend_view_detail);
-        Log.d("View Detail", "Check 001");
         TextView personName = (TextView) findViewById(R.id.borrow_lend_detail_view_name);
-        Log.d("View Detail", "Check 01");
         TextView personPhone = (TextView) findViewById(R.id.borrow_lend_detail_view_phone);
         TextView personAddress = (TextView) findViewById(R.id.borrow_lend_detail_view_address);
         TextView total = (TextView) findViewById(R.id.borrow_lend_detail_view_total);
@@ -37,12 +43,7 @@ public class BorrowLendViewDetailActivity extends Activity {
         TextView interestType = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_type);
         TextView startDate = (TextView) findViewById(R.id.borrow_lend_detail_view_start_date);
         TextView expriedDate = (TextView) findViewById(R.id.borrow_lend_detail_view_expired_date);
-        Log.d("View Detail", "Check 02");
-        Button cancelButton = (Button) findViewById(R.id.borrow_lend_detail_view_cancel_button);
-        Log.d("View Detail", "Check 03");
         Button editButton = (Button) findViewById(R.id.borrow_lend_detail_view_edit_button);
-        Log.d("View Detail", "Check 04");
-        Button deleteButton = (Button) findViewById(R.id.borrow_lend_detail_view_delete_button);
         
         Log.d("View Detail", "Check 1");
         Bundle extras = getIntent().getExtras();
@@ -57,7 +58,7 @@ public class BorrowLendViewDetailActivity extends Activity {
 			tableName="Lending";
 		Log.d("View Detail", "Check 3");
 		BorrowLendRepository bolere = new BorrowLendRepository();		
-		BorrowLend values = bolere.getDetailData(tableName, "ID=" + borrow_lend_id);
+		values = bolere.getDetailData(tableName, "ID=" + borrow_lend_id);
 		Log.d("View Detail", "Check 4");
 		personName.setText(String.valueOf(values.getPersonName()));
 		personPhone.setText(String.valueOf(values.getPersonPhone()));
@@ -78,6 +79,18 @@ public class BorrowLendViewDetailActivity extends Activity {
 		}
 		Log.d("View Detail", "Check 5");
 		
+		caculateInterest();
+		
+		TextView totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_money);
+		TextView totalInterestTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_interest);
+		TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
+		
+		totalMoneyTextView.setText(String.valueOf(totalMoney));
+		Log.d("View detail", String.valueOf(totalMoney));
+		totalInterestTextView.setText("" + totalInterestCaculate);
+		Log.d("View detail", "" + totalInterestCaculate);
+		if (leftDate != 0)
+			leftDayTextView.setText("You only have " + leftDate + " day");
 		// Handle edit button
 		editButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -90,51 +103,81 @@ public class BorrowLendViewDetailActivity extends Activity {
 			}
 		});
 		
-		// Handle delete button
-		deleteButton.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
-				 
-		        // Setting Dialog Title
-		        alertDialog.setTitle("Confirm Delete...");
-		 
-		        // Setting Dialog Message
-		        alertDialog.setMessage("Are you sure you want delete this?");
-		 
-		        // Setting Positive "Yes" Button
-		        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog,int which) {
-		 
-		            // Write your code here to invoke YES event
-		            	SqlHelper.instance.delete(tableName, "ID = " + borrow_lend_id);
-		            }
-		        });
-		 
-		        // Setting Negative "NO" Button
-		        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog, int which) {
-		            // Write your code here to invoke NO event
-		            dialog.cancel();
-		            }
-		        });
-		 
-		        // Showing Alert Message
-		        alertDialog.show();
-				
-				BorrowLendViewDetailActivity.this.finish();
-			}
-		});
+    }
+    
+    private void caculateInterest()
+    {
+    	Date currentDate = new Date();
+    	Date startDate = values.getStartDate();
+    	Date expiredDate = values.getExpiredDate();    	
+    	long caculateInterestDate = 0;
+    	
+    	double money = values.getMoney();
+    	int interestRate = values.getInterestRate();
+    	
+    	if (compareDate(currentDate, expiredDate))
+    	{
+    		caculateInterestDate = daysBetween(startDate, currentDate);
+    		leftDate += daysBetween(currentDate, expiredDate);
+    	}
+    	else
+    	{
+    		caculateInterestDate = daysBetween(startDate, expiredDate);
+    	}
+    	
+    	if (values.getInterestType().equals("Simple"))
+    	{
+    		totalInterestCaculate += money * interestRate * caculateInterestDate;
+    		totalMoney += money + totalInterestCaculate;
+    	}
+    	else
+    	{
+    		totalMoney += 1;
+    		for (long i=0; i < leftDate; i++)
+    		{
+    			totalMoney = totalMoney * totalMoney * interestRate; 
+    		}
+    		totalMoney = money * totalMoney;
+    		
+    		totalInterestCaculate += totalMoney - money;
+    	}
+    }
+    
+    /**
+     * This method also assumes endDate >= startDate
+    **/
+    private long daysBetween(Date startDate, Date endDate) {
+      Calendar sDate = getDatePart(startDate);
+      Calendar eDate = getDatePart(endDate);
+
+      long daysBetween = 0;
+      while (sDate.before(eDate)) {
+          sDate.add(Calendar.DAY_OF_MONTH, 1);
+          daysBetween++;
+      }
+      return daysBetween;
+    }
+    
+    private Calendar getDatePart(Date date){
+        Calendar cal = Calendar.getInstance();       // get calendar instance
+        cal.setTime(date);      
+        cal.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        cal.set(Calendar.MINUTE, 0);                 // set minute in hour
+        cal.set(Calendar.SECOND, 0);                 // set second in minute
+        cal.set(Calendar.MILLISECOND, 0);            // set millisecond in second
+
+        return cal;                                  // return the date part
+    }
+    
+    private boolean compareDate(Date date1, Date date2)
+    {    	
+		Long dateNumber1 = date1.getTime();		
+		Long dateNumber2 = date2.getTime();
 		
-		// Handle cancel button
-		cancelButton.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				BorrowLendViewDetailActivity.this.finish();
-			}
-		});
+		if (dateNumber1 < dateNumber2)
+			return true;
+		else
+			return false;
     }
 
     @Override

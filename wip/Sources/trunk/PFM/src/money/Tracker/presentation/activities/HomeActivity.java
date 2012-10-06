@@ -1,5 +1,7 @@
 package money.Tracker.presentation.activities;
 
+import java.util.Date;
+
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import android.os.Bundle;
@@ -39,7 +41,6 @@ public class HomeActivity extends TabActivity {
 		setupTab(scheduleIntent, "Expenses\n& Incomes", mTabHost);
 		setupTab(borrowAndLendIntent, "Report", mTabHost);
 		
-		Log.d("CD", String.valueOf(Converter.toDate("8/9/2012", "MMM dd,yyyy")));
 	}
 	
 	public static void setupTab(final Intent intent, final String tag, TabHost mTabHost) {

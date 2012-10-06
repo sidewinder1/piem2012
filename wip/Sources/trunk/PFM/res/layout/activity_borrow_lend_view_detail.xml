@@ -21,31 +21,11 @@
             android:textSize="30dp" />
 
         <Button
-            android:id="@+id/borrow_lend_detail_view_cancel_button"
+            android:id="@+id/borrow_lend_detail_view_edit_button"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/cancel_icon" />
-
-        <Button
-            android:id="@+id/borrow_lend_detail_view_delete_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:layout_toLeftOf="@+id/borrow_lend_detail_view_cancel_button"
-            android:background="@drawable/small_delete_button" />
-
-        <Button
-            android:id="@+id/borrow_lend_detail_view_edit_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignBaseline="@+id/borrow_lend_detail_view_cancel_button"
-            android:layout_alignBottom="@+id/borrow_lend_detail_view_cancel_button"
             android:layout_marginRight="15dp"
-            android:layout_toLeftOf="@+id/borrow_lend_detail_view_delete_button"
             android:background="@drawable/management_icon" />
     </RelativeLayout>
 
@@ -352,5 +332,86 @@
                 android:text="Debt Type"
                 android:textColor="@android:color/white" />
         </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/informationBorrowLend"
+	        android:layout_width="fill_parent"
+	        android:layout_height="70dp"
+	        android:layout_marginTop="10dp"
+	        android:background="@color/gray_background"
+	        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Total                         "
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="                  "
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/borrow_lend_detail_view_total_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Debt Type"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="323dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Interest                   "
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="                  "
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/borrow_lend_detail_view_total_interest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Debt Type"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+        
+        	<TextView
+                android:id="@+id/borrow_lend_detail_view_left_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Debt Type"
+                android:textColor="@android:color/white" />
+        	
+    </LinearLayout>
 
 </LinearLayout>
