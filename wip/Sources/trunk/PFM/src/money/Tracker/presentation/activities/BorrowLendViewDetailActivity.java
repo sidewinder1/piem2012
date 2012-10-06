@@ -24,40 +24,40 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class BorrowLendViewDetailActivity extends Activity {
-	
+
 	private double totalInterestCaculate = 0;
 	private double totalMoney = 0;
 	private long leftDate = 0;
-	private BorrowLend values; 
+	private BorrowLend values;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("View Detail", "Check 00");
-        setContentView(R.layout.activity_borrow_lend_view_detail);
-        TextView personName = (TextView) findViewById(R.id.borrow_lend_detail_view_name);
-        TextView personPhone = (TextView) findViewById(R.id.borrow_lend_detail_view_phone);
-        TextView personAddress = (TextView) findViewById(R.id.borrow_lend_detail_view_address);
-        TextView total = (TextView) findViewById(R.id.borrow_lend_detail_view_total);
-        TextView interest = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_rate);
-        TextView interestType = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_type);
-        TextView startDate = (TextView) findViewById(R.id.borrow_lend_detail_view_start_date);
-        TextView expriedDate = (TextView) findViewById(R.id.borrow_lend_detail_view_expired_date);
-        Button editButton = (Button) findViewById(R.id.borrow_lend_detail_view_edit_button);
-        
-        Log.d("View Detail", "Check 1");
-        Bundle extras = getIntent().getExtras();
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Log.d("View Detail", "Check 00");
+		setContentView(R.layout.activity_borrow_lend_view_detail);
+		TextView personName = (TextView) findViewById(R.id.borrow_lend_detail_view_name);
+		TextView personPhone = (TextView) findViewById(R.id.borrow_lend_detail_view_phone);
+		TextView personAddress = (TextView) findViewById(R.id.borrow_lend_detail_view_address);
+		TextView total = (TextView) findViewById(R.id.borrow_lend_detail_view_total);
+		TextView interest = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_rate);
+		TextView interestType = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_type);
+		TextView startDate = (TextView) findViewById(R.id.borrow_lend_detail_view_start_date);
+		TextView expriedDate = (TextView) findViewById(R.id.borrow_lend_detail_view_expired_date);
+		Button editButton = (Button) findViewById(R.id.borrow_lend_detail_view_edit_button);
+
+		Log.d("View Detail", "Check 1");
+		Bundle extras = getIntent().getExtras();
 		final int borrow_lend_id = extras.getInt("borrowLendID");
 		final boolean checkBorrowing = extras.getBoolean("checkBorrowing");
-		
+
 		Log.d("View Detail", "Check 2");
 		final String tableName;
-		if(checkBorrowing)
-			tableName="Borrowing";
+		if (checkBorrowing)
+			tableName = "Borrowing";
 		else
-			tableName="Lending";
+			tableName = "Lending";
 		Log.d("View Detail", "Check 3");
-		BorrowLendRepository bolere = new BorrowLendRepository();		
+		BorrowLendRepository bolere = new BorrowLendRepository();
 		values = bolere.getDetailData(tableName, "ID=" + borrow_lend_id);
 		Log.d("View Detail", "Check 4");
 		personName.setText(String.valueOf(values.getPersonName()));
@@ -67,24 +67,23 @@ public class BorrowLendViewDetailActivity extends Activity {
 		interest.setText(String.valueOf(values.getInterestRate()));
 		interestType.setText(String.valueOf(values.getInterestType()));
 		Log.d("View Detail", String.valueOf(values.getStartDate()));
-		startDate.setText(Converter.toString(values.getStartDate(), "MMM dd, yyyy"));
+		startDate.setText(Converter.toString(values.getStartDate(),
+				"MMM dd, yyyy"));
 		Log.d("View Detail", String.valueOf(values.getExpiredDate()));
-		if (values.getExpiredDate() != null)
-		{
-			expriedDate.setText(Converter.toString(values.getExpiredDate(), "MMM dd, yyyy"));
-		}
-		else
-		{
+		if (values.getExpiredDate() != null) {
+			expriedDate.setText(Converter.toString(values.getExpiredDate(),
+					"MMM dd, yyyy"));
+		} else {
 			expriedDate.setText("");
 		}
 		Log.d("View Detail", "Check 5");
-		
+
 		caculateInterest();
-		
+
 		TextView totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_money);
 		TextView totalInterestTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_interest);
 		TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
-		
+
 		totalMoneyTextView.setText(String.valueOf(totalMoney));
 		Log.d("View detail", String.valueOf(totalMoney));
 		totalInterestTextView.setText("" + totalInterestCaculate);
@@ -93,96 +92,98 @@ public class BorrowLendViewDetailActivity extends Activity {
 			leftDayTextView.setText("You only have " + leftDate + " day");
 		// Handle edit button
 		editButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent borrowLendEdit = new Intent(BorrowLendViewDetailActivity.this, BorrowLendInsertActivity.class);
+				Intent borrowLendEdit = new Intent(
+						BorrowLendViewDetailActivity.this,
+						BorrowLendInsertActivity.class);
 				borrowLendEdit.putExtra("checkBorrowing", checkBorrowing);
 				borrowLendEdit.putExtra("borrowLendID", borrow_lend_id);
 				startActivity(borrowLendEdit);
 			}
 		});
-		
-    }
-    
-    private void caculateInterest()
-    {
-    	Date currentDate = new Date();
-    	Date startDate = values.getStartDate();
-    	Date expiredDate = values.getExpiredDate();    	
-    	long caculateInterestDate = 0;
-    	
-    	double money = values.getMoney();
-    	int interestRate = values.getInterestRate();
-    	
-    	if (compareDate(currentDate, expiredDate))
-    	{
-    		caculateInterestDate = daysBetween(startDate, currentDate);
-    		leftDate += daysBetween(currentDate, expiredDate);
-    	}
-    	else
-    	{
-    		caculateInterestDate = daysBetween(startDate, expiredDate);
-    	}
-    	
-    	if (values.getInterestType().equals("Simple"))
-    	{
-    		totalInterestCaculate += money * interestRate * caculateInterestDate;
-    		totalMoney += money + totalInterestCaculate;
-    	}
-    	else
-    	{
-    		totalMoney += 1;
-    		for (long i=0; i < leftDate; i++)
-    		{
-    			totalMoney = totalMoney * totalMoney * interestRate; 
-    		}
-    		totalMoney = money * totalMoney;
-    		
-    		totalInterestCaculate += totalMoney - money;
-    	}
-    }
-    
-    /**
-     * This method also assumes endDate >= startDate
-    **/
-    private long daysBetween(Date startDate, Date endDate) {
-      Calendar sDate = getDatePart(startDate);
-      Calendar eDate = getDatePart(endDate);
 
-      long daysBetween = 0;
-      while (sDate.before(eDate)) {
-          sDate.add(Calendar.DAY_OF_MONTH, 1);
-          daysBetween++;
-      }
-      return daysBetween;
-    }
-    
-    private Calendar getDatePart(Date date){
-        Calendar cal = Calendar.getInstance();       // get calendar instance
-        cal.setTime(date);      
-        cal.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
-        cal.set(Calendar.MINUTE, 0);                 // set minute in hour
-        cal.set(Calendar.SECOND, 0);                 // set second in minute
-        cal.set(Calendar.MILLISECOND, 0);            // set millisecond in second
+	}
 
-        return cal;                                  // return the date part
-    }
-    
-    private boolean compareDate(Date date1, Date date2)
-    {    	
-		Long dateNumber1 = date1.getTime();		
+	private void caculateInterest() {
+		Date currentDate = new Date();
+		Date startDate = values.getStartDate();
+		if (values.getExpiredDate() != null) {
+			Date expiredDate = values.getExpiredDate();
+			long caculateInterestDate = 0;
+
+			double money = values.getMoney();
+			double interestRate = 0;
+			if (daysBetween(startDate, expiredDate) != 0)
+				interestRate = values.getInterestRate()
+						/ daysBetween(startDate, expiredDate);
+
+			if (compareDate(currentDate, expiredDate)) {
+				caculateInterestDate = daysBetween(startDate, currentDate);
+				leftDate += daysBetween(currentDate, expiredDate);
+			} else {
+				caculateInterestDate = daysBetween(startDate, expiredDate);
+			}
+
+			if (values.getInterestType().equals("Simple")) {
+				totalInterestCaculate += money * interestRate
+						* caculateInterestDate;
+				totalMoney += money + totalInterestCaculate;
+			} else {
+				totalMoney += 1;
+				for (long i = 0; i < leftDate; i++) {
+					totalMoney = totalMoney * totalMoney * interestRate;
+				}
+				totalMoney = money * totalMoney;
+
+				totalInterestCaculate += totalMoney - money;
+			}
+		} else {
+			totalMoney = values.getMoney();
+		}
+	}
+
+	/**
+	 * This method also assumes endDate >= startDate
+	 **/
+	private long daysBetween(Date startDate, Date endDate) {
+		Calendar sDate = getDatePart(startDate);
+		Calendar eDate = getDatePart(endDate);
+
+		long daysBetween = 0;
+		while (sDate.before(eDate)) {
+			sDate.add(Calendar.DAY_OF_MONTH, 1);
+			daysBetween++;
+		}
+		return daysBetween;
+	}
+
+	private Calendar getDatePart(Date date) {
+		Calendar cal = Calendar.getInstance(); // get calendar instance
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0); // set hour to midnight
+		cal.set(Calendar.MINUTE, 0); // set minute in hour
+		cal.set(Calendar.SECOND, 0); // set second in minute
+		cal.set(Calendar.MILLISECOND, 0); // set millisecond in second
+
+		return cal; // return the date part
+	}
+
+	private boolean compareDate(Date date1, Date date2) {
+		Long dateNumber1 = date1.getTime();
 		Long dateNumber2 = date2.getTime();
-		
+
 		if (dateNumber1 < dateNumber2)
 			return true;
 		else
 			return false;
-    }
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_borrow_lend_view_detail, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater()
+				.inflate(R.menu.activity_borrow_lend_view_detail, menu);
+		return true;
+	}
 }

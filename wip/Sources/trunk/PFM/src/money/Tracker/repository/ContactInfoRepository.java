@@ -21,7 +21,7 @@ public class ContactInfoRepository {
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone._ID,
 				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-				//ContactsContract.CommonDataKinds.Phone.TYPE,
+				ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY,
 				ContactsContract.CommonDataKinds.Phone.NUMBER };
 		Cursor people = ctx.getContentResolver().query(
 				uri,
@@ -33,16 +33,17 @@ public class ContactInfoRepository {
 		return people;
 	}
 
-	public Cursor getContactAddress(String id) {
-		String addrWhere = ContactsContract.Data._ID + " = ? AND "
-				+ ContactsContract.Data.MIMETYPE + " = ?";
-		String[] addrWhereParameters = new String[] {
-				id,
-				ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE };
-		 Cursor addrCur = ctx.getContentResolver().query(ContactsContract.Data.CONTENT_URI, null,
-				addrWhere, addrWhereParameters, null);
-		
-		return addrCur;
+	public Cursor getContactAddress(Context context, String id) {
+		ContentResolver mContent = context.getContentResolver();
+		String[] projection = new String[] {
+				ContactsContract.CommonDataKinds.StructuredPostal.STREET,
+				ContactsContract.CommonDataKinds.StructuredPostal.DISPLAY_NAME};
+		return mContent.query(
+				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
+				"UPPER(" + ContactsContract.CommonDataKinds.StructuredPostal.DISPLAY_NAME
+						+ ") LIKE '" + id.toString().toUpperCase()
+						+ "'", null, ContactsContract.Contacts.DISPLAY_NAME
+						+ " COLLATE LOCALIZED ASC");
 	}
 	
 	public String findContact(String display_name, String phone_number) 

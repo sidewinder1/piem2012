@@ -64,7 +64,7 @@ public class ContactsAutoCompleteCursorAdapter extends CursorAdapter implements
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone._ID,
 				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-				//ContactsContract.CommonDataKinds.Phone.C,
+				ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY,
 				ContactsContract.CommonDataKinds.Phone.NUMBER };
 		return mContent.query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
