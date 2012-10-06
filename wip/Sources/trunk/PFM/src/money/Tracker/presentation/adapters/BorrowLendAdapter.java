@@ -10,6 +10,7 @@ import money.Tracker.presentation.model.BorrowLend;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class BorrowLendAdapter extends ArrayAdapter<Object> {
 	    
 		borrowLendViewItem.personNameTextView.setText(entry.getPersonName());
 		borrowLendViewItem.moneyTextView.setText(String.valueOf(entry.getMoney()));
+		Log.d("Check number", String.valueOf(entry.getMoney()));
 		borrowLendViewItem.startDateTextView.setText(Converter.toString(entry.getStartDate(), "MMM dd, yyyy"));
 		if (entry.getExpiredDate() != null)
 			borrowLendViewItem.expiredDateTextView.setText(Converter.toString(entry.getExpiredDate(), "MMM dd, yyyy"));
