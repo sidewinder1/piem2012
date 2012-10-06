@@ -1,12 +1,10 @@
 package money.Tracker.common.utilities;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import android.graphics.Color;
-import android.text.format.DateFormat;
-import android.util.Log;
 
 public class Converter {
 	private static final String dateFormatString = "yyyy-MM-dd hh:mm:ss";
@@ -14,6 +12,16 @@ public class Converter {
 	public static String toString(Date date, String format) {
 		return String.valueOf(android.text.format.DateFormat.format(format,
 				date));
+	}
+	
+	public static String toString(double value, String format)
+	{
+		return new DecimalFormat(format).format(value);
+	}
+	
+	public static String toString(double value)
+	{
+		return toString(value, "####0.00");
 	}
 	
 	public static String toString(Color color)
