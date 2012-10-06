@@ -18,6 +18,8 @@ public class CategoryRepository {
 		Cursor categoryCursor = SqlHelper.instance.select("Category", "*", null);
 		if (categoryCursor != null && categoryCursor.moveToFirst())
 		{
+			categories = new ArrayList<Category>();
+			
 			do{
 			categories.add(new Category(
 					categoryCursor.getInt(categoryCursor.getColumnIndex("Id")),

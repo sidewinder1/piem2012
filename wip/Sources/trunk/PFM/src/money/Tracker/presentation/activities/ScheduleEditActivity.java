@@ -286,6 +286,7 @@ public class ScheduleEditActivity extends Activity {
 									.getTag()) });
 
 					list.removeView(item);
+					updateTotalBudget();
 				}
 
 			}
@@ -344,6 +345,7 @@ public class ScheduleEditActivity extends Activity {
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
+								total_budget.setText(Converter.toString(getTotalDetailBudget()));
 								total_budget.requestFocus();
 							}
 						}, new OnClickListener() {
