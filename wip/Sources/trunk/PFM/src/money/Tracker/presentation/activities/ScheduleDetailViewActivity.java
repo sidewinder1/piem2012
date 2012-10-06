@@ -51,7 +51,7 @@ public class ScheduleDetailViewActivity extends Activity {
 					.toString());
 
 			TextView budget_value = (TextView) findViewById(R.id.schedule_detail_budget_value);
-			budget_value.setText(String.valueOf(schedule.getDouble(1)));
+			budget_value.setText(Converter.toString(schedule.getDouble(1)));
 
 			// bind data to list item
 			ListView list = (ListView) findViewById(R.id.schedule_detail_item_list);

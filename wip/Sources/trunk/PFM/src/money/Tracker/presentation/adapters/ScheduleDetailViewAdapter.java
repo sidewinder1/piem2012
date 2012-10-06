@@ -2,6 +2,7 @@ package money.Tracker.presentation.adapters;
 
 import java.util.ArrayList;
 
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.customviews.ScheduleDetailViewItem;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.repository.CategoryRepository;
@@ -34,7 +35,7 @@ public class ScheduleDetailViewAdapter extends ArrayAdapter<DetailSchedule> {
 				.get(position);
 
 		if (scheduleDetail != null) {
-			scheduleItemView.budget.setText(String.valueOf(scheduleDetail
+			scheduleItemView.budget.setText(Converter.toString(scheduleDetail
 					.getBudget()));
 			scheduleItemView.title.setText(CategoryRepository.getInstance()
 					.getName((scheduleDetail.getCategory())));
