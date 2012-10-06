@@ -46,8 +46,8 @@ public class SqlHelper {
 		}
 	}
 
-	public int update(String tableName, String[] columns,
-			String[] newValues, String whereCondition) {
+	public int update(String tableName, String[] columns, String[] newValues,
+			String whereCondition) {
 
 		ContentValues newValueContent = new ContentValues();
 
@@ -56,7 +56,8 @@ public class SqlHelper {
 		}
 
 		try {
-			return currentDb.update(tableName, newValueContent, whereCondition, null);
+			return currentDb.update(tableName, newValueContent, whereCondition,
+					null);
 		} catch (Exception e) {
 			return 0;
 		}
@@ -146,14 +147,37 @@ public class SqlHelper {
 		Cursor categoryCheck = select("Category", "*",
 				"Name='Birthday' AND User_Color='#99FF0000'");
 
-		if (categoryCheck != null && categoryCheck.moveToFirst()) {
-			return;
+		if (categoryCheck != null && !categoryCheck.moveToFirst()) {
+			for (int index = 0; index < names.length; index++) {
+				SqlHelper.instance.insert("Category", new String[] { "Name",
+						"User_Color" }, new String[] { names[index],
+						colors[index] });
+			}
 		}
 
-		for (int index = 0; index < names.length; index++) {
-			SqlHelper.instance.insert("Category", new String[] { "Name",
-					"User_Color" },
-					new String[] { names[index], colors[index] });
+		// Create table for Color.
+		createTable("UserColor",
+				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT,")
+						.append("User_Color TEXT").toString());
+
+		String[] color_codes = { "#9900FFFF", "#99ADD8E6", "#99FFA500",
+				"#99800080", "#99A52A2A", "#99FFFF00", "#99800000",
+				"#9900FF00", "#99008000", "#99FF00FF", "#99808000",
+				"#99C0C0C0", "#9998AFC7", "#990000FF", "#99808080",
+				"#990000A0", "#99000000", "#99737CA1", "#99737CA1",
+				"#99F6358A", "#998BB381", "#9941A317", "#994AA02C",
+				"#9999C68E", "#994CC417", "#996CC417", "#9952D017",
+				"#99EAC117", "#99FDD017" };
+
+		Cursor colorCheck = select("UserColor", "*", "User_Color='#99FF0000'");
+
+		if (colorCheck != null && !colorCheck.moveToFirst()) {
+			for (int index = 0; index < color_codes.length; index++) {
+				SqlHelper.instance.insert("Color", new String[] {
+						"User_Color" }, new String[] {
+						color_codes[index] });
+			}
 		}
+
 	}
 }

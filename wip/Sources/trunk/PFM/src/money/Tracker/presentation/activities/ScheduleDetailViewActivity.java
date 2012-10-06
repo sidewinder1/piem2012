@@ -26,6 +26,16 @@ public class ScheduleDetailViewActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		schedule_id = extras.getInt("schedule_id");
 
+		bindData();
+	}
+	
+	@Override
+	protected void onRestart() {
+		bindData();
+		super.onRestart();
+	}
+
+	private void bindData() {
 		Cursor schedule = SqlHelper.instance.select("Schedule",
 				"id, budget, start_date, end_date, time_id", "id = "
 						+ schedule_id);
@@ -65,7 +75,6 @@ public class ScheduleDetailViewActivity extends Activity {
 			}
 
 		}
-
 	}
 
 	public void editBtnClicked(View v) {

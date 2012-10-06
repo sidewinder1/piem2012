@@ -9,6 +9,7 @@ import android.widget.Toast;
 public class Alert {
 	private static Alert instance;
 	private Toast toast;
+	private AlertDialog alertDialog;
 
 	public static Alert getInstance() {
 		if (instance == null) {
@@ -30,12 +31,16 @@ public class Alert {
 
 	public void showDialog(Context context, String message,
 			OnClickListener okAction, OnClickListener cancelAction) {
+		if (alertDialog != null && alertDialog.isShowing()) {
+			return;
+		}
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage(message).setCancelable(false)
 				.setPositiveButton("Yes", okAction)
 				.setNegativeButton("No", cancelAction);
-		AlertDialog alert = builder.create();
-		alert.show();
+		alertDialog = builder.create();
+		alertDialog.show();
 	}
 
 	public boolean show(Context context, String message) {

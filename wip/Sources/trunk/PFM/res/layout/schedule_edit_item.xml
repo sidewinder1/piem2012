@@ -7,43 +7,54 @@
     <Spinner
         android:id="@+id/schedule_item_category"
         android:layout_width="0dp"
-        android:layout_weight="5"
+        android:layout_height="24dp"
         android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="2dp"
-        android:background="@color/gray_background"
-        android:layout_height="24dp" />
+        android:layout_weight="5"
+        android:gravity="center_vertical" />
+    <EditText
+        android:id="@+id/schedule_item_category_edit"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="2dp"
+        android:layout_weight="5"
+        android:hint="@string/schedule_new_category"
+        android:gravity="center_vertical" >
+    </EditText>
 
     <EditText
-        android:inputType="numberDecimal"
         android:id="@+id/schedule_item_price"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
         android:layout_marginLeft="2dp"
-        android:gravity="bottom"
-        android:textSize="16dp"
         android:layout_marginRight="2dp"
         android:layout_weight="3"
-        android:layout_width="0dp"
-        android:layout_height="36dp" />
+        android:gravity="bottom"
+        android:inputType="numberDecimal"
+        android:textSize="16dp" />
 
     <Button
         android:id="@+id/schedule_item_add"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_width="22dp"
         android:layout_height="22dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
         android:background="@drawable/small_add_button" />
 
     <Button
         android:id="@+id/schedule_item_remove"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_weight="0"
-        android:layout_width="22dp"
-        android:layout_marginLeft="5dp"
-        android:layout_height="22dp"
-        android:background="@drawable/small_delete_button"/>
+        android:background="@drawable/small_delete_button" />
 
 </LinearLayout>

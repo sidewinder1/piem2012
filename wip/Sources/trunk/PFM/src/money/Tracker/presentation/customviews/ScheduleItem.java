@@ -14,6 +14,7 @@ public class ScheduleItem extends LinearLayout {
 	public Spinner category;
 	public EditText budget;
 	public Button addBtn, removeBtn;
+	public EditText category_edit;
 
 	public ScheduleItem(Context context, CategoryAdapter categoryAdapter) {
 		super(context);
@@ -25,17 +26,17 @@ public class ScheduleItem extends LinearLayout {
 		budget = (EditText) findViewById(R.id.schedule_item_price);
 		addBtn = (Button) findViewById(R.id.schedule_item_add);
 		removeBtn = (Button) findViewById(R.id.schedule_item_remove);
-
+		category_edit = (EditText) findViewById(R.id.schedule_item_category_edit);
 		// Apply the adapter to the spinner
 		category.setAdapter(categoryAdapter);
 
 	}
 
-	public int getCategory()
-	{
-		return CategoryRepository.getInstance().getId(category.getSelectedItemPosition());
+	public int getCategory() {
+		return CategoryRepository.getInstance().getId(
+				category.getSelectedItemPosition());
 	}
-	
+
 	public double getBudget() {
 		String budgetValue = String.valueOf(budget.getText());
 		if ("".equals(budgetValue)) {
