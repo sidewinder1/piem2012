@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.adapters.BorrowLendAdapter;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
@@ -13,11 +14,16 @@ import money.Tracker.repository.BorrowLendRepository;
 import money.Tracker.repository.DataManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -29,7 +35,8 @@ public class BorrowLendViewActivity extends Activity {
 	private TextView displayText;
 	private ListView borrowLendList;
 	private BorrowLendAdapter borrowLendAdapter;
-
+	private BorrowLend borrowLend;
+	private String tableName = "";
 	boolean checkBorrowing;
 
 	@Override
@@ -42,15 +49,15 @@ public class BorrowLendViewActivity extends Activity {
 		borrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
 		bindData();		
 		//borrowLendList.setTextFilterEnabled(true);
-		borrowLendList.setClickable(true);
-		borrowLendList.setItemsCanFocus(false);
+		//borrowLendList.setClickable(true);
+		//borrowLendList.setItemsCanFocus(false);
 		//borrowLendList.setFocusableInTouchMode(false);
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
 				Log.d("On Click Item", "Check 1");
-				BorrowLend borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);
+				borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);
 				Log.d("On Click Item", "Check 2");
 				if (borrowLend != null)
 				{
@@ -69,7 +76,6 @@ public class BorrowLendViewActivity extends Activity {
 		TextView totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_view_total_money);
 		TextView latesExpiredDateTextView = (TextView) findViewById(R.id.borrow_lend_view_lates_expired_date);
 		
-		String tableName;
 		if (checkBorrowing) {
 			tableName = "Borrowing";
 		} else {
@@ -111,6 +117,8 @@ public class BorrowLendViewActivity extends Activity {
 			if (!latesExpiredDateString.equals("1/1/1900"))
 				latesExpiredDateTextView.setText(latesExpiredDateString);
 		}
+		
+		registerForContextMenu(borrowLendList);
 
 	}
 
@@ -147,5 +155,47 @@ public class BorrowLendViewActivity extends Activity {
 		borrowLendList.setVisibility(View.VISIBLE);
 		borrowLendAdapter.notifyDataSetChanged();
 		borrowLendList.setAdapter(borrowLendAdapter);
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		if (v.getId() == R.id.borrow_lend_list_view) {
+			menu.setHeaderTitle(getResources().getString(
+					R.string.schedule_menu_title));
+			String[] menuItems = getResources().getStringArray(
+					R.array.schedule_context_menu_item);
+			for (int i = 0; i < menuItems.length; i++) {
+				menu.add(Menu.NONE, i, i, menuItems[i]);
+			}
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+				.getMenuInfo();
+		int menuItemIndex = item.getItemId();
+		borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(info.position);
+		switch (menuItemIndex) {
+		case 0: // Edit
+			Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
+			borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
+			borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
+			startActivity(borrowLendDetail);
+			break;
+		case 1: // Delete
+			Alert.getInstance().showDialog(getParent(),
+					"Delete selected schedule?", new OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							SqlHelper.instance.delete(tableName, "Id = " + borrowLend.getId());
+							bindData();
+						}
+					});
+
+			break;
+		}
+
+		return true;
 	}
 }
