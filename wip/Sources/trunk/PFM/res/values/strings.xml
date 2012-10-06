@@ -16,6 +16,7 @@
     <string name="schedule_title">Schedule</string>
     <string name="schedule_edit_title">New Schedule</string>
     <string name="no_data">No data</string>
+    <string name="schedule_new_category">New Category</string>
     <string name="schedule_view_detail_title">View Schedule</string>
     <string name="dummy_data">Dummy data</string>
     <string name="title_activity_borrow_view">BorrowViewActivity</string>

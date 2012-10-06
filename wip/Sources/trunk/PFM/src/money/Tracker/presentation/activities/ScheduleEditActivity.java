@@ -18,6 +18,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.customviews.ScheduleItem;
+import money.Tracker.presentation.model.Category;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.CategoryRepository;
@@ -68,6 +70,15 @@ public class ScheduleEditActivity extends Activity {
 		list = (LinearLayout) findViewById(R.id.list);
 		
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
+		
+		total_budget.setOnFocusChangeListener(new OnFocusChangeListener() {
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus && getTotalBudget() < getTotalDetailBudget())
+				{
+					Alert.getInstance().show(getBaseContext(), "Budget is not enough!");
+				}
+			}
+		});
 		
 		total_budget.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -139,16 +150,6 @@ public class ScheduleEditActivity extends Activity {
 			}
 		}
 
-		Button cancelButton = (Button) findViewById(R.id.cancelBtn);
-		cancelButton.setFocusableInTouchMode(true);
-		cancelButton.requestFocus();
-		cancelButton.setOnFocusChangeListener(new OnFocusChangeListener() {
-			public void onFocusChange(View v, boolean hasFocus) {
-			}
-		});
-
-		// list.setAdapter(livingCostAdapter);
-
 		Spinner currency = (Spinner) findViewById(R.id.currency_symbol);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 				this, R.array.currency_symbol, R.layout.spinner_dropdown);
@@ -162,6 +163,7 @@ public class ScheduleEditActivity extends Activity {
 	private void addToList(DetailSchedule detail, int index, boolean init)
 	{
 		ScheduleItem itemView = new ScheduleItem(this, categoryAdapter);
+		itemView.category.setTag(itemView.category_edit);
 		
 		if (init)
 		{
@@ -172,23 +174,41 @@ public class ScheduleEditActivity extends Activity {
 			itemView.budget.setHint(String.valueOf(detail.getBudget()));
 		}
 		
-		itemView.budget.setFocusable(true);
 		itemView.budget.requestFocus();
 		
 		itemView.budget.addTextChangedListener(new TextWatcher() {
-			
+			double sValue = 0;
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 			}
 			
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
+				if (!"".equals(s.toString()))
+				{
+					sValue = Double.parseDouble(s.toString());
+				}
 			}
 			
 			public void afterTextChanged(Editable s) {
-				if (!"".equals(s.toString()))
+				if (!"".equals(s.toString()) && Double.parseDouble(s.toString()) > sValue)
 				{
 					updateTotalBudget();
 				}
+			}
+		});
+		
+		itemView.category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+				Category item = (Category) parent.getItemAtPosition(pos);
+				if (item != null && "Others".equals(item.getName())) {
+					parent.setVisibility(View.GONE);
+					View text = (View)parent.getTag();
+					text.setVisibility(View.VISIBLE);
+				}
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
 		
@@ -213,8 +233,9 @@ public class ScheduleEditActivity extends Activity {
 						lastItem = index + 1;
 					}
 					
-					if (((ScheduleItem)list.getChildAt(index)).getBudget() == 0)
+					if (((ScheduleItem)list.getChildAt(index)).getBudget() <= 0)
 					{
+						Alert.getInstance().show(getBaseContext(), "A slot is empty");
 						return;
 					}
 				}
@@ -250,9 +271,14 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public double getNextHint() {
-		double total = getTotalBudget();
+		return Math.max(0, getTotalBudget() - getTotalDetailBudget());
+	}
+	
+	public double getTotalDetailBudget()
+	{
+		double total = 0;
 		for (int index = 0;index < list.getChildCount(); index++) {
-			total -= ((ScheduleItem)list.getChildAt(index)).getBudget();
+			total += ((ScheduleItem)list.getChildAt(index)).getBudget();
 		}
 
 		return Math.max(0, total);
@@ -272,17 +298,16 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public boolean updateTotalBudget() {
-		double total = getNextHint();
+		double totalDetail = getTotalDetailBudget();
 
 		if ("".equals(total_budget.getText().toString())) {
-			total_budget.setHint(String.valueOf(total));
+			total_budget.setHint(String.valueOf(totalDetail));
 		} else {
-			if (Double.parseDouble(total_budget.getText().toString()) < total) {
+			if (getTotalBudget() < totalDetail) {
 				Alert.getInstance().showDialog(this, "Over budget! Add more?",
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-								total_budget.setFocusable(true);
 								total_budget.requestFocus();
 							}
 						}, new OnClickListener() {
@@ -301,8 +326,13 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public void doneBtnClicked(View v) {
-		if (getTotalBudget() == 0) {
-			Alert.getInstance().show(this, "Input somethings.");
+		if (getTotalBudget() <= 0) {
+			Alert.getInstance().show(this, "Total budget!");
+			return;
+		}
+		
+		if (getTotalBudget() < getTotalDetailBudget()) {
+			Alert.getInstance().show(this, "Total budget not enough!");
 			return;
 		}
 		
