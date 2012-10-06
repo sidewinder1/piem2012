@@ -34,6 +34,17 @@ public class BorrowLendViewDetailActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("View Detail", "Check 00");
+		bindData();
+			}
+	
+	@Override
+	protected void onRestart() {
+		bindData();
+		super.onRestart();
+	}
+	
+	private void bindData()
+	{
 		setContentView(R.layout.activity_borrow_lend_view_detail);
 		TextView personName = (TextView) findViewById(R.id.borrow_lend_detail_view_name);
 		TextView personPhone = (TextView) findViewById(R.id.borrow_lend_detail_view_phone);
@@ -63,7 +74,7 @@ public class BorrowLendViewDetailActivity extends Activity {
 		personName.setText(String.valueOf(values.getPersonName()));
 		personPhone.setText(String.valueOf(values.getPersonPhone()));
 		personAddress.setText(String.valueOf(values.getPersonAddress()));
-		total.setText(String.valueOf(values.getMoney()));
+		total.setText(Converter.toString(values.getMoney()));
 		interest.setText(String.valueOf(values.getInterestRate()));
 		interestType.setText(String.valueOf(values.getInterestType()));
 		Log.d("View Detail", String.valueOf(values.getStartDate()));
@@ -84,9 +95,9 @@ public class BorrowLendViewDetailActivity extends Activity {
 		TextView totalInterestTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_interest);
 		TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
 
-		totalMoneyTextView.setText(String.valueOf(totalMoney));
+		totalMoneyTextView.setText(Converter.toString(totalMoney));
 		Log.d("View detail", String.valueOf(totalMoney));
-		totalInterestTextView.setText("" + totalInterestCaculate);
+		totalInterestTextView.setText(Converter.toString(totalInterestCaculate));
 		Log.d("View detail", "" + totalInterestCaculate);
 		if (leftDate != 0)
 			leftDayTextView.setText("You only have " + leftDate + " day");
@@ -103,7 +114,6 @@ public class BorrowLendViewDetailActivity extends Activity {
 				startActivity(borrowLendEdit);
 			}
 		});
-
 	}
 
 	private void caculateInterest() {
