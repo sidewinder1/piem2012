@@ -70,22 +70,15 @@ public class BorrowLendInsertActivity extends Activity {
 
 		new BorrowLendRepository();
 
-		// get information from view detail intent
-		Log.d("Check Edit", "Check 1");
+		// get information from view detail intent		
 		Bundle extras = getIntent().getExtras();
-		Log.d("Check Edit", "Check 2");
-		boolean checkBorrowing = true;
-		Log.d("Check Edit", "Check 3");
+		boolean checkBorrowing = true;		
 		int borrow_lend_id = -1;
-		Log.d("Check Edit", "Check 4");
 		String tableName = "";
 
-		try {
-			Log.d("Check Edit", "Check 5");
-			borrow_lend_id = extras.getInt("borrowLendID");
-			Log.d("Check Edit", "Check 6 - " + borrow_lend_id);
+		try {			
+			borrow_lend_id = extras.getInt("borrowLendID");			
 			checkBorrowing = extras.getBoolean("checkBorrowing");
-			Log.d("Check Edit", "Check 7 - " + checkBorrowing);
 		} catch (Exception e) {
 
 		}
