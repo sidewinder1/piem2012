@@ -132,19 +132,13 @@ public class SqlHelper {
 						.append("Category_Id INTEGER, Schedule_Id INTEGER")
 						.toString());
 
-		// Create table for Lending.
-		createTable("Lending", "ID INTEGER PRIMARY KEY autoincrement,"
+		// Create table for Borrow and Lending.
+		createTable("BorrowLend", "ID INTEGER PRIMARY KEY autoincrement,"
+				+ "Debt_type TEXT,"
 				+ "Money INTEGER," + "Interest_type TEXT,"
 				+ "Interest_rate INTEGER," + "Start_date TEXT,"
 				+ "Expired_date TEXT," + "Person_name TEXT,"
-				+ "Person_Phone TEXT," + "Person_address TEXT");
-
-		// Create table for Borrowing.
-		createTable("Borrowing", "ID INTEGER PRIMARY KEY autoincrement,"
-				+ "Money INTEGER," + "Interest_type TEXT,"
-				+ "Interest_rate INTEGER," + "Start_date TEXT,"
-				+ "Expired_date TEXT," + "Person_name TEXT,"
-				+ "Person_Phone TEXT," + "Person_address TEXT");
+				+ "Person_phone TEXT," + "Person_address TEXT");
 
 		// Create table for Category.
 		createTable("Category",

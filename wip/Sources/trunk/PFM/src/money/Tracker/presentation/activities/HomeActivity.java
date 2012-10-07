@@ -35,8 +35,7 @@ public class HomeActivity extends TabActivity {
 		
 		// Temporary tabs.
 		setupTab(scheduleIntent, "Expenses\n& Incomes", mTabHost);
-		setupTab(borrowAndLendIntent, "Report", mTabHost);
-		
+		setupTab(borrowAndLendIntent, "Report", mTabHost);	
 	}
 	
 	public static void setupTab(final Intent intent, final String tag, TabHost mTabHost) {

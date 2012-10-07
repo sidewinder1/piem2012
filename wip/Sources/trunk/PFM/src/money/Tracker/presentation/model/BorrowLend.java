@@ -3,15 +3,16 @@ package money.Tracker.presentation.model;
 import java.util.Date;
 
 public class BorrowLend {
-	int id;
-	double money;
-	String interestType;
-	int interestRate;
-	Date startDate;
-	Date expiredDate;
-	String personName;
-	String personPhone;
-	String personAddress;
+	private int id;
+	private String debtType;
+	private double money;
+	private String interestType;
+	private int interestRate;
+	private Date startDate;
+	private Date expiredDate;
+	private String personName;
+	private String personPhone;
+	private String personAddress;
 	
 	public BorrowLend() {
 		// TODO Auto-generated constructor stub
@@ -23,6 +24,14 @@ public class BorrowLend {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getDebtType() {
+		return debtType;
+	}
+
+	public void setDebtType(String debtType) {
+		this.debtType = debtType;
 	}
 
 	public double getMoney() {
