@@ -440,7 +440,7 @@ public class BorrowLendInsertActivity extends Activity {
 			Long expiredDate = _expiredDate.getTime();
 			Log.d("errorDateTime", expiredDate.toString());
 
-			if (expiredDate > startDate || expiredDate == startDate) {
+			if (expiredDate > startDate || (expiredDate - startDate) == 0) {
 				updateDisplayExpiredDate();
 				Log.d("errorDateTime", "Check 6");
 			} else {

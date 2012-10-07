@@ -17,6 +17,19 @@ public class BorrowLend {
 	public BorrowLend() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void setValue(BorrowLend newBorrowLend) {
+		this.id = newBorrowLend.getId(); 
+		this.debtType = newBorrowLend.getDebtType();
+		this.money = newBorrowLend.getMoney();
+		this.interestType = newBorrowLend.getInterestType();
+		this.interestRate = newBorrowLend.getInterestRate();
+		this.startDate = newBorrowLend.getStartDate();
+		this.expiredDate = newBorrowLend.getExpiredDate();
+		this.personName = newBorrowLend.getPersonName();
+		this.personPhone = newBorrowLend.getPersonPhone();
+		this.personAddress = newBorrowLend.getPersonAddress();
+	}
 
 	public int getId() {
 		return id;

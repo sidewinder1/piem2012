@@ -40,6 +40,7 @@ public class BorrowLendViewActivity extends Activity {
 	private boolean checkBorrowing;
 	private TextView totalMoneyTextView;
 	private TextView latesExpiredDateTextView;
+	private ArrayList<Object> values;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -149,7 +150,7 @@ public class BorrowLendViewActivity extends Activity {
 		}
 
 		BorrowLendRepository bolere = new BorrowLendRepository();
-		ArrayList<Object> values = bolere.getData("Debt_type like '" + debtType + "' order by expired_date");
+		values = bolere.getData("Debt_type like '" + debtType + "' order by expired_date DESC");
 
 		if (values.size() == 0) {
 			Log.d("Check display", "Check 1");
@@ -161,6 +162,7 @@ public class BorrowLendViewActivity extends Activity {
 			displayText.setVisibility(View.GONE);
 		}
 		
+		sort();
 		borrowLendAdapter = new BorrowLendAdapter(this, R.layout.activity_borrow_lend_view_item, values);
 		
 		borrowLendList.setVisibility(View.VISIBLE);
@@ -195,8 +197,9 @@ public class BorrowLendViewActivity extends Activity {
 			startActivity(borrowLendDetail);
 			break;
 		case 1: // Delete
+			String debtType = borrowLend.getDebtType();
 			Alert.getInstance().showDialog(getParent(),
-					"Delete selected schedule?", new OnClickListener() {
+					"Delete selected " + debtType + "?", new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							SqlHelper.instance.delete("BorrowLend", "Id = " + borrowLend.getId());
 							bindData();
@@ -208,5 +211,23 @@ public class BorrowLendViewActivity extends Activity {
 		}
 
 		return true;
+	}
+	
+	private void sort() {
+		int i, j;
+		int length = values.size();
+		BorrowLend t = new BorrowLend();
+		for (i = 0; i < length; i++) {
+			for (j = 1; j < (length - i); j++) {
+				if (((BorrowLend) values.get(j - 1)).getExpiredDate()
+						.compareTo(((BorrowLend) values.get(j)).getExpiredDate()) > 0) {
+					t.setValue((BorrowLend) values.get(j - 1));
+					((BorrowLend) values.get(j - 1)).setValue((BorrowLend) values
+							.get(j));
+					((BorrowLend) values.get(j)).setValue(t);
+				}
+			}
+		}
+
 	}
 }
