@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Debt Type       "
+                    android:text="Debt Type         "
                     android:textColor="@android:color/white" />
 
                 <ToggleButton
@@ -74,7 +74,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -83,18 +83,18 @@
             <AutoCompleteTextView
                 android:id="@+id/name_edit_text"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="36dp"
+                android:textSize="16dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Name"
                 android:maxLength="30"
                 android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textSize="10dp" />
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -103,17 +103,17 @@
             <EditText
                 android:id="@+id/phone_edit_text"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="36dp"
+                android:textSize="16dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Phone"
                 android:inputType="number"
-                android:maxLength="13"
-                android:textSize="10dp" />
+                android:maxLength="13"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -122,16 +122,16 @@
             <EditText
                 android:id="@+id/address_edit_text"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="36dp"
+                android:textSize="16dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Address"
-                android:inputType="text"
-                android:textSize="10dp" />
+                android:inputType="text"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -140,17 +140,17 @@
             <EditText
                 android:id="@+id/money_edit_text"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="36dp"
+                android:textSize="16dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Money"
                 android:inputType="number"
-                android:maxLength="20"
-                android:textSize="10dp" />
+                android:maxLength="20"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Interest Type"
+                    android:text="Interest Type    "
                     android:textColor="@android:color/white" />
 
                 <ToggleButton
@@ -184,7 +184,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -197,36 +197,36 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="36dp"
+                    android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Interest Rate         "
-                    android:textColor="@android:color/white"
-                    android:textSize="10dp" />
+                    android:text="Interest Rate"
+                    android:textColor="@android:color/white"/>
 
                 <EditText
                     android:id="@+id/interest_rate_edit_text"
                     android:layout_width="165dp"
-                    android:layout_height="30dp"
+                    android:layout_height="36dp"
+                	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
                     android:inputType="number"
-                    android:maxLength="3"
-                    android:textSize="10dp" />
+                    android:maxLength="3"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="36dp"
+                    android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:text="%"
-                    android:textColor="@android:color/white"
-                    android:textSize="10dp" />
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -239,30 +239,30 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="36dp"
+                    android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Start Date              "
-                    android:textColor="@android:color/white"
-                    android:textSize="10dp" />
+                    android:text="Start Date      "
+                    android:textColor="@android:color/white"/>
 
                 <EditText
                     android:id="@+id/start_date_edit_text"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="36dp"
+                	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:editable="false"
                     android:focusable="false"
                     android:inputType="date"
-                    android:paddingLeft="5dp"
-                    android:textSize="10dp" />
+                    android:paddingLeft="5dp"/>
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text=""
@@ -275,17 +275,18 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="36dp"
+                	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Expired Date         "
-                    android:textColor="@android:color/white"
-                    android:textSize="10dp" />
+                    android:text="Expired Date "
+                    android:textColor="@android:color/white"/>
 
                 <EditText
                     android:id="@+id/expired_date_edit_text"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="36dp"
+                	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
@@ -293,8 +294,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="date"
-                    android:paddingLeft="5dp"
-                    android:textSize="10dp" />
+                    android:paddingLeft="5dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
