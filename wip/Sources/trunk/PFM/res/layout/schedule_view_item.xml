@@ -37,6 +37,7 @@
         android:id="@+id/stacked_bar_chart"
         android:background="#7991"
         android:layout_width="fill_parent"
-        android:layout_height="10dp" />
+        android:layout_marginBottom="5dp"
+        android:layout_height="15dp" />
 
 </LinearLayout>

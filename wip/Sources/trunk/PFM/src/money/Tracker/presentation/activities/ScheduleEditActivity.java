@@ -314,7 +314,7 @@ public class ScheduleEditActivity extends Activity {
 		private void completeAfterMove(View v, boolean hasFocus) {
 			if (!hasFocus) {
 				String str = ((EditText)v).getText().toString();
-				if (!"".equals(str) && str.endsWith(".")) {
+				if (!"".equals(str)) {
 					((EditText)v).setText(Converter.toString(Double
 							.parseDouble(str)));
 				}

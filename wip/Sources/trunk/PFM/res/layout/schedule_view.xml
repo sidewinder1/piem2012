@@ -7,25 +7,31 @@
     <TextView
         android:id="@+id/no_data_edit"
         android:layout_width="fill_parent"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/no_data"
         android:textColor="@color/white_text_color" />
 
     <ListView
         android:id="@+id/schedule_view_list"
         android:layout_width="fill_parent"
-        android:layout_weight="6"
-        android:layout_height="0dp" >
+        android:layout_height="0dp"
+        android:layout_weight="3" >
     </ListView>
 
-    <LinearLayout 
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/chart_legend"
-        android:layout_weight="1"
-        android:layout_gravity="bottom"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:background="@color/gray_background"/>
-        
+        android:layout_height="0dp"
+        android:clipChildren="false"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:id="@+id/chart_legend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_background"
+            android:orientation="vertical" />
+    </ScrollView>
+
 </LinearLayout>

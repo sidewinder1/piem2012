@@ -22,7 +22,7 @@ public class SqlHelper {
 					.append(tableName).append("(").append(columnsInfo)
 					.append(")").toString());
 		} catch (Exception e) {
-			// to do: log exception later.
+			// TODO: log exception later.
 			return false;
 		}
 
@@ -40,7 +40,7 @@ public class SqlHelper {
 		try {
 			return currentDb.insert(tableName, null, contentValues);
 		} catch (Exception e) {
-			// to do add to log file.
+			// TODO: add to log file.
 			Log.e("SQLHelper", "Exception: " + e.getMessage());
 			return -1;
 		}
@@ -82,7 +82,19 @@ public class SqlHelper {
 			return false;
 		}
 	}
+	
+	public Cursor query(String sqlStatement)
+	{
+		Cursor cursor = null;
+		try {
+			cursor = currentDb.rawQuery(sqlStatement, null);
+		} catch (Exception e) {
+			// TODO: add log file.
+		}
 
+		return cursor;
+	}
+	
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
 		if (whereCondition != null && !"".equals(whereCondition)) {
@@ -99,7 +111,7 @@ public class SqlHelper {
 							.append(" FROM ").append(tableName)
 							.append(whereCondition).toString(), null);
 		} catch (Exception e) {
-			// to do add log file.
+			// TODO: add log file.
 		}
 
 		return cursor;
