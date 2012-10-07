@@ -1,14 +1,10 @@
 package money.Tracker.presentation.activities;
 
-import java.util.Date;
-
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.Converter;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;

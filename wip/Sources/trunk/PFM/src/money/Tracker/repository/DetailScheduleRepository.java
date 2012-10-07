@@ -9,7 +9,7 @@ import money.Tracker.presentation.model.DetailSchedule;
 
 public class DetailScheduleRepository {
 	private static DetailScheduleRepository instance;
-	ArrayList<DetailSchedule> detailSchedules;
+	ArrayList<DetailSchedule> detailSchedules = new ArrayList<DetailSchedule>();
 
 	public DetailScheduleRepository() {
 	}
@@ -21,7 +21,6 @@ public class DetailScheduleRepository {
 	public ArrayList<DetailSchedule> getData(String whereCondition) {
 		Cursor detail = SqlHelper.instance.select("ScheduleDetail", "*",
 				whereCondition);
-
 		if (detail != null && detail.moveToFirst()) {
 			detailSchedules = new ArrayList<DetailSchedule>();
 			do {
