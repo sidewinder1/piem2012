@@ -36,8 +36,9 @@
             android:background="@drawable/cancel_icon" />
     </RelativeLayout>
 
-    <ScrollView android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -71,45 +72,89 @@
                     android:textSize="12dp" />
             </LinearLayout>
 
-            <AutoCompleteTextView
-                android:id="@+id/name_edit_text"
-                android:layout_width="fill_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:singleLine="true"
+                android:text=""
+                android:textColor="@android:color/white" />
+
+            <AutoCompleteTextView
+                android:id="@+id/name_edit_text"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:hint="Name"
                 android:maxLength="30"
-                android:textColor="@android:color/black" />
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/phone_edit_text"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Phone"
+                android:inputType="number"
                 android:maxLength="13"
-                android:inputType="number" />
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/address_edit_text"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Address"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/money_edit_text"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:hint="Money"
+                android:inputType="number"
                 android:maxLength="20"
-                android:inputType="number" />
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -135,8 +180,15 @@
                     android:textOff="Compound"
                     android:textOn="Simple"
                     android:textSize="12dp" />
-                
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -145,31 +197,40 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Interest Rate"
-                    android:textColor="@android:color/white" />
+                    android:text="Interest Rate         "
+                    android:textColor="@android:color/white"
+                    android:textSize="10dp" />
 
                 <EditText
                     android:id="@+id/interest_rate_edit_text"
                     android:layout_width="165dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
+                    android:inputType="number"
                     android:maxLength="3"
-                    android:inputType="number" />
+                    android:textSize="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:text="%"
                     android:textColor="@android:color/white"
-                    android:textSize="25dp" />
-
+                    android:textSize="10dp" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -178,16 +239,17 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Start Date      "
-                    android:textColor="@android:color/white" />
-				
+                    android:text="Start Date              "
+                    android:textColor="@android:color/white"
+                    android:textSize="10dp" />
+
                 <EditText
                     android:id="@+id/start_date_edit_text"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
@@ -195,8 +257,16 @@
                     android:focusable="false"
                     android:inputType="date"
                     android:paddingLeft="5dp"
-                    android:textSize="15dp" />
+                    android:textSize="10dp" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -205,16 +275,17 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Expired Date "
-                    android:textColor="@android:color/white" />
+                    android:text="Expired Date         "
+                    android:textColor="@android:color/white"
+                    android:textSize="10dp" />
 
                 <EditText
                     android:id="@+id/expired_date_edit_text"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
@@ -223,9 +294,9 @@
                     android:focusable="false"
                     android:inputType="date"
                     android:paddingLeft="5dp"
-                    android:textSize="15dp" />
+                    android:textSize="10dp" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
