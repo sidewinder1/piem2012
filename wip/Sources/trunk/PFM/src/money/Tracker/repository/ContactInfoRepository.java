@@ -76,22 +76,42 @@ public class ContactInfoRepository {
 							ContactsContract.Data.CONTENT_URI, null, addrWhere,
 							addrWhereParams, null);
 
-					while (addrCur.moveToNext()) {
-						String poBox = addrCur
-								.getString(addrCur
-										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POBOX));
+					while (addrCur.moveToNext()) {						
 						String street = addrCur
 								.getString(addrCur
 										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
 						String city = addrCur
 								.getString(addrCur
 										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-						String country = addrCur
+						String state = addrCur
 								.getString(addrCur
-										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
 
 						// Do something with these....
-						returnNameAddress = street;
+						if (street == null)
+						{
+							street = "";
+						}						
+						
+						if (city == null)
+						{
+							city = "";
+						}
+						else
+						{
+							city = ", " + city;
+						}
+						
+						if (state == null)
+						{
+							state = "";
+						}
+						else
+						{
+							state = ", " + state;
+						}
+						
+						returnNameAddress = street + city + state;
 
 					}
 					addrCur.close();
@@ -99,6 +119,6 @@ public class ContactInfoRepository {
 			}
 		}
 
-		return returnNameAddress;
+		return returnNameAddress.trim();
 	}
 }

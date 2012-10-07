@@ -36,7 +36,7 @@ public class BorrowLendViewActivity extends Activity {
 	private ListView borrowLendList;
 	private BorrowLendAdapter borrowLendAdapter;
 	private BorrowLend borrowLend;
-	private String tableName = "";
+	private String debtType = "";
 	private boolean checkBorrowing;
 	private TextView totalMoneyTextView;
 	private TextView latesExpiredDateTextView;
@@ -79,9 +79,9 @@ public class BorrowLendViewActivity extends Activity {
 		latesExpiredDateTextView = (TextView) findViewById(R.id.borrow_lend_view_lates_expired_date);
 		
 		if (checkBorrowing) {
-			tableName = "Borrowing";
+			debtType = "Borrowing";
 		} else {
-			tableName = "Lending";
+			debtType = "Lending";
 		}
 		
 		getTotalInformatation();
@@ -92,7 +92,7 @@ public class BorrowLendViewActivity extends Activity {
 	
 	private void getTotalInformatation()
 	{
-		Cursor borrowLendData = SqlHelper.instance.select(tableName, "*", "");
+		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*", "Debt_type like '" + debtType + "'");
 		
 		double totalMoney = 0;
 		String latesExpiredDateString = "1/1/1900";
@@ -142,27 +142,26 @@ public class BorrowLendViewActivity extends Activity {
 	}
 
 	private void bindData() {
-		String tableName;
 		if (checkBorrowing) {
-			tableName = "Borrowing";
+			debtType = "Borrowing";
 		} else {
-			tableName = "Lending";
+			debtType = "Lending";
 		}
 
 		BorrowLendRepository bolere = new BorrowLendRepository();
-		ArrayList<Object> values = bolere.getData(tableName, "1=1 order by expired_date");
+		ArrayList<Object> values = bolere.getData("Debt_type like '" + debtType + "' order by expired_date");
 
 		if (values.size() == 0) {
+			Log.d("Check display", "Check 1");
 			displayText.setVisibility(View.VISIBLE);
-		return;
+		}
+		else
+		{
+			Log.d("Check display", "Check 2");
+			displayText.setVisibility(View.GONE);
 		}
 		
-		displayText.setVisibility(View.GONE);
 		borrowLendAdapter = new BorrowLendAdapter(this, R.layout.activity_borrow_lend_view_item, values);
-		if (values.size() == 0) {						
-			borrowLendList.setVisibility(View.GONE);
-			return;
-		}
 		
 		borrowLendList.setVisibility(View.VISIBLE);
 		borrowLendAdapter.notifyDataSetChanged();
@@ -193,15 +192,15 @@ public class BorrowLendViewActivity extends Activity {
 		case 0: // Edit
 			Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendInsertActivity.class);
 			borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
-			borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
 			startActivity(borrowLendDetail);
 			break;
 		case 1: // Delete
 			Alert.getInstance().showDialog(getParent(),
 					"Delete selected schedule?", new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							SqlHelper.instance.delete(tableName, "Id = " + borrowLend.getId());
+							SqlHelper.instance.delete("BorrowLend", "Id = " + borrowLend.getId());
 							bindData();
+							getTotalInformatation();
 						}
 					});
 			getTotalInformatation();

@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Debt Type"
+                    android:text="Debt Type       "
                     android:textColor="@android:color/white" />
 
                 <ToggleButton
@@ -77,6 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:singleLine="true"
                 android:hint="Name"
                 android:maxLength="30"
                 android:textColor="@android:color/black" />
@@ -180,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Start Date   "
+                    android:text="Start Date      "
                     android:textColor="@android:color/white" />
 				
                 <EditText

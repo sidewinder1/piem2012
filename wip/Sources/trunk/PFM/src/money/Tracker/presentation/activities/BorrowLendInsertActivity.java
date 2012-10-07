@@ -49,7 +49,6 @@ public class BorrowLendInsertActivity extends Activity {
 	private EditText startDateEditText;
 	private EditText expiredDateEditText;
 	private Alert alert;
-	private String tableName = "";
 	private Button saveButton;
 	private Button cancelButton;
 	private TextView debtTypeTextView;
@@ -64,6 +63,7 @@ public class BorrowLendInsertActivity extends Activity {
 	private ArrayList<String> column;
 	private ArrayList<String> valuesChanged;
 	private int borrow_lend_id = -1;
+	private String debtType = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -89,42 +89,40 @@ public class BorrowLendInsertActivity extends Activity {
 
 		// get information from view detail intent
 		Bundle extras = getIntent().getExtras();
-		boolean checkBorrowing = true;
 
 		try {
 			borrow_lend_id = extras.getInt("borrowLendID");
-			checkBorrowing = extras.getBoolean("checkBorrowing");
 		} catch (Exception e) {
 
 		}
 
-		Log.d("Check Edit", "Check 8");
+		Log.d("Check Edit", "Check 1");
 
 		if (borrow_lend_id != -1) {
-			Log.d("Check Edit", "Check 9");
-			debtTypeButton.setClickable(false);
-
-			if (checkBorrowing)
-				tableName += "Borrowing";
-			else
-				tableName += "Lending";
-
-			Log.d("Check Edit", "Check 10");
-			debtTypeButton.setText(tableName);
-			Log.d("Check Edit", "Check 11");
-			debtTypeTextView.setText("Edit " + tableName);
-			Log.d("Check Edit", "Check 12");
+			Log.d("Check Edit", "Check 2");
 
 			BorrowLendRepository bolere = new BorrowLendRepository();
-			BorrowLend values = bolere.getDetailData(tableName, "ID="
-					+ borrow_lend_id);
-
+			Log.d("Check Edit", "Check 3");
+			BorrowLend values = bolere.getDetailData("ID=" + borrow_lend_id);
+			Log.d("Check Edit", "Check 4");
+			if (values.getDebtType().toString().equals("Borrowing"))
+			{
+				debtTypeButton.setChecked(true);
+				debtTypeTextView.setText("Edit Borrowing");
+			}
+			else
+			{
+				debtTypeButton.setChecked(false);
+				debtTypeTextView.setText("Edit Lending");
+			}
+			Log.d("Check Edit", "Check 5");
 			nameEditText.setText(String.valueOf(values.getPersonName()));
 			phoneEditText.setText(String.valueOf(values.getPersonPhone()));
 			addressEditText.setText(String.valueOf(values.getPersonAddress()));
 			moneyEditText.setText(Converter.toString(values.getMoney()));
 			interestType.setText(String.valueOf(values.getInterestType()));
-			interestRate.setText(String.valueOf(values.getInterestRate()));
+			if (values.getInterestRate() != 0)
+				interestRate.setText(String.valueOf(values.getInterestRate()));
 			startDateEditText.setText(Converter.toString(values.getStartDate(),
 					"dd/MM/yyyy"));
 			Log.d("Check Edit", "Check 13");
@@ -133,7 +131,6 @@ public class BorrowLendInsertActivity extends Activity {
 						values.getExpiredDate(), "dd/MM/yyyy"));
 			Log.d("Check Edit", "Check 14");
 
-			int count = 0;
 			column = new ArrayList<String>();
 			valuesChanged = new ArrayList<String>();
 
@@ -285,11 +282,6 @@ public class BorrowLendInsertActivity extends Activity {
 			});
 		}
 
-		final int borrowLendID;
-		borrowLendID = borrow_lend_id;
-		final String _tableName;
-		_tableName = tableName;
-
 		final ContactInfoRepository cont = new ContactInfoRepository(
 				getApplicationContext());
 		Cursor contacts = cont.getContacts2(null);
@@ -322,7 +314,7 @@ public class BorrowLendInsertActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				if (borrowLendID != -1) {
+				if (borrow_lend_id != -1) {
 					updateData();
 				} else {
 					insertData();
@@ -345,7 +337,7 @@ public class BorrowLendInsertActivity extends Activity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (borrowLendID == -1) {
+				if (borrow_lend_id == -1) {
 					if (debtTypeButton.isChecked()) {
 						debtTypeTextView.setText("New Borrowing");
 					} else {
@@ -493,14 +485,21 @@ public class BorrowLendInsertActivity extends Activity {
 	}
 
 	private void updateData() {
-		if (interestType.isChecked()) {
+		if (interestType.isChecked())
 			interestTypeString = "Simple";
-		} else {
-			interestTypeString = "Compound";
-		}
+		else 
+			interestTypeString = "Compound";		
 		
 		column.add("Interest_type");
 		valuesChanged.add(interestTypeString);
+		
+		if (debtTypeButton.isChecked())
+			debtType = "Borrowing";
+		else
+			debtType = "Lending";
+		
+		column.add("Debt_type");
+		valuesChanged.add(debtType);
 		
 		String[] columnUpdate = new String[column.size()];
 		columnUpdate = column.toArray(columnUpdate);
@@ -512,10 +511,9 @@ public class BorrowLendInsertActivity extends Activity {
 				&& !moneyEditText.getText().toString().equals("")) {
 			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText
 					.getText().toString().equals(""))
-					|| (interestRate.getText().toString().equals("") && expiredDateEditText
-							.getText().toString().equals(""))) {
+					|| (interestRate.getText().toString().equals(""))) {
 				
-				int check = SqlHelper.instance.update(tableName, columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
+				int check = SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
 				setResult(100);
 				BorrowLendInsertActivity.this.finish();
 			} else {
@@ -538,42 +536,29 @@ public class BorrowLendInsertActivity extends Activity {
 		if (!nameEditText.getText().toString().equals("")
 				&& !moneyEditText.getText().toString().equals("")) {
 			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText
-					.getText().toString().equals(""))
-					|| (interestRate.getText().toString().equals("") && expiredDateEditText
-							.getText().toString().equals(""))) {
+					.getText().toString().equals("")) || interestRate.getText().toString().equals("")) {
 				if (debtTypeButton.isChecked()) {
-					long check = SqlHelper.instance.insert("Borrowing",
-							new String[] { "Money", "Interest_type",
-									"Interest_rate", "Start_date",
-									"Expired_date", "Person_name",
-									"Person_Phone", "Person_address" },
-							new String[] {
-									moneyEditText.getText().toString(),
-									interestTypeString,
-									interestRate.getText().toString(),
-									startDateEditText.getText().toString()
-											.trim(),
-									expiredDateEditText.getText().toString()
-											.trim(),
-									nameEditText.getText().toString(),
-									phoneEditText.getText().toString(),
-									addressEditText.getText().toString() });
-					Log.d("Insert", startDateEditText.getText().toString());
-					Log.d("Insert", expiredDateEditText.getText().toString());
+					debtType = "Borrowing";
 				} else {
-					SqlHelper.instance.insert("Lending", new String[] {
-							"Money", "Interest_type", "Interest_rate",
-							"Start_date", "Expired_date", "Person_name",
-							"Person_Phone", "Person_address" }, new String[] {
-							moneyEditText.getText().toString(),
-							interestTypeString,
-							interestRate.getText().toString(),
-							startDateEditText.getText().toString(),
-							expiredDateEditText.getText().toString(),
-							nameEditText.getText().toString(),
-							phoneEditText.getText().toString(),
-							addressEditText.getText().toString() });
+					debtType = "Lending";
 				}
+				long check = SqlHelper.instance.insert("BorrowLend",
+						new String[] { "Debt_type", "Money", "Interest_type",
+								"Interest_rate", "Start_date",
+								"Expired_date", "Person_name",
+								"Person_phone", "Person_address" },
+						new String[] {
+								debtType,
+								moneyEditText.getText().toString(),
+								interestTypeString,
+								interestRate.getText().toString(),
+								startDateEditText.getText().toString()
+										.trim(),
+								expiredDateEditText.getText().toString()
+										.trim(),
+								nameEditText.getText().toString(),
+								phoneEditText.getText().toString(),
+								addressEditText.getText().toString() });
 				setResult(100);
 				BorrowLendInsertActivity.this.finish();
 			} else {

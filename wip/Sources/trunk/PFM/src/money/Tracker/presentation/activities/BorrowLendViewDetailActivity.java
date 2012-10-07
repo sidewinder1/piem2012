@@ -59,17 +59,9 @@ public class BorrowLendViewDetailActivity extends Activity {
 		Log.d("View Detail", "Check 1");
 		Bundle extras = getIntent().getExtras();
 		final int borrow_lend_id = extras.getInt("borrowLendID");
-		final boolean checkBorrowing = extras.getBoolean("checkBorrowing");
 
-		Log.d("View Detail", "Check 2");
-		final String tableName;
-		if (checkBorrowing)
-			tableName = "Borrowing";
-		else
-			tableName = "Lending";
-		Log.d("View Detail", "Check 3");
 		BorrowLendRepository bolere = new BorrowLendRepository();
-		values = bolere.getDetailData(tableName, "ID=" + borrow_lend_id);
+		values = bolere.getDetailData("ID=" + borrow_lend_id);
 		Log.d("View Detail", "Check 4");
 		personName.setText(String.valueOf(values.getPersonName()));
 		personPhone.setText(String.valueOf(values.getPersonPhone()));
@@ -109,7 +101,6 @@ public class BorrowLendViewDetailActivity extends Activity {
 				Intent borrowLendEdit = new Intent(
 						BorrowLendViewDetailActivity.this,
 						BorrowLendInsertActivity.class);
-				borrowLendEdit.putExtra("checkBorrowing", checkBorrowing);
 				borrowLendEdit.putExtra("borrowLendID", borrow_lend_id);
 				startActivity(borrowLendEdit);
 			}
