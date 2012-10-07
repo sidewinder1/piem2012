@@ -219,8 +219,27 @@ public class BorrowLendViewActivity extends Activity {
 		BorrowLend t = new BorrowLend();
 		for (i = 0; i < length; i++) {
 			for (j = 1; j < (length - i); j++) {
-				if (((BorrowLend) values.get(j - 1)).getExpiredDate()
-						.compareTo(((BorrowLend) values.get(j)).getExpiredDate()) > 0) {
+				Date j1ExpiredDate;
+				Date jExpiredDate;
+				if (((BorrowLend) values.get(j - 1)).getExpiredDate() != null)
+					j1ExpiredDate = ((BorrowLend) values.get(j - 1)).getExpiredDate();
+				else{
+					j1ExpiredDate = Converter.toDate("1/1/9999", "dd/MM/yyyy");
+					Log.d("Check sort", "Check 1");
+				}
+				
+				if (((BorrowLend) values.get(j)).getExpiredDate() != null)
+					jExpiredDate = ((BorrowLend) values.get(j)).getExpiredDate();
+				else
+				{
+					jExpiredDate = Converter.toDate("1/1/9999", "dd/MM/yyyy");
+					Log.d("Check sort", "Check 2");
+				}
+				
+				Log.d("Check sort", Converter.toString(j1ExpiredDate, "dd/MM/yyyy"));
+				Log.d("Check sort", Converter.toString(jExpiredDate, "dd/MM/yyyy"));
+				if (j1ExpiredDate.compareTo(jExpiredDate) > 0) {
+					Log.d("Check sort", String.valueOf(j1ExpiredDate.compareTo(jExpiredDate)));
 					t.setValue((BorrowLend) values.get(j - 1));
 					((BorrowLend) values.get(j - 1)).setValue((BorrowLend) values
 							.get(j));
