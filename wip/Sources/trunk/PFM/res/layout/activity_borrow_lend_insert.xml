@@ -144,7 +144,7 @@
                 android:textSize="16dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:hint="Money"
+                android:hint="Total"
                 android:inputType="number"
                 android:maxLength="20"/>
 
@@ -166,7 +166,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Interest Type    "
+                    android:text="Interest Type"
+                    android:textSize="15dp"
                     android:textColor="@android:color/white" />
 
                 <ToggleButton
@@ -180,6 +181,7 @@
                     android:textOff="Compound"
                     android:textOn="Simple"
                     android:textSize="12dp" />
+
             </LinearLayout>
 
             <TextView
@@ -243,7 +245,7 @@
                     android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Start Date      "
+                    android:text="Start Date     "
                     android:textColor="@android:color/white"/>
 
                 <EditText
@@ -252,12 +254,11 @@
                     android:layout_height="36dp"
                 	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:editable="false"
                     android:focusable="false"
-                    android:inputType="date"
-                    android:paddingLeft="5dp"/>
+                    android:inputType="date"/>
             </LinearLayout>
 
             <TextView
@@ -279,7 +280,7 @@
                 	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Expired Date "
+                    android:text="Expired Date"
                     android:textColor="@android:color/white"/>
 
                 <EditText
@@ -288,13 +289,12 @@
                     android:layout_height="36dp"
                 	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:editable="false"
                     android:ems="10"
                     android:focusable="false"
-                    android:inputType="date"
-                    android:paddingLeft="5dp"/>
+                    android:inputType="date"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
