@@ -19,19 +19,13 @@
     <string name="schedule_new_category">New Category</string>
     <string name="schedule_view_detail_title">View Schedule</string>
     <string name="dummy_data">Dummy data</string>
+    <string name="schedule_detail_average_title">Average</string>
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
     <string name="title_activity_lend_view">LendViewActivity</string>
     <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
     <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
     <string name="schedule_menu_title">Menu</string>
 
-    <string-array name="schedule_categories">
-        <item>Food</item>
-        <item>Shopping</item>
-        <item>Birthday</item>
-        <item>Entertainment</item>
-        <item>Others</item>
-    </string-array>
     <string-array name="currency_symbol">
         <item>VND</item>
         <item>USD</item>

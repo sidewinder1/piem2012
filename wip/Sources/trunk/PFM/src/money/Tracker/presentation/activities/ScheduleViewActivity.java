@@ -1,9 +1,13 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
+
+import org.apache.http.conn.routing.RouteInfo.LayerType;
+
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
+import money.Tracker.presentation.customviews.CategoryLegendItemView;
 import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.DataManager;
 import android.app.Activity;
@@ -12,7 +16,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager.LayoutParams;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +34,7 @@ public class ScheduleViewActivity extends Activity {
 	TextView displayText;
 	LinearLayout chart_legend;
 	ListView list;
+
 	public static ScheduleViewActivity context;
 	ArrayList<Object> values;
 	private ScheduleViewAdapter scheduleAdapter;
@@ -102,7 +110,8 @@ public class ScheduleViewActivity extends Activity {
 			Alert.getInstance().showDialog(getParent(),
 					"Delete selected schedule?", new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							SqlHelper.instance.delete("Schedule", "Id = " + schedule_id);
+							SqlHelper.instance.delete("Schedule", "Id = "
+									+ schedule_id);
 							bindData();
 						}
 					});
@@ -137,8 +146,37 @@ public class ScheduleViewActivity extends Activity {
 				R.layout.schedule_edit_item, values);
 
 		scheduleAdapter.notifyDataSetChanged();
-
 		list.setAdapter(scheduleAdapter);
+
+		// Bind chart legend:
+		Cursor category = SqlHelper.instance
+				.query(new StringBuilder(
+						"SELECT DISTINCT Category.Name, Category.User_Color ")
+						.append("FROM Category ")
+						.append("INNER JOIN ScheduleDetail ")
+						.append("ON Category.Id=ScheduleDetail.Category_Id")
+						.toString());
+
+		if (category != null && category.moveToFirst()) {
+			int index = 1;
+			chart_legend.removeAllViews();
+			LinearLayout itemView = new LinearLayout(this);
+			do {
+				CategoryLegendItemView item = new CategoryLegendItemView(this);
+				item.setName(category.getString(0));
+				item.setColor(category.getString(1));
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						0, LayoutParams.FILL_PARENT, 1);
+				itemView.addView(item, params);
+
+				if ((index % 2 == 0) || index == category.getCount()) {
+					chart_legend.addView(itemView);
+					itemView = new LinearLayout(this);
+				}
+
+				index++;
+			} while (category.moveToNext());
+		}
 	}
 
 	private void sort() {

@@ -11,7 +11,6 @@ public class CategoryCustomView extends LinearLayout {
 
 	public CategoryCustomView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.dropdown_list_item, this, true);

@@ -17,6 +17,7 @@ import android.widget.TextView;
 public class ScheduleDetailViewActivity extends Activity {
 	ScheduleDetailViewAdapter detailAdapter;
 	int schedule_id;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -28,7 +29,7 @@ public class ScheduleDetailViewActivity extends Activity {
 
 		bindData();
 	}
-	
+
 	@Override
 	protected void onRestart() {
 		bindData();
@@ -41,6 +42,7 @@ public class ScheduleDetailViewActivity extends Activity {
 						+ schedule_id);
 
 		if (schedule != null && schedule.moveToFirst()) {
+			TextView average = (TextView) findViewById(R.id.schedule_avg_budget_value);
 			String format = "dd/MM/yyyy";
 			TextView main_title = (TextView) findViewById(R.id.schedule_detail_main_title);
 			main_title.setText(new StringBuilder(Converter.toString(
@@ -59,12 +61,12 @@ public class ScheduleDetailViewActivity extends Activity {
 			Cursor detail_schedule = SqlHelper.instance.select(
 					"ScheduleDetail", "category_id, budget, schedule_id, Id",
 					"schedule_id = " + schedule_id);
+
 			if (detail_schedule != null && detail_schedule.moveToFirst()) {
 				do {
 					data.add(new DetailSchedule(detail_schedule.getInt(3),
-							detail_schedule.getInt(0),
-							detail_schedule.getDouble(1), detail_schedule
-									.getInt(2)));
+							detail_schedule.getInt(0), detail_schedule
+									.getDouble(1), detail_schedule.getInt(2)));
 				} while (detail_schedule.moveToNext());
 
 				detailAdapter = new ScheduleDetailViewAdapter(this,
@@ -74,6 +76,8 @@ public class ScheduleDetailViewActivity extends Activity {
 				list.setAdapter(detailAdapter);
 			}
 
+			average.setText(new StringBuilder(Converter.toString(schedule
+					.getDouble(1) / detail_schedule.getCount())).append("/day"));
 		}
 	}
 

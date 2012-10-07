@@ -18,6 +18,8 @@ public class DateTimeHelper {
 		return new Date(year - 1900, month, day);
 	}
 	
+	
+	
 	public static Date getLastDayOfWeek(Date date) {
 		Calendar calendar = new GregorianCalendar(date.getYear(), date.getMonth(),
 				Calendar.DAY_OF_MONTH);
