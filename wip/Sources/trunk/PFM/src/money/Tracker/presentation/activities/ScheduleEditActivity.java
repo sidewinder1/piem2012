@@ -11,6 +11,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.sax.TextElementListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -72,15 +73,9 @@ public class ScheduleEditActivity extends Activity {
 
 		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
 
-		total_budget.setOnFocusChangeListener(new OnFocusChangeListener() {
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus && getTotalBudget() < getTotalDetailBudget()) {
-					Alert.getInstance().show(getBaseContext(),
-							"Budget is not enough!");
-				}
-			}
-		});
+		total_budget.setOnFocusChangeListener(completeAfterLostFocus);
 
+		// Add event to total_budget to handle business logic.
 		total_budget.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
@@ -92,9 +87,17 @@ public class ScheduleEditActivity extends Activity {
 
 			public void afterTextChanged(Editable s) {
 				updateHint();
-				if (!"".equals(total_budget.getText().toString()) && String.valueOf(s).endsWith("."))
-				{
-					total_budget.setText(Converter.toString(Double.parseDouble(s.toString())));
+			}
+		});
+
+		total_budget.setOnFocusChangeListener(new OnFocusChangeListener() {
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					String str = total_budget.getText().toString();
+					if (!"".equals(str) && str.endsWith(".")) {
+						total_budget.setText(Converter.toString(Double
+								.parseDouble(str)));
+					}
 				}
 			}
 		});
@@ -152,8 +155,14 @@ public class ScheduleEditActivity extends Activity {
 			ArrayList<DetailSchedule> values = DetailScheduleRepository
 					.getInstance().getData(
 							"Schedule_Id = " + passed_schedule_id);
-			for (DetailSchedule value : values) {
-				addToList(value, -1, true);
+			if (values.size() == 0) {
+				addToList(
+						new DetailSchedule(0, 0,
+								Double.parseDouble(initialValue)), -1, false);
+			} else {
+				for (DetailSchedule value : values) {
+					addToList(value, -1, true);
+				}
 			}
 		}
 
@@ -178,7 +187,8 @@ public class ScheduleEditActivity extends Activity {
 			itemView.budget.setHint(Converter.toString(detail.getBudget()));
 		}
 
-		// itemView.budget.requestFocus();
+		// Add events to to detail budget to handle business logic.
+		itemView.budget.setOnFocusChangeListener(completeAfterLostFocus);
 
 		itemView.budget.addTextChangedListener(new TextWatcher() {
 			double sValue = 0;
@@ -297,6 +307,21 @@ public class ScheduleEditActivity extends Activity {
 		});
 	}
 
+	private OnFocusChangeListener completeAfterLostFocus = new OnFocusChangeListener() {
+		public void onFocusChange(View v, boolean hasFocus) {
+			completeAfterMove(v, hasFocus);
+		}
+		private void completeAfterMove(View v, boolean hasFocus) {
+			if (!hasFocus) {
+				String str = ((EditText)v).getText().toString();
+				if (!"".equals(str) && str.endsWith(".")) {
+					((EditText)v).setText(Converter.toString(Double
+							.parseDouble(str)));
+				}
+			}
+		}
+	};
+	
 	public void updateHint() {
 		if (list.getChildCount() == 0) {
 			return;
@@ -349,7 +374,8 @@ public class ScheduleEditActivity extends Activity {
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-								total_budget.setText(Converter.toString(getTotalDetailBudget()));
+								total_budget.setText(Converter
+										.toString(getTotalDetailBudget()));
 								total_budget.requestFocus();
 							}
 						}, new OnClickListener() {
@@ -413,7 +439,7 @@ public class ScheduleEditActivity extends Activity {
 			// Add new schedule.
 			addSchedule(Time_id);
 		}
-		
+
 		CategoryRepository.getInstance().updateData();
 		setResult(100);
 		this.finish();
