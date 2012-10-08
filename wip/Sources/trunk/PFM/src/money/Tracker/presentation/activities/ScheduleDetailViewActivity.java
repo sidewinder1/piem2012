@@ -1,9 +1,11 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.adapters.ScheduleDetailViewAdapter;
 import money.Tracker.presentation.model.DetailSchedule;
 import android.app.Activity;
@@ -76,8 +78,11 @@ public class ScheduleDetailViewActivity extends Activity {
 				list.setAdapter(detailAdapter);
 			}
 
+			Date end_date = Converter.toDate(schedule.getString(3));
 			average.setText(new StringBuilder(Converter.toString(schedule
-					.getDouble(1) / detail_schedule.getCount())).append("/day"));
+					.getDouble(1)
+					/ DateTimeHelper.getDayOfMonth(end_date.getYear(),
+							end_date.getMonth()))).append("/day"));
 		}
 	}
 

@@ -1,12 +1,9 @@
 package money.Tracker.presentation.customviews;
 
 import money.Tracker.presentation.activities.R;
-import money.Tracker.presentation.activities.ScheduleDetailViewActivity;
-import money.Tracker.presentation.activities.ScheduleMainViewActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 

@@ -11,17 +11,14 @@ import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.sax.TextElementListener;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -64,8 +61,8 @@ public class ScheduleEditActivity extends Activity {
 
 		// Add item for detail schedule.
 		categoryAdapter = new CategoryAdapter(this,
-				R.layout.dropdown_list_item,
-				CategoryRepository.getInstance().categories);
+				R.layout.dropdown_list_item, new ArrayList<Category>(
+						CategoryRepository.getInstance().categories));
 
 		categoryAdapter.notifyDataSetChanged();
 
@@ -205,9 +202,8 @@ public class ScheduleEditActivity extends Activity {
 			}
 
 			public void afterTextChanged(Editable s) {
-				if (!"".equals(s.toString())
-						&& Double.parseDouble(s.toString()) > sValue) {
-					updateTotalBudget();
+				if (!"".equals(s.toString())) {
+					updateTotalBudget(Double.parseDouble(s.toString()) > sValue);
 				}
 			}
 		});
@@ -285,10 +281,8 @@ public class ScheduleEditActivity extends Activity {
 		itemView.removeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (list.getChildCount() > 1) {
-
 					ScheduleItem item = (ScheduleItem) v.getParent()
 							.getParent();
-
 					if (item == null) {
 						return;
 					}
@@ -300,7 +294,7 @@ public class ScheduleEditActivity extends Activity {
 									.getTag()) });
 
 					list.removeView(item);
-					updateTotalBudget();
+					updateTotalBudget(true);
 				}
 
 			}
@@ -311,23 +305,31 @@ public class ScheduleEditActivity extends Activity {
 		public void onFocusChange(View v, boolean hasFocus) {
 			completeAfterMove(v, hasFocus);
 		}
+
 		private void completeAfterMove(View v, boolean hasFocus) {
 			if (!hasFocus) {
-				String str = ((EditText)v).getText().toString();
+				String str = ((EditText) v).getText().toString();
 				if (!"".equals(str)) {
-					((EditText)v).setText(Converter.toString(Double
+					((EditText) v).setText(Converter.toString(Double
 							.parseDouble(str)));
 				}
 			}
 		}
 	};
-	
+
 	public void updateHint() {
 		if (list.getChildCount() == 0) {
 			return;
 		}
 
-		EditText lastBudget = ((ScheduleItem) list.getChildAt(lastAddedItem)).budget;
+		ScheduleItem scheduleItem = (ScheduleItem) list
+				.getChildAt(lastAddedItem);
+
+		if (scheduleItem == null) {
+			return;
+		}
+
+		EditText lastBudget = scheduleItem.budget;
 		if (lastBudget == null) {
 			return;
 		}
@@ -363,13 +365,13 @@ public class ScheduleEditActivity extends Activity {
 		return Math.max(0, Double.parseDouble(budget_value));
 	}
 
-	public boolean updateTotalBudget() {
+	public boolean updateTotalBudget(boolean eanbleDialog) {
 		double totalDetail = getTotalDetailBudget();
 
 		if ("".equals(total_budget.getText().toString())) {
 			total_budget.setHint(Converter.toString(totalDetail));
 		} else {
-			if (getTotalBudget() < totalDetail) {
+			if (getTotalBudget() < totalDetail && eanbleDialog) {
 				Alert.getInstance().showDialog(this, "Over budget! Add more?",
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
