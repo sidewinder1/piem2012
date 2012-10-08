@@ -53,6 +53,8 @@ public class ScheduleViewAdapter extends ArrayAdapter<Object> {
 			final TextView budget = ((ScheduleViewItem) scheduleItemView).total_budget;
 			budget.setText(Converter.toString(schedule.budget));
 			
+			scheduleItemView.stacked_bar_chart.removeAllViews();
+			
 			// Prepare and display stacked bar chart:
 			for (int i=0; i <schedule.details.size(); i++)
 			{
