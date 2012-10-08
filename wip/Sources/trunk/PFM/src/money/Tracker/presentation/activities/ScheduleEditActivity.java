@@ -397,7 +397,7 @@ public class ScheduleEditActivity extends Activity {
 
 	public void doneBtnClicked(View v) {
 		if (getTotalBudget() <= 0) {
-			Alert.getInstance().show(this, "Total budget!");
+			Alert.getInstance().show(this, "Input Total budget!");
 			return;
 		}
 
