@@ -17,9 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_gravity="left|center_vertical"
-            android:text="@string/schedule_title"
             android:textColor="@color/white_text_color"
-            android:textSize="27dp" />
+            android:textSize="25dp" />
 
         <Button
             android:id="@+id/addSchedule"
@@ -28,7 +27,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="left|center_vertical"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="6dp"
             android:background="@drawable/add_new_icon" >
         </Button>
     </RelativeLayout>

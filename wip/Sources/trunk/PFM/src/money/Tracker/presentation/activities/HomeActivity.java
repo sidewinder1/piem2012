@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
 public class HomeActivity extends TabActivity {
+	private final String typeTabPathId = "type.tab.path.id";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -21,20 +22,25 @@ public class HomeActivity extends TabActivity {
 		// Create db connector
 		SqlHelper.instance = new SqlHelper(this);
 		SqlHelper.instance.initializeTable();
-		
+	
+		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 		
+		// Temporary tabs.
+		Intent managementIntent = new Intent(this, MainViewActivity.class);
+		managementIntent.putExtra(typeTabPathId, 0);
+		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost);
+		
 		// Create tab and intent for schedule.
-		Intent scheduleIntent = new Intent(this, ScheduleMainViewActivity.class);
+		Intent scheduleIntent = new Intent(this, MainViewActivity.class);
+		scheduleIntent.putExtra(typeTabPathId, 1);
 		setupTab(scheduleIntent, "Schedule", mTabHost);
 		
 		// Create tab and intent for Borrowing and Lending.
 		Intent borrowAndLendIntent = new Intent(this, BorrowLendMainViewActivity.class);
 		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost);
-		
-		// Temporary tabs.
-		setupTab(scheduleIntent, "Expenses\n& Incomes", mTabHost);
+				
 		setupTab(borrowAndLendIntent, "Report", mTabHost);	
 	}
 	
