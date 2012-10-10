@@ -42,8 +42,4 @@ public class EntryEditCategoryView extends LinearLayout {
 			}
 		});
 	}
-
-	public void addToList() {
-
-	}
 }
