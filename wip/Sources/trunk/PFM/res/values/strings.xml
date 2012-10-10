@@ -1,9 +1,14 @@
 <resources>
 
+    <!-- These are common resources for app -->
     <string name="app_name">Money Tracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_home">Money Tracker</string>
+    <string name="dummy_data">Dummy data</string>
+    <string name="no_data">No data</string>
+
+    <!-- These are resources for Schedule function -->
     <string name="schedule_start_day">From</string>
     <string name="schedule_end_day">To</string>
     <string name="schedule_budget">Total Budget</string>
@@ -15,16 +20,31 @@
     <string name="schedule_weekly">Weekly</string>
     <string name="schedule_title">Schedule</string>
     <string name="schedule_edit_title">New Schedule</string>
-    <string name="no_data">No data</string>
     <string name="schedule_new_category">New Category</string>
     <string name="schedule_view_detail_title">View Schedule</string>
-    <string name="dummy_data">Dummy data</string>
     <string name="schedule_detail_average_title">Average</string>
+    <string name="schedule_menu_title">Menu</string>
+  
+    <!-- These are resources for Schedule function -->
+    <string name="entry_management_title">Quản lý chi tiêu</string>
+    <string name="entry_expense_title">Chi phí</string>
+    <string name="entry_income_title">Thu nhập</string>
+    <string name="entry_new_expense_title">Thêm chi phí</string>
+    <string name="entry_new_income_title">Thêm thu nhập</string>
+    <string name="entry_price_hint">Giá</string>
+    <string name="entry_product_name_hint">Tên sản phẩm</string>
+    <string name="entry_daily_total_expense_title">Tổng chi phí ngày</string>
+    <string name="entry_total_budget">Ngân sách còn lại</string>
+    <string name="entry_daily_expense_title">Chi phí trong ngày {0}</string>
+    <string name="entry_daily_income_title">Thu nhập trong ngày {0}</string>
+    <string name="entry_edit_expense_title">Sửa chi phí ngày {0}</string>
+    <string name="entry_edit_income_title">Sửa thu nhập ngày {0}</string>
+    
+    <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
     <string name="title_activity_lend_view">LendViewActivity</string>
     <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
     <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
-    <string name="schedule_menu_title">Menu</string>
 
     <string-array name="currency_symbol">
         <item>VND</item>

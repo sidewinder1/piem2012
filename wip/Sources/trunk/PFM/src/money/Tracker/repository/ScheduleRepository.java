@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.database.Cursor;
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.Schedule;

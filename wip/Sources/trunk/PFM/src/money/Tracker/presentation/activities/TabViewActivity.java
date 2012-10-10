@@ -1,9 +1,6 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
-
-import org.apache.http.conn.routing.RouteInfo.LayerType;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
@@ -11,13 +8,10 @@ import money.Tracker.presentation.customviews.CategoryLegendItemView;
 import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.DataManager;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.view.ContextMenu;
@@ -30,12 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ScheduleViewActivity extends Activity {
+public class TabViewActivity extends Activity {
 	TextView displayText;
 	LinearLayout chart_legend;
 	ListView list;
 
-	public static ScheduleViewActivity context;
+	public static TabViewActivity context;
 	ArrayList<Object> values;
 	private ScheduleViewAdapter scheduleAdapter;
 
@@ -43,7 +37,7 @@ public class ScheduleViewActivity extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.schedule_view);
+		setContentView(R.layout.tab_content_view);
 		context = this;
 		Bundle extras = getIntent().getExtras();
 		isMonthly = extras.getBoolean("Monthly");
@@ -51,7 +45,7 @@ public class ScheduleViewActivity extends Activity {
 		displayText = (TextView) findViewById(R.id.no_data_edit);
 
 		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
-		list = (ListView) findViewById(R.id.schedule_view_list);
+		list = (ListView) findViewById(R.id.tab_content_view_list);
 		list.setOnItemClickListener(onListClick);
 
 		registerForContextMenu(list);
@@ -66,7 +60,7 @@ public class ScheduleViewActivity extends Activity {
 			Schedule schedule = (Schedule) listView.getAdapter().getItem(
 					position);
 			if (schedule != null) {
-				Intent scheduleDetail = new Intent(ScheduleViewActivity.this,
+				Intent scheduleDetail = new Intent(TabViewActivity.this,
 						ScheduleDetailViewActivity.class);
 				scheduleDetail.putExtra("schedule_id", schedule.id);
 				startActivity(scheduleDetail);
@@ -83,7 +77,7 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		if (v.getId() == R.id.schedule_view_list) {
+		if (v.getId() == R.id.tab_content_view_list) {
 			menu.setHeaderTitle(getResources().getString(
 					R.string.schedule_menu_title));
 			String[] menuItems = getResources().getStringArray(
