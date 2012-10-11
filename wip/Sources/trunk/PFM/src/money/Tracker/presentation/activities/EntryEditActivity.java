@@ -50,8 +50,7 @@ public class EntryEditActivity extends Activity {
 	private ToggleButton entryType;
 	private int passed_entry_id = -1;
 	LinearLayout entryList;
-	private CategoryAdapter categoryAdapter;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,13 +58,6 @@ public class EntryEditActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		passed_entry_id = extras.getInt("entry_id");
-
-		// Add item for detail schedule.
-		categoryAdapter = new CategoryAdapter(this,
-				R.layout.dropdown_list_item, new ArrayList<Category>(
-						CategoryRepository.getInstance().categories));
-
-		categoryAdapter.notifyDataSetChanged();
 
 		entryList = (LinearLayout) findViewById(R.id.entry_edit_list);
 
@@ -99,11 +91,8 @@ public class EntryEditActivity extends Activity {
 			updateDisplay();
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			entryList.addView(new EntryEditCategoryView(this), params);
-			// addToList(
-			// new DetailSchedule(0, 0, Double.parseDouble(initialValue)),
-			// -1, false);
-
+			entryList.addView(new EntryEditCategoryView(this, null), params);
+			
 		} else { // Edit mode
 			// TextView title = (TextView)
 			// findViewById(R.id.schedule_edit_tilte);
@@ -137,10 +126,6 @@ public class EntryEditActivity extends Activity {
 
 	int lastAddedItem;
 
-	private void addToList(DetailSchedule detail, int index, boolean init) {
-
-	}
-
 	private OnFocusChangeListener completeAfterLostFocus = new OnFocusChangeListener() {
 		public void onFocusChange(View v, boolean hasFocus) {
 			completeAfterMove(v, hasFocus);
@@ -167,36 +152,14 @@ public class EntryEditActivity extends Activity {
 	private void save() {
 		int type = entryType.isChecked() ? 1 : 0;
 		String date = String.valueOf(dateEdit.getText());
-		String condition = passed_entry_id == -1 ? new StringBuilder("")
-				.toString() : new StringBuilder("Id = ").append(passed_entry_id)
-				.toString();
+		
 		for (int index = 0; index < entryList.getChildCount(); index++) {
 			EntryEditCategoryView item = (EntryEditCategoryView) entryList
 					.getChildAt(index);
 			if (item != null) {
-				item.save(date, type, condition);
+				item.save(date, type, passed_entry_id);
 			}
 		}
-	}
-
-	private void addSchedule(String Time_id) {
-		// long newScheduleId = SqlHelper.instance.insert(
-		// "Schedule",
-		// new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
-		// new String[] {
-		// Converter.toString(getTotalBudget()),
-		// Converter.toString(Converter.toDate(startDateEdit
-		// .getText().toString(), "MMMM dd, yyyy")),
-		// Converter.toString(Converter.toDate(endDateEdit
-		// .getText().toString(), "MMMM dd, yyyy")),
-		// Time_id });
-		// if (newScheduleId != -1) {
-		// saveDetailSchedule(newScheduleId);
-		//
-		// Alert.getInstance().show(this, "Save sucessfully");
-		// } else {
-		// Alert.getInstance().show(this, "Can not save data");
-		// }
 	}
 
 	public boolean hasNewCategory() {
@@ -211,32 +174,6 @@ public class EntryEditActivity extends Activity {
 		// }
 
 		return true;
-	}
-
-	private void saveDetailSchedule(long newScheduleId) {
-		// for (int index = 0; index < list.getChildCount(); index++) {
-		// ScheduleItem detailItem = (ScheduleItem) list.getChildAt(index);
-		// if (detailItem.getBudget() == 0) {
-		// continue;
-		// }
-		//
-		// long category_id = detailItem.getCategory();
-		// if (detailItem.category_edit.getVisibility() == View.VISIBLE) {
-		// category_id = SqlHelper.instance.insert(
-		// "Category",
-		// new String[] { "Name", "User_Color" },
-		// new String[] {
-		// detailItem.category_edit.getText().toString(),
-		// String.valueOf(detailItem.category_edit
-		// .getTag()) });
-		// }
-		// SqlHelper.instance.insert(
-		// "ScheduleDetail",
-		// new String[] { "Budget", "Category_id", "Schedule_id" },
-		// new String[] { Converter.toString(detailItem.getBudget()),
-		// String.valueOf(category_id),
-		// String.valueOf(newScheduleId) });
-		// }
 	}
 
 	public void cancelBtnClicked(View v) {
