@@ -3,12 +3,12 @@ package money.Tracker.presentation.model;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Schedule {
+public class Schedule implements IModelBase {
 	public int id;
 	public Date start_date;
 	public Date end_date;
 	public double budget;
-	public int time_id;
+	public int type;
 
 	public ArrayList<DetailSchedule> details = new ArrayList<DetailSchedule>();
 
@@ -18,7 +18,7 @@ public class Schedule {
 			int time_id, ArrayList<DetailSchedule> details) {
 		this.id = id;
 		this.budget = budget;
-		this.time_id = time_id;
+		this.type = time_id;
 		this.start_date = start_date;
 		this.end_date = end_date;
 		this.details = details;
@@ -32,10 +32,9 @@ public class Schedule {
 
 	public void setDetails(ArrayList<DetailSchedule> details) {
 		this.details = details;
-	}
-	
-	public int compareTo(Schedule value)
-	{
-		return end_date.compareTo(value.end_date);
+	}	
+
+	public int compareTo(IModelBase value) {
+		return end_date.compareTo(((Schedule)value).end_date);
 	}
 }

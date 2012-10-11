@@ -3,10 +3,14 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
+import money.Tracker.presentation.adapters.EntryViewAdapter;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.customviews.CategoryLegendItemView;
+import money.Tracker.presentation.model.Entry;
+import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.presentation.model.Schedule;
-import money.Tracker.repository.DataManager;
+import money.Tracker.repository.EntryRepository;
+import money.Tracker.repository.ScheduleRepository;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -31,7 +35,7 @@ public class TabViewActivity extends Activity {
 	TextView displayText;
 	LinearLayout chart_legend;
 	ListView list;
-	ArrayList<Object> values;	
+	ArrayList<IModelBase> values;
 
 	boolean isTabOne, isEntry;
 
@@ -56,15 +60,20 @@ public class TabViewActivity extends Activity {
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> listView, View view,
 				int position, long id) {
-			
-			Schedule schedule = (Schedule) listView.getAdapter().getItem(
-					position);
-			if (schedule != null) {
-				Intent scheduleDetail = new Intent(TabViewActivity.this,
-						ScheduleDetailViewActivity.class);
-				scheduleDetail.putExtra("schedule_id", schedule.id);
-				startActivity(scheduleDetail);
+			int data_id = -1;
+			if (isEntry) {
+				Entry entry = (Entry) listView.getAdapter().getItem(position);
+				data_id = entry.getId();
+			} else {
+				Schedule schedule = (Schedule) listView.getAdapter().getItem(
+						position);
+				data_id = schedule.id;
 			}
+
+			Intent scheduleDetail = new Intent(TabViewActivity.this,
+					ScheduleDetailViewActivity.class);
+			scheduleDetail.putExtra("schedule_id", data_id);
+			startActivity(scheduleDetail);
 		}
 	};
 
@@ -93,19 +102,33 @@ public class TabViewActivity extends Activity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 		int menuItemIndex = item.getItemId();
-		final int schedule_id = ((Schedule) values.get(info.position)).id;
+		int id = -1;
+		if (isEntry) {
+			id = ((Entry) values.get(info.position)).getId();
+		} else {
+			id = ((Schedule) values.get(info.position)).id;
+		}
+
 		switch (menuItemIndex) {
 		case 0: // Edit
-			Intent edit = new Intent(this, ScheduleEditActivity.class);
-			edit.putExtra("schedule_id", schedule_id);
+			Intent edit = null;
+			if (isEntry) {
+				edit = new Intent(this, EntryEditActivity.class);
+				edit.putExtra("entry_id", id);
+			} else {
+				edit = new Intent(this, ScheduleEditActivity.class);
+				edit.putExtra("schedule_id", id);
+			}
 			startActivity(edit);
 			break;
 		case 1: // Delete
+			final int sId = id;
 			Alert.getInstance().showDialog(getParent(),
-					"Delete selected schedule?", new OnClickListener() {
+					getResources().getString(R.string.delete_confirm),
+					new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							SqlHelper.instance.delete("Schedule", "Id = "
-									+ schedule_id);
+							SqlHelper.instance
+									.delete("Schedule", "Id = " + sId);
 							bindData();
 						}
 					});
@@ -119,13 +142,15 @@ public class TabViewActivity extends Activity {
 	private void bindData() {
 		String whereCondition;
 		if (isTabOne) {
-			whereCondition = "Time_Id = 1";
+			whereCondition = "Type = 1";
 		} else {
-			whereCondition = "Time_Id = 0";
+			whereCondition = "Type = 0";
 		}
 
-		values = DataManager.getObjects("Schedule", whereCondition);
-		
+		values = isEntry ? EntryRepository.getInstance()
+				.getData(whereCondition) : ScheduleRepository.getInstance()
+				.getData(whereCondition);
+
 		if (values.size() == 0) {
 			hasData(false);
 			return;
@@ -133,12 +158,20 @@ public class TabViewActivity extends Activity {
 
 		sort();
 		hasData(true);
-		
-		ScheduleViewAdapter scheduleAdapter = new ScheduleViewAdapter(this,
-				R.layout.schedule_edit_item, values);
 
-		scheduleAdapter.notifyDataSetChanged();
-		list.setAdapter(scheduleAdapter);
+		if (isEntry) {
+			EntryViewAdapter entryAdapter = new EntryViewAdapter(this,
+					R.layout.entry_view_month_item, values);
+
+			entryAdapter.notifyDataSetChanged();
+			list.setAdapter(entryAdapter);
+		} else {
+			ScheduleViewAdapter scheduleAdapter = new ScheduleViewAdapter(this,
+					R.layout.schedule_edit_item, values);
+
+			scheduleAdapter.notifyDataSetChanged();
+			list.setAdapter(scheduleAdapter);
+		}
 
 		bindChartLegend();
 	}
@@ -184,13 +217,12 @@ public class TabViewActivity extends Activity {
 	private void sort() {
 		int i, j;
 		int length = values.size();
-		Schedule t = new Schedule();
+		IModelBase t;
 		for (i = 0; i < length; i++) {
 			for (j = 1; j < (length - i); j++) {
-				if (((Schedule) values.get(j - 1)).compareTo((Schedule) values
-						.get(j)) < 0) {
-					t = (Schedule) values.get(j - 1);
-					values.set(j - 1, (Schedule) values.get(j));
+				if ((values.get(j - 1)).compareTo(values.get(j)) < 0) {
+					t = values.get(j - 1);
+					values.set(j - 1, values.get(j));
 					values.set(j, t);
 				}
 			}

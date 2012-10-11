@@ -6,6 +6,7 @@ import android.database.Cursor;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.model.DetailSchedule;
+import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.presentation.model.Schedule;
 
 public class ScheduleRepository implements IDataRepository {
@@ -21,8 +22,8 @@ public class ScheduleRepository implements IDataRepository {
 		return instance;
 	}
 
-	public ArrayList<Object> getData(String param) {
-		ArrayList<Object> returnValues = new ArrayList<Object>();
+	public ArrayList<IModelBase> getData(String param) {
+		ArrayList<IModelBase> returnValues = new ArrayList<IModelBase>();
 
 		Cursor scheduleData = SqlHelper.instance.select("Schedule", "*", param);
 
@@ -63,7 +64,7 @@ public class ScheduleRepository implements IDataRepository {
 									.getString(scheduleData
 											.getColumnIndex("End_date"))),							
 							  scheduleData.getInt(scheduleData
-							  .getColumnIndex("Time_Id")),
+							  .getColumnIndex("Type")),
 							 details));
 
 				} while (scheduleData.moveToNext());
