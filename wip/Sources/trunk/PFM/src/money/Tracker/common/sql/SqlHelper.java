@@ -121,7 +121,7 @@ public class SqlHelper {
 		createTable(
 				"Schedule",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Time_Id INTEGER,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Type INTEGER,")
 						.append("Start_date DATE, End_date DATE").toString());
 
 		// Create table for Schedule Detail.

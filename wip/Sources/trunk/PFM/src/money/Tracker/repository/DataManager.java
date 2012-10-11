@@ -3,11 +3,12 @@ package money.Tracker.repository;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import money.Tracker.presentation.model.IModelBase;
+
 public class DataManager {
-	private static HashMap<String, ArrayList<Object>> repository = new HashMap<String, ArrayList<Object>>();
+	private static HashMap<String, ArrayList<IModelBase>> repository = new HashMap<String, ArrayList<IModelBase>>();
 
 	public DataManager() {
-
 	}
 
 	// This method is used to get data from database with specified table name.
@@ -15,6 +16,7 @@ public class DataManager {
 		IDataRepository dataRepository = new ScheduleRepository();
 
 		if (tableName != null) {
+			
 			if (repository.containsKey(tableName)) 
 			{
 				repository.remove(tableName);
@@ -24,8 +26,7 @@ public class DataManager {
 		}
 	}
 
-	public static ArrayList<Object> getObjects(String tableName, String param) {
-		updateData(tableName, param);
+	public static ArrayList<IModelBase> getObjects(String tableName, String param) {
 		return repository.get(tableName);
 	}
 }

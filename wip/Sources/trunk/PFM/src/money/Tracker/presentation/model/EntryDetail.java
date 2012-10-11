@@ -1,8 +1,6 @@
 package money.Tracker.presentation.model;
 
-import java.util.Date;
-
-public class EntryDetail {
+public class EntryDetail implements IModelBase{
 	private int id, category_id, entry_id;
 	private String name;
 	private double money;
@@ -11,8 +9,7 @@ public class EntryDetail {
 		super();
 	}
 
-	public EntryDetail(int id, int category_id, int type, String name,
-			Date date, double money) {
+	public EntryDetail(int id, int category_id, String name, double money) {
 		super();
 		this.id = id;
 		this.category_id = category_id;
@@ -51,11 +48,6 @@ public class EntryDetail {
 	public void setMoney(double money) {
 		this.money = money;
 	}
-	
-	public int compareTo(EntryDetail value)
-	{
-		return this.name.compareTo(value.getName());
-	}
 
 	public int getEntry_id() {
 		return entry_id;
@@ -63,5 +55,9 @@ public class EntryDetail {
 
 	public void setEntry_id(int entry_id) {
 		this.entry_id = entry_id;
+	}
+
+	public int compareTo(IModelBase value) {
+		return this.name.compareTo(((EntryDetail)value).getName());
 	}
 }

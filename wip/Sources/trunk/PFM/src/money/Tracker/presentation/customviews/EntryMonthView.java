@@ -24,20 +24,20 @@ public class EntryMonthView extends LinearLayout {
 		entryDayList = (ListView) findViewById(R.id.entry_view_day_item_list);
 	}
 
-	public EditText getName() {
-		return name;
+	public String getName() {
+		return String.valueOf(name.getText());
 	}
 
-	public void setName(EditText name) {
-		this.name = name;
+	public void setName(String name) {
+		this.name.setText(name);
 	}
 
-	public EditText getCost() {
-		return cost;
+	public String getCost() {
+		return String.valueOf(cost.getText());
 	}
 
-	public void setCost(EditText cost) {
-		this.cost = cost;
+	public void setCost(String cost) {
+		this.cost.setText(cost);
 	}
 
 	public LinearLayout getChart() {

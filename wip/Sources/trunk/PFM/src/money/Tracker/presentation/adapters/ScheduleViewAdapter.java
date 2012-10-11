@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.customviews.ScheduleViewItem;
+import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.presentation.model.Schedule;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,11 +17,11 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ScheduleViewAdapter extends ArrayAdapter<Object> {
-	private ArrayList<Object> schedules;
+public class ScheduleViewAdapter extends ArrayAdapter<IModelBase> {
+	private ArrayList<IModelBase> schedules;
 
 	public ScheduleViewAdapter(Context context, int resource,
-			ArrayList<Object> objects) {
+			ArrayList<IModelBase> objects) {
 		super(context, resource, objects);
 		// TODO Auto-generated constructor stub
 		schedules = objects;
@@ -39,7 +40,7 @@ public class ScheduleViewAdapter extends ArrayAdapter<Object> {
 		if (schedule != null) {
 			// Set content to item title:
 			final TextView item_title = ((ScheduleViewItem) scheduleItemView).schedule_item_title;
-			if (schedule.time_id == 1)
+			if (schedule.type == 1)
 			{
 				item_title.setText(DateFormat.format("MMMM yyyy", schedule.end_date));
 			}

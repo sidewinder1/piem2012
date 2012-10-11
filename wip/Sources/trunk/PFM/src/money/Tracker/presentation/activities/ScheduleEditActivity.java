@@ -141,7 +141,7 @@ public class ScheduleEditActivity extends Activity {
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
 					.getData("Id = " + passed_schedule_id).get(0);
 			if (schedule != null) {
-				periodic.setChecked(schedule.time_id == 1);
+				periodic.setChecked(schedule.type == 1);
 				startDateEdit.setText(Converter.toString(schedule.start_date,
 						"MMMM dd, yyyy"));
 				endDateEdit.setText(Converter.toString(schedule.end_date,
@@ -426,7 +426,7 @@ public class ScheduleEditActivity extends Activity {
 			Cursor scheduleCursor = SqlHelper.instance.select(
 					"Schedule",
 					"End_date",
-					new StringBuilder("Time_Id = ")
+					new StringBuilder("Type = ")
 							.append(Time_id)
 							.append(" AND End_date = '")
 							.append(Converter.toString(Converter.toDate(
@@ -450,7 +450,7 @@ public class ScheduleEditActivity extends Activity {
 	private void updateSchedule(String Time_id, String budget_value) {
 		SqlHelper.instance.update(
 				"Schedule",
-				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
+				new String[] { "Budget", "Start_date", "End_date", "Type" },
 				new String[] {
 						budget_value,
 						Converter.toString(Converter.toDate(startDateEdit
@@ -473,7 +473,7 @@ public class ScheduleEditActivity extends Activity {
 	private void addSchedule(String Time_id) {
 		long newScheduleId = SqlHelper.instance.insert(
 				"Schedule",
-				new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
+				new String[] { "Budget", "Start_date", "End_date", "Type" },
 				new String[] {
 						Converter.toString(getTotalBudget()),
 						Converter.toString(Converter.toDate(startDateEdit
