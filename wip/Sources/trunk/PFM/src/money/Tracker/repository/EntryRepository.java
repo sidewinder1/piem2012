@@ -13,6 +13,8 @@ public class EntryRepository implements IDataRepository {
 	private static EntryRepository instance;
 
 	public ArrayList<Entry> entries;
+	
+	//public HashMap<int, ArrayList<Entry>> orderedEntries = new HashMap<int, ArrayList<Entry>>();
 
 	public EntryRepository() {
 		updateData();
