@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="33dp"
+        android:layout_height="25dp"
         android:background="@drawable/title_background"
         android:orientation="horizontal" >
 
@@ -18,16 +18,16 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="left|center_vertical"
             android:textColor="@color/white_text_color"
-            android:textSize="25dp" />
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/addSchedule"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="left|center_vertical"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/add_new_icon" >
         </Button>
     </RelativeLayout>
