@@ -23,4 +23,36 @@ public class EntryMonthView extends LinearLayout {
 		chart = (LinearLayout) findViewById(R.id.entry_view_month_stacked_bar_chart);
 		entryDayList = (ListView) findViewById(R.id.entry_view_day_item_list);
 	}
+
+	public EditText getName() {
+		return name;
+	}
+
+	public void setName(EditText name) {
+		this.name = name;
+	}
+
+	public EditText getCost() {
+		return cost;
+	}
+
+	public void setCost(EditText cost) {
+		this.cost = cost;
+	}
+
+	public LinearLayout getChart() {
+		return chart;
+	}
+
+	public void setChart(LinearLayout chart) {
+		this.chart = chart;
+	}
+
+	public ListView getEntryDayList() {
+		return entryDayList;
+	}
+
+	public void setEntryDayList(ListView entryDayList) {
+		this.entryDayList = entryDayList;
+	}
 }

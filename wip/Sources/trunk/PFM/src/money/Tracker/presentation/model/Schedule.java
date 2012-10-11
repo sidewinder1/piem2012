@@ -25,22 +25,17 @@ public class Schedule {
 	}
 
 	public Schedule(float budget, Date start_date, Date end_date) {
-		// TODO Auto-generated constructor stub
 		this.budget = budget;
 		this.start_date = start_date;
 		this.end_date = end_date;
 	}
 
-	public void setValue(Schedule newSchedule) {
-		this.id = newSchedule.id;
-		this.budget = newSchedule.budget;
-		this.time_id = newSchedule.time_id;
-		this.start_date = newSchedule.start_date;
-		this.end_date = newSchedule.end_date;
-		this.details = newSchedule.details;
-	}
-
 	public void setDetails(ArrayList<DetailSchedule> details) {
 		this.details = details;
+	}
+	
+	public int compareTo(Schedule value)
+	{
+		return end_date.compareTo(value.end_date);
 	}
 }

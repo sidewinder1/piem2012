@@ -35,4 +35,23 @@ public class EntryEditProductView extends LinearLayout {
 		});
 	}
 
+	public void setName(String name)
+	{
+		product.setText(name);
+	}
+	
+	public void setCost(String cost)
+	{
+		price.setText(cost);
+	}
+	
+	public String getName()
+	{
+		return String.valueOf(product.getText());
+	}
+	
+	public String getCost()
+	{
+		return String.valueOf(price.getText());
+	}
 }

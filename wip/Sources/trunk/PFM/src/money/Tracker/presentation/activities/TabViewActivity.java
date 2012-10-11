@@ -25,23 +25,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class TabViewActivity extends Activity {
+	private final String sub_path = "type.tab.path.id.subtab";
+	public static TabViewActivity context;
+
 	TextView displayText;
 	LinearLayout chart_legend;
 	ListView list;
+	ArrayList<Object> values;	
 
-	public static TabViewActivity context;
-	ArrayList<Object> values;
-	private ScheduleViewAdapter scheduleAdapter;
-
-	boolean isMonthly;
+	boolean isTabOne, isEntry;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tab_content_view);
 		context = this;
 		Bundle extras = getIntent().getExtras();
-		isMonthly = extras.getBoolean("Monthly");
-
+		isTabOne = extras.getString(sub_path).startsWith("1");
+		isEntry = extras.getString(sub_path).endsWith("0");
 		displayText = (TextView) findViewById(R.id.no_data_edit);
 
 		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
@@ -56,7 +56,7 @@ public class TabViewActivity extends Activity {
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> listView, View view,
 				int position, long id) {
-			// TODO Auto-generated method stub
+			
 			Schedule schedule = (Schedule) listView.getAdapter().getItem(
 					position);
 			if (schedule != null) {
@@ -118,30 +118,38 @@ public class TabViewActivity extends Activity {
 
 	private void bindData() {
 		String whereCondition;
-		if (isMonthly) {
+		if (isTabOne) {
 			whereCondition = "Time_Id = 1";
 		} else {
 			whereCondition = "Time_Id = 0";
 		}
 
 		values = DataManager.getObjects("Schedule", whereCondition);
+		
 		if (values.size() == 0) {
-			chart_legend.setVisibility(View.GONE);
-			displayText.setVisibility(View.VISIBLE);
-			list.setVisibility(View.GONE);
+			hasData(false);
 			return;
 		}
 
 		sort();
-		list.setVisibility(View.VISIBLE);
-		displayText.setVisibility(View.GONE);
-		chart_legend.setVisibility(View.VISIBLE);
-		scheduleAdapter = new ScheduleViewAdapter(this,
+		hasData(true);
+		
+		ScheduleViewAdapter scheduleAdapter = new ScheduleViewAdapter(this,
 				R.layout.schedule_edit_item, values);
 
 		scheduleAdapter.notifyDataSetChanged();
 		list.setAdapter(scheduleAdapter);
 
+		bindChartLegend();
+	}
+
+	private void hasData(boolean hasData) {
+		list.setVisibility(hasData ? View.VISIBLE : View.GONE);
+		displayText.setVisibility(!hasData ? View.VISIBLE : View.GONE);
+		chart_legend.setVisibility(hasData ? View.VISIBLE : View.GONE);
+	}
+
+	private void bindChartLegend() {
 		// Bind chart legend:
 		Cursor category = SqlHelper.instance
 				.query(new StringBuilder(
@@ -179,12 +187,11 @@ public class TabViewActivity extends Activity {
 		Schedule t = new Schedule();
 		for (i = 0; i < length; i++) {
 			for (j = 1; j < (length - i); j++) {
-				if (((Schedule) values.get(j - 1)).end_date
-						.compareTo(((Schedule) values.get(j)).end_date) < 0) {
-					t.setValue((Schedule) values.get(j - 1));
-					((Schedule) values.get(j - 1)).setValue((Schedule) values
-							.get(j));
-					((Schedule) values.get(j)).setValue(t);
+				if (((Schedule) values.get(j - 1)).compareTo((Schedule) values
+						.get(j)) < 0) {
+					t = (Schedule) values.get(j - 1);
+					values.set(j - 1, (Schedule) values.get(j));
+					values.set(j, t);
 				}
 			}
 		}
