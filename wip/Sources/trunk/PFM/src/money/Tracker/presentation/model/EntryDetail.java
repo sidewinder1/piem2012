@@ -3,19 +3,20 @@ package money.Tracker.presentation.model;
 import java.util.Date;
 
 public class EntryDetail {
-	private int id, category_id, type;
+	private int id, category_id, entry_id;
 	private String name;
-	private Date date;
 	private double money;
+
+	public EntryDetail() {
+		super();
+	}
 
 	public EntryDetail(int id, int category_id, int type, String name,
 			Date date, double money) {
 		super();
 		this.id = id;
 		this.category_id = category_id;
-		this.type = type;
 		this.name = name;
-		this.date = date;
 		this.money = money;
 	}
 
@@ -50,20 +51,17 @@ public class EntryDetail {
 	public void setMoney(double money) {
 		this.money = money;
 	}
-
-	public Date getDate() {
-		return date;
+	
+	public int compareTo(EntryDetail value)
+	{
+		return this.name.compareTo(value.getName());
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public int getEntry_id() {
+		return entry_id;
 	}
 
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
+	public void setEntry_id(int entry_id) {
+		this.entry_id = entry_id;
 	}
 }

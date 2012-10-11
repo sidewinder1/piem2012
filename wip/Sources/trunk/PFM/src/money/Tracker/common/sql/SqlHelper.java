@@ -82,9 +82,8 @@ public class SqlHelper {
 			return false;
 		}
 	}
-	
-	public Cursor query(String sqlStatement)
-	{
+
+	public Cursor query(String sqlStatement) {
 		Cursor cursor = null;
 		try {
 			cursor = currentDb.rawQuery(sqlStatement, null);
@@ -94,7 +93,7 @@ public class SqlHelper {
 
 		return cursor;
 	}
-	
+
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
 		if (whereCondition != null && !"".equals(whereCondition)) {
@@ -133,17 +132,24 @@ public class SqlHelper {
 						.toString());
 
 		// Create table for Entry Detail.
-				createTable(
-						"EntryDetail",
-						new StringBuilder(
-								"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT,")
-								.append("Money FLOAT, Date DATE, Type INTEGER").toString());
+		createTable(
+				"EntryDetail",
+				new StringBuilder(
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT,")
+						.append("Money FLOAT, Entry_Id INTEGER")
+						.toString());
 
-		
+		// Create table for Entry Detail.
+		createTable(
+				"Entry",
+				new StringBuilder(
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, ")
+						.append("Date DATE, Type INTEGER")
+						.toString());
+
 		// Create table for Borrow and Lending.
 		createTable("BorrowLend", "ID INTEGER PRIMARY KEY autoincrement,"
-				+ "Debt_type TEXT,"
-				+ "Money INTEGER," + "Interest_type TEXT,"
+				+ "Debt_type TEXT," + "Money INTEGER," + "Interest_type TEXT,"
 				+ "Interest_rate INTEGER," + "Start_date TEXT,"
 				+ "Expired_date TEXT," + "Person_name TEXT,"
 				+ "Person_phone TEXT," + "Person_address TEXT");
@@ -187,9 +193,9 @@ public class SqlHelper {
 
 		if (colorCheck != null && !colorCheck.moveToFirst()) {
 			for (int index = 0; index < color_codes.length; index++) {
-				SqlHelper.instance.insert("UserColor", new String[] {
-						"User_Color" }, new String[] {
-						color_codes[index] });
+				SqlHelper.instance.insert("UserColor",
+						new String[] { "User_Color" },
+						new String[] { color_codes[index] });
 			}
 		}
 

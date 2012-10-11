@@ -13,6 +13,7 @@ public class EntryDetailRepository {
 	private static EntryDetailRepository instance;
 
 	public EntryDetailRepository() {
+		updateData();
 	}
 
 	public ArrayList<EntryDetail> updateData() {
@@ -39,5 +40,21 @@ public class EntryDetailRepository {
 			instance = new EntryDetailRepository();
 		}
 		return instance;
+	}
+	
+	public void sort()
+	{
+		int i, j;
+		int length = entries.size();
+		EntryDetail t = new EntryDetail();
+		for (i = 0; i < length; i++) {
+			for (j = 1; j < (length - i); j++) {
+				if (entries.get(j - 1).compareTo(entries.get(j)) < 0) {
+					t = entries.get(j - 1);
+					entries.set(j - 1, entries.get(j));
+					entries.set(j, t);
+				}
+			}
+		}
 	}
 }

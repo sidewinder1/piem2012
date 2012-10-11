@@ -16,6 +16,7 @@ import android.widget.TabHost.TabSpec;
 public class MainViewActivity extends TabActivity {
 	private int tab_type;
 	private final String path = "type.tab.path.id";
+	private final String sub_path = "type.tab.path.id.subtab";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,12 @@ public class MainViewActivity extends TabActivity {
 
 		// Create tab and intent for schedule.
 		Intent monthlyIntent = new Intent(this, TabViewActivity.class);
-		monthlyIntent.putExtra("Monthly", true);
+		monthlyIntent.putExtra(sub_path, "1" + tab_type);
 		setupTab(monthlyIntent, firstTabTitle, mTabHost);
 
 		// Create tab and intent for Borrowing and Lending.
 		Intent weeklyIntent = new Intent(this, TabViewActivity.class);
-		weeklyIntent.putExtra("Monthly", false);
+		weeklyIntent.putExtra(sub_path, "0" + tab_type);
 		ViewHelper.setupTab(weeklyIntent, secondTabTitle, mTabHost);
 
 		// Bind clicked event to add new button.

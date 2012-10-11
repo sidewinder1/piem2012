@@ -96,9 +96,10 @@ public class EntryEditActivity extends Activity {
 
 		// New Mode
 		if (passed_entry_id == -1) {
-			 updateDisplay();
-			 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			 entryList.addView(new EntryEditCategoryView(this), params);
+			updateDisplay();
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			entryList.addView(new EntryEditCategoryView(this), params);
 			// addToList(
 			// new DetailSchedule(0, 0, Double.parseDouble(initialValue)),
 			// -1, false);
@@ -157,77 +158,25 @@ public class EntryEditActivity extends Activity {
 	};
 
 	public void doneBtnClicked(View v) {
-		// if (getTotalBudget() <= 0) {
-		// Alert.getInstance().show(this, "Input Total budget!");
-		// return;
-		// }
-		//
-		// if (getTotalBudget() < getTotalDetailBudget()) {
-		// Alert.getInstance().show(this, "Total budget not enough!");
-		// return;
-		// }
-		//
-		// if (!hasNewCategory()) {
-		// return;
-		// }
-		//
-		// String Time_id = (periodic.isChecked() ? "1" : "0");
-		//
-		// if (passed_entry_id != -1) {
-		// String budget_value = String.valueOf(total_budget.getText());
-		// if ("".equals(budget_value)) {
-		// budget_value = String
-		// .valueOf(total_budget.getHint().toString());
-		// }
-		//
-		// // Update schedule record.
-		// updateSchedule(Time_id, budget_value);
-		// } else {
-		// // Add new mode.
-		// Cursor scheduleCursor = SqlHelper.instance.select(
-		// "Schedule",
-		// "End_date",
-		// new StringBuilder("Time_Id = ")
-		// .append(Time_id)
-		// .append(" AND End_date = '")
-		// .append(Converter.toString(Converter.toDate(
-		// endDateEdit.getText().toString(),
-		// "MMMM dd, yyyy"))).append("'").toString());
-		// if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
-		// Alert.getInstance().show(this,
-		// "A schedule for this time is existing!");
-		// return;
-		// }
-		//
-		// // Add new schedule.
-		// addSchedule(Time_id);
-		// }
-		Alert.getInstance().show(this, "Not Supported");
+		save();
 		CategoryRepository.getInstance().updateData();
 		setResult(100);
 		this.finish();
 	}
 
-	private void updateSchedule(String Time_id, String budget_value) {
-		// SqlHelper.instance.update(
-		// "Schedule",
-		// new String[] { "Budget", "Start_date", "End_date", "Time_Id" },
-		// new String[] {
-		// budget_value,
-		// Converter.toString(Converter.toDate(startDateEdit
-		// .getText().toString(), "MMMM dd, yyyy")),
-		// Converter.toString(Converter.toDate(endDateEdit
-		// .getText().toString(), "MMMM dd, yyyy")),
-		// Time_id },
-		// new StringBuilder("Id = ").append(passed_entry_id).toString());
-		//
-		// // Delete all records that have schedule id equals
-		// // passed_schedule_id
-		// SqlHelper.instance.delete("ScheduleDetail", new StringBuilder(
-		// "Schedule_Id = ").append(passed_entry_id).toString());
-		// // Insert new.
-		// saveDetailSchedule(passed_entry_id);
-		// Alert.getInstance().show(this, "Updated 1 record sucessfully");
+	private void save() {
+		int type = entryType.isChecked() ? 1 : 0;
+		String date = String.valueOf(dateEdit.getText());
+		String condition = passed_entry_id == -1 ? new StringBuilder("")
+				.toString() : new StringBuilder("Id = ").append(passed_entry_id)
+				.toString();
+		for (int index = 0; index < entryList.getChildCount(); index++) {
+			EntryEditCategoryView item = (EntryEditCategoryView) entryList
+					.getChildAt(index);
+			if (item != null) {
+				item.save(date, type, condition);
+			}
+		}
 	}
 
 	private void addSchedule(String Time_id) {
