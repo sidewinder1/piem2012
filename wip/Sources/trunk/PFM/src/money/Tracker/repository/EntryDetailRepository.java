@@ -31,7 +31,7 @@ public class EntryDetailRepository {
 			do {
 				int category_id = entryCursor.getInt(entryCursor.getColumnIndex("Category_Id"));
 				String categoryKey = String.valueOf(category_id);
-				if (entries.containsKey(categoryKey))
+				if (!entries.containsKey(categoryKey))
 				{
 					entries.put(categoryKey, new ArrayList<EntryDetail>());
 				}

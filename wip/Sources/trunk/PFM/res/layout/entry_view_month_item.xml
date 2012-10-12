@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-  <LinearLayout
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -13,37 +13,40 @@
             android:id="@+id/entry_view_month_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:textColor="@color/white_text_color"
-            android:text="@string/dummy_data"
             android:layout_marginLeft="10dp"
+            android:layout_weight="3"
+            android:text="@string/dummy_data"
+            android:textColor="@color/white_text_color"
             android:textSize="17dp" />
 
         <TextView
             android:id="@+id/entry_view_month_item_cost"
             android:layout_width="0dp"
-            android:textColor="@color/white_text_color"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_weight="2"
+            android:gravity="right"
             android:text="@string/dummy_data"
+            android:textColor="@color/white_text_color"
             android:textSize="17dp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:id="@+id/entry_view_month_stacked_bar_chart"
-        android:background="#7991"
         android:layout_width="fill_parent"
+        android:layout_height="15dp"
         android:layout_marginBottom="5dp"
-        android:layout_height="15dp" />
-     <ListView
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:background="#7991" />
+
+    <ListView
         android:id="@+id/entry_view_day_item_list"
         android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_marginBottom="5dp"
-        android:layout_height="wrap_content" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@android:color/transparent" />
+
 </LinearLayout>

@@ -3,7 +3,7 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
-import money.Tracker.presentation.adapters.EntryViewAdapter;
+import money.Tracker.presentation.adapters.EntryMonthViewAdapter;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.customviews.CategoryLegendItemView;
 import money.Tracker.presentation.model.Entry;
@@ -160,8 +160,8 @@ public class TabViewActivity extends Activity {
 		hasData(true);
 
 		if (isEntry) {
-			EntryViewAdapter entryAdapter = new EntryViewAdapter(this,
-					R.layout.entry_view_month_item, values);
+			EntryMonthViewAdapter entryAdapter = new EntryMonthViewAdapter(this,
+					R.layout.entry_view_month_item, new ArrayList<String>(EntryRepository.getInstance().orderedEntries.keySet()), EntryRepository.getInstance().orderedEntries);
 
 			entryAdapter.notifyDataSetChanged();
 			list.setAdapter(entryAdapter);
