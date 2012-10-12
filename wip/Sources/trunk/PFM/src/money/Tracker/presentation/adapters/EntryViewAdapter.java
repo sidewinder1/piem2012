@@ -49,22 +49,22 @@ public class EntryViewAdapter extends ArrayAdapter<IModelBase> {
 			entryMonthView.getChart().removeAllViews();
 
 			// Prepare and display stacked bar chart:
-			for (int i = 0; i < entry.getEntryDetails().size(); i++) {
-				View stackItem = new View(getContext());
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						0, LayoutParams.FILL_PARENT,
-						Float.parseFloat(entry.getEntryDetails().get(i).getMoney() + ""));
-				Cursor categoryCursor = SqlHelper.instance.select("Category",
-						"Id, User_Color", "Id = "
-								+ entry.getEntryDetails().get(i).getCategory_id());
-
-				if (categoryCursor != null && categoryCursor.moveToFirst()) {
-					stackItem.setBackgroundColor(Color
-							.parseColor(categoryCursor.getString(1)));
-				}
-
-				entryMonthView.getChart().addView(stackItem, params);
-			}
+//			for (int i = 0; i < entry.getEntryDetails().size(); i++) {
+//				View stackItem = new View(getContext());
+//				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//						0, LayoutParams.FILL_PARENT,
+//						Float.parseFloat(entry.getEntryDetails().get(i).getMoney() + ""));
+//				Cursor categoryCursor = SqlHelper.instance.select("Category",
+//						"Id, User_Color", "Id = "
+//								+ entry.getEntryDetails().get(i).getCategory_id());
+//
+//				if (categoryCursor != null && categoryCursor.moveToFirst()) {
+//					stackItem.setBackgroundColor(Color
+//							.parseColor(categoryCursor.getString(1)));
+//				}
+//
+//				entryMonthView.getChart().addView(stackItem, params);
+//			}
 		}
 
 		return entryMonthView;

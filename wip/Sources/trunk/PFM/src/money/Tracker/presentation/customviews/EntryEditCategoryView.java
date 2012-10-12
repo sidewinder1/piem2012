@@ -24,7 +24,7 @@ public class EntryEditCategoryView extends LinearLayout {
 	private LinearLayout category_list;
 	private CategoryAdapter categoryAdapter;
 
-	public EntryEditCategoryView(Context context, Entry data) {
+	public EntryEditCategoryView(Context context, ArrayList<EntryDetail> data) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,16 +54,21 @@ public class EntryEditCategoryView extends LinearLayout {
 			EntryEditProductView item = new EntryEditProductView(context);
 			category_list.addView(item, params);
 		} else {
-			total_money.setText(String.valueOf(data.getTotal()));
-			for (EntryDetail entryDetail : data.getEntryDetails()) {
+			double total = 0;
+			
+			for (EntryDetail entryDetail : data) {
 				EntryEditProductView item = new EntryEditProductView(context);
 				item.setName(entryDetail.getName());
 				item.setCost(String.valueOf(entryDetail.getMoney()));
 
+				total += Double.parseDouble(item.getCost());
+				
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 				category_list.addView(item, params);
 			}
+			
+			total_money.setText(String.valueOf(total));
 		}
 
 		// Add event to add button.

@@ -1,6 +1,7 @@
 package money.Tracker.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.database.Cursor;
 
@@ -14,8 +15,6 @@ public class EntryRepository implements IDataRepository {
 
 	public ArrayList<Entry> entries;
 	
-	//public HashMap<int, ArrayList<Entry>> orderedEntries = new HashMap<int, ArrayList<Entry>>();
-
 	public EntryRepository() {
 		updateData();
 	}
@@ -31,7 +30,7 @@ public class EntryRepository implements IDataRepository {
 			entries = new ArrayList<Entry>();
 			do {
 				int id = entryCursor.getInt(entryCursor.getColumnIndex("Id"));
-
+				
 				entries.add(new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),
