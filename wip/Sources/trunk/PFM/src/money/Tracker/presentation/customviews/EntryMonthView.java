@@ -8,6 +8,7 @@ import money.Tracker.presentation.model.Entry;
 import money.Tracker.repository.EntryRepository;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +18,8 @@ public class EntryMonthView extends LinearLayout {
 	private TextView cost;
 	private LinearLayout chart;
 	private LinearLayout entryDayList;
-
+	private boolean switcher = false;
+	
 	public EntryMonthView(Context context, String keyMonth) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
@@ -29,7 +31,13 @@ public class EntryMonthView extends LinearLayout {
 		chart = (LinearLayout) findViewById(R.id.entry_view_month_stacked_bar_chart);
 		entryDayList = (LinearLayout) findViewById(R.id.entry_view_day_item_list);
 		
-
+		setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				entryDayList.setVisibility(switcher ? View.VISIBLE : View.GONE);
+				switcher = !switcher;
+			}
+		});
+		
 		// Set content to item title:
 		setName(keyMonth);
 
@@ -42,6 +50,7 @@ public class EntryMonthView extends LinearLayout {
 				//if (totalCategory.containsKey())
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 			}
+			
 			// Set content to budget
 			// entryMonthView.setCost(Converter.toString(entrySet.getTotal()));
 

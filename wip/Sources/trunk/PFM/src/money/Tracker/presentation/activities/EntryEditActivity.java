@@ -1,42 +1,23 @@
 package money.Tracker.presentation.activities;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
-import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
-import money.Tracker.presentation.customviews.ScheduleItem;
-import money.Tracker.presentation.model.Category;
-import money.Tracker.presentation.model.DetailSchedule;
-import money.Tracker.presentation.model.Schedule;
 import money.Tracker.repository.CategoryRepository;
-import money.Tracker.repository.DetailScheduleRepository;
-import money.Tracker.repository.ScheduleRepository;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -125,22 +106,6 @@ public class EntryEditActivity extends Activity {
 	}
 
 	int lastAddedItem;
-
-	private OnFocusChangeListener completeAfterLostFocus = new OnFocusChangeListener() {
-		public void onFocusChange(View v, boolean hasFocus) {
-			completeAfterMove(v, hasFocus);
-		}
-
-		private void completeAfterMove(View v, boolean hasFocus) {
-			if (!hasFocus) {
-				String str = ((EditText) v).getText().toString();
-				if (!"".equals(str)) {
-					((EditText) v).setText(Converter.toString(Double
-							.parseDouble(str)));
-				}
-			}
-		}
-	};
 
 	public void doneBtnClicked(View v) {
 		save();

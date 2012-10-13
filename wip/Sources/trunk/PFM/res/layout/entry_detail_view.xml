@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:background="@drawable/title_background" >
+
+        <TextView
+            android:id="@+id/entry_detail_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="@string/entry_daily_expense_title"
+            android:textColor="@color/white_text_color"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/entry_detail_editBtn"
+            android:layout_width="26dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-3dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-2dp"
+            android:background="@drawable/management_icon"
+            android:onClick="editBtnClicked" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/entry_detail_list_item"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/entry_detail_summary"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_weight="0" />
+
+</LinearLayout>
