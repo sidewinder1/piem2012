@@ -34,6 +34,8 @@
         <activity android:name=".BorrowLendInsertActivity" />
         <activity android:name=".BorrowLendViewActivity" />
         <activity android:name=".BorrowLendViewDetailActivity" />
+        <activity android:name=".ReportMainViewActivity" />
+        <activity android:name=".ReportViewActivity" />
     </application>
 
 </manifest>

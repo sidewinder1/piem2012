@@ -7,7 +7,7 @@
     <string name="title_activity_home">Money Tracker</string>
     <string name="dummy_data">Dummy data</string>
     <string name="no_data">No data</string>
-     <string name="delete_confirm">Delete it?</string>
+    <string name="delete_confirm">Delete it?</string>
 
     <!-- These are resources for Schedule function -->
     <string name="schedule_start_day">From</string>
@@ -25,7 +25,7 @@
     <string name="schedule_view_detail_title">View Schedule</string>
     <string name="schedule_detail_average_title">Average</string>
     <string name="schedule_menu_title">Menu</string>
-  
+
     <!-- These are resources for Schedule function -->
     <string name="entry_management_title">Quản lý chi tiêu</string>
     <string name="entry_expense_title">Chi phí</string>
@@ -40,7 +40,10 @@
     <string name="entry_daily_income_title">Thu nhập trong ngày {0}</string>
     <string name="entry_edit_expense_title">Sửa chi phí ngày {0}</string>
     <string name="entry_edit_income_title">Sửa thu nhập ngày {0}</string>
-    
+
+    <!-- These are resources for Report function -->
+    <string name="report_management_title">Báo cáo</string>
+
     <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
     <string name="title_activity_lend_view">LendViewActivity</string>
@@ -62,5 +65,7 @@
     <string name="title_activity_borrow_lend_view">BorrowLendViewActivity</string>
     <string name="title_activity_borrow_lend_view_item">BorrowLendViewItemActivity</string>
     <string name="title_activity_borrow_lend_view_detail">BorrowLendViewDetailActivity</string>
+    <string name="title_activity_report_main">ReportMainActivity</string>
+    <string name="title_activity_report_view">ReportViewActivity</string>
 
 </resources>
