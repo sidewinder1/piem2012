@@ -15,14 +15,14 @@
     <ListView
         android:id="@+id/tab_content_view_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="0dip"
+        android:layout_weight="1" />
 
     <ScrollView
         android:id="@+id/entry_view_scroll"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="4"
+        android:layout_height="0dip"
+        android:layout_weight="1"
         android:clipChildren="false" >
 
         <LinearLayout
@@ -34,7 +34,7 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:layout_gravity="bottom"
         android:layout_weight="0"
         android:clipChildren="false" >

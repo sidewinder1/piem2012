@@ -26,7 +26,7 @@
     <string name="schedule_detail_average_title">Average</string>
     <string name="schedule_menu_title">Menu</string>
 
-    <!-- These are resources for Schedule function -->
+    <!-- These are resources for Entry function -->
     <string name="entry_management_title">Quản lý chi tiêu</string>
     <string name="entry_expense_title">Chi phí</string>
     <string name="entry_income_title">Thu nhập</string>

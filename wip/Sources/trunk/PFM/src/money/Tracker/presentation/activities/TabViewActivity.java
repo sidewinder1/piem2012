@@ -118,8 +118,6 @@ public class TabViewActivity extends Activity {
 		case 0: // Edit
 			Intent edit = null;
 			if (isEntry) {
-				edit = new Intent(this, EntryEditActivity.class);
-				edit.putExtra("entry_id", id);
 			} else {
 				edit = new Intent(this, ScheduleEditActivity.class);
 				edit.putExtra("schedule_id", id);
