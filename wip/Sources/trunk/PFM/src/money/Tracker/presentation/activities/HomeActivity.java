@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -25,23 +26,65 @@ public class HomeActivity extends TabActivity {
 	
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
-		
-		// Temporary tabs.
-		Intent managementIntent = new Intent(this, MainViewActivity.class);
-		managementIntent.putExtra(typeTabPathId, 0);
-		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost);
+		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);		
 		
 		// Create tab and intent for schedule.
 		Intent scheduleIntent = new Intent(this, MainViewActivity.class);
 		scheduleIntent.putExtra(typeTabPathId, 1);
 		setupTab(scheduleIntent, "Schedule", mTabHost);
 		
+		// Temporary tabs.
+				Intent managementIntent = new Intent(this, MainViewActivity.class);
+				managementIntent.putExtra(typeTabPathId, 0);
+				setupTab(managementIntent, "Expenses\n& Incomes", mTabHost);
+		
 		// Create tab and intent for Borrowing and Lending.
 		Intent borrowAndLendIntent = new Intent(this, BorrowLendMainViewActivity.class);
 		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost);
-				
-		setupTab(borrowAndLendIntent, "Report", mTabHost);	
+		
+		
+		// Create tab and intent for report
+		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
+		setupTab(reportIntent, "Báo cáo", mTabHost);	
+		
+		
+		// insert data
+		SqlHelper sqlhelp = new SqlHelper(this);
+		sqlhelp.initializeTable();
+		Log.d("Insert", "Check 1");
+		try
+		{
+		sqlhelp.insert("Entry", new String[] {"Date", "Type"}, new String[] {"13/10/2012", "1"});
+		} catch (Exception e)
+		{
+			Log.d("Insert", "Check 1 - false");
+		}
+		Log.d("Insert", "Check 2");
+		try
+		{
+		sqlhelp.insert("EntryDetail", new String[] {"Category_id", "Name", "Money", "Entry_id"}, new String[] {"1", "An trua", "200000", "1"});
+		} catch (Exception e)
+		{
+			Log.d("Insert", "Check 2 - false");
+		}
+		
+		Log.d("Insert", "Check 3");
+		try {
+		sqlhelp.insert("EntryDetail", new String[] {"Category_id", "Name", "Money", "Entry_id"}, new String[] {"1", "An toi", "200000", "1"});
+		}catch (Exception e)
+		{
+			Log.d("Insert", "Check 3 - false");
+		}
+		
+		Log.d("Insert", "Check 4");
+		try
+		{
+		sqlhelp.insert("EntryDetail", new String[] {"Category_id", "Name", "Money", "Entry_id"}, new String[] {"1", "An khuya", "100000", "1"});
+		} catch (Exception e)
+		{
+			Log.d("Insert", "Check 4 - false");
+		}
+		Log.d("Insert", "Check 5");
 	}
 	
 	public static void setupTab(final Intent intent, final String tag, TabHost mTabHost) {
