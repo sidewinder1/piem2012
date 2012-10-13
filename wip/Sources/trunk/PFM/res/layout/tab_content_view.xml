@@ -15,16 +15,29 @@
     <ListView
         android:id="@+id/tab_content_view_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-     >
-    </ListView>
+        android:layout_height="fill_parent" />
+
+    <ScrollView
+        android:id="@+id/entry_view_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="4"
+        android:clipChildren="false" >
+
+        <LinearLayout
+            android:id="@+id/entry_tab_content_view_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:clipChildren="false"
         android:layout_gravity="bottom"
-        android:layout_weight="0" >
+        android:layout_weight="0"
+        android:clipChildren="false" >
 
         <LinearLayout
             android:id="@+id/chart_legend"
