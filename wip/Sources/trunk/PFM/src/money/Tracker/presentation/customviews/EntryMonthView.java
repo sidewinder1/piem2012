@@ -1,6 +1,7 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.Entry;
@@ -35,8 +36,10 @@ public class EntryMonthView extends LinearLayout {
 		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository.getInstance().orderedEntries.get(keyMonth);
 
 		if (entrySet != null) {
+			HashMap<Integer, Double> totalCategory = new HashMap<Integer, Double>();
 			double total = 0;
 			for (Entry entry : entrySet) {
+				//if (totalCategory.containsKey())
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 			}
 			// Set content to budget
