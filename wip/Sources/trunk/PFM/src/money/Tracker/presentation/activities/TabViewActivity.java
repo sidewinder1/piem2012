@@ -3,9 +3,9 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
-import money.Tracker.presentation.adapters.EntryMonthViewAdapter;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.customviews.CategoryLegendItemView;
+import money.Tracker.presentation.customviews.EntryMonthView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.presentation.model.Schedule;
@@ -26,6 +26,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class TabViewActivity extends Activity {
@@ -35,8 +36,10 @@ public class TabViewActivity extends Activity {
 	TextView displayText;
 	LinearLayout chart_legend;
 	ListView list;
+	LinearLayout entry_list;
 	ArrayList<IModelBase> values;
-
+	ScrollView entry_scroll;
+	
 	boolean isTabOne, isEntry;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,10 @@ public class TabViewActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		isTabOne = extras.getString(sub_path).startsWith("1");
 		isEntry = extras.getString(sub_path).endsWith("0");
+		entry_list = (LinearLayout) findViewById(R.id.entry_tab_content_view_list);
 		displayText = (TextView) findViewById(R.id.no_data_edit);
-
+		entry_scroll = (ScrollView) findViewById(R.id.entry_view_scroll);
+		
 		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
 		list = (ListView) findViewById(R.id.tab_content_view_list);
 		list.setOnItemClickListener(onListClick);
@@ -160,11 +165,11 @@ public class TabViewActivity extends Activity {
 		hasData(true);
 
 		if (isEntry) {
-			EntryMonthViewAdapter entryAdapter = new EntryMonthViewAdapter(this,
-					R.layout.entry_view_month_item, new ArrayList<String>(EntryRepository.getInstance().orderedEntries.keySet()), EntryRepository.getInstance().orderedEntries);
-
-			entryAdapter.notifyDataSetChanged();
-			list.setAdapter(entryAdapter);
+			entry_list.removeAllViews();
+			for (String key : EntryRepository.getInstance().orderedEntries.keySet())
+			{
+				entry_list.addView(new EntryMonthView(this, key));
+			}
 		} else {
 			ScheduleViewAdapter scheduleAdapter = new ScheduleViewAdapter(this,
 					R.layout.schedule_edit_item, values);
@@ -177,7 +182,8 @@ public class TabViewActivity extends Activity {
 	}
 
 	private void hasData(boolean hasData) {
-		list.setVisibility(hasData ? View.VISIBLE : View.GONE);
+		list.setVisibility(hasData && !isEntry ? View.VISIBLE : View.GONE);
+		entry_scroll.setVisibility(hasData && isEntry ? View.VISIBLE : View.GONE);
 		displayText.setVisibility(!hasData ? View.VISIBLE : View.GONE);
 		chart_legend.setVisibility(hasData ? View.VISIBLE : View.GONE);
 	}

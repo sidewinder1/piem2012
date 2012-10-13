@@ -65,19 +65,30 @@ public class EntryRepository implements IDataRepository {
 
 	public ArrayList<IModelBase> getData(String param) {
 		ArrayList<IModelBase> iEntries = new ArrayList<IModelBase>();
-		;
-		Cursor entryCursor = SqlHelper.instance.select("Entry", "*", null);
+		Cursor entryCursor = SqlHelper.instance.select("Entry", "*", param);
 		if (entryCursor != null && entryCursor.moveToFirst()) {
+
+			orderedEntries = new HashMap<String, ArrayList<Entry>>();
 
 			do {
 				int id = entryCursor.getInt(entryCursor.getColumnIndex("Id"));
-
-				iEntries.add(new Entry(id, entryCursor.getInt(entryCursor
+				String keyMonth = Converter.toString(Converter
+						.toDate(entryCursor.getString(entryCursor
+								.getColumnIndex("Date"))), "MMMM, yyyy");
+				
+				if (!orderedEntries.containsKey(keyMonth))
+				{
+					orderedEntries.put(keyMonth, new ArrayList<Entry>());
+				}
+				
+				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),
 						EntryDetailRepository.getInstance().updateData(
 								new StringBuilder("Entry_Id = " + id)
-										.toString())));
+										.toString()));
+				orderedEntries.get(keyMonth).add(entry);
+				iEntries.add(entry);
 			} while (entryCursor.moveToNext());
 		}
 

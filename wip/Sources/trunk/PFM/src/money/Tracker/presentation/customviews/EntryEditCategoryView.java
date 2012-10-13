@@ -3,6 +3,7 @@ package money.Tracker.presentation.customviews;
 import java.util.ArrayList;
 
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.model.Category;
@@ -55,19 +56,19 @@ public class EntryEditCategoryView extends LinearLayout {
 			category_list.addView(item, params);
 		} else {
 			double total = 0;
-			
+
 			for (EntryDetail entryDetail : data) {
 				EntryEditProductView item = new EntryEditProductView(context);
 				item.setName(entryDetail.getName());
 				item.setCost(String.valueOf(entryDetail.getMoney()));
 
 				total += Double.parseDouble(item.getCost());
-				
+
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 				category_list.addView(item, params);
 			}
-			
+
 			total_money.setText(String.valueOf(total));
 		}
 
@@ -87,7 +88,8 @@ public class EntryEditCategoryView extends LinearLayout {
 	}
 
 	public void save(String date, int type, int entry_id) {
-		String[] columns = new String[] { "Name", "Money", "Category_Id", "Entry_Id" };
+		String[] columns = new String[] { "Name", "Money", "Category_Id",
+				"Entry_Id" };
 		String[] values;
 		String table = "Entry";
 		String subTable = "EntryDetail";
@@ -95,12 +97,19 @@ public class EntryEditCategoryView extends LinearLayout {
 		long id = entry_id;
 
 		if (entry_id == -1) {
-			id = SqlHelper.instance.insert(table,
-					new String[] { "Date", "Type" }, new String[] { date,
-							String.valueOf(type) });
+			id = SqlHelper.instance.insert(
+					table,
+					new String[] { "Date", "Type" },
+					new String[] {
+							Converter.toString(Converter.toDate(date,
+									"dd/MM/yyyy")), String.valueOf(type) });
 		} else {
-			SqlHelper.instance.update(table, new String[] { "Date", "Type" },
-					new String[] { date, String.valueOf(type) },
+			SqlHelper.instance.update(
+					table,
+					new String[] { "Date", "Type" },
+					new String[] {
+							Converter.toString(Converter.toDate(date,
+									"dd/MM/yyyy")), String.valueOf(type) },
 					new StringBuilder("Id = ").append(entry_id).toString());
 			SqlHelper.instance.delete(subTable,
 					new StringBuilder("Entry_Id = ").append(entry_id)
@@ -120,7 +129,7 @@ public class EntryEditCategoryView extends LinearLayout {
 					product.getCost(),
 					String.valueOf(CategoryRepository.getInstance().getId(
 							category.getSelectedItemPosition())),
-							String.valueOf(id)};
+					String.valueOf(id) };
 
 			SqlHelper.instance.insert(subTable, columns, values);
 		}
