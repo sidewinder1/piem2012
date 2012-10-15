@@ -36,6 +36,7 @@
         <activity android:name=".BorrowLendViewDetailActivity" />
         <activity android:name=".ReportMainViewActivity" />
         <activity android:name=".ReportViewActivity" />
+        <activity android:name=".ReportViewDetailActivity" />
     </application>
 
 </manifest>

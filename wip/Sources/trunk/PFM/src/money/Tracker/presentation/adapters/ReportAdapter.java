@@ -68,31 +68,46 @@ public class ReportAdapter extends ArrayAdapter<IModelBase> {
 			Date startDate = schedule.start_date;
 			Date endDate = schedule.end_date;
 			Log.d("Report Adapter", "Check 9");
-			EntryRepository enre = new EntryRepository();
 			double money = 0;
+			Cursor entryCursor = SqlHelper.instance.select("Entry", "*", "");
 			Log.d("Report Adapter", "Check 10");
-			ArrayList<IModelBase> entryValues = enre.getData("");
-			for (int i = 0; i < entryValues.size(); i++) {
-				Entry entry = (Entry) entryValues.get(i);
-				int id = entry.getId();
-				if (entry.getDate().compareTo(startDate) > 0
-						&& entry.getDate().compareTo(endDate) < 0
-						|| entry.getDate().compareTo(endDate) == 0
-						|| entry.getDate().compareTo(endDate) == 0) {
-					Log.d("Report Adapter", "Check 11");
-					Cursor entryDetailCursor = SqlHelper.instance.select(
-							"EntryDetail", "*", "Entry_Id=" + id);
-					Log.d("Report Adapter", "Check 12");
-					if (entryDetailCursor != null) {
-						if (entryDetailCursor.moveToFirst()) {
-							do {
-								Log.d("Report Adapter", "Check 13");
-								money += entryDetailCursor
-										.getDouble(entryDetailCursor
-												.getColumnIndex("Money"));
-							} while (entryDetailCursor.moveToNext());
+			if (entryCursor != null)
+			{
+				Log.d("Report Adapter", "Check 10a");
+				if (entryCursor.moveToFirst())
+				{
+					Log.d("Report Adapter", "Check 10b");
+					do
+					{
+						Log.d("Report Adapter", "Check 10c");
+						int id = entryCursor.getInt(entryCursor.getColumnIndex("Id"));
+						Date entryDate = Converter.toDate(entryCursor.getString(entryCursor.getColumnIndex("Date")), "dd/MM/yyyy");
+						Log.d("Report Adapter", "Check 10d");
+						if (entryDate.compareTo(startDate) > 0
+								&& entryDate.compareTo(endDate) < 0
+								|| entryDate.compareTo(startDate) == 0
+								|| entryDate.compareTo(endDate) == 0)
+						{
+							Log.d("Report Adapter", "Check 11");
+							Cursor entryDetailCursor = SqlHelper.instance.select(
+									"EntryDetail", "*", "Entry_Id=" + id);
+							Log.d("Report Adapter", "Check 12");
+							if (entryDetailCursor != null) {
+								if (entryDetailCursor.moveToFirst()) {
+									do {
+										Log.d("Report Adapter", "Check 13");
+										money += entryDetailCursor
+												.getDouble(entryDetailCursor
+														.getColumnIndex("Money"));
+										Log.d("Report Adapter", "Check 13 - " + Converter.toString(entryDetailCursor
+												.getDouble(entryDetailCursor
+														.getColumnIndex("Money"))));
+									} while (entryDetailCursor.moveToNext());
+								}
+							}
 						}
-					}
+						
+					} while(entryCursor.moveToNext());
 				}
 			}
 			Log.d("Report Adapter", "Check 14");

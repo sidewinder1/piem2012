@@ -67,5 +67,6 @@
     <string name="title_activity_borrow_lend_view_detail">BorrowLendViewDetailActivity</string>
     <string name="title_activity_report_main">ReportMainActivity</string>
     <string name="title_activity_report_view">ReportViewActivity</string>
+    <string name="title_activity_report_view_detail">ReportViewDetailActivity</string>
 
 </resources>

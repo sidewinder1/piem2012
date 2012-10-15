@@ -52,21 +52,21 @@ public class ReportViewActivity extends Activity {
 
     }
     
+    @Override
+    protected void onRestart() {
+    	bindData();
+    };
+    
     private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> listView, View view,
 				int position, long id) {
 			int data_id = -1;
-			if (checkMonthly) {
-				Entry entry = (Entry) listView.getAdapter().getItem(position);
-				data_id = entry.getId();
-			} else {
-				Schedule schedule = (Schedule) listView.getAdapter().getItem(
+			Schedule schedule = (Schedule) listView.getAdapter().getItem(
 						position);
-				data_id = schedule.id;
-			}
+			data_id = schedule.id;
 
 			Intent reportDetail = new Intent(ReportViewActivity.this,
-					ScheduleDetailViewActivity.class);
+					ReportViewDetailActivity.class);
 			reportDetail.putExtra("schedule_id", data_id);
 			startActivity(reportDetail);
 		}
