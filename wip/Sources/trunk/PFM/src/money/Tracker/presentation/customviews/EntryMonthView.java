@@ -46,6 +46,7 @@ public class EntryMonthView extends LinearLayout {
 		if (entrySet != null) {
 			HashMap<Integer, Double> totalCategory = new HashMap<Integer, Double>();
 			double total = 0;
+			entryDayList.removeAllViews();
 			for (Entry entry : entrySet) {
 				//if (totalCategory.containsKey())
 				addToEntryDayList(new EntryDayView(getContext(), entry));

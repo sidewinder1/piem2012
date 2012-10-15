@@ -1,17 +1,24 @@
 package money.Tracker.presentation.activities;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
+import money.Tracker.presentation.model.Entry;
+import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.CategoryRepository;
+import money.Tracker.repository.EntryDetailRepository;
+import money.Tracker.repository.EntryRepository;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -20,6 +27,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -41,9 +49,9 @@ public class EntryEditActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		passed_entry_id = extras.getInt("entry_id");
-
+		
 		entryList = (LinearLayout) findViewById(R.id.entry_edit_list);
-
+		TextView title = (TextView) findViewById(R.id.entry_edit_tilte);
 		dateEdit = (EditText) findViewById(R.id.entry_edit_date);
 		dateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -58,7 +66,11 @@ public class EntryEditActivity extends Activity {
 				TextView title = (TextView) findViewById(R.id.entry_edit_tilte);
 				title.setText(getResources().getString(
 						(isChecked ? R.string.entry_edit_expense_title
-								: R.string.entry_edit_income_title)));
+								: R.string.entry_edit_income_title))
+						.replace(
+								"{0}",
+								Converter.toString(Converter.toDate(dateEdit
+										.getText().toString()), "dd/MM/yyyy")));
 			}
 		});
 
@@ -68,42 +80,40 @@ public class EntryEditActivity extends Activity {
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		// New Mode
 		if (passed_entry_id == -1) {
 			updateDisplay();
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
 			entryList.addView(new EntryEditCategoryView(this, null), params);
-			
+
 		} else { // Edit mode
-			// TextView title = (TextView)
-			// findViewById(R.id.schedule_edit_tilte);
-			// title.setText("Schedule");
-			//
-			// Schedule schedule = (Schedule) ScheduleRepository.getInstance()
-			// .getData("Id = " + passed_entry_id).get(0);
-			// if (schedule != null) {
-			// periodic.setChecked(schedule.time_id == 1);
-			// startDateEdit.setText(Converter.toString(schedule.start_date,
-			// "MMMM dd, yyyy"));
-			// endDateEdit.setText(Converter.toString(schedule.end_date,
-			// "MMMM dd, yyyy"));
-			// total_budget.setText(Converter.toString(schedule.budget));
-			// }
-			//
-			// ArrayList<DetailSchedule> values = DetailScheduleRepository
-			// .getInstance().getData(
-			// "Schedule_Id = " + passed_entry_id);
-			// if (values.size() == 0) {
-			// addToList(
-			// new DetailSchedule(0, 0,
-			// Double.parseDouble(initialValue)), -1, false);
-			// } else {
-			// for (DetailSchedule value : values) {
-			// addToList(value, -1, true);
-			// }
-			// }
+			Entry entry = (Entry) EntryRepository.getInstance()
+					.getData("Id = " + passed_entry_id).get(0);
+			if (entry != null) {
+				dateEdit.setText(Converter.toString(entry.getDate(),
+						"dd/MM/yyyy"));
+				
+				entryType.setChecked(entry.getType() == 1);
+			}
+
+			HashMap<String, ArrayList<EntryDetail>> values = EntryDetailRepository
+					.getInstance().updateData("Entry_Id = " + passed_entry_id,
+							"Category_Id");
+			for (ArrayList<EntryDetail> entryDetail : values.values()) {
+				entryList.addView(new EntryEditCategoryView(this, entryDetail),
+						params);
+			}
 		}
+
+		title.setText(getResources().getString(
+				(entryType.isChecked() ? R.string.entry_edit_expense_title
+						: R.string.entry_edit_income_title)).replace(
+				"{0}",
+				Converter.toString(
+						Converter.toDate(dateEdit.getText().toString()),
+						"dd/MM/yyyy")));
 	}
 
 	int lastAddedItem;
@@ -117,36 +127,39 @@ public class EntryEditActivity extends Activity {
 
 	private void save() {
 		int type = entryType.isChecked() ? 1 : 0;
-		String date = String.valueOf(dateEdit.getText());
+		String date = Converter.toString(Converter.toDate(String.valueOf(dateEdit.getText()),
+				"dd/MM/yyyy"), "yyyy/MM/dd");
 		String table = "Entry";
 		String subTable = "EntryDetail";
 		long id = passed_entry_id;
 
 		if (passed_entry_id == -1) {
-			id = SqlHelper.instance.insert(
-					table,
-					new String[] { "Date", "Type" },
-					new String[] {
-							Converter.toString(Converter.toDate(date,
-									"dd/MM/yyyy")), String.valueOf(type) });
+			Cursor oldEntry = SqlHelper.instance.select("Entry", "Id",
+					new StringBuilder("Date = '").append(date).append("'").toString());
+			if (oldEntry != null && oldEntry.moveToFirst()) {
+				id = oldEntry.getInt(0);
+			} else {
+				id = SqlHelper.instance.insert(table, new String[] { "Date",
+						"Type" }, new String[] { date, String.valueOf(type) });
+			}
 		} else {
 			SqlHelper.instance.update(
 					table,
 					new String[] { "Date", "Type" },
 					new String[] {
-							Converter.toString(Converter.toDate(date,
-									"dd/MM/yyyy")), String.valueOf(type) },
-					new StringBuilder("Id = ").append(passed_entry_id).toString());
+							date, String.valueOf(type) },
+					new StringBuilder("Id = ").append(passed_entry_id)
+							.toString());
 			SqlHelper.instance.delete(subTable,
 					new StringBuilder("Entry_Id = ").append(passed_entry_id)
 							.toString());
 		}
-		
+
 		for (int index = 0; index < entryList.getChildCount(); index++) {
 			EntryEditCategoryView item = (EntryEditCategoryView) entryList
 					.getChildAt(index);
 			if (item != null) {
-				item.save(date, type, id);
+				item.save(id);
 			}
 		}
 	}

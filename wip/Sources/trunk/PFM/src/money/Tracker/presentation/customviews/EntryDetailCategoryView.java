@@ -37,6 +37,7 @@ public class EntryDetailCategoryView extends LinearLayout {
 
 		double total = 0;
 		int count = 0;
+		category_list.removeAllViews();
 		for (EntryDetail entryDetail : data) {
 			EntryDetailProductView item = new EntryDetailProductView(context,
 					entryDetail);
