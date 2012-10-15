@@ -11,6 +11,7 @@ import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.CategoryRepository;
 import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -61,7 +62,8 @@ public class EntryEditCategoryView extends LinearLayout {
 				EntryEditProductView item = new EntryEditProductView(context);
 				item.setName(entryDetail.getName());
 				item.setCost(String.valueOf(entryDetail.getMoney()));
-
+				category.setSelection(CategoryRepository.getInstance()
+						.getIndex(entryDetail.getCategory_id()));
 				total += Double.parseDouble(item.getCost());
 
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -87,11 +89,10 @@ public class EntryEditCategoryView extends LinearLayout {
 		});
 	}
 
-	public void save(String date, int type, long entry_id) {
+	public void save(long entry_id) {
 		String[] columns = new String[] { "Name", "Money", "Category_Id",
 				"Entry_Id" };
 		String[] values;
-		String table = "Entry";
 		String subTable = "EntryDetail";
 
 		for (int index = 0; index < category_list.getChildCount(); index++) {
@@ -101,15 +102,24 @@ public class EntryEditCategoryView extends LinearLayout {
 			if (product == null) {
 				return;
 			}
-
-			values = new String[] {
-					product.getName(),
-					product.getCost(),
-					String.valueOf(CategoryRepository.getInstance().getId(
-							category.getSelectedItemPosition())),
-					String.valueOf(entry_id) };
-
-			SqlHelper.instance.insert(subTable, columns, values);
+			String category_id = String.valueOf(CategoryRepository
+					.getInstance().getId(category.getSelectedItemPosition()));
+			Cursor oldEntryDetail = SqlHelper.instance.select(subTable, "Id",
+					new StringBuilder("Category_Id = ").append(category_id)
+							.toString());
+			values = new String[] { product.getName(), product.getCost(),
+					category_id, String.valueOf(entry_id) };
+			
+			if (oldEntryDetail != null && oldEntryDetail.moveToFirst()) {
+				SqlHelper.instance.update(
+						subTable,
+						columns,
+						values,
+						new StringBuilder("Id = ").append(
+								oldEntryDetail.getInt(0)).toString());
+			} else {
+				SqlHelper.instance.insert(subTable, columns, values);
+			}
 		}
 	}
 }

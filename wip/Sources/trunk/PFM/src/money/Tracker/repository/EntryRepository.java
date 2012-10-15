@@ -42,7 +42,7 @@ public class EntryRepository implements IDataRepository {
 				}
 				EntryDetailRepository.getInstance().updateData(
 						new StringBuilder("Entry_Id = " + id)
-								.toString(), "Category_Id");
+								.toString(), "Entry_Id");
 				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),
@@ -82,7 +82,7 @@ public class EntryRepository implements IDataRepository {
 				}
 				EntryDetailRepository.getInstance().updateData(
 						new StringBuilder("Entry_Id = " + id)
-								.toString(), "Category_Id");
+								.toString(), "Entry_Id");
 				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),

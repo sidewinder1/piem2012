@@ -36,6 +36,7 @@
         android:id="@+id/entry_detail_list_item"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
+        android:orientation="vertical"
         android:layout_weight="1" />
 
     <LinearLayout
