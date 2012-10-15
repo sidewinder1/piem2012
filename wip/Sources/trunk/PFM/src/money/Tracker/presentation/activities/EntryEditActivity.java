@@ -2,6 +2,8 @@ package money.Tracker.presentation.activities;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
@@ -57,7 +59,6 @@ public class EntryEditActivity extends Activity {
 				title.setText(getResources().getString(
 						(isChecked ? R.string.entry_edit_expense_title
 								: R.string.entry_edit_income_title)));
-				Alert.getInstance().show(getBaseContext(), "Not implemented");
 			}
 		});
 
@@ -117,12 +118,35 @@ public class EntryEditActivity extends Activity {
 	private void save() {
 		int type = entryType.isChecked() ? 1 : 0;
 		String date = String.valueOf(dateEdit.getText());
+		String table = "Entry";
+		String subTable = "EntryDetail";
+		long id = passed_entry_id;
+
+		if (passed_entry_id == -1) {
+			id = SqlHelper.instance.insert(
+					table,
+					new String[] { "Date", "Type" },
+					new String[] {
+							Converter.toString(Converter.toDate(date,
+									"dd/MM/yyyy")), String.valueOf(type) });
+		} else {
+			SqlHelper.instance.update(
+					table,
+					new String[] { "Date", "Type" },
+					new String[] {
+							Converter.toString(Converter.toDate(date,
+									"dd/MM/yyyy")), String.valueOf(type) },
+					new StringBuilder("Id = ").append(passed_entry_id).toString());
+			SqlHelper.instance.delete(subTable,
+					new StringBuilder("Entry_Id = ").append(passed_entry_id)
+							.toString());
+		}
 		
 		for (int index = 0; index < entryList.getChildCount(); index++) {
 			EntryEditCategoryView item = (EntryEditCategoryView) entryList
 					.getChildAt(index);
 			if (item != null) {
-				item.save(date, type, passed_entry_id);
+				item.save(date, type, id);
 			}
 		}
 	}

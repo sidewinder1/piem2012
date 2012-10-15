@@ -107,7 +107,7 @@ public class EntryMonthView extends LinearLayout {
 
 	public void addToEntryDayList(LinearLayout entryDayView) {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				 LayoutParams.FILL_PARENT, 0, 1);
+				 LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		this.entryDayList.addView(entryDayView, params);
 	}
 }

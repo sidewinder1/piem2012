@@ -47,44 +47,6 @@ public class HomeActivity extends TabActivity {
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
 		setupTab(reportIntent, "Báo cáo", mTabHost);
-
-		// insert data
-		SqlHelper sqlhelp = new SqlHelper(this);
-		sqlhelp.initializeTable();
-		Log.d("Insert", "Check 1");
-		try {
-			sqlhelp.insert("Entry", new String[] { "Date", "Type" },
-					new String[] { "13/10/2012", "1" });
-		} catch (Exception e) {
-			Log.d("Insert", "Check 1 - false");
-		}
-		Log.d("Insert", "Check 2");
-		try {
-			sqlhelp.insert("EntryDetail", new String[] { "Category_id", "Name",
-					"Money", "Entry_id" }, new String[] { "1", "An trua",
-					"200000", "1" });
-		} catch (Exception e) {
-			Log.d("Insert", "Check 2 - false");
-		}
-
-		Log.d("Insert", "Check 3");
-		try {
-			sqlhelp.insert("EntryDetail", new String[] { "Category_id", "Name",
-					"Money", "Entry_id" }, new String[] { "1", "An toi",
-					"200000", "1" });
-		} catch (Exception e) {
-			Log.d("Insert", "Check 3 - false");
-		}
-
-		Log.d("Insert", "Check 4");
-		try {
-			sqlhelp.insert("EntryDetail", new String[] { "Category_id", "Name",
-					"Money", "Entry_id" }, new String[] { "1", "An khuya",
-					"100000", "1" });
-		} catch (Exception e) {
-			Log.d("Insert", "Check 4 - false");
-		}
-		Log.d("Insert", "Check 5");
 	}
 
 	public static void setupTab(final Intent intent, final String tag,

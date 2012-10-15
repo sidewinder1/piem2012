@@ -11,7 +11,7 @@ import money.Tracker.presentation.model.EntryDetail;
 
 public class EntryDetailRepository {
 	private static EntryDetailRepository instance;
-
+	public ArrayList<EntryDetail> entryDetails;
 	public HashMap<String, ArrayList<EntryDetail>> entries;
 
 	public EntryDetailRepository() {
@@ -19,32 +19,40 @@ public class EntryDetailRepository {
 	}
 
 	public HashMap<String, ArrayList<EntryDetail>> updateData() {
-		return updateData("");
+		return updateData("", "Category_Id");
 	}
-	
-	public HashMap<String, ArrayList<EntryDetail>> updateData(String condition) {
-		Cursor entryCursor = SqlHelper.instance
-				.select("EntryDetail", "*", condition);
+
+	public HashMap<String, ArrayList<EntryDetail>> updateData(String condition,
+			String columnKey) {
+		Cursor entryCursor = SqlHelper.instance.select("EntryDetail", "*",
+				condition);
 		if (entryCursor != null && entryCursor.moveToFirst()) {
 			entries = new HashMap<String, ArrayList<EntryDetail>>();
-			
+			entryDetails = new ArrayList<EntryDetail>();
+
 			do {
-				int category_id = entryCursor.getInt(entryCursor.getColumnIndex("Category_Id"));
-				String categoryKey = String.valueOf(category_id);
-				if (!entries.containsKey(categoryKey))
-				{
+				String categoryKey = entryCursor.getString(entryCursor
+						.getColumnIndex(columnKey));
+				if (!entries.containsKey(categoryKey)) {
 					entries.put(categoryKey, new ArrayList<EntryDetail>());
 				}
-				
-				entries.get(categoryKey).add(new EntryDetail(
+				EntryDetail entryDetail = new EntryDetail(
 						entryCursor.getInt(entryCursor.getColumnIndex("Id")),
-						entryCursor.getInt(entryCursor.getColumnIndex("Entry_Id")),
-						category_id,
-						entryCursor.getString(entryCursor.getColumnIndex("Name")),
-						entryCursor.getDouble(entryCursor.getColumnIndex("Money"))));
+						entryCursor.getInt(entryCursor
+								.getColumnIndex("Entry_Id")),
+						entryCursor.getInt(entryCursor
+								.getColumnIndex("Category_Id")),
+						entryCursor.getString(entryCursor
+								.getColumnIndex("Name")),
+						entryCursor.getDouble(entryCursor
+								.getColumnIndex("Money")));
+
+				entries.get(categoryKey).add(entryDetail);
+				entryDetails.add(entryDetail);
 			} while (entryCursor.moveToNext());
 		}
 		
+		//sort();
 		return entries;
 	}
 
@@ -54,12 +62,10 @@ public class EntryDetailRepository {
 		}
 		return instance;
 	}
-	
-	public void sort()
-	{
+
+	public void sort() {
 		int i, j;
-		for (ArrayList<EntryDetail> entryList : entries.values())
-		{
+		for (ArrayList<EntryDetail> entryList : entries.values()) {
 			int length = entryList.size();
 			EntryDetail t = new EntryDetail();
 			for (i = 0; i < length; i++) {

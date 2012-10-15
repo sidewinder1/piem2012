@@ -7,9 +7,9 @@ import java.util.HashMap;
 public class Entry implements IModelBase {
 	private int id, type;
 	private Date date;
-	private HashMap<String, ArrayList<EntryDetail>> entryDetails;
+	private ArrayList<EntryDetail> entryDetails;
 	
-	public Entry(int id, int type, Date date, HashMap<String, ArrayList<EntryDetail>> entryDetails) {
+	public Entry(int id, int type, Date date, ArrayList<EntryDetail> entryDetails) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -20,9 +20,12 @@ public class Entry implements IModelBase {
 	public double getTotal(int category)
 	{
 		double total = 0;
-		for (EntryDetail entryDetail : entryDetails.get(String.valueOf(category)))
+		for (EntryDetail entryDetail : entryDetails)
 		{
-			total += entryDetail.getMoney();
+			if (entryDetail.getCategory_id() == category)
+			{
+				total += entryDetail.getMoney();
+			}
 		}
 		
 		return total;
@@ -31,9 +34,9 @@ public class Entry implements IModelBase {
 	public double getTotal()
 	{
 		double total = 0;
-		for (String entryKey : entryDetails.keySet())
+		for (EntryDetail entryKey : entryDetails)
 		{
-			total += getTotal(Integer.parseInt(entryKey));
+			total += entryKey.getMoney();
 		}
 		
 		return total;
@@ -72,11 +75,11 @@ public class Entry implements IModelBase {
 		return date.compareTo(((Entry)comparedEntry).getDate());
 	}
 
-	public HashMap<String, ArrayList<EntryDetail>> getEntryDetails() {
+	public ArrayList<EntryDetail> getEntryDetails() {
 		return entryDetails;
 	}
 
-	public void setEntryDetails(HashMap<String, ArrayList<EntryDetail>>entryDetails) {
+	public void setEntryDetails(ArrayList<EntryDetail> entryDetails) {
 		this.entryDetails = entryDetails;
 	}
 }

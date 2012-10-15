@@ -61,6 +61,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="6dp"
                     android:layout_marginRight="1dp"
+                    android:editable="false"
                     android:layout_weight="1"
                     android:background="@color/gray_background"
                     android:inputType="date"

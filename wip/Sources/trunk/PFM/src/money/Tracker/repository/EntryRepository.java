@@ -40,13 +40,13 @@ public class EntryRepository implements IDataRepository {
 				{
 					orderedEntries.put(keyMonth, new ArrayList<Entry>());
 				}
-				
+				EntryDetailRepository.getInstance().updateData(
+						new StringBuilder("Entry_Id = " + id)
+								.toString(), "Category_Id");
 				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),
-						EntryDetailRepository.getInstance().updateData(
-								new StringBuilder("Entry_Id = " + id)
-										.toString()));
+						EntryDetailRepository.getInstance().entryDetails);
 				orderedEntries.get(keyMonth).add(entry);
 				entries.add(entry);
 			} while (entryCursor.moveToNext());
@@ -80,13 +80,13 @@ public class EntryRepository implements IDataRepository {
 				{
 					orderedEntries.put(keyMonth, new ArrayList<Entry>());
 				}
-				
+				EntryDetailRepository.getInstance().updateData(
+						new StringBuilder("Entry_Id = " + id)
+								.toString(), "Category_Id");
 				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),
-						EntryDetailRepository.getInstance().updateData(
-								new StringBuilder("Entry_Id = " + id)
-										.toString()));
+						EntryDetailRepository.getInstance().entryDetails);
 				orderedEntries.get(keyMonth).add(entry);
 				iEntries.add(entry);
 			} while (entryCursor.moveToNext());

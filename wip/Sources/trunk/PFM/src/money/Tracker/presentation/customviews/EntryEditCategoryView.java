@@ -87,34 +87,12 @@ public class EntryEditCategoryView extends LinearLayout {
 		});
 	}
 
-	public void save(String date, int type, int entry_id) {
+	public void save(String date, int type, long entry_id) {
 		String[] columns = new String[] { "Name", "Money", "Category_Id",
 				"Entry_Id" };
 		String[] values;
 		String table = "Entry";
 		String subTable = "EntryDetail";
-
-		long id = entry_id;
-
-		if (entry_id == -1) {
-			id = SqlHelper.instance.insert(
-					table,
-					new String[] { "Date", "Type" },
-					new String[] {
-							Converter.toString(Converter.toDate(date,
-									"dd/MM/yyyy")), String.valueOf(type) });
-		} else {
-			SqlHelper.instance.update(
-					table,
-					new String[] { "Date", "Type" },
-					new String[] {
-							Converter.toString(Converter.toDate(date,
-									"dd/MM/yyyy")), String.valueOf(type) },
-					new StringBuilder("Id = ").append(entry_id).toString());
-			SqlHelper.instance.delete(subTable,
-					new StringBuilder("Entry_Id = ").append(entry_id)
-							.toString());
-		}
 
 		for (int index = 0; index < category_list.getChildCount(); index++) {
 			EntryEditProductView product = (EntryEditProductView) category_list
@@ -129,7 +107,7 @@ public class EntryEditCategoryView extends LinearLayout {
 					product.getCost(),
 					String.valueOf(CategoryRepository.getInstance().getId(
 							category.getSelectedItemPosition())),
-					String.valueOf(id) };
+					String.valueOf(entry_id) };
 
 			SqlHelper.instance.insert(subTable, columns, values);
 		}
