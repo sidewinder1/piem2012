@@ -35,7 +35,7 @@ public class EntryDetailViewActivity extends Activity {
 
 	private void bindData() {
 		EntryDetailRepository.getInstance().updateData(
-				new StringBuilder("Entry_Id = ").append(entry_id).toString());
+				new StringBuilder("Entry_Id = ").append(entry_id).toString(), "Category_Id");
 
 		entry_list.removeAllViews();
 		for (ArrayList<EntryDetail> array : EntryDetailRepository.getInstance().entries
