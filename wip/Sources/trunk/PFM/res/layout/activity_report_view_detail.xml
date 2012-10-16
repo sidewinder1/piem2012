@@ -3,29 +3,163 @@
     android:baselineAligned="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_background"
     android:orientation="horizontal" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_budget"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <TextView            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_income"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <ListView
-            android:id="@+id/report_detail_title_list_view"
+            android:id="@+id/report_detail_title_income_list_view"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="wrap_content" >
+        </ListView>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_expense"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <ListView
+            android:id="@+id/report_detail_title_expense_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+        
+        <TextView            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_borrowing"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <ListView
+            android:id="@+id/report_detail_title_borrowing_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+        
+        <TextView            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_lending"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <ListView
+            android:id="@+id/report_detail_title_lending_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
         </ListView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/report_detail_total_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_budget"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <TextView            
+            android:id="@+id/report_detail_total_income"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_income"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <ListView
-            android:id="@+id/report_detail_value_list_view"
+            android:id="@+id/report_detail_value_income_list_view"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="wrap_content" >
+        </ListView>
+        
+        <TextView
+            android:id="@+id/report_detail_total_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_expense"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <ListView
+            android:id="@+id/report_detail_value_expense_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+        
+        <TextView
+            android:id="@+id/report_detail_total_borrowing"            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_borrowing"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <ListView
+            android:id="@+id/report_detail_value_borrowing_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+        
+        <TextView
+            android:id="@+id/report_detail_total_lending"            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/report_management_detail_lending"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        
+        <ListView
+            android:id="@+id/report_detail_value_lending_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
         </ListView>
     </LinearLayout>
 
