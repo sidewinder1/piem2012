@@ -66,7 +66,7 @@ public class ReportViewActivity extends Activity {
 			data_id = schedule.id;
 
 			Intent reportDetail = new Intent(ReportViewActivity.this,
-					ReportViewDetailActivity.class);
+					ReportMainViewDetailActivity.class);
 			reportDetail.putExtra("schedule_id", data_id);
 			startActivity(reportDetail);
 		}
@@ -89,18 +89,19 @@ public class ReportViewActivity extends Activity {
 		else
 		{
 			displayNoReportDataText.setVisibility(View.GONE);
+			
+			Log.d("Check display", "Check 1");
+			reportAdapter = new ReportAdapter(this, R.layout.activity_report_view_item, scheduleValues);
+			Log.d("Check display", "Check 2");
+			reportList.setVisibility(View.VISIBLE);
+			Log.d("Check display", "Check 3");
+			reportAdapter.notifyDataSetChanged();
+			Log.d("Check display", "Check 4");
+			reportList.setAdapter(reportAdapter);
+			Log.d("Check display", "Check 5");
 		}
 		
 		//sort();
-		Log.d("Check display", "Check 1");
-		reportAdapter = new ReportAdapter(this, R.layout.activity_report_view_item, scheduleValues);
-		Log.d("Check display", "Check 2");
-		reportList.setVisibility(View.VISIBLE);
-		Log.d("Check display", "Check 3");
-		reportAdapter.notifyDataSetChanged();
-		Log.d("Check display", "Check 4");
-		reportList.setAdapter(reportAdapter);
-		Log.d("Check display", "Check 5");
 	}
 
 	/*private void bindChartLegend() {

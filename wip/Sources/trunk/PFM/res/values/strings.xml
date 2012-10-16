@@ -43,6 +43,11 @@
 
     <!-- These are resources for Report function -->
     <string name="report_management_title">Báo cáo</string>
+    <string name="report_management_detail_budget">Budget</string>
+    <string name="report_management_detail_income">Income</string>
+    <string name="report_management_detail_expense">Expense</string>
+    <string name="report_management_detail_borrowing">Borrowing</string>
+    <string name="report_management_detail_lending">Lending</string>
 
     <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
@@ -61,12 +66,5 @@
 
     <color name="white_text_color">#F9FFFFFF</color>
     <color name="gray_background">#432230FF</color>
-
-    <string name="title_activity_borrow_lend_view">BorrowLendViewActivity</string>
-    <string name="title_activity_borrow_lend_view_item">BorrowLendViewItemActivity</string>
-    <string name="title_activity_borrow_lend_view_detail">BorrowLendViewDetailActivity</string>
-    <string name="title_activity_report_main">ReportMainActivity</string>
-    <string name="title_activity_report_view">ReportViewActivity</string>
-    <string name="title_activity_report_view_detail">ReportViewDetailActivity</string>
 
 </resources>
