@@ -7,11 +7,13 @@ import money.Tracker.presentation.activities.EntryEditActivity;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ public class EntryDayView extends LinearLayout {
 		name = (TextView) findViewById(R.id.entry_view_day_item_name);
 		cost = (TextView) findViewById(R.id.entry_view_day_item_cost);
 		chart = (LinearLayout) findViewById(R.id.entry_view_day_stacked_bar_chart);
+		((Activity) context).registerForContextMenu(this);
 
 		if (entry != null) {
 			id = entry.getId();
@@ -51,10 +54,11 @@ public class EntryDayView extends LinearLayout {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						0, LayoutParams.FILL_PARENT, Float.parseFloat(String
 								.valueOf(entryDetail.getMoney())));
-				Cursor categoryCursor = SqlHelper.instance.select("Category",
+				Cursor categoryCursor = SqlHelper.instance.select(
+						"Category",
 						"Id, User_Color",
-						new StringBuilder("Id = ").append(entryDetail.getCategory_id())
-								.toString());
+						new StringBuilder("Id = ").append(
+								entryDetail.getCategory_id()).toString());
 
 				if (categoryCursor != null && categoryCursor.moveToFirst()) {
 					stackItem.setBackgroundColor(Color
@@ -64,16 +68,16 @@ public class EntryDayView extends LinearLayout {
 				getChart().addView(stackItem, params);
 			}
 
-			setOnLongClickListener(new OnLongClickListener() {
-
-				public boolean onLongClick(View v) {
-					Intent edit = new Intent(getContext(),
-							EntryEditActivity.class);
-					edit.putExtra("entry_id", ((EntryDayView) v).id);
-					getContext().startActivity(edit);
-					return false;
-				}
-			});
+//			setOnLongClickListener(new OnLongClickListener() {
+//
+//				public boolean onLongClick(View v) {
+//					Intent edit = new Intent(getContext(),
+//							EntryEditActivity.class);
+//					edit.putExtra("entry_id", ((EntryDayView) v).id);
+//					getContext().startActivity(edit);
+//					return false;
+//				}
+//			});
 
 			setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -85,7 +89,7 @@ public class EntryDayView extends LinearLayout {
 			});
 		}
 	}
-
+	
 	public String getName() {
 		return String.valueOf(name.getText());
 	}

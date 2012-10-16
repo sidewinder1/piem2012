@@ -36,12 +36,13 @@ public class EntryEditActivity extends Activity {
 	private int mYear;
 	private int mMonth;
 	private int mDay;
+	private TextView title;
 	private static final int DATE_DIALOG_ID = 0;
 	private EditText dateEdit;
 	private ToggleButton entryType;
 	private int passed_entry_id = -1;
 	LinearLayout entryList;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,9 +50,9 @@ public class EntryEditActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		passed_entry_id = extras.getInt("entry_id");
-		
+
 		entryList = (LinearLayout) findViewById(R.id.entry_edit_list);
-		TextView title = (TextView) findViewById(R.id.entry_edit_tilte);
+		title = (TextView) findViewById(R.id.entry_edit_tilte);
 		dateEdit = (EditText) findViewById(R.id.entry_edit_date);
 		dateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -63,14 +64,7 @@ public class EntryEditActivity extends Activity {
 		entryType.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				TextView title = (TextView) findViewById(R.id.entry_edit_tilte);
-				title.setText(getResources().getString(
-						(isChecked ? R.string.entry_edit_expense_title
-								: R.string.entry_edit_income_title))
-						.replace(
-								"{0}",
-								Converter.toString(Converter.toDate(dateEdit
-										.getText().toString()), "dd/MM/yyyy")));
+				updateTitle();
 			}
 		});
 
@@ -94,7 +88,7 @@ public class EntryEditActivity extends Activity {
 			if (entry != null) {
 				dateEdit.setText(Converter.toString(entry.getDate(),
 						"dd/MM/yyyy"));
-				
+
 				entryType.setChecked(entry.getType() == 1);
 			}
 
@@ -107,35 +101,63 @@ public class EntryEditActivity extends Activity {
 			}
 		}
 
-		title.setText(getResources().getString(
-				(entryType.isChecked() ? R.string.entry_edit_expense_title
-						: R.string.entry_edit_income_title)).replace(
-				"{0}",
-				Converter.toString(
-						Converter.toDate(dateEdit.getText().toString()),
-						"dd/MM/yyyy")));
+		updateTitle();
 	}
 
-	int lastAddedItem;
+	private void updateTitle() {
+		title.setText(getResources()
+				.getString(
+						((passed_entry_id != -1) ? (entryType.isChecked() ? R.string.entry_edit_expense_title
+								: R.string.entry_edit_income_title)
+								: (entryType.isChecked() ? R.string.entry_new_expense_title
+										: R.string.entry_new_income_title)))
+				.replace(
+						"{0}",
+						Converter.toString(
+								Converter.toDate(dateEdit.getText().toString()),
+								"dd/MM/yyyy")));
+	}
 
 	public void doneBtnClicked(View v) {
-		save();
-		CategoryRepository.getInstance().updateData();
-		setResult(100);
-		this.finish();
+		if (save()) {
+			CategoryRepository.getInstance().updateData();
+			setResult(100);
+			this.finish();
+		}
 	}
 
-	private void save() {
+	private String checkBeforeSave() {
+		for (int index = 0; index < entryList.getChildCount(); index++) {
+			EntryEditCategoryView item = (EntryEditCategoryView) entryList
+					.getChildAt(index);
+			String temp = item.checkBeforeSave();
+			if (item != null && temp != null) {
+				return temp;
+			}
+		}
+
+		return null;
+	}
+
+	private boolean save() {
+		String temp = checkBeforeSave();
+		if (temp != null) {
+			Alert.getInstance().show(this, temp);
+			return false;
+		}
+
 		int type = entryType.isChecked() ? 1 : 0;
-		String date = Converter.toString(Converter.toDate(String.valueOf(dateEdit.getText()),
-				"dd/MM/yyyy"), "yyyy/MM/dd");
+		String date = Converter
+				.toString(Converter.toDate(String.valueOf(dateEdit.getText()),
+						"dd/MM/yyyy"), "yyyy/MM/dd");
 		String table = "Entry";
 		String subTable = "EntryDetail";
 		long id = passed_entry_id;
 
 		if (passed_entry_id == -1) {
 			Cursor oldEntry = SqlHelper.instance.select("Entry", "Id",
-					new StringBuilder("Date = '").append(date).append("'").toString());
+					new StringBuilder("Date = '").append(date).append("'")
+							.toString());
 			if (oldEntry != null && oldEntry.moveToFirst()) {
 				id = oldEntry.getInt(0);
 			} else {
@@ -143,11 +165,8 @@ public class EntryEditActivity extends Activity {
 						"Type" }, new String[] { date, String.valueOf(type) });
 			}
 		} else {
-			SqlHelper.instance.update(
-					table,
-					new String[] { "Date", "Type" },
-					new String[] {
-							date, String.valueOf(type) },
+			SqlHelper.instance.update(table, new String[] { "Date", "Type" },
+					new String[] { date, String.valueOf(type) },
 					new StringBuilder("Id = ").append(passed_entry_id)
 							.toString());
 			SqlHelper.instance.delete(subTable,
@@ -162,19 +181,8 @@ public class EntryEditActivity extends Activity {
 				item.save(id);
 			}
 		}
-	}
 
-	public boolean hasNewCategory() {
-		// for (int index = 0; index < list.getChildCount(); index++) {
-		// ScheduleItem item = (ScheduleItem) list.getChildAt(index);
-		// if (item.category_edit.getVisibility() == View.VISIBLE
-		// && "".equals(item.category_edit.getText().toString())) {
-		// Alert.getInstance().show(this, "Category is empty");
-		// item.category_edit.requestFocus();
-		// return false;
-		// }
-		// }
-
+		Alert.getInstance().show(this, "Save successfully!");
 		return true;
 	}
 
@@ -187,6 +195,7 @@ public class EntryEditActivity extends Activity {
 	private void updateDisplay() {
 		Date startDate = DateTimeHelper.getDate(mYear, mMonth, mDay);
 		dateEdit.setText(Converter.toString(startDate, "dd/MM/yyyy"));
+		updateTitle();
 	}
 
 	// the callback received when the user "sets" the date in the dialog
@@ -216,6 +225,7 @@ public class EntryEditActivity extends Activity {
 			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
 					mDay);
 		}
+
 		return null;
 	}
 }
