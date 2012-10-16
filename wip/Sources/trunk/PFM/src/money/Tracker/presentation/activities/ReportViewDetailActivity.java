@@ -247,6 +247,19 @@ public class ReportViewDetailActivity extends Activity {
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Total"))));
 									Log.d("report detail", "Check 69");
+									
+									Cursor entryDetailCursor2 = SqlHelper.instance.select("EntryDetail", "Name, sum(Money) as Total", "Entry_Id = " + id + " and Category_Id = " + categoryID + " group by Name");
+									if (entryDetailCursor2 != null)
+									{
+										if(entryDetailCursor2.moveToFirst())
+										{
+											do
+											{
+												title.add(entryDetailCursor2.getString(entryDetailCursor2.getColumnIndex("Name")));
+												value.add(String.valueOf(entryDetailCursor2.getDouble(entryDetailCursor2.getColumnIndex("Total"))));
+											}while(entryDetailCursor2.moveToNext());
+										}
+									}
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
@@ -272,6 +285,8 @@ public class ReportViewDetailActivity extends Activity {
 		valueListView.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.single_row_view, valueString));
 		Log.d("report detail", "Check 10");
+		
+		
 	}
 	
 	private void getBorrowing()
