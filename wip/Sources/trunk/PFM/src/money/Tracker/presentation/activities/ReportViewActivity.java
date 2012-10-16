@@ -38,15 +38,6 @@ public class ReportViewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_view);
-        
-        Bundle extras = getIntent().getExtras();
-        checkMonthly = extras.getBoolean("Monthly");
-		displayNoReportDataText = (TextView) findViewById(R.id.no_report_data);
-		
-		reportList = (ListView) findViewById(R.id.report_list_view);
-		reportList.setOnItemClickListener(onListClick);
-
-		registerForContextMenu(reportList);
 
 		bindData();
 
@@ -54,6 +45,7 @@ public class ReportViewActivity extends Activity {
     
     @Override
     protected void onRestart() {
+    	super.onRestart();
     	bindData();
     };
     
@@ -73,6 +65,16 @@ public class ReportViewActivity extends Activity {
 	};
 	
 	private void bindData() {
+		
+        Bundle extras = getIntent().getExtras();
+        checkMonthly = extras.getBoolean("Monthly");
+		displayNoReportDataText = (TextView) findViewById(R.id.no_report_data);
+		
+		reportList = (ListView) findViewById(R.id.report_list_view);
+		reportList.setOnItemClickListener(onListClick);
+
+		registerForContextMenu(reportList);
+		
 		String whereCondition;
 		if (checkMonthly) {
 			whereCondition = "Type = 1";
