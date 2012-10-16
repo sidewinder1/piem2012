@@ -5,10 +5,12 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.customviews.CategoryLegendItemView;
+import money.Tracker.presentation.customviews.EntryDayView;
 import money.Tracker.presentation.customviews.EntryMonthView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.presentation.model.Schedule;
+import money.Tracker.repository.DataManager;
 import money.Tracker.repository.EntryRepository;
 import money.Tracker.repository.ScheduleRepository;
 import android.app.Activity;
@@ -39,7 +41,7 @@ public class TabViewActivity extends Activity {
 	LinearLayout entry_list;
 	ArrayList<IModelBase> values;
 	ScrollView entry_scroll;
-	
+
 	boolean isTabOne, isEntry;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class TabViewActivity extends Activity {
 		entry_list = (LinearLayout) findViewById(R.id.entry_tab_content_view_list);
 		displayText = (TextView) findViewById(R.id.no_data_edit);
 		entry_scroll = (ScrollView) findViewById(R.id.entry_view_scroll);
-		
+
 		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
 		list = (ListView) findViewById(R.id.tab_content_view_list);
 		list.setOnItemClickListener(onListClick);
@@ -88,10 +90,13 @@ public class TabViewActivity extends Activity {
 		bindData();
 	}
 
+	EntryDayView selectedEntryItem = null;
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		if (v.getId() == R.id.tab_content_view_list) {
+		selectedEntryItem = (EntryDayView) v;
+		if (v.getId() == R.id.tab_content_view_list || selectedEntryItem != null) {
 			menu.setHeaderTitle(getResources().getString(
 					R.string.schedule_menu_title));
 			String[] menuItems = getResources().getStringArray(
@@ -104,20 +109,28 @@ public class TabViewActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		int id = -1;
+		
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 		int menuItemIndex = item.getItemId();
-		int id = -1;
-		if (isEntry) {
-			id = ((Entry) values.get(info.position)).getId();
-		} else {
-			id = ((Schedule) values.get(info.position)).id;
+		
+		if (selectedEntryItem != null) {
+			id = selectedEntryItem.id;
+		} else {		
+			if (isEntry) {
+				id = ((Entry) values.get(info.position)).getId();
+			} else {
+				id = ((Schedule) values.get(info.position)).id;
+			}
 		}
-
+		
 		switch (menuItemIndex) {
 		case 0: // Edit
 			Intent edit = null;
 			if (isEntry) {
+				edit = new Intent(this, EntryEditActivity.class);
+				edit.putExtra("entry_id", id);
 			} else {
 				edit = new Intent(this, ScheduleEditActivity.class);
 				edit.putExtra("schedule_id", id);
@@ -126,12 +139,13 @@ public class TabViewActivity extends Activity {
 			break;
 		case 1: // Delete
 			final int sId = id;
+			final String table = isEntry ? "Entry" : "Schedule";
 			Alert.getInstance().showDialog(getParent(),
 					getResources().getString(R.string.delete_confirm),
 					new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							SqlHelper.instance
-									.delete("Schedule", "Id = " + sId);
+									.delete(table, new StringBuilder("Id = ").append(sId).toString());
 							bindData();
 						}
 					});
@@ -159,13 +173,13 @@ public class TabViewActivity extends Activity {
 			return;
 		}
 
-		sort();
+		DataManager.sort(values);
 		hasData(true);
 
 		if (isEntry) {
 			entry_list.removeAllViews();
-			for (String key : EntryRepository.getInstance().orderedEntries.keySet())
-			{
+			for (String key : EntryRepository.getInstance().orderedEntries
+					.keySet()) {
 				entry_list.addView(new EntryMonthView(this, key));
 			}
 		} else {
@@ -181,20 +195,25 @@ public class TabViewActivity extends Activity {
 
 	private void hasData(boolean hasData) {
 		list.setVisibility(hasData && !isEntry ? View.VISIBLE : View.GONE);
-		entry_scroll.setVisibility(hasData && isEntry ? View.VISIBLE : View.GONE);
+		entry_scroll.setVisibility(hasData && isEntry ? View.VISIBLE
+				: View.GONE);
 		displayText.setVisibility(!hasData ? View.VISIBLE : View.GONE);
 		chart_legend.setVisibility(hasData ? View.VISIBLE : View.GONE);
 	}
 
 	private void bindChartLegend() {
 		// Bind chart legend:
-		Cursor category = SqlHelper.instance
-				.query(new StringBuilder(
-						"SELECT DISTINCT Category.Name, Category.User_Color ")
-						.append("FROM Category ")
-						.append("INNER JOIN ScheduleDetail ")
-						.append("ON Category.Id=ScheduleDetail.Category_Id")
-						.toString());
+		String subTable = isEntry ? "EntryDetail" : "ScheduleDetail";
+		String table = isEntry ? "Entry" : "Schedule";
+		Cursor category = SqlHelper.instance.query(new StringBuilder(
+				"SELECT DISTINCT Category.Name, Category.User_Color ")
+				.append("FROM Category ").append("INNER JOIN ")
+				.append(subTable).append(" ON Category.Id=").append(subTable)
+				.append(".Category_Id").append(" INNER JOIN ").append(table)
+				.append(" ON ").append(subTable).append(".").append(table)
+				.append("_Id=").append(table).append(".Id ").append(" WHERE ")
+				.append(table).append(".Type = ").append(isTabOne ? "1" : "0")
+				.toString());
 
 		if (category != null && category.moveToFirst()) {
 			int index = 1;
@@ -216,21 +235,5 @@ public class TabViewActivity extends Activity {
 				index++;
 			} while (category.moveToNext());
 		}
-	}
-
-	private void sort() {
-		int i, j;
-		int length = values.size();
-		IModelBase t;
-		for (i = 0; i < length; i++) {
-			for (j = 1; j < (length - i); j++) {
-				if ((values.get(j - 1)).compareTo(values.get(j)) < 0) {
-					t = values.get(j - 1);
-					values.set(j - 1, values.get(j));
-					values.set(j, t);
-				}
-			}
-		}
-
 	}
 }

@@ -29,4 +29,21 @@ public class DataManager {
 	public static ArrayList<IModelBase> getObjects(String tableName, String param) {
 		return repository.get(tableName);
 	}
+	
+	
+	public static void sort(ArrayList<IModelBase> values) {
+		int i, j;
+		int length = values.size();
+		IModelBase t;
+		for (i = 0; i < length; i++) {
+			for (j = 1; j < (length - i); j++) {
+				if ((values.get(j - 1)).compareTo(values.get(j)) < 0) {
+					t = values.get(j - 1);
+					values.set(j - 1, values.get(j));
+					values.set(j, t);
+				}
+			}
+		}
+
+	}
 }

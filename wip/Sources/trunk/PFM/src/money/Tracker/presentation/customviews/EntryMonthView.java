@@ -3,11 +3,16 @@ package money.Tracker.presentation.customviews;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.Entry;
+import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.EntryRepository;
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,7 +25,7 @@ public class EntryMonthView extends LinearLayout {
 	private LinearLayout chart;
 	private LinearLayout entryDayList;
 	private boolean switcher = false;
-	
+
 	public EntryMonthView(Context context, String keyMonth) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
@@ -31,50 +36,64 @@ public class EntryMonthView extends LinearLayout {
 		cost = (TextView) findViewById(R.id.entry_view_month_item_cost);
 		chart = (LinearLayout) findViewById(R.id.entry_view_month_stacked_bar_chart);
 		entryDayList = (LinearLayout) findViewById(R.id.entry_view_day_item_list);
-		
+
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				entryDayList.setVisibility(switcher ? View.VISIBLE : View.GONE);
 				switcher = !switcher;
 			}
 		});
-		
+
 		// Set content to item title:
 		setName(keyMonth);
 
-		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository.getInstance().orderedEntries.get(keyMonth);
-
+		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository
+				.getInstance().orderedEntries.get(keyMonth);
+		SparseArray<Double> valueOnCategory = new SparseArray<Double>();
 		if (entrySet != null) {
 			double total = 0;
 			entryDayList.removeAllViews();
 			for (Entry entry : entrySet) {
 				total += entry.getTotal();
+				
 				addToEntryDayList(new EntryDayView(getContext(), entry));
+
+				for (EntryDetail entryDetail : entry.getEntryDetails()) {
+					if (valueOnCategory
+							.indexOfKey(entryDetail.getCategory_id()) < 0) {
+						valueOnCategory.put(entryDetail.getCategory_id(), 0D);
+					}
+
+					double currentValue = valueOnCategory.get(entryDetail
+							.getCategory_id());
+					valueOnCategory.setValueAt(valueOnCategory.indexOfKey(entryDetail.getCategory_id()),
+							currentValue + entryDetail.getMoney());
+				}
 			}
-			
+
 			// Set content to budget
 			setCost(Converter.toString(total));
 
-			// entryMonthView.getChart().removeAllViews();
-
+			getChart().removeAllViews();
 			// Prepare and display stacked bar chart:
-			// for (int i = 0; i < entry.getEntryDetails().size(); i++) {
-			// View stackItem = new View(getContext());
-			// LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-			// 0, LayoutParams.FILL_PARENT,
-			// Float.parseFloat(entry.getEntryDetails().get(i).getMoney() +
-			// ""));
-			// Cursor categoryCursor = SqlHelper.instance.select("Category",
-			// "Id, User_Color", "Id = "
-			// + entry.getEntryDetails().get(i).getCategory_id());
-			//
-			// if (categoryCursor != null && categoryCursor.moveToFirst()) {
-			// stackItem.setBackgroundColor(Color
-			// .parseColor(categoryCursor.getString(1)));
-			// }
-			//
-			// entryMonthView.getChart().addView(stackItem, params);
-			// }
+			for (int i = 0; i < valueOnCategory.size(); i++) {
+				View stackItem = new View(getContext());
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						0, LayoutParams.FILL_PARENT,
+						Float.parseFloat(valueOnCategory.valueAt(i) + ""));
+				Cursor categoryCursor = SqlHelper.instance.select(
+						"Category",
+						"Id, User_Color",
+						new StringBuilder("Id = ").append(
+								valueOnCategory.keyAt(i)).toString());
+
+				if (categoryCursor != null && categoryCursor.moveToFirst()) {
+					stackItem.setBackgroundColor(Color
+							.parseColor(categoryCursor.getString(1)));
+				}
+
+				getChart().addView(stackItem, params);
+			}
 		}
 	}
 
@@ -108,7 +127,7 @@ public class EntryMonthView extends LinearLayout {
 
 	public void addToEntryDayList(LinearLayout entryDayView) {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				 LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		this.entryDayList.addView(entryDayView, params);
 	}
 }
