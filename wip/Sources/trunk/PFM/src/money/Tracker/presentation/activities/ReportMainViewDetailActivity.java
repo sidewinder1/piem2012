@@ -3,6 +3,7 @@ package money.Tracker.presentation.activities;
 import java.util.Date;
 
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.Chart;
 import money.Tracker.common.utilities.Converter;
 import android.os.Bundle;
 import android.app.Activity;
@@ -56,10 +57,14 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		reportViewDetailIntent.putExtra("schedule_id", scheduleID);
 		setupTab(reportViewDetailIntent, "Chi tiết", mTabHost);
 		
-		// Create tab and intent for Borrowing and Lending.
-		Intent reportViewChartIntent = new Intent(this, ReportViewDetailActivity.class);
-		reportViewChartIntent.putExtra("schedule_id", scheduleID);
-		setupTab(reportViewChartIntent, "Biểu đồ", mTabHost);		
+		// Create tab and intent for chart
+		Chart pie = new Chart(scheduleID);
+		Log.d("Chart", String.valueOf(scheduleID));
+		Intent pieIntent = pie.getIntent(this);
+		Log.d("Chart", "Check 11");
+		setupTab(pieIntent, "Biểu đồ", mTabHost);
+		//startActivity(pieIntent);
+		Log.d("Chart", "Check 12");
     }
     
     	// This method is used to setup a tab with Name tab and content of tab.
