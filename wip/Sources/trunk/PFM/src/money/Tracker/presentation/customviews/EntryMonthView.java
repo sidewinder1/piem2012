@@ -24,7 +24,7 @@ public class EntryMonthView extends LinearLayout {
 	private TextView cost;
 	private LinearLayout chart;
 	private LinearLayout entryDayList;
-	private boolean switcher = false;
+	private boolean switcher = true;
 
 	public EntryMonthView(Context context, String keyMonth) {
 		super(context);

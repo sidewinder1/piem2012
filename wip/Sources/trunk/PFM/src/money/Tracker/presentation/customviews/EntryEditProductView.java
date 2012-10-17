@@ -2,6 +2,7 @@ package money.Tracker.presentation.customviews;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
 import android.text.Editable;
@@ -53,12 +54,12 @@ public class EntryEditProductView extends LinearLayout {
 				
 				if ("".equals(total_text_view.getText()))
 				{
-					total_text_view.setText("0");
+					total_text_view.setText("0.00");
 				}
 				
 				double currentValue = Double.parseDouble(String
 						.valueOf(total_text_view.getText()));
-				total_text_view.setText(String.valueOf(currentValue
+				total_text_view.setText(Converter.toString(currentValue
 						+ Double.parseDouble(cValue.toString()) - sValue));
 
 			}

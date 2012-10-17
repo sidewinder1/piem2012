@@ -20,6 +20,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.IInterface;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
@@ -112,10 +113,7 @@ public class EntryEditActivity extends Activity {
 								: (entryType.isChecked() ? R.string.entry_new_expense_title
 										: R.string.entry_new_income_title)))
 				.replace(
-						"{0}",
-						Converter.toString(
-								Converter.toDate(dateEdit.getText().toString()),
-								"dd/MM/yyyy")));
+						"{0}", dateEdit.getText().toString()));
 	}
 
 	public void doneBtnClicked(View v) {
@@ -147,8 +145,15 @@ public class EntryEditActivity extends Activity {
 		}
 
 		int type = entryType.isChecked() ? 1 : 0;
-		String date = Converter.toString(Converter.toDate(
-				String.valueOf(dateEdit.getText()), "dd/MM/yyyy"));
+		Date inputDate = Converter.toDate(
+				String.valueOf(dateEdit.getText()), "dd/MM/yyyy");
+		if (inputDate.after(new Date()))
+		{
+			Alert.getInstance().show(this, "Not the future!");
+			return false;
+		}
+		
+		String date = Converter.toString(inputDate);
 		String table = "Entry";
 		String subTable = "EntryDetail";
 		long id = passed_entry_id;

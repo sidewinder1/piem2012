@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.model.Category;
@@ -58,14 +59,16 @@ public class EntryEditCategoryView extends LinearLayout {
 		if (data == null) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			EntryEditProductView item = new EntryEditProductView(context, total_money);
+			EntryEditProductView item = new EntryEditProductView(context,
+					total_money);
 			category_list.addView(item, params);
-			total_money.setText(String.valueOf(0D));
+			total_money.setText(Converter.toString(0D));
 		} else {
 			double total = 0;
 
 			for (EntryDetail entryDetail : data) {
-				EntryEditProductView item = new EntryEditProductView(context, total_money);
+				EntryEditProductView item = new EntryEditProductView(context,
+						total_money);
 				item.setName(entryDetail.getName());
 				item.setCost(String.valueOf(entryDetail.getMoney()));
 				category.setSelection(CategoryRepository.getInstance()
@@ -77,7 +80,7 @@ public class EntryEditCategoryView extends LinearLayout {
 				category_list.addView(item, params);
 			}
 
-			total_money.setText(String.valueOf(total));
+			total_money.setText(Converter.toString(total));
 		}
 
 		category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -192,6 +195,18 @@ public class EntryEditCategoryView extends LinearLayout {
 		String[] values;
 		String subTable = "EntryDetail";
 
+		String category_id_str = String.valueOf(CategoryRepository
+				.getInstance().getId(category.getSelectedItemPosition()));
+		if (category_edit.getVisibility() == View.VISIBLE) {
+			category_id_str = String.valueOf(SqlHelper.instance.insert(
+					"Category",
+					new String[] { "Name", "User_Color" },
+					new String[] { category_edit.getText().toString(),
+							String.valueOf(category_edit.getTag()) }));
+
+			CategoryRepository.getInstance().updateData();
+		}
+
 		for (int index = 0; index < category_list.getChildCount(); index++) {
 			EntryEditProductView product = (EntryEditProductView) category_list
 					.getChildAt(index);
@@ -200,17 +215,19 @@ public class EntryEditCategoryView extends LinearLayout {
 				continue;
 			}
 
-			String category_id = String.valueOf(CategoryRepository
-					.getInstance().getId(category.getSelectedItemPosition()));
-			Cursor oldEntryDetail = SqlHelper.instance.select(subTable, "Id, Money",
-					new StringBuilder("Category_Id = ").append(category_id)
+			Cursor oldEntryDetail = SqlHelper.instance.select(subTable,
+					"Id, Money",
+					new StringBuilder("Category_Id = ").append(category_id_str)
 							.append(" AND Entry_Id = ").append(entry_id)
-							.append(" AND Name = '").append(product.getName()).append("'")
-							.toString());
-			
+							.append(" AND Name = '").append(product.getName())
+							.append("'").toString());
+
 			if (oldEntryDetail != null && oldEntryDetail.moveToFirst()) {
-				values = new String[] { product.getName(), String.valueOf(product.getMoney() + oldEntryDetail.getDouble(1)),
-						category_id, String.valueOf(entry_id) };
+				values = new String[] {
+						product.getName(),
+						String.valueOf(product.getMoney()
+								+ oldEntryDetail.getDouble(1)),
+						category_id_str, String.valueOf(entry_id) };
 
 				SqlHelper.instance.update(
 						subTable,
@@ -219,8 +236,9 @@ public class EntryEditCategoryView extends LinearLayout {
 						new StringBuilder("Id = ").append(
 								oldEntryDetail.getInt(0)).toString());
 			} else {
-				values = new String[] { product.getName(), String.valueOf(product.getMoney()),
-						category_id, String.valueOf(entry_id) };
+				values = new String[] { product.getName(),
+						String.valueOf(product.getMoney()), category_id_str,
+						String.valueOf(entry_id) };
 
 				SqlHelper.instance.insert(subTable, columns, values);
 			}

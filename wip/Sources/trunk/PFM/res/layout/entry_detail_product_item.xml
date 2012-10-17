@@ -6,6 +6,7 @@
         android:layout_width="wrap_content"
         android:text="@string/dummy_data"
         android:layout_weight="1"
+        android:layout_marginLeft="15dp"
         android:textColor="@color/white_text_color"
         android:layout_height="wrap_content"/>
     
@@ -14,7 +15,7 @@
         android:layout_weight="1"
         android:text="@string/dummy_data"
         android:gravity="right"
-        android:layout_marginRight="20dip"
+        android:layout_marginRight="15dip"
         android:textColor="@color/white_text_color"
         android:layout_height="wrap_content"/>
     
