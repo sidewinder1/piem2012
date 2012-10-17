@@ -34,6 +34,7 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		
 		TextView reportViewDetailTitle = (TextView) findViewById(R.id.report_main_view_detail_title);
 		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*", "Id=" + scheduleID);
+		Log.d("Main View Detail", "Check 1 - " + scheduleID);
 		if (scheduleCursor != null)
 		{
 			if(scheduleCursor.moveToFirst())
@@ -51,18 +52,20 @@ public class ReportMainViewDetailActivity extends TabActivity {
 				}while(scheduleCursor.moveToNext());
 			}
 		}
-		
+		Log.d("Main View Detail", "Check 2");
 		// Create tab and intent for view detail information
 		Intent reportViewDetailIntent = new Intent(this, ReportViewDetailActivity.class);
+		Log.d("Main View Detail", "Check 3");
 		reportViewDetailIntent.putExtra("schedule_id", scheduleID);
+		Log.d("Main View Detail", "Check 4");
 		setupTab(reportViewDetailIntent, "Chi tiết", mTabHost);
 		
 		// Create tab and intent for chart
-		Chart pie = new Chart(scheduleID);
-		Log.d("Chart", String.valueOf(scheduleID));
-		Intent pieIntent = pie.getIntent(this);
+		//Chart pie = new Chart(scheduleID);
+		//Log.d("Chart", String.valueOf(scheduleID));
+		//Intent pieIntent = pie.getIntent(this);
 		Log.d("Chart", "Check 11");
-		setupTab(pieIntent, "Biểu đồ", mTabHost);
+		//setupTab(pieIntent, "Biểu đồ", mTabHost);
 		//startActivity(pieIntent);
 		Log.d("Chart", "Check 12");
     }

@@ -60,6 +60,7 @@ public class ReportViewActivity extends Activity {
 			Intent reportDetail = new Intent(ReportViewActivity.this,
 					ReportMainViewDetailActivity.class);
 			reportDetail.putExtra("schedule_id", data_id);
+			Log.d("Check click report", "Check finish");
 			startActivity(reportDetail);
 		}
 	};
