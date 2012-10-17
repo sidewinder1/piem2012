@@ -18,7 +18,7 @@
             android:id="@+id/schedule_edit_tilte"
             android:text="@string/schedule_edit_title"
             android:textColor="@color/white_text_color"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <Button
             android:id="@+id/doneBtn"

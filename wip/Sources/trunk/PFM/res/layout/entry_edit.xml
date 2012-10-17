@@ -18,7 +18,7 @@
             android:layout_marginLeft="10dp"
             android:text="@string/entry_edit_expense_title"
             android:textColor="@color/white_text_color"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <Button
             android:id="@+id/doneBtn"

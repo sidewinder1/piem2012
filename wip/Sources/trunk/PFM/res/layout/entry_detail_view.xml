@@ -18,7 +18,7 @@
             android:layout_marginLeft="10dp"
             android:text="@string/entry_daily_expense_title"
             android:textColor="@color/white_text_color"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <Button
             android:id="@+id/entry_detail_editBtn"
@@ -32,17 +32,75 @@
             android:onClick="editBtnClicked" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/entry_detail_list_item"
+    <ScrollView
+        android:id="@+id/entry_view_scroll"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:orientation="vertical"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clipChildren="false" >
+
+        <LinearLayout
+            android:id="@+id/entry_detail_list_item"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/entry_detail_summary"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:layout_weight="0" />
+        android:layout_height="50dp"
+        android:layout_weight="0"
+        android:orientation="vertical"
+        android:background="@color/gray_background" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/entry_detail_day_total_entry_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="@string/entry_daily_total_expense_title"
+                android:textColor="@color/white_text_color" />
+
+            <TextView
+                android:id="@+id/entry_detail_day_total_entry_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/dummy_data"
+                android:textColor="@color/white_text_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/entry_detail_total_budget_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="@string/entry_total_budget"
+                android:textColor="@color/white_text_color" />
+
+            <TextView
+                android:id="@+id/entry_detail_total_budget_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/dummy_data"
+                android:textColor="@color/white_text_color" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
