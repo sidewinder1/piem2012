@@ -29,6 +29,10 @@ public class EntryEditCategoryView extends LinearLayout {
 	private LinearLayout category_list;
 	private CategoryAdapter categoryAdapter;
 	public EditText category_edit;
+	
+	public EntryEditCategoryView(Context context) {
+		super(context);
+	}
 
 	public EntryEditCategoryView(Context context, ArrayList<EntryDetail> data) {
 		super(context);
@@ -170,7 +174,7 @@ public class EntryEditCategoryView extends LinearLayout {
 			}
 		});
 	}
-
+	
 	public String checkBeforeSave() {
 		if (category_edit.getVisibility() == View.VISIBLE
 				&& "".equals(category_edit.getText().toString())) {
@@ -225,7 +229,7 @@ public class EntryEditCategoryView extends LinearLayout {
 			if (oldEntryDetail != null && oldEntryDetail.moveToFirst()) {
 				values = new String[] {
 						product.getName(),
-						String.valueOf(product.getMoney()
+						Converter.toString(product.getMoney()
 								+ oldEntryDetail.getDouble(1)),
 						category_id_str, String.valueOf(entry_id) };
 
@@ -237,7 +241,7 @@ public class EntryEditCategoryView extends LinearLayout {
 								oldEntryDetail.getInt(0)).toString());
 			} else {
 				values = new String[] { product.getName(),
-						String.valueOf(product.getMoney()), category_id_str,
+						Converter.toString(product.getMoney()), category_id_str,
 						String.valueOf(entry_id) };
 
 				SqlHelper.instance.insert(subTable, columns, values);

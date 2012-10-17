@@ -1,7 +1,6 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
@@ -16,7 +15,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class EntryMonthView extends LinearLayout {
@@ -76,6 +74,7 @@ public class EntryMonthView extends LinearLayout {
 			setCost(Converter.toString(total));
 
 			getChart().removeAllViews();
+			
 			// Prepare and display stacked bar chart:
 			for (int i = 0; i < valueOnCategory.size(); i++) {
 				View stackItem = new View(getContext());
