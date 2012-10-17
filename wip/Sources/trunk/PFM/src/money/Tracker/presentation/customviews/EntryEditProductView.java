@@ -1,6 +1,5 @@
 package money.Tracker.presentation.customviews;
 
-import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
