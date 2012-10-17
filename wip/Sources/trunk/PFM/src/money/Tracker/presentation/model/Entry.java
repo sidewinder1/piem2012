@@ -8,40 +8,45 @@ public class Entry implements IModelBase {
 	private int id, type;
 	private Date date;
 	private ArrayList<EntryDetail> entryDetails;
-	
-	public Entry(int id, int type, Date date, ArrayList<EntryDetail> entryDetails) {
+
+	public Entry(int id, int type, Date date,
+			ArrayList<EntryDetail> entryDetails) {
 		super();
 		this.id = id;
 		this.type = type;
 		this.date = date;
-		this.setEntryDetails(entryDetails); 
+		this.setEntryDetails(entryDetails);
 	}
 
-	public double getTotal(int category)
-	{
+	public double getTotal(int category) {
+		if (entryDetails == null) {
+			return 0;
+		}
+		
 		double total = 0;
-		for (EntryDetail entryDetail : entryDetails)
-		{
-			if (entryDetail.getCategory_id() == category)
-			{
+		for (EntryDetail entryDetail : entryDetails) {
+			if (entryDetail.getCategory_id() == category) {
 				total += entryDetail.getMoney();
 			}
 		}
-		
+
 		return total;
 	}
-	
-	public double getTotal()
-	{
-		double total = 0;
-		for (EntryDetail entryKey : entryDetails)
-		{
-			total += entryKey.getMoney();
+
+	public double getTotal() {
+		if (entryDetails == null) {
+			return 0;
 		}
 		
+		double total = 0;
+		
+		for (EntryDetail entryKey : entryDetails) {
+			total += entryKey.getMoney();
+		}
+
 		return total;
 	}
-	
+
 	public Entry() {
 		super();
 	}
@@ -69,10 +74,9 @@ public class Entry implements IModelBase {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	public int compareTo(IModelBase comparedEntry)
-	{
-		return date.compareTo(((Entry)comparedEntry).getDate());
+
+	public int compareTo(IModelBase comparedEntry) {
+		return date.compareTo(((Entry) comparedEntry).getDate());
 	}
 
 	public ArrayList<EntryDetail> getEntryDetails() {

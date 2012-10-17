@@ -41,6 +41,7 @@ public class EntryMonthView extends LinearLayout {
 			public void onClick(View v) {
 				entryDayList.setVisibility(switcher ? View.VISIBLE : View.GONE);
 				switcher = !switcher;
+				// collapsed.setBackgroundColor(getResources().getColor(switcher ? R.drawable.collapsed : R.drawable.opened));
 			}
 		});
 

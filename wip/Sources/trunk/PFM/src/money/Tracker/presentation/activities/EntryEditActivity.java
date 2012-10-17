@@ -147,17 +147,18 @@ public class EntryEditActivity extends Activity {
 		}
 
 		int type = entryType.isChecked() ? 1 : 0;
-		String date = Converter
-				.toString(Converter.toDate(String.valueOf(dateEdit.getText()),
-						"dd/MM/yyyy"), "yyyy/MM/dd");
+		String date = Converter.toString(Converter.toDate(
+				String.valueOf(dateEdit.getText()), "dd/MM/yyyy"));
 		String table = "Entry";
 		String subTable = "EntryDetail";
 		long id = passed_entry_id;
 
 		if (passed_entry_id == -1) {
-			Cursor oldEntry = SqlHelper.instance.select("Entry", "Id",
-					new StringBuilder("Date = '").append(date).append("'")
-							.toString());
+			Cursor oldEntry = SqlHelper.instance.select(
+					"Entry",
+					"Id",
+					new StringBuilder("Date = '")
+							.append(date).append("'").append(" AND Type = ").append(type).toString());
 			if (oldEntry != null && oldEntry.moveToFirst()) {
 				id = oldEntry.getInt(0);
 			} else {

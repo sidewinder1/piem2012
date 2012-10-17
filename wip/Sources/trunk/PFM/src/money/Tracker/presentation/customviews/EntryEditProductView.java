@@ -51,6 +51,11 @@ public class EntryEditProductView extends LinearLayout {
 					cValue = "0";
 				}
 				
+				if ("".equals(total_text_view.getText()))
+				{
+					total_text_view.setText("0");
+				}
+				
 				double currentValue = Double.parseDouble(String
 						.valueOf(total_text_view.getText()));
 				total_text_view.setText(String.valueOf(currentValue

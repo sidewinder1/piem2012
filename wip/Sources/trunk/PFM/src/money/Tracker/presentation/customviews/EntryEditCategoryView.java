@@ -202,15 +202,16 @@ public class EntryEditCategoryView extends LinearLayout {
 
 			String category_id = String.valueOf(CategoryRepository
 					.getInstance().getId(category.getSelectedItemPosition()));
-			Cursor oldEntryDetail = SqlHelper.instance.select(subTable, "Id",
+			Cursor oldEntryDetail = SqlHelper.instance.select(subTable, "Id, Money",
 					new StringBuilder("Category_Id = ").append(category_id)
 							.append(" AND Entry_Id = ").append(entry_id)
 							.append(" AND Name = '").append(product.getName()).append("'")
 							.toString());
-			values = new String[] { product.getName(), product.getCost(),
-					category_id, String.valueOf(entry_id) };
-
+			
 			if (oldEntryDetail != null && oldEntryDetail.moveToFirst()) {
+				values = new String[] { product.getName(), String.valueOf(product.getMoney() + oldEntryDetail.getDouble(1)),
+						category_id, String.valueOf(entry_id) };
+
 				SqlHelper.instance.update(
 						subTable,
 						columns,
@@ -218,6 +219,9 @@ public class EntryEditCategoryView extends LinearLayout {
 						new StringBuilder("Id = ").append(
 								oldEntryDetail.getInt(0)).toString());
 			} else {
+				values = new String[] { product.getName(), String.valueOf(product.getMoney()),
+						category_id, String.valueOf(entry_id) };
+
 				SqlHelper.instance.insert(subTable, columns, values);
 			}
 		}
