@@ -24,12 +24,12 @@ public class EntryDetailRepository {
 
 	public HashMap<String, ArrayList<EntryDetail>> updateData(String condition,
 			String columnKey) {
+		entries = new HashMap<String, ArrayList<EntryDetail>>();
+		entryDetails = new ArrayList<EntryDetail>();
+
 		Cursor entryCursor = SqlHelper.instance.select("EntryDetail", "*",
 				condition);
 		if (entryCursor != null && entryCursor.moveToFirst()) {
-			entries = new HashMap<String, ArrayList<EntryDetail>>();
-			entryDetails = new ArrayList<EntryDetail>();
-
 			do {
 				String categoryKey = entryCursor.getString(entryCursor
 						.getColumnIndex(columnKey));
