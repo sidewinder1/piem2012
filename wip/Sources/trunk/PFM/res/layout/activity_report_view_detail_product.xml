@@ -14,7 +14,6 @@
         android:layout_weight="1"
         android:text="@string/dummy_data"
         android:gravity="right"
-        android:layout_marginRight="20dip"
         android:textColor="@color/white_text_color"
         android:layout_height="wrap_content"/>
 </LinearLayout>
