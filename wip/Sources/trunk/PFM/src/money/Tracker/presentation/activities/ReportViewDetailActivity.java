@@ -53,7 +53,7 @@ public class ReportViewDetailActivity extends Activity {
 									.getColumnIndex("End_date")));
 
 					budgetTextView
-							.setText(String.valueOf(scheduleCursor
+							.setText(Converter.toString(scheduleCursor
 									.getDouble(scheduleCursor
 											.getColumnIndex("Budget"))));
 				} while (scheduleCursor.moveToNext());
@@ -99,7 +99,7 @@ public class ReportViewDetailActivity extends Activity {
 			}
 
 			TextView totalIncomeTextView = (TextView) findViewById(R.id.report_detail_total_income);
-			totalIncomeTextView.setText(String.valueOf(total));
+			totalIncomeTextView.setText(Converter.toString(total));
 
 			if (entryCursor.moveToFirst()) {
 				do {
@@ -119,7 +119,7 @@ public class ReportViewDetailActivity extends Activity {
 									title.add(entryDetailCursor
 											.getString(entryDetailCursor
 													.getColumnIndex("Name")));
-									value.add(String.valueOf(entryDetailCursor
+									value.add(Converter.toString(entryDetailCursor
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Money"))));
 								} while (entryDetailCursor.moveToNext());
@@ -193,7 +193,7 @@ public class ReportViewDetailActivity extends Activity {
 			}
 
 			TextView totalExpenseTextView = (TextView) findViewById(R.id.report_detail_total_expense);
-			totalExpenseTextView.setText(String.valueOf(totalExpense));
+			totalExpenseTextView.setText(Converter.toString(totalExpense));
 
 			if (entryExpenseCursor.moveToFirst()) {
 				Log.d("report detail", "Check 57");
@@ -243,7 +243,7 @@ public class ReportViewDetailActivity extends Activity {
 									}
 									Log.d("report detail", "Check 68");
 									// title.add(entryDetailCursor.getString(entryDetailCursor.getColumnIndex("Name")));
-									value.add(String.valueOf(entryDetailCursor
+									value.add(Converter.toString(entryDetailCursor
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Total"))));
 									Log.d("report detail", "Check 69");
@@ -256,7 +256,7 @@ public class ReportViewDetailActivity extends Activity {
 											do
 											{
 												title.add(entryDetailCursor2.getString(entryDetailCursor2.getColumnIndex("Name")));
-												value.add(String.valueOf(entryDetailCursor2.getDouble(entryDetailCursor2.getColumnIndex("Total"))));
+												value.add(Converter.toString(entryDetailCursor2.getDouble(entryDetailCursor2.getColumnIndex("Total"))));
 											}while(entryDetailCursor2.moveToNext());
 										}
 									}
@@ -316,7 +316,7 @@ public class ReportViewDetailActivity extends Activity {
 					}
 
 					TextView totalBorrowingTextView = (TextView) findViewById(R.id.report_detail_total_borrowing);
-					totalBorrowingTextView.setText(String.valueOf(totalBorrowing));
+					totalBorrowingTextView.setText(Converter.toString(totalBorrowing));
 
 					if (borrowingCursor.moveToFirst()) {
 						Log.d("report detail", "Check 57");
@@ -383,7 +383,7 @@ public class ReportViewDetailActivity extends Activity {
 			}
 
 			TextView totalLendingTextView = (TextView) findViewById(R.id.report_detail_total_lending);
-			totalLendingTextView.setText(String.valueOf(totalLending));
+			totalLendingTextView.setText(Converter.toString(totalLending));
 
 			if (lendingCursor.moveToFirst()) {
 				Log.d("report detail", "Check 57");
