@@ -236,10 +236,15 @@ public class ReportViewDetailActivity extends Activity {
 									double value = entryDetailCursor
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Total"));
+									Log.d("report detail",
+											"Check 68");
 									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 											LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-									
+									Log.d("report detail",
+											"Check 69");
 									expenseDetail.addView(new ReportDetailCategory(this, name, value, id, categoryID), params);
+									Log.d("report detail",
+											"Check 70");
 									
 								} while (entryDetailCursor.moveToNext());
 							}
@@ -308,7 +313,7 @@ public class ReportViewDetailActivity extends Activity {
 	{
 		double totalLending = 0;
 		TextView totalLendingTextView = (TextView) findViewById(R.id.report_detail_total_lending);
-		LinearLayout lendingDetail = (LinearLayout) findViewById(R.id.report_detail_borrowing_list_view);
+		LinearLayout lendingDetail = (LinearLayout) findViewById(R.id.report_detai_lending_list_view);
 		lendingDetail.removeAllViews();
 		
 		Cursor lendingCursor = SqlHelper.instance.select("BorrowLend", "*",

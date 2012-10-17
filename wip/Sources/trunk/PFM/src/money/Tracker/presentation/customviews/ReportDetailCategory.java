@@ -7,6 +7,7 @@ import money.Tracker.presentation.model.EntryDetail;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,12 +31,12 @@ public class ReportDetailCategory extends LinearLayout{
 		// Get control from .xml file.
 		TextView product_name = (TextView) findViewById(R.id.report_detail_category_item_name);
 		TextView product_total = (TextView) findViewById(R.id.report_detail_category_item_total);
-		LinearLayout category_list = (LinearLayout) findViewById(R.id.entry_detail_category_list);
+		LinearLayout category_list = (LinearLayout) findViewById(R.id.report_detail_category_list);
 		
 		// Set value to category.
 		product_name.setText(name);
 		product_total.setText(Converter.toString(value));
-		
+		Log.d("Report detail category", "Check 1");
 		//
 		category_list.removeAllViews();
 		Cursor entryDetailCursor2 = SqlHelper.instance.select("EntryDetail", "Name, sum(Money) as Total", "Entry_Id = " + entryID + " and Category_Id = " + categoryID + " group by Name");
@@ -45,12 +46,14 @@ public class ReportDetailCategory extends LinearLayout{
 			{
 				do
 				{
+					Log.d("Report detail category", "Check 2");
 					String nameDetail = entryDetailCursor2.getString(entryDetailCursor2.getColumnIndex("Name"));
 					double valueDetail = entryDetailCursor2.getDouble(entryDetailCursor2.getColumnIndex("Total"));
-					
+					Log.d("Report detail category", "Check 3");
 					ReportDetailProduct item = new ReportDetailProduct(context, nameDetail, valueDetail);
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 							LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+					Log.d("Report detail category", "Check 4");
 					category_list.addView(item, params);
 				}while(entryDetailCursor2.moveToNext());
 			}
