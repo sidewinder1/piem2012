@@ -5,14 +5,20 @@ import java.util.Date;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.presentation.customviews.EntryDetailCategoryView;
+import money.Tracker.presentation.customviews.ReportDetailCategory;
+import money.Tracker.presentation.customviews.ReportDetailProduct;
 import android.os.Bundle;
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.LinearGradient;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 public class ReportViewDetailActivity extends Activity {
 	private Date startDate;
@@ -68,9 +74,10 @@ public class ReportViewDetailActivity extends Activity {
 
 	private void getIncome() {
 		double total = 0;
-		ArrayList<String> title = new ArrayList<String>();
-		ArrayList<String> value = new ArrayList<String>();
-
+		TextView totalIncomeTextView = (TextView) findViewById(R.id.report_detail_total_income);
+		LinearLayout incomeDetail = (LinearLayout) findViewById(R.id.report_detail_income_list_view);
+		incomeDetail.removeAllViews();
+		
 		Cursor entryCursor = SqlHelper.instance.select("Entry", "*", "Type=0");
 		if (entryCursor != null) {
 			if (entryCursor.moveToFirst()) {
@@ -98,7 +105,6 @@ public class ReportViewDetailActivity extends Activity {
 				} while (entryCursor.moveToNext());
 			}
 
-			TextView totalIncomeTextView = (TextView) findViewById(R.id.report_detail_total_income);
 			totalIncomeTextView.setText(Converter.toString(total));
 
 			if (entryCursor.moveToFirst()) {
@@ -116,12 +122,16 @@ public class ReportViewDetailActivity extends Activity {
 						if (entryDetailCursor != null) {
 							if (entryDetailCursor.moveToFirst()) {
 								do {
-									title.add(entryDetailCursor
+									String name = entryDetailCursor
 											.getString(entryDetailCursor
-													.getColumnIndex("Name")));
-									value.add(Converter.toString(entryDetailCursor
+													.getColumnIndex("Name"));
+									double value = entryDetailCursor
 											.getDouble(entryDetailCursor
-													.getColumnIndex("Money"))));
+													.getColumnIndex("Money"));
+									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+											LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+									
+									incomeDetail.addView(new ReportDetailProduct(this, name, value), params);
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
@@ -129,30 +139,13 @@ public class ReportViewDetailActivity extends Activity {
 				} while (entryCursor.moveToNext());
 			}
 		}
-
-		Log.d("report detail", "Check 6");
-		ListView titleListView = (ListView) findViewById(R.id.report_detail_title_income_list_view);
-		ListView valueListView = (ListView) findViewById(R.id.report_detail_value_income_list_view);
-		Log.d("report detail", "Check 7");
-		String[] titleString = new String[title.size()];
-		titleString = title.toArray(titleString);
-
-		String[] valueString = new String[value.size()];
-		valueString = value.toArray(valueString);
-
-		Log.d("report detail", "Check 8");
-		titleListView.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.single_row_view, titleString));
-		Log.d("report detail", "Check 9");
-		valueListView.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.single_row_view, valueString));
-		Log.d("report detail", "Check 10");
 	}
 
 	private void getExpense() {
 		double totalExpense = 0;
-		ArrayList<String> title = new ArrayList<String>();
-		ArrayList<String> value = new ArrayList<String>();
+		TextView totalExpenseTextView = (TextView) findViewById(R.id.report_detail_total_expense);
+		LinearLayout expenseDetail = (LinearLayout) findViewById(R.id.report_detail_expense_list_view);
+		expenseDetail.removeAllViews();
 
 		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
 				"Type=1");
@@ -191,8 +184,6 @@ public class ReportViewDetailActivity extends Activity {
 					}
 				} while (entryExpenseCursor.moveToNext());
 			}
-
-			TextView totalExpenseTextView = (TextView) findViewById(R.id.report_detail_total_expense);
 			totalExpenseTextView.setText(Converter.toString(totalExpense));
 
 			if (entryExpenseCursor.moveToFirst()) {
@@ -223,6 +214,7 @@ public class ReportViewDetailActivity extends Activity {
 									int categoryID = entryDetailCursor
 											.getInt(entryDetailCursor
 													.getColumnIndex("Category_Id"));
+									String name = "";
 									Cursor categoryCursor = SqlHelper.instance
 											.select("Category", "*", "Id="
 													+ categoryID);
@@ -234,32 +226,21 @@ public class ReportViewDetailActivity extends Activity {
 											do {
 												Log.d("report detail",
 														"Check 67");
-												title.add(categoryCursor
+												name = categoryCursor
 														.getString(categoryCursor
-																.getColumnIndex("Name")));
+																.getColumnIndex("Name"));
 											} while (categoryCursor
 													.moveToNext());
 										}
 									}
-									Log.d("report detail", "Check 68");
-									// title.add(entryDetailCursor.getString(entryDetailCursor.getColumnIndex("Name")));
-									value.add(Converter.toString(entryDetailCursor
+									double value = entryDetailCursor
 											.getDouble(entryDetailCursor
-													.getColumnIndex("Total"))));
-									Log.d("report detail", "Check 69");
+													.getColumnIndex("Total"));
+									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+											LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 									
-									Cursor entryDetailCursor2 = SqlHelper.instance.select("EntryDetail", "Name, sum(Money) as Total", "Entry_Id = " + id + " and Category_Id = " + categoryID + " group by Name");
-									if (entryDetailCursor2 != null)
-									{
-										if(entryDetailCursor2.moveToFirst())
-										{
-											do
-											{
-												title.add(entryDetailCursor2.getString(entryDetailCursor2.getColumnIndex("Name")));
-												value.add(Converter.toString(entryDetailCursor2.getDouble(entryDetailCursor2.getColumnIndex("Total"))));
-											}while(entryDetailCursor2.moveToNext());
-										}
-									}
+									expenseDetail.addView(new ReportDetailCategory(this, name, value, id, categoryID), params);
+									
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
@@ -267,33 +248,14 @@ public class ReportViewDetailActivity extends Activity {
 				} while (entryExpenseCursor.moveToNext());
 			}
 		}
-		
-		Log.d("report detail", "Check 6");
-		ListView titleListView = (ListView) findViewById(R.id.report_detail_title_expense_list_view);
-		ListView valueListView = (ListView) findViewById(R.id.report_detail_value_expense_list_view);
-		Log.d("report detail", "Check 7");
-		String[] titleString = new String[title.size()];
-		titleString = title.toArray(titleString);
-
-		String[] valueString = new String[value.size()];
-		valueString = value.toArray(valueString);
-
-		Log.d("report detail", "Check 8");
-		titleListView.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.single_row_view, titleString));
-		Log.d("report detail", "Check 9");
-		valueListView.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.single_row_view, valueString));
-		Log.d("report detail", "Check 10");
-		
-		
 	}
 	
 	private void getBorrowing()
 	{
 				double totalBorrowing = 0;
-				ArrayList<String> title = new ArrayList<String>();
-				ArrayList<String> value = new ArrayList<String>();
+				TextView totalBorrowingTextView = (TextView) findViewById(R.id.report_detail_total_borrowing);
+				LinearLayout borrowingDetail = (LinearLayout) findViewById(R.id.report_detail_borrowing_list_view);
+				borrowingDetail.removeAllViews();
 				
 				Cursor borrowingCursor = SqlHelper.instance.select("BorrowLend", "*",
 						"Debt_type like 'Borrowing'");
@@ -315,7 +277,6 @@ public class ReportViewDetailActivity extends Activity {
 						} while (borrowingCursor.moveToNext());
 					}
 
-					TextView totalBorrowingTextView = (TextView) findViewById(R.id.report_detail_total_borrowing);
 					totalBorrowingTextView.setText(Converter.toString(totalBorrowing));
 
 					if (borrowingCursor.moveToFirst()) {
@@ -329,39 +290,26 @@ public class ReportViewDetailActivity extends Activity {
 									&& entryDate.compareTo(endDate) < 0
 									|| entryDate.compareTo(startDate) == 0
 									|| entryDate.compareTo(endDate) == 0) {
-								title.add(borrowingCursor.getString(borrowingCursor
-										.getColumnIndex("Person_name")));
-								value.add(borrowingCursor.getString(borrowingCursor
+								String name = borrowingCursor.getString(borrowingCursor
+										.getColumnIndex("Person_name"));
+								double value = Double.parseDouble(borrowingCursor.getString(borrowingCursor
 										.getColumnIndex("Money")));
+								LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+										LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+								
+								borrowingDetail.addView(new ReportDetailProduct(this, name, value), params);
 							}
 						} while (borrowingCursor.moveToNext());
 					}
 				}
-				
-				Log.d("report detail", "Check 6");
-				ListView titleListView = (ListView) findViewById(R.id.report_detail_title_borrowing_list_view);
-				ListView valueListView = (ListView) findViewById(R.id.report_detail_value_borrowing_list_view);
-				Log.d("report detail", "Check 7");
-				String[] titleString = new String[title.size()];
-				titleString = title.toArray(titleString);
-
-				String[] valueString = new String[value.size()];
-				valueString = value.toArray(valueString);
-
-				Log.d("report detail", "Check 8");
-				titleListView.setAdapter(new ArrayAdapter<String>(this,
-						R.layout.single_row_view, titleString));
-				Log.d("report detail", "Check 9");
-				valueListView.setAdapter(new ArrayAdapter<String>(this,
-						R.layout.single_row_view, valueString));
-				Log.d("report detail", "Check 10");				
 	}
 	
 	private void getLending()
 	{
 		double totalLending = 0;
-		ArrayList<String> title = new ArrayList<String>();
-		ArrayList<String> value = new ArrayList<String>();
+		TextView totalLendingTextView = (TextView) findViewById(R.id.report_detail_total_lending);
+		LinearLayout lendingDetail = (LinearLayout) findViewById(R.id.report_detail_borrowing_list_view);
+		lendingDetail.removeAllViews();
 		
 		Cursor lendingCursor = SqlHelper.instance.select("BorrowLend", "*",
 				"Debt_type like 'Lending'");
@@ -382,7 +330,6 @@ public class ReportViewDetailActivity extends Activity {
 				} while (lendingCursor.moveToNext());
 			}
 
-			TextView totalLendingTextView = (TextView) findViewById(R.id.report_detail_total_lending);
 			totalLendingTextView.setText(Converter.toString(totalLending));
 
 			if (lendingCursor.moveToFirst()) {
@@ -396,33 +343,20 @@ public class ReportViewDetailActivity extends Activity {
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
 							|| entryDate.compareTo(endDate) == 0) {
-						title.add(lendingCursor.getString(lendingCursor
-								.getColumnIndex("Person_name")));
-						value.add(lendingCursor.getString(lendingCursor
+						String name = lendingCursor.getString(lendingCursor
+								.getColumnIndex("Person_name"));
+						double value = Double.parseDouble(lendingCursor.getString(lendingCursor
 								.getColumnIndex("Money")));
+						
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+						
+						lendingDetail.addView(new ReportDetailProduct(this, name, value), params);
 					}
 				} while (lendingCursor.moveToNext());
 			}
 		}
 		
-		Log.d("report detail", "Check 6");
-		ListView titleListView = (ListView) findViewById(R.id.report_detail_title_lending_list_view);
-		ListView valueListView = (ListView) findViewById(R.id.report_detail_value_lending_list_view);
-		Log.d("report detail", "Check 7");
-		String[] titleString = new String[title.size()];
-		titleString = title.toArray(titleString);
-
-		String[] valueString = new String[value.size()];
-		valueString = value.toArray(valueString);
-
-		Log.d("report detail", "Check 8");
-		titleListView.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.single_row_view, titleString));
-		Log.d("report detail", "Check 9");
-		valueListView.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.single_row_view, valueString));
-		Log.d("report detail", "Check 10");				
-
 	}
 
 	private void bindData() {
