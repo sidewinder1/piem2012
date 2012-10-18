@@ -6,7 +6,6 @@ import java.util.HashMap;
 import android.database.Cursor;
 
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
 
 public class EntryDetailRepository {
@@ -52,7 +51,7 @@ public class EntryDetailRepository {
 			} while (entryCursor.moveToNext());
 		}
 		
-		//sort();
+		sort();
 		return entries;
 	}
 
@@ -64,6 +63,10 @@ public class EntryDetailRepository {
 	}
 
 	public void sort() {
+		if (entries != null) {
+			return;
+		}
+		
 		int i, j;
 		for (ArrayList<EntryDetail> entryList : entries.values()) {
 			int length = entryList.size();

@@ -2,6 +2,7 @@ package money.Tracker.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import android.database.Cursor;
 
@@ -14,7 +15,7 @@ public class EntryRepository implements IDataRepository {
 	private static EntryRepository instance;
 
 	public ArrayList<Entry> entries;
-	public HashMap<String, ArrayList<Entry>> orderedEntries;
+	public LinkedHashMap<String, ArrayList<Entry>> orderedEntries;
 
 	public EntryRepository() {
 		updateData();
@@ -25,24 +26,29 @@ public class EntryRepository implements IDataRepository {
 	}
 
 	public ArrayList<Entry> updateData(String condition) {
-		Cursor entryCursor = SqlHelper.instance.select("Entry", "*", condition);
+		if (!"".equals(condition)) {
+			condition = new StringBuilder(" WHERE ").append(condition).toString();
+		}
+
+		Cursor entryCursor = SqlHelper.instance.query(new StringBuilder(
+				"SELECT * FROM Entry ").append(condition)
+				.append(" ORDER BY Date DESC").toString());
 		if (entryCursor != null && entryCursor.moveToFirst()) {
 			entries = new ArrayList<Entry>();
-			orderedEntries = new HashMap<String, ArrayList<Entry>>();
+			orderedEntries = new LinkedHashMap<String, ArrayList<Entry>>();
 
 			do {
 				int id = entryCursor.getInt(entryCursor.getColumnIndex("Id"));
 				String keyMonth = Converter.toString(Converter
 						.toDate(entryCursor.getString(entryCursor
 								.getColumnIndex("Date"))), "MMMM, yyyy");
-				
-				if (!orderedEntries.containsKey(keyMonth))
-				{
+
+				if (!orderedEntries.containsKey(keyMonth)) {
 					orderedEntries.put(keyMonth, new ArrayList<Entry>());
 				}
 				EntryDetailRepository.getInstance().updateData(
-						new StringBuilder("Entry_Id = " + id)
-								.toString(), "Entry_Id");
+						new StringBuilder("Entry_Id = " + id).toString(),
+						"Entry_Id");
 				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),
@@ -52,6 +58,7 @@ public class EntryRepository implements IDataRepository {
 			} while (entryCursor.moveToNext());
 		}
 
+		sort();
 		return entries;
 	}
 
@@ -65,24 +72,28 @@ public class EntryRepository implements IDataRepository {
 
 	public ArrayList<IModelBase> getData(String param) {
 		ArrayList<IModelBase> iEntries = new ArrayList<IModelBase>();
-		Cursor entryCursor = SqlHelper.instance.select("Entry", "*", param);
-		if (entryCursor != null && entryCursor.moveToFirst()) {
+		if (!"".equals(param)) {
+			param = new StringBuilder(" WHERE ").append(param).toString();
+		}
 
-			orderedEntries = new HashMap<String, ArrayList<Entry>>();
+		Cursor entryCursor = SqlHelper.instance.query(new StringBuilder(
+				"SELECT * FROM Entry ").append(param)
+				.append(" ORDER BY Date DESC").toString());
+		if (entryCursor != null && entryCursor.moveToFirst()) {
+			orderedEntries = new LinkedHashMap<String, ArrayList<Entry>>();
 
 			do {
 				int id = entryCursor.getInt(entryCursor.getColumnIndex("Id"));
 				String keyMonth = Converter.toString(Converter
 						.toDate(entryCursor.getString(entryCursor
 								.getColumnIndex("Date"))), "MMMM, yyyy");
-				
-				if (!orderedEntries.containsKey(keyMonth))
-				{
+
+				if (!orderedEntries.containsKey(keyMonth)) {
 					orderedEntries.put(keyMonth, new ArrayList<Entry>());
 				}
 				EntryDetailRepository.getInstance().updateData(
-						new StringBuilder("Entry_Id = " + id)
-								.toString(), "Entry_Id");
+						new StringBuilder("Entry_Id = " + id).toString(),
+						"Entry_Id");
 				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
 						.getColumnIndex("Type")), Converter.toDate(entryCursor
 						.getString(entryCursor.getColumnIndex("Date"))),
@@ -92,6 +103,28 @@ public class EntryRepository implements IDataRepository {
 			} while (entryCursor.moveToNext());
 		}
 
+		sort();
 		return iEntries;
+	}
+
+	public void sort() {
+		if (orderedEntries != null) {
+			return;
+		}
+
+		int i, j;
+		for (ArrayList<Entry> entryList : orderedEntries.values()) {
+			int length = entryList.size();
+			Entry t = new Entry();
+			for (i = 0; i < length; i++) {
+				for (j = 1; j < (length - i); j++) {
+					if (entryList.get(j - 1).compareTo(entryList.get(j)) < 0) {
+						t = entryList.get(j - 1);
+						entryList.set(j - 1, entryList.get(j));
+						entryList.set(j, t);
+					}
+				}
+			}
+		}
 	}
 }

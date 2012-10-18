@@ -228,7 +228,9 @@ public class TabViewActivity extends Activity {
 				itemView.addView(item, params);
 
 				if ((index % 2 == 0) || index == category.getCount()) {
-					chart_legend.addView(itemView);
+					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+					chart_legend.addView(itemView, params1);
 					itemView = new LinearLayout(this);
 				}
 

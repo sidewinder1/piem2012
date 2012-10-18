@@ -66,9 +66,6 @@ public class EntryDetailViewActivity extends Activity {
 								(entry.getType() == 1 ? R.string.entry_daily_total_expense_title
 										: R.string.entry_daily_total_income_title)));
 
-		remain_budget_title.setText(getResources().getString(
-				R.string.entry_total_budget));
-	
 		entry_list.removeAllViews();
 		for (ArrayList<EntryDetail> array : EntryDetailRepository.getInstance().entries
 				.values()) {
@@ -78,36 +75,54 @@ public class EntryDetailViewActivity extends Activity {
 			entry_list
 					.addView(new EntryDetailCategoryView(this, array), params);
 		}
-		
-		// Updated data for summary part.
-		// Get total budget.
-		Cursor totalBudgetCursor = SqlHelper.instance
-				.select("Schedule",
-						"Budget",
-						new StringBuilder("End_date = '")
-								.append(Converter.toString(DateTimeHelper.getLastDateOfMonth(entry
-										.getDate().getYear() + 1900, entry.getDate()
-										.getMonth())))
-								.append("' OR End_date = '")
-								.append(Converter.toString(DateTimeHelper.getLastDayOfWeek(entry
-										.getDate()))).append("'").toString());
-		double total_budget = 0;
-		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
-			total_budget = totalBudgetCursor.getDouble(0);
-		}
 
+		// Updated data for summary part.
 		// Get total expense or income.
-		EntryRepository.getInstance().updateData(new StringBuilder("Type = ").append(entry.getType()).toString());
+		EntryRepository.getInstance()
+				.updateData(
+						new StringBuilder("Type = ").append(entry.getType())
+								.toString());
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
 				.get(Converter.toString(entry.getDate(), "MMMM, yyyy"));
 		double total_entry = 0;
 		total_entry_value.setText(Converter.toString(entry.getTotal()));
-		for(Entry entryItem : entries)
-		{
+		for (Entry entryItem : entries) {
 			total_entry += entryItem.getTotal();
 		}
-		
-		remain_budget_value.setText(Converter.toString(total_budget - total_entry));
+
+		// Get total budget.
+		Cursor totalBudgetCursor = SqlHelper.instance.select(
+				"Schedule",
+				"Budget, Type",
+				new StringBuilder("End_date = '")
+						.append(Converter.toString(DateTimeHelper
+								.getLastDayOfWeek(entry.getDate())))
+						.append("' OR End_date = '")
+						.append(Converter.toString(DateTimeHelper
+								.getLastDateOfMonth(
+										entry.getDate().getYear() + 1900, entry
+												.getDate().getMonth())))
+						.append("'").toString());
+		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
+			do {
+				remain_budget_value
+						.setText(Converter.toString(totalBudgetCursor
+								.getDouble(0) - total_entry));
+				remain_budget_title
+						.setText(getResources()
+								.getString(
+										totalBudgetCursor.getInt(1) == 1 ? R.string.entry_total_budget_month
+												: R.string.entry_total_budget_week));
+				if (totalBudgetCursor.getInt(1) == 0) {
+					break;
+				}
+			} while (totalBudgetCursor.moveToNext());
+			remain_budget_title.setVisibility(View.VISIBLE);
+			remain_budget_value.setVisibility(View.VISIBLE);
+		} else {
+			remain_budget_title.setVisibility(View.GONE);
+			remain_budget_value.setVisibility(View.GONE);
+		}
 	}
 
 	public void editBtnClicked(View v) {

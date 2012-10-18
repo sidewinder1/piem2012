@@ -29,6 +29,8 @@ public class CategoryRepository {
 								.getString(categoryCursor
 										.getColumnIndex("User_Color"))));
 			} while (categoryCursor.moveToNext());
+			
+			sort();
 		}
 	}
 
@@ -73,7 +75,7 @@ public class CategoryRepository {
 						category.getUser_color());
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -92,5 +94,22 @@ public class CategoryRepository {
 			instance = new CategoryRepository();
 		}
 		return instance;
+	}
+
+	public void sort() {
+		int i, j;
+
+		int length = categories.size();
+		Category t = new Category();
+		for (i = 0; i < length; i++) {
+			for (j = 1; j < (length - i); j++) {
+				if (categories.get(j - 1).compareTo(categories.get(j)) > 0) {
+					t = categories.get(j - 1);
+					categories.set(j - 1, categories.get(j));
+					categories.set(j, t);
+				}
+			}
+		}
+
 	}
 }
