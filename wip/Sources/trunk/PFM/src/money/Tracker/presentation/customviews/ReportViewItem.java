@@ -5,6 +5,8 @@ import java.util.Date;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
+import money.Tracker.presentation.activities.ReportMainViewDetailActivity;
+import money.Tracker.presentation.activities.ReportViewActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +15,7 @@ import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +34,10 @@ public class ReportViewItem extends LinearLayout{
 		reportViewSpentBudget = (TextView) findViewById(R.id.report_view_spent_buget);
 		reportStackedBarChart = (LinearLayout) findViewById(R.id.report_stacked_bar_chart);
 		
-		reportViewDate.setText(Converter.toString(startDate, "MMMM, yyyy"));
+		if(checkMonthly)
+			reportViewDate.setText(Converter.toString(startDate, "MMMM, yyyy"));
+		else
+			reportViewDate.setText(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
 		
 		// get spent 
 		double spent = 0;
@@ -136,7 +142,21 @@ public class ReportViewItem extends LinearLayout{
 		reportStackedBarChart.addView(stackItem1, params1);
 		Log.d("Report Adapter", "Check 22");
 		
+		final boolean checkMonth = checkMonthly;
+		final String sDate = Converter.toString(startDate);
+		final String eDate = Converter.toString(endDate);
 		
+		setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent reportDetail = new Intent(getContext(),
+						ReportMainViewDetailActivity.class);
+				reportDetail.putExtra("checkMonthly", checkMonth);
+				reportDetail.putExtra("start_date", sDate);
+				reportDetail.putExtra("end_date", eDate);
+				Log.d("Check click report", "Check finish");
+				getContext().startActivity(reportDetail);
+			}
+		});
 	}
 	
 }
