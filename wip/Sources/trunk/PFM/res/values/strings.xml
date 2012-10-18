@@ -36,11 +36,12 @@
     <string name="entry_product_name_hint">Tên sản phẩm</string>
     <string name="entry_daily_total_expense_title">Tổng chi phí ngày</string>
     <string name="entry_daily_total_income_title">Tổng thu nhập ngày</string>
-    <string name="entry_total_budget">Ngân sách còn lại</string>
+    <string name="entry_total_budget_week">Ngân sách tuần còn lại</string>
+    <string name="entry_total_budget_month">Ngân sách tháng còn lại</string>
     <string name="entry_daily_expense_title">Chi phí ngày {0}</string>
     <string name="entry_daily_income_title">Thu nhập ngày {0}</string>
-    <string name="entry_edit_expense_title">Sửa chi phí ngày {0}</string>
-    <string name="entry_edit_income_title">Sửa thu nhập ngày {0}</string>
+    <string name="entry_edit_expense_title">Sửa chi phí {0}</string>
+    <string name="entry_edit_income_title">Sửa thu nhập {0}</string>
 
     <!-- These are resources for Report function -->
     <string name="report_management_title">Báo cáo</string>

@@ -22,12 +22,12 @@
 
         <Button
             android:id="@+id/entry_detail_editBtn"
-            android:layout_width="26dp"
-            android:layout_height="36dp"
+            android:layout_width="36dp"
+            android:layout_height="46dp"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="-3dp"
+            android:layout_marginBottom="-9dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="-2dp"
+            android:layout_marginTop="-9dp"
             android:background="@drawable/management_icon"
             android:onClick="editBtnClicked" />
     </RelativeLayout>
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="@string/entry_total_budget"
+                android:text="@string/entry_total_budget_week"
                 android:textColor="@color/white_text_color" />
 
             <TextView
