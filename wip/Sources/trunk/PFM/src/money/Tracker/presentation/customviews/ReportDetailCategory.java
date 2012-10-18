@@ -20,7 +20,7 @@ public class ReportDetailCategory extends LinearLayout{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ReportDetailCategory(Context context, String name, double value, int entryID, int categoryID)
+	public ReportDetailCategory(Context context, String name, double value)
 	{
 		super(context);
 		
@@ -31,13 +31,14 @@ public class ReportDetailCategory extends LinearLayout{
 		// Get control from .xml file.
 		TextView product_name = (TextView) findViewById(R.id.report_detail_category_item_name);
 		TextView product_total = (TextView) findViewById(R.id.report_detail_category_item_total);
-		LinearLayout category_list = (LinearLayout) findViewById(R.id.report_detail_category_list);
+		//LinearLayout category_list = (LinearLayout) findViewById(R.id.report_detail_category_list);
 		
 		// Set value to category.
 		product_name.setText(name);
 		product_total.setText(Converter.toString(value));
 		Log.d("Report detail category", "Check 1");
 		//
+		/*
 		category_list.removeAllViews();
 		Cursor entryDetailCursor2 = SqlHelper.instance.select("EntryDetail", "Name, sum(Money) as Total", "Entry_Id = " + entryID + " and Category_Id = " + categoryID + " group by Name");
 		if (entryDetailCursor2 != null)
@@ -58,5 +59,6 @@ public class ReportDetailCategory extends LinearLayout{
 				}while(entryDetailCursor2.moveToNext());
 			}
 		}
+		*/
 	}
 }

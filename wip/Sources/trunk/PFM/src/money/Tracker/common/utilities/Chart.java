@@ -102,7 +102,7 @@ public class Chart {
 									value = entryDetailCursor
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Total"));
-									/*
+									
 									Log.d("Chart", "Check 4 - " + name);
 									Log.d("Chart", "Check 4 - " + String.valueOf(value));
 									Log.d("Chart", "Check 4 - " + color);
@@ -110,12 +110,12 @@ public class Chart {
 									Log.d("Chart", "Check 5");
 									SimpleSeriesRenderer r = new SimpleSeriesRenderer();
 									Log.d("Chart", "Check 6");
-									//r.setColor(Color.parseColor(color));
-									Random random = new Random();
-									r.setColor(Color.argb(255, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+									r.setColor(Color.parseColor(color));
+									//Random random = new Random();
+									//r.setColor(Color.argb(255, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
 									Log.d("Chart", "Check 7");
 									renderer.addSeriesRenderer(r);
-									Log.d("Chart", "Check 8");*/
+									Log.d("Chart", "Check 8");
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
@@ -124,11 +124,11 @@ public class Chart {
 			}
 		}
 		
-		series.add("a", 10000);
-		SimpleSeriesRenderer r = new SimpleSeriesRenderer();
-		Random random = new Random();
-		r.setColor(Color.argb(255, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-		renderer.addSeriesRenderer(r);
+		//series.add("a", 10000);
+		//SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+		//Random random = new Random();
+		//r.setColor(Color.argb(255, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+		//renderer.addSeriesRenderer(r);
 		
 		Log.d("Chart", "Check 9");
 		Intent intent = ChartFactory.getPieChartIntent(context, series, renderer, "Pie");
