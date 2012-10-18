@@ -28,7 +28,7 @@ public class ReportDetailProduct extends LinearLayout{
 		TextView product_total = (TextView) findViewById(R.id.report_detail_product_item_total);
 
 		// Set value to category.
-		product_name.setText(name);
+		product_name.setText("   " + name);
 		product_total.setText(Converter.toString(value));
 
 	}

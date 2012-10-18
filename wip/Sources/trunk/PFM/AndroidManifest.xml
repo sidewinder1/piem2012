@@ -37,7 +37,8 @@
         <activity android:name=".ReportMainViewActivity" />
         <activity android:name=".ReportViewActivity" />
         <activity android:name=".ReportViewDetailActivity" />
-        <activity android:name=".ReportMainViewDetailActivity" />            
+        <activity android:name=".ReportMainViewDetailActivity" />
+        <activity android:name="org.achartengine.GraphicalActivity" />             
     </application>
 
 </manifest>

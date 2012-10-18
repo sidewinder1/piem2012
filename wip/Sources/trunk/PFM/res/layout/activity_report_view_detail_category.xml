@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="@string/dummy_data"
-            android:textColor="@color/white_text_color" />
+            android:textColor="@color/white_text_color"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/report_detail_category_item_total"
@@ -23,7 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dummy_data"
-            android:textColor="@color/white_text_color" />
+            android:textColor="@color/white_text_color"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <LinearLayout

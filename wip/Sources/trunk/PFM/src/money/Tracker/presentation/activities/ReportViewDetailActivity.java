@@ -23,6 +23,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class ReportViewDetailActivity extends Activity {
 	private Date startDate;
 	private Date endDate;
+	private LinearLayout reportDetail;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,9 +41,9 @@ public class ReportViewDetailActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		int scheduleID = extras.getInt("schedule_id");
 		Log.d("report detail", "Check 2 - " + scheduleID);
-
-		TextView budgetTextView = (TextView) findViewById(R.id.report_detail_total_budget);
-
+		
+		double budget = 0;
+		
 		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*",
 				"Id=" + scheduleID);
 		if (scheduleCursor != null) {
@@ -58,10 +59,9 @@ public class ReportViewDetailActivity extends Activity {
 							.getString(scheduleCursor
 									.getColumnIndex("End_date")));
 
-					budgetTextView
-							.setText(Converter.toString(scheduleCursor
+					budget = scheduleCursor
 									.getDouble(scheduleCursor
-											.getColumnIndex("Budget"))));
+											.getColumnIndex("Budget"));
 				} while (scheduleCursor.moveToNext());
 			}
 		}
@@ -70,22 +70,27 @@ public class ReportViewDetailActivity extends Activity {
 				"Check 5 - " + Converter.toString(startDate, "dd/MM/yyyy"));
 		Log.d("report detail",
 				"Check 5 - " + Converter.toString(endDate, "dd/MM/yyyy"));
+		
+		if (budget != 0)
+		{
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		
+			reportDetail.addView(new ReportDetailCategory(this, "Budget", budget), params);
+		}
 	}
 
 	private void getIncome() {
-		double total = 0;
-		TextView totalIncomeTextView = (TextView) findViewById(R.id.report_detail_total_income);
-		LinearLayout incomeDetail = (LinearLayout) findViewById(R.id.report_detail_income_list_view);
-		incomeDetail.removeAllViews();
+		double totalIncome = 0;
 		
-		Cursor entryCursor = SqlHelper.instance.select("Entry", "*", "Type=0");
-		if (entryCursor != null) {
-			if (entryCursor.moveToFirst()) {
+		Cursor entryIncomeCursor = SqlHelper.instance.select("Entry", "*", "Type=0");
+		if (entryIncomeCursor != null) {
+			if (entryIncomeCursor.moveToFirst()) {
 				do {
-					int id = entryCursor.getInt(entryCursor
+					int id = entryIncomeCursor.getInt(entryIncomeCursor
 							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryCursor
-							.getString(entryCursor.getColumnIndex("Date")));
+					Date entryDate = Converter.toDate(entryIncomeCursor
+							.getString(entryIncomeCursor.getColumnIndex("Date")));
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -95,57 +100,95 @@ public class ReportViewDetailActivity extends Activity {
 						if (entryDetailCursor != null) {
 							if (entryDetailCursor.moveToFirst()) {
 								do {
-									total += entryDetailCursor
+									totalIncome += entryDetailCursor
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Money"));
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
 					}
-				} while (entryCursor.moveToNext());
+				} while (entryIncomeCursor.moveToNext());
+			}
+			
+			if (totalIncome != 0)
+			{
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			
+				reportDetail.addView(new ReportDetailCategory(this, "Income", totalIncome), params);
 			}
 
-			totalIncomeTextView.setText(Converter.toString(total));
-
-			if (entryCursor.moveToFirst()) {
+			if (entryIncomeCursor.moveToFirst()) {
+				Log.d("report detail", "Check 57");
 				do {
-					int id = entryCursor.getInt(entryCursor
+					Log.d("report detail", "Check 58");
+					int id = entryIncomeCursor.getInt(entryIncomeCursor
 							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryCursor
-							.getString(entryCursor.getColumnIndex("Date")));
+					Date entryDate = Converter.toDate(entryIncomeCursor
+							.getString(entryIncomeCursor
+									.getColumnIndex("Date")));
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
 							|| entryDate.compareTo(endDate) == 0) {
+						Log.d("report detail", "Check 59");
 						Cursor entryDetailCursor = SqlHelper.instance.select(
-								"EntryDetail", "*", "Entry_Id=" + id);
+								"EntryDetail",
+								"Category_Id, sum(Money) as Total", "Entry_Id="
+										+ id + " group by Category_Id");
+						Log.d("report detail", "Check 60");
 						if (entryDetailCursor != null) {
+							Log.d("report detail", "Check 61");
 							if (entryDetailCursor.moveToFirst()) {
+								Log.d("report detail", "Check 62");
 								do {
-									String name = entryDetailCursor
-											.getString(entryDetailCursor
-													.getColumnIndex("Name"));
+									Log.d("report detail", "Check 63");
+									int categoryID = entryDetailCursor
+											.getInt(entryDetailCursor
+													.getColumnIndex("Category_Id"));
+									String name = "";
+									Cursor categoryCursor = SqlHelper.instance
+											.select("Category", "*", "Id="
+													+ categoryID);
+									Log.d("report detail", "Check 64");
+									if (categoryCursor != null) {
+										Log.d("report detail", "Check 65");
+										if (categoryCursor.moveToFirst()) {
+											Log.d("report detail", "Check 66");
+											do {
+												Log.d("report detail",
+														"Check 67");
+												name = categoryCursor
+														.getString(categoryCursor
+																.getColumnIndex("Name"));
+											} while (categoryCursor
+													.moveToNext());
+										}
+									}
 									double value = entryDetailCursor
 											.getDouble(entryDetailCursor
-													.getColumnIndex("Money"));
+													.getColumnIndex("Total"));
+									Log.d("report detail",
+											"Check 68");
 									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 											LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+									Log.d("report detail",
+											"Check 69");
+									reportDetail.addView(new ReportDetailProduct(this, name, value), params);
+									Log.d("report detail",
+											"Check 70");
 									
-									incomeDetail.addView(new ReportDetailProduct(this, name, value), params);
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
 					}
-				} while (entryCursor.moveToNext());
+				} while (entryIncomeCursor.moveToNext());
 			}
 		}
 	}
 
 	private void getExpense() {
-		double totalExpense = 0;
-		TextView totalExpenseTextView = (TextView) findViewById(R.id.report_detail_total_expense);
-		LinearLayout expenseDetail = (LinearLayout) findViewById(R.id.report_detail_expense_list_view);
-		expenseDetail.removeAllViews();
+		double totalExpense = 0;		
 
 		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
 				"Type=1");
@@ -184,7 +227,14 @@ public class ReportViewDetailActivity extends Activity {
 					}
 				} while (entryExpenseCursor.moveToNext());
 			}
-			totalExpenseTextView.setText(Converter.toString(totalExpense));
+			
+			if (totalExpense != 0)
+			{
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			
+				reportDetail.addView(new ReportDetailCategory(this, "Expense", totalExpense), params);
+			}
 
 			if (entryExpenseCursor.moveToFirst()) {
 				Log.d("report detail", "Check 57");
@@ -242,7 +292,7 @@ public class ReportViewDetailActivity extends Activity {
 											LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 									Log.d("report detail",
 											"Check 69");
-									expenseDetail.addView(new ReportDetailCategory(this, name, value, id, categoryID), params);
+									reportDetail.addView(new ReportDetailProduct(this, name, value), params);
 									Log.d("report detail",
 											"Check 70");
 									
@@ -258,9 +308,6 @@ public class ReportViewDetailActivity extends Activity {
 	private void getBorrowing()
 	{
 				double totalBorrowing = 0;
-				TextView totalBorrowingTextView = (TextView) findViewById(R.id.report_detail_total_borrowing);
-				LinearLayout borrowingDetail = (LinearLayout) findViewById(R.id.report_detail_borrowing_list_view);
-				borrowingDetail.removeAllViews();
 				
 				Cursor borrowingCursor = SqlHelper.instance.select("BorrowLend", "*",
 						"Debt_type like 'Borrowing'");
@@ -282,7 +329,13 @@ public class ReportViewDetailActivity extends Activity {
 						} while (borrowingCursor.moveToNext());
 					}
 
-					totalBorrowingTextView.setText(Converter.toString(totalBorrowing));
+					if (totalBorrowing != 0)
+					{
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+					
+						reportDetail.addView(new ReportDetailCategory(this, "Borrowing", totalBorrowing), params);
+					}
 
 					if (borrowingCursor.moveToFirst()) {
 						Log.d("report detail", "Check 57");
@@ -302,7 +355,7 @@ public class ReportViewDetailActivity extends Activity {
 								LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 										LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 								
-								borrowingDetail.addView(new ReportDetailProduct(this, name, value), params);
+								reportDetail.addView(new ReportDetailProduct(this, name, value), params);
 							}
 						} while (borrowingCursor.moveToNext());
 					}
@@ -312,9 +365,6 @@ public class ReportViewDetailActivity extends Activity {
 	private void getLending()
 	{
 		double totalLending = 0;
-		TextView totalLendingTextView = (TextView) findViewById(R.id.report_detail_total_lending);
-		LinearLayout lendingDetail = (LinearLayout) findViewById(R.id.report_detai_lending_list_view);
-		lendingDetail.removeAllViews();
 		
 		Cursor lendingCursor = SqlHelper.instance.select("BorrowLend", "*",
 				"Debt_type like 'Lending'");
@@ -335,7 +385,13 @@ public class ReportViewDetailActivity extends Activity {
 				} while (lendingCursor.moveToNext());
 			}
 
-			totalLendingTextView.setText(Converter.toString(totalLending));
+			if (totalLending != 0)
+			{
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			
+				reportDetail.addView(new ReportDetailCategory(this, "Lending", totalLending), params);
+			}
 
 			if (lendingCursor.moveToFirst()) {
 				Log.d("report detail", "Check 57");
@@ -356,7 +412,7 @@ public class ReportViewDetailActivity extends Activity {
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 						
-						lendingDetail.addView(new ReportDetailProduct(this, name, value), params);
+						reportDetail.addView(new ReportDetailProduct(this, name, value), params);
 					}
 				} while (lendingCursor.moveToNext());
 			}
@@ -366,6 +422,9 @@ public class ReportViewDetailActivity extends Activity {
 
 	private void bindData() {
 		// TODO Auto-generated method stub
+		reportDetail = (LinearLayout) findViewById(R.id.report_detail_list_view);
+		reportDetail.removeAllViews();
+		
 		getSchedule();
 		getIncome();
 		getExpense();
