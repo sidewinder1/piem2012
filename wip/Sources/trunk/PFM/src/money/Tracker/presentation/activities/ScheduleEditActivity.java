@@ -15,14 +15,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
@@ -111,7 +109,6 @@ public class ScheduleEditActivity extends Activity {
 		periodic.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				// TODO Auto-generated method stub
 				updateDisplay();
 			}
 		});
@@ -162,14 +159,6 @@ public class ScheduleEditActivity extends Activity {
 				}
 			}
 		}
-
-		Spinner currency = (Spinner) findViewById(R.id.currency_symbol);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.currency_symbol, R.layout.spinner_dropdown);
-
-		adapter.setDropDownViewResource(R.layout.spinner_dropdown);
-
-		currency.setAdapter(adapter);
 	}
 
 	int lastAddedItem;

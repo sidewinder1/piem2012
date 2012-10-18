@@ -16,7 +16,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="2dp"
             android:layout_weight="5"
-            android:background="@color/gray_background"
+            android:background="@color/blue_background"
             android:gravity="center_vertical" />
 
         <EditText

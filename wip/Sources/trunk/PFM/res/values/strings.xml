@@ -67,6 +67,7 @@
     </string-array>
 
     <color name="white_text_color">#F9FFFFFF</color>
-    <color name="gray_background">#432230FF</color>
+    <color name="blue_background">#432230FF</color>
+    <color name="light_gray_background">#33F8F8F8</color>
 
 </resources>
