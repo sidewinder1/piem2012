@@ -155,6 +155,89 @@ public class ReportViewActivity extends Activity {
 				}
 			}
 
+		} else
+		{
+			Cursor weekEntry = SqlHelper.instance
+					.select("Entry",
+							"DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
+							"1=1 order by strftime('%Y', Date) DESC, strftime('%W', Date) DESC");
+			if (weekEntry != null) {
+				displayNoReportDataText.setVisibility(View.GONE);
+				if (weekEntry.moveToFirst()) {
+					do {
+						String week = weekEntry.getString(weekEntry
+								.getColumnIndex("weekEntry"));
+						String year = weekEntry.getString(weekEntry
+								.getColumnIndex("yearEntry"));
+						Log.d("Check report view", weekEntry
+								.getString(weekEntry
+										.getColumnIndex("weekEntry")) + " - " + String.valueOf(week));
+						Log.d("Check report view", weekEntry
+								.getString(weekEntry
+										.getColumnIndex("yearEntry")) + " - " + String.valueOf(year));
+
+						Cursor entry = SqlHelper.instance
+								.select("Entry",
+										"*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
+										"");
+						Date startDate = null;
+						Date endDate = null;
+
+						if (entry != null) {
+							if (entry.moveToFirst()) {
+								do {
+									Date entryDate = Converter.toDate(entry
+											.getString(entry
+													.getColumnIndex("Date")));
+									String entryWeek = entry
+											.getString(entry
+													.getColumnIndex("weekEntry"));
+									String entryYear = entry
+											.getString(entry
+													.getColumnIndex("yearEntry"));
+									
+									Log.d("Check report view", "entryMonth - " + entryWeek);
+									Log.d("Check report view", "entryYear - " + entryYear);
+									if (entryWeek.equals(week)
+											&& entryYear.equals(year)) {
+										if (startDate == null) {
+											startDate = entryDate;
+										} else if (endDate == null) {
+											if (startDate.compareTo(entryDate) < 0) {
+												endDate = entryDate;
+											} else {
+												endDate = startDate;
+												startDate = entryDate;
+											}
+										} else {
+											if (startDate.compareTo(entryDate) < 0) {
+												endDate = entryDate;
+											} else {
+												endDate = startDate;
+												startDate = entryDate;
+											}
+										}
+									}
+								} while (entry.moveToNext());
+							}
+						}
+						
+						Log.d("Check report view", "Start date - " + Converter.toString(startDate, "dd/MM/yyyy"));
+						if(endDate != null)
+							Log.d("Check report view", "End date - " + Converter.toString(endDate, "dd/MM/yyyy"));
+						else
+						{
+							Log.d("Check report view", "End date - null");
+							endDate = startDate;
+						}
+						
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+						
+						reportListView.addView(new ReportViewItem(this, startDate, endDate, checkMonthly), params);
+					} while (weekEntry.moveToNext());
+				}
+			}
 		}
 
 		// sort();

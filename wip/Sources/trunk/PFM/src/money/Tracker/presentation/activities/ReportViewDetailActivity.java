@@ -24,6 +24,7 @@ public class ReportViewDetailActivity extends Activity {
 	private Date startDate;
 	private Date endDate;
 	private LinearLayout reportDetail;
+	private boolean checkMonthly;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,33 +37,43 @@ public class ReportViewDetailActivity extends Activity {
 
 	// get schedule budget
 
-	private void getSchedule() {
-		Log.d("report detail", "Check 1");
-		Bundle extras = getIntent().getExtras();
-		int scheduleID = extras.getInt("schedule_id");
-		Log.d("report detail", "Check 2 - " + scheduleID);
-		
+	private void getSchedule() {		
 		double budget = 0;
+		String whereCondition = "";
+		if(checkMonthly)
+			whereCondition = "Type = 1";
+		else
+			whereCondition = "Type = 0";
 		
-		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*",
-				"Id=" + scheduleID);
-		if (scheduleCursor != null) {
-			Log.d("report detail", "Check 3");
-			if (scheduleCursor.moveToFirst()) {
-				Log.d("report detail", "Check 4");
-				do {
-					Log.d("report detail", "Check 5");
-					startDate = Converter.toDate(scheduleCursor
-							.getString(scheduleCursor
-									.getColumnIndex("Start_date")));
-					endDate = Converter.toDate(scheduleCursor
-							.getString(scheduleCursor
-									.getColumnIndex("End_date")));
-
-					budget = scheduleCursor
-									.getDouble(scheduleCursor
-											.getColumnIndex("Budget"));
-				} while (scheduleCursor.moveToNext());
+		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*", whereCondition);
+		if(scheduleCursor != null)
+		{
+			if(scheduleCursor.moveToFirst())
+			{
+				do
+				{
+					if(checkMonthly)
+					{
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						Log.d("Check get Month", scheduleMonth);
+						String startDateMonth = Converter.toString(startDate, "MM");
+						Log.d("Check get Month", startDateMonth);
+						
+						if(scheduleMonth.equals(startDateMonth))
+							budget = scheduleCursor.getDouble(scheduleCursor.getColumnIndex("Budget"));
+					} else
+					{
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						Date scheduleEndDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("End_date")));						
+						
+						if((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) < 0) ||
+								(scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) == 0) ||
+								(scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) == 0) ||
+								(scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) < 0))
+							budget = scheduleCursor.getDouble(scheduleCursor.getColumnIndex("Budget"));
+					}
+				}while(scheduleCursor.moveToNext());
 			}
 		}
 
@@ -422,6 +433,14 @@ public class ReportViewDetailActivity extends Activity {
 
 	private void bindData() {
 		// TODO Auto-generated method stub
+		Log.d("report detail", "Check 1");
+		Bundle extras = getIntent().getExtras();
+		int scheduleID = extras.getInt("schedule_id");
+		checkMonthly = extras.getBoolean("checkMonthly");
+		startDate = Converter.toDate(extras.getString("start_date"));
+		endDate = Converter.toDate(extras.getString("end_date"));
+		Log.d("report detail", "Check 2 - " + scheduleID);
+		
 		reportDetail = (LinearLayout) findViewById(R.id.report_detail_list_view);
 		reportDetail.removeAllViews();
 		
