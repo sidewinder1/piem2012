@@ -1,13 +1,13 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
-import money.Tracker.repository.EntryRepository;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -29,7 +29,7 @@ public class EntryWeekView  extends LinearLayout {
 		super(context);
 	}
 
-	public EntryWeekView(Context context, String keyMonth) {
+	public EntryWeekView(Context context, String keyMonth, LinkedHashMap<String, ArrayList<Entry>> arrayData) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,8 +53,7 @@ public class EntryWeekView  extends LinearLayout {
 		// Set content to item title:
 		setName(keyMonth);
 
-		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository
-				.getInstance().orderedEntries.get(keyMonth);
+		ArrayList<Entry> entrySet = arrayData.get(keyMonth);
 		SparseArray<Double> valueOnCategory = new SparseArray<Double>();
 		if (entrySet != null) {
 			double total = 0;

@@ -1,6 +1,8 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
+
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.CategoryRepository;
@@ -51,6 +53,6 @@ public class EntryDetailCategoryView extends LinearLayout {
 		
 		category_count.setText(new StringBuilder(" (").append(count).append(")")
 				.toString());
-		this.category_total.setText(String.valueOf(total));
+		this.category_total.setText(Converter.toString(total));
 	}
 }
