@@ -64,7 +64,7 @@
                     android:editable="false"
                     android:focusable="false"
                     android:layout_weight="1"
-                    android:background="@color/gray_background"
+                    android:background="@color/blue_background"
                     android:inputType="date"
                     android:textColor="@color/white_text_color"
                     android:textSize="20dp" />

@@ -104,7 +104,7 @@
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="7dp"
                     android:layout_weight="1"
-                    android:background="@color/gray_background"
+                    android:background="@color/blue_background"
                     android:editable="false"
                     android:focusable="false"
                     android:inputType="date"
@@ -128,14 +128,7 @@
                     android:hint="@string/schedule_budget"
                     android:inputType="number"
                     android:textSize="16dp" />
-
-                <Spinner
-                    android:id="@+id/currency_symbol"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1.5" />
+                
             </LinearLayout>
             <LinearLayout android:layout_width="fill_parent"
             android:id="@+id/list"

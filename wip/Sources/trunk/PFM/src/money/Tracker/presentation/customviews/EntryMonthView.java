@@ -22,7 +22,12 @@ public class EntryMonthView extends LinearLayout {
 	private TextView cost;
 	private LinearLayout chart;
 	private LinearLayout entryDayList;
+	private TextView count_text;
 	private boolean switcher = true;
+
+	public EntryMonthView(Context context) {
+		super(context);
+	}
 
 	public EntryMonthView(Context context, String keyMonth) {
 		super(context);
@@ -32,14 +37,16 @@ public class EntryMonthView extends LinearLayout {
 
 		name = (TextView) findViewById(R.id.entry_view_month_item_name);
 		cost = (TextView) findViewById(R.id.entry_view_month_item_cost);
+		count_text = (TextView) findViewById(R.id.entry_view_month_count);
 		chart = (LinearLayout) findViewById(R.id.entry_view_month_stacked_bar_chart);
 		entryDayList = (LinearLayout) findViewById(R.id.entry_view_day_item_list);
 
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				entryDayList.setVisibility(switcher ? View.VISIBLE : View.GONE);
+				count_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0,
+						switcher ? R.drawable.opened : R.drawable.collapsed);
 				switcher = !switcher;
-				// collapsed.setBackgroundColor(getResources().getColor(switcher ? R.drawable.collapsed : R.drawable.opened));
 			}
 		});
 
@@ -51,10 +58,14 @@ public class EntryMonthView extends LinearLayout {
 		SparseArray<Double> valueOnCategory = new SparseArray<Double>();
 		if (entrySet != null) {
 			double total = 0;
+			// Set count.
+			count_text.setText(new StringBuilder("(").append(entrySet.size()).append(")"));
+
+			// Draw chart.
 			entryDayList.removeAllViews();
 			for (Entry entry : entrySet) {
 				total += entry.getTotal();
-				
+
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 
 				for (EntryDetail entryDetail : entry.getEntryDetails()) {
@@ -65,7 +76,8 @@ public class EntryMonthView extends LinearLayout {
 
 					double currentValue = valueOnCategory.get(entryDetail
 							.getCategory_id());
-					valueOnCategory.setValueAt(valueOnCategory.indexOfKey(entryDetail.getCategory_id()),
+					valueOnCategory.setValueAt(valueOnCategory
+							.indexOfKey(entryDetail.getCategory_id()),
 							currentValue + entryDetail.getMoney());
 				}
 			}
@@ -74,7 +86,7 @@ public class EntryMonthView extends LinearLayout {
 			setCost(Converter.toString(total));
 
 			getChart().removeAllViews();
-			
+
 			// Prepare and display stacked bar chart:
 			for (int i = 0; i < valueOnCategory.size(); i++) {
 				View stackItem = new View(getContext());
