@@ -6,8 +6,8 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:baselineAligned="false"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
 
         <LinearLayout
             android:layout_width="0dp"
@@ -36,7 +36,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_weight="2"
-                    android:gravity="right"
                     android:text="@string/dummy_data"
                     android:textColor="@color/white_text_color"
                     android:textSize="17dp" />
@@ -46,20 +45,19 @@
                 android:id="@+id/entry_view_week_stacked_bar_chart"
                 android:layout_width="fill_parent"
                 android:layout_height="17dp"
-                android:background="#7991"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="10dp"
+                android:background="#7991" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/entry_view_week_count"
             android:layout_width="20dip"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
-            android:layout_marginRight="10dp"
+            android:layout_gravity="bottom|right"
             android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal"
+            android:layout_marginRight="10dp"
             android:drawableBottom="@drawable/collapsed"
             android:text="@string/dummy_data"
             android:textColor="@color/white_text_color"

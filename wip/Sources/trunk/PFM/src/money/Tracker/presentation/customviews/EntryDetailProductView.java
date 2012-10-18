@@ -1,5 +1,6 @@
 package money.Tracker.presentation.customviews;
 
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.EntryDetail;
 import android.content.Context;
@@ -26,6 +27,6 @@ public class EntryDetailProductView  extends LinearLayout {
 
 		// Set value to category.
 		product_name.setText(data.getName());
-		this.product_total.setText(String.valueOf(data.getMoney()));
+		this.product_total.setText(Converter.toString(data.getMoney()));
 	}
 }

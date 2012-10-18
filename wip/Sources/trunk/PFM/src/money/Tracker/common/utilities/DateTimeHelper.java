@@ -20,8 +20,10 @@ public class DateTimeHelper {
 		return new Date(year - 1900, month, day);
 	}
 
-	public static int getDayOfWeekInMonth(Date date)
+	public static int getWeekInMonth(Date date)
 	{
+		calendar = Calendar.getInstance(TimeZone.getDefault(),
+				Locale.getDefault());
 		calendar.setTime(date);
 		return calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
 	}
