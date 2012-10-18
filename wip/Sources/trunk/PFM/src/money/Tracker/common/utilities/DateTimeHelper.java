@@ -20,6 +20,12 @@ public class DateTimeHelper {
 		return new Date(year - 1900, month, day);
 	}
 
+	public static int getDayOfWeekInMonth(Date date)
+	{
+		calendar.setTime(date);
+		return calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+	}
+	
 	public static int getDayOfMonth(int year, int month) {
 		calendar = new GregorianCalendar(year, month,
 				Calendar.DAY_OF_MONTH);

@@ -1,11 +1,8 @@
 package money.Tracker.repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-
 import android.database.Cursor;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.model.Entry;
@@ -108,7 +105,7 @@ public class EntryRepository implements IDataRepository {
 	}
 
 	public void sort() {
-		if (orderedEntries != null) {
+		if (orderedEntries == null) {
 			return;
 		}
 

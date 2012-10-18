@@ -63,7 +63,7 @@ public class EntryDetailRepository {
 	}
 
 	public void sort() {
-		if (entries != null) {
+		if (entries == null) {
 			return;
 		}
 		

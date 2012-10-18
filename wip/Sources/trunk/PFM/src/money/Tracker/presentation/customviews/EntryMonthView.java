@@ -39,7 +39,7 @@ public class EntryMonthView extends LinearLayout {
 		cost = (TextView) findViewById(R.id.entry_view_month_item_cost);
 		count_text = (TextView) findViewById(R.id.entry_view_month_count);
 		chart = (LinearLayout) findViewById(R.id.entry_view_month_stacked_bar_chart);
-		entryDayList = (LinearLayout) findViewById(R.id.entry_view_day_item_list);
+		entryDayList = (LinearLayout) findViewById(R.id.entry_view_week_item_list);
 
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -65,7 +65,6 @@ public class EntryMonthView extends LinearLayout {
 			entryDayList.removeAllViews();
 			for (Entry entry : entrySet) {
 				total += entry.getTotal();
-
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 
 				for (EntryDetail entryDetail : entry.getEntryDetails()) {
