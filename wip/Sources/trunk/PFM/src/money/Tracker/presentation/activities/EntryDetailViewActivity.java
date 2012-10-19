@@ -92,6 +92,8 @@ public class EntryDetailViewActivity extends Activity {
 
 		if (entry.getType() == 0)
 		{
+			remain_budget_title.setVisibility(View.GONE);
+			remain_budget_value.setVisibility(View.GONE);
 			return;
 		}
 		
