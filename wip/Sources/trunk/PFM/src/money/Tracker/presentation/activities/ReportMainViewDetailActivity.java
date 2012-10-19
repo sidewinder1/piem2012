@@ -30,42 +30,35 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 		
 		Bundle extras = getIntent().getExtras();
-		int scheduleID = extras.getInt("schedule_id");
+		boolean checkMonthly = extras.getBoolean("checkMonthly");
+		String startDate = extras.getString("start_date");
+		String endDate = extras.getString("end_date");
 		
 		TextView reportViewDetailTitle = (TextView) findViewById(R.id.report_main_view_detail_title);
-		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*", "Id=" + scheduleID);
-		Log.d("Main View Detail", "Check 1 - " + scheduleID);
-		if (scheduleCursor != null)
-		{
-			if(scheduleCursor.moveToFirst())
-			{
-				do
-				{
-					int scheduleType = scheduleCursor.getInt(scheduleCursor.getColumnIndex("Type"));
-					Date startDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date"))); 
-					Date endDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("End_date")));		
-					if (scheduleType == 1) {
-						reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy", endDate));
-					} else {
-						reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM", startDate)).append("-").append(DateFormat.format("dd/MM/yyyy", endDate)).toString());
-					}
-				}while(scheduleCursor.moveToNext());
-			}
+		if (checkMonthly) {
+			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy", Converter.toDate(startDate)));
+		} else {
+			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy", Converter.toDate(endDate))).toString());
 		}
-		Log.d("Main View Detail", "Check 2");
+		
 		// Create tab and intent for view detail information
 		Intent reportViewDetailIntent = new Intent(this, ReportViewDetailActivity.class);
 		Log.d("Main View Detail", "Check 3");
-		reportViewDetailIntent.putExtra("schedule_id", scheduleID);
+		reportViewDetailIntent.putExtra("checkMonthly", checkMonthly);
+		reportViewDetailIntent.putExtra("start_date", startDate);
+		reportViewDetailIntent.putExtra("end_date", endDate);
+		Log.d("Check date", startDate);
 		Log.d("Main View Detail", "Check 4");
 		setupTab(reportViewDetailIntent, "Chi tiết", mTabHost);
 		
 		// Create tab and intent for chart
-		Chart pie = new Chart(scheduleID);
-		Log.d("Chart", String.valueOf(scheduleID));
-		Intent pieIntent = pie.getIntent(this);
+		Chart pie = new Chart(Converter.toDate(startDate), Converter.toDate(endDate));
+		//Log.d("Chart", String.valueOf(scheduleID));
+		Intent pieIntent = pie.getPieIntent(this);
+		//Intent barIntent = pie.getBarIntent(this);
 		Log.d("Chart", "Check 11");
 		setupTab(pieIntent, "Biểu đồ", mTabHost);
+		//setupTab(barIntent, "Biểu đồ", mTabHost);
 		//startActivity(pieIntent);
 		Log.d("Chart", "Check 12");
     }

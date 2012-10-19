@@ -71,4 +71,6 @@
     <color name="blue_background">#432230FF</color>
     <color name="light_gray_background">#33F8F8F8</color>
 
+    <string name="title_activity_report_chart">ReportChartActivity</string>
+
 </resources>

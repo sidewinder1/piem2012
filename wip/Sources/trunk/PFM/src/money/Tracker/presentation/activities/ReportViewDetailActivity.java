@@ -23,6 +23,8 @@ import android.widget.LinearLayout.LayoutParams;
 public class ReportViewDetailActivity extends Activity {
 	private Date startDate;
 	private Date endDate;
+	private String _startDate;
+	private String _endDate;
 	private LinearLayout reportDetail;
 	private boolean checkMonthly;
 
@@ -327,7 +329,11 @@ public class ReportViewDetailActivity extends Activity {
 						do {
 							Date entryDate = Converter.toDate(borrowingCursor
 									.getString(borrowingCursor
-											.getColumnIndex("Start_date")));
+											.getColumnIndex("Start_date")), "dd/MM/yyyy");
+							Date startDate1 = Converter.toDate(_startDate, "dd/MM/yyyy");
+							Date endDate1 = Converter.toDate(_endDate, "dd/MM/yyyy");
+							Log.d("Check date", startDate1.toString());
+							Log.d("Check date", endDate1.toString());
 							if (entryDate.compareTo(startDate) > 0
 									&& entryDate.compareTo(endDate) < 0
 									|| entryDate.compareTo(startDate) == 0
@@ -437,8 +443,10 @@ public class ReportViewDetailActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		int scheduleID = extras.getInt("schedule_id");
 		checkMonthly = extras.getBoolean("checkMonthly");
-		startDate = Converter.toDate(extras.getString("start_date"));
-		endDate = Converter.toDate(extras.getString("end_date"));
+		_startDate = extras.getString("start_date");
+		startDate = Converter.toDate(_startDate);
+		_endDate = extras.getString("end_date");
+		endDate = Converter.toDate(_endDate);
 		Log.d("report detail", "Check 2 - " + scheduleID);
 		
 		reportDetail = (LinearLayout) findViewById(R.id.report_detail_list_view);
