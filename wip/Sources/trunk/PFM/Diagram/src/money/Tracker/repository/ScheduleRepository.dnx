@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
+<umlnotation:UMLDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmlns:umlnotation="http://www.ibm.com/xtools/1.5.3/Umlnotation" xmi:id="_xDILsBoxEeKuw76gIKt9UA" type="Class" name="ScheduleRepository.dnx">
+  <eAnnotations xmi:id="_xDIywBoxEeKuw76gIKt9UA" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+    <details xmi:id="_xDIywRoxEeKuw76gIKt9UA" key="com.ibm.xtools.activities.javaVisualizerActivity" value="1"/>
+  </eAnnotations>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_x3PwQBoxEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_x3wGkBoxEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_x3wGkRoxEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_x3wtoBoxEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_x3x7wBoxEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_x3yi0BoxEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_x30_EBoxEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_x3-wEBoxEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_x4BzYBoxEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=ScheduleRepository%5Bjcu%5Ename=ScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_x3PwQRoxEeKuw76gIKt9UA" x="2797" y="1268"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_2j7h0BoxEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_2j8I4BoxEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_2j8v8BoxEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_2j8v8RoxEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_2j9XABoxEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_2j9XARoxEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_2j9XAhoxEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_2j_MMBoxEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_2j_MMRoxEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=EntryRepository%5Bjcu%5Ename=EntryRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2j7h0RoxEeKuw76gIKt9UA" x="22507" y="16484"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_3idmoBoxEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3ie0wBoxEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_3ie0wRoxEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_3ifb0BoxEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_3igC4BoxEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_3igC4RoxEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_3igp8BoxEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_3ihRABoxEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_3ihRARoxEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=EntryDetailRepository%5Bjcu%5Ename=EntryDetailRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3ieNsBoxEeKuw76gIKt9UA" x="28213" y="8876"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_5kRtYBoxEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_5kSUcBoxEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_5kSUcRoxEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_5kS7gBoxEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_5kS7gRoxEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_5kTikBoxEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_5kUJoBoxEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_5kUJoRoxEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_5kUwsBoxEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <children xmi:type="notation:SemanticListCompartment" xmi:id="_5knEkBoxEeKuw76gIKt9UA" type="TemplateCompartment" collapsed="true">
+      <element xmi:type="uml:RedefinableTemplateSignature" href="mmi:///#jtsig%5Ename=DetailScheduleRepository%5Bjsrctype%5Ename=DetailScheduleRepository%5Bjcu%5Ename=DetailScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.RedefinableTemplateSignature"/>
+    </children>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=DetailScheduleRepository%5Bjcu%5Ename=DetailScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5kRtYRoxEeKuw76gIKt9UA" x="-11095" y="4121"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_G5JcwBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_G5Kq4BoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_G5Kq4RoyEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_G5Kq4hoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_G5Kq4xoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_G5Kq5BoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_G5LR8BoyEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_G5LR8RoyEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_G5LR8hoyEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=DataManager%5Bjcu%5Ename=DataManager.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_G5JcwRoyEeKuw76gIKt9UA" x="10144" y="4121"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_OpyHgBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_OpyukBoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_OpyukRoyEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_OpzVoBoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_OpzVoRoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_OpzVohoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_OpzVoxoyEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_Opz8sBoyEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_Opz8sRoyEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=CategoryRepository%5Bjcu%5Ename=CategoryRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OpyHgRoyEeKuw76gIKt9UA" x="28530"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_TeIAQBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_TeJOYBoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_TeJOYRoyEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_TeJOYhoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_TeJOYxoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_TeJ1cBoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_TeJ1cRoyEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_TeKcgBoyEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_TeKcgRoyEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=Category%5Bjcu%5Ename=Category.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TeIAQRoyEeKuw76gIKt9UA" x="22612" y="-158"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_VC0tMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_VC1UQBoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_VC1UQRoyEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_VC1UQhoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_VC1UQxoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_VC17UBoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_VC17URoyEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_VC17UhoyEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_VC17UxoyEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=DetailSchedule%5Bjcu%5Ename=DetailSchedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VC0tMRoyEeKuw76gIKt9UA" x="-2536" y="4438"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_WFWhMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_WFXIQBoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_WFXIQRoyEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WFXvUBoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WFXvURoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WFXvUhoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WFYWYBoyEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WFY9cBoyEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WFY9cRoyEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=Entry%5Bjcu%5Ename=Entry.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WFWhMRoyEeKuw76gIKt9UA" x="16167" y="13631"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_Wy0rMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Wy1SQBoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_Wy1SQRoyEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_Wy15UBoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_Wy15URoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_Wy15UhoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_Wy15UxoyEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_Wy2gYBoyEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_Wy2gYRoyEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=EntryDetail%5Bjcu%5Ename=EntryDetail.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Wy0rMRoyEeKuw76gIKt9UA" x="13948" y="951"/>
+  </children>
+  <children xmi:type="umlnotation:UMLClassifierShape" xmi:id="_YSl00BoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label" useClassifierShape="true">
+    <children xmi:type="notation:DecorationNode" xmi:id="_YS9BMBoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_YS9BMRoyEeKuw76gIKt9UA" width="530" height="530"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_YS9BMhoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_YS9BMxoyEeKuw76gIKt9UA" type="Kind"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_YS9BNBoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_YS9BNRoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:SemanticListCompartment" xmi:id="_YS9oQBoyEeKuw76gIKt9UA" type="AttributeCompartment"/>
+    <children xmi:type="notation:SemanticListCompartment" xmi:id="_YS9oQRoyEeKuw76gIKt9UA" type="OperationCompartment"/>
+    <children xmi:type="notation:SemanticListCompartment" xmi:id="_YS-PUBoyEeKuw76gIKt9UA" visible="false" type="SignalCompartment"/>
+    <element xmi:type="uml:Interface" href="mmi:///#jsrctype%5Ename=IModelBase%5Bjcu%5Ename=IModelBase.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Interface"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YSl00RoyEeKuw76gIKt9UA" x="9827" y="13948"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_ZL73oBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+    <children xmi:type="notation:DecorationNode" xmi:id="_ZL8esBoyEeKuw76gIKt9UA" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_ZL8esRoyEeKuw76gIKt9UA" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZL8eshoyEeKuw76gIKt9UA" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZL8esxoyEeKuw76gIKt9UA" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZL8etBoyEeKuw76gIKt9UA" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_ZL9FwBoyEeKuw76gIKt9UA" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_ZL9FwRoyEeKuw76gIKt9UA" type="ANNOTATED_ATTRIBUTE_COMPARTMENT">
+      <layoutConstraint xmi:type="notation:Ratio" xmi:id="_d1VrsBoyEeKuw76gIKt9UA" value="0.6786825726141079"/>
+    </children>
+    <children xmi:type="notation:ListCompartment" xmi:id="_ZL9FwhoyEeKuw76gIKt9UA" type="ANNOTATED_OPERATION_COMPARTMENT">
+      <layoutConstraint xmi:type="notation:Ratio" xmi:id="_d1WSwBoyEeKuw76gIKt9UA" value="0.32131742738589214"/>
+    </children>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=Schedule%5Bjcu%5Ename=Schedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZL73oRoyEeKuw76gIKt9UA" x="3487" y="12046"/>
+  </children>
+  <element xsi:nil="true"/>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_3l58MBoxEeKuw76gIKt9UA" source="_2j7h0BoxEeKuw76gIKt9UA" target="_3idmoBoxEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3l7xYBoxEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_3l8YcBoxEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_3l8YchoxEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_3l8YcRoxEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3l7xYRoxEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=EntryRepository%5Bjcu%5Ename=EntryRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=EntryDetailRepository%5Bjcu%5Ename=EntryDetailRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_3l58MRoxEeKuw76gIKt9UA" points="[78, -269, -2189, 7577]$[5116, -269, 2849, 7577]$[5116, -5918, 2849, 1928]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3tULwBoxEeKuw76gIKt9UA" id="(0.9837582236842105,0.4999999999999999)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3tZEQBoxEeKuw76gIKt9UA" id="(-3.2148982035098207E-16,0.5001262626262625)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_G8MJsBoyEeKuw76gIKt9UA" source="_G5JcwBoyEeKuw76gIKt9UA" target="_x3PwQBoxEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_G8Ol8BoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_G8PNABoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_G8QbIBoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_G8P0EBoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_G8Ol8RoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=DataManager%5Bjcu%5Ename=DataManager.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=ScheduleRepository%5Bjcu%5Ename=ScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_G8MJsRoyEeKuw76gIKt9UA" points="[-1348, -25, 7157, 32]$[-2956, -25, 5549, 32]$[-2956, -54, 5549, 3]$[-5834, -54, 2671, 3]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_G__EkBoyEeKuw76gIKt9UA" id="(0.3923186344238976,0.002424977265838133)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_G__roBoyEeKuw76gIKt9UA" id="(0.5,0.9651162790697672)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_ThW6cBoyEeKuw76gIKt9UA" source="_OpyHgBoyEeKuw76gIKt9UA" target="_TeIAQBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_ThZWsBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ThZ9wBoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_Thak0RoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_Thak0BoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ThZWsRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=CategoryRepository%5Bjcu%5Ename=CategoryRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=Category%5Bjcu%5Ename=Category.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ThW6cRoyEeKuw76gIKt9UA" points="[39, 0, -16892, -104]$[39, 156, -16892, 52]$[16970, 156, 39, 52]$[16970, 208, 39, 104]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ToQMoBoyEeKuw76gIKt9UA" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ToQzsBoyEeKuw76gIKt9UA" id="(0.5,0.9820819112627985)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_VGN_cBoyEeKuw76gIKt9UA" source="_x3PwQBoxEeKuw76gIKt9UA" target="_VC0tMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_VGN_choyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_VGOmgBoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_VGPNkRoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_VGPNkBoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VGN_cxoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=ScheduleRepository%5Bjcu%5Ename=ScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=DetailSchedule%5Bjcu%5Ename=DetailSchedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_VGN_cRoyEeKuw76gIKt9UA" points="[-2028, 102, 5719, -8450]$[-2028, 5401, 5719, -3151]$[-5333, 5401, 2414, -3151]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_VMip4BoyEeKuw76gIKt9UA" id="(0.5,0.9651162790697672)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_VMip4RoyEeKuw76gIKt9UA" id="(0.33333350929053956,0.9864690721649482)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_VGP0oBoyEeKuw76gIKt9UA" source="_5kRtYBoxEeKuw76gIKt9UA" target="_VC0tMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_VGQbsBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_VGQbshoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_VGRCwBoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_VGQbsxoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VGQbsRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=DetailScheduleRepository%5Bjcu%5Ename=DetailScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=DetailSchedule%5Bjcu%5Ename=DetailSchedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_VGP0oRoyEeKuw76gIKt9UA" points="[363, -2803, -1837, 2593]$[363, -5292, -1837, 104]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_VMj4ABoyEeKuw76gIKt9UA" id="(0.5,0.9651162790697675)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_VMj4ARoyEeKuw76gIKt9UA" id="(0.6666670185810801,0.9864690721649482)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_WJEjkBoyEeKuw76gIKt9UA" source="_2j7h0BoxEeKuw76gIKt9UA" target="_WFWhMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_WJGYwBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_WJHm4BoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_WJIN8RoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_WJIN8BoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WJGYwRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=EntryRepository%5Bjcu%5Ename=EntryRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=Entry%5Bjcu%5Ename=Entry.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_WJEjkRoyEeKuw76gIKt9UA" points="[-2846, 1733, 5785, -3295]$[-6807, 1733, 1824, -3295]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_WQBgIBoyEeKuw76gIKt9UA" id="(0.594983552631579,0.03359639233370913)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_WQCHMBoyEeKuw76gIKt9UA" id="(0.5,0.9872495446265938)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_W2dOABoyEeKuw76gIKt9UA" source="_3idmoBoxEeKuw76gIKt9UA" target="_Wy0rMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_W2d1EBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_W2ecIBoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_W2fDMBoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_W2ecIRoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_W2d1ERoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=EntryDetailRepository%5Bjcu%5Ename=EntryDetailRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=EntryDetail%5Bjcu%5Ename=EntryDetail.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_W2dOARoyEeKuw76gIKt9UA" points="[-2789, -1886, 12442, 815]$[-11370, -1886, 3861, 815]$[-11370, -3791, 3861, -1090]$[-13407, -3791, 1824, -1090]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W9QZkBoyEeKuw76gIKt9UA" id="(0.5,0.9734848484848485)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W9RAoBoyEeKuw76gIKt9UA" id="(0.5,0.9885683179096353)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_W2fqQBoyEeKuw76gIKt9UA" source="_WFWhMBoyEeKuw76gIKt9UA" target="_Wy0rMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_W2g4YBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_W2hfcBoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_W2hfchoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_W2hfcRoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_W2g4YRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=Entry%5Bjcu%5Ename=Entry.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=EntryDetail%5Bjcu%5Ename=EntryDetail.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_W2fqQRoyEeKuw76gIKt9UA" points="[-2644, -4065, 3144, 8140]$[-2644, -7665, 3144, 4540]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W9RnsBoyEeKuw76gIKt9UA" id="(0.9787976382179281,0.4999999999999999)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W9RnsRoyEeKuw76gIKt9UA" id="(0.0,0.4999999999999999)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_YaU0gBoyEeKuw76gIKt9UA" source="_x3PwQBoxEeKuw76gIKt9UA" target="_YSl00BoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_YaVbkBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaVbkhoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaVblBoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaVbkxoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YaVbkRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=ScheduleRepository%5Bjcu%5Ename=ScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=IModelBase%5Bjcu%5Ename=IModelBase.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_YaU0gRoyEeKuw76gIKt9UA" points="[1147, 102, -4846, -11574]$[1147, 5976, -4846, -5700]$[5275, 5976, -718, -5700]$[5275, 9877, -718, -1799]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeKysBoyEeKuw76gIKt9UA" id="(0.5,0.9651162790697672)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeKysRoyEeKuw76gIKt9UA" id="(0.5999983270877944,0.9476047904191617)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_YaVblRoyEeKuw76gIKt9UA" source="_2j7h0BoxEeKuw76gIKt9UA" target="_YSl00BoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_YaWCoBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaWCohoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaWCpBoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaWCoxoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YaWCoRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=EntryRepository%5Bjcu%5Ename=EntryRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=IModelBase%5Bjcu%5Ename=IModelBase.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_YaVblhoyEeKuw76gIKt9UA" points="[40, 103, -36593, -1695]$[40, 4282, -36593, 2484]$[36664, 4282, 31, 2484]$[36664, 1898, 31, 100]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeMA0BoyEeKuw76gIKt9UA" id="(0.5,0.9763246899661782)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeMA0RoyEeKuw76gIKt9UA" id="(0.3999988847251963,0.9476047904191617)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_YaWpsBoyEeKuw76gIKt9UA" source="_G5JcwBoyEeKuw76gIKt9UA" target="_YSl00BoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_YaWpshoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaXQwBoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaXQwhoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaXQwRoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YaWpsxoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=DataManager%5Bjcu%5Ename=DataManager.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=IModelBase%5Bjcu%5Ename=IModelBase.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_YaWpsRoyEeKuw76gIKt9UA" points="[-485, 102, -212, -6853]$[-485, 6735, -212, -220]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeMn4BoyEeKuw76gIKt9UA" id="(0.5,0.9681721733858739)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeNO8BoyEeKuw76gIKt9UA" id="(0.6473947180585297,0.11626746506986028)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_YaXQwxoyEeKuw76gIKt9UA" source="_WFWhMBoyEeKuw76gIKt9UA" target="_YSl00BoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_YaX30BoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaX30hoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaYe4RoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaYe4BoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YaX30RoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=Entry%5Bjcu%5Ename=Entry.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=IModelBase%5Bjcu%5Ename=IModelBase.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_YaXQxBoyEeKuw76gIKt9UA" points="[-1823, -6470, 5796, -560]$[-5440, -6470, 2179, -560]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeN2ABoyEeKuw76gIKt9UA" id="(0.5,0.9872495446265938)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeN2ARoyEeKuw76gIKt9UA" id="(0.19999944236259554,0.9476047904191617)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_YaYe4hoyEeKuw76gIKt9UA" source="_Wy0rMBoyEeKuw76gIKt9UA" target="_YSl00BoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_YaZF8RoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaZtABoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaZtAhoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_YaZtARoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YaZF8hoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=EntryDetail%5Bjcu%5Ename=EntryDetail.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=IModelBase%5Bjcu%5Ename=IModelBase.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_YaZF8BoyEeKuw76gIKt9UA" points="[78, 53, -2200, 53]$[2278, 53, 0, 53]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YeOdEBoyEeKuw76gIKt9UA" id="(0.9787976382179281,0.5000544365813826)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YePEIBoyEeKuw76gIKt9UA" id="(0.892933618843683,0.06337325349301397)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_ZPNOEBoyEeKuw76gIKt9UA" source="_x3PwQBoxEeKuw76gIKt9UA" target="_ZL73oBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_ZPOcMBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPOcMhoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPPDQBoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPOcMxoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZPOcMRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=ScheduleRepository%5Bjcu%5Ename=ScheduleRepository.java%5Bjpack%5Ename=money.Tracker.repository%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=Schedule%5Bjcu%5Ename=Schedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZPNOERoyEeKuw76gIKt9UA" points="[-141, 102, -468, -12575]$[-141, 7975, -468, -4702]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZWBnwBoyEeKuw76gIKt9UA" id="(0.5,0.9651162790697672)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZWCO0BoyEeKuw76gIKt9UA" id="(0.6666659312341126,0.9786150712830958)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_ZPQ4cBoyEeKuw76gIKt9UA" source="_ZL73oBoyEeKuw76gIKt9UA" target="_VC0tMBoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_ZPSGkBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPSGkhoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPStoRoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPStoBoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZPSGkRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=Schedule%5Bjcu%5Ename=Schedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=DetailSchedule%5Bjcu%5Ename=DetailSchedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZPQ4cRoyEeKuw76gIKt9UA" points="[-1153, -2196, 4213, 2563]$[-5476, -2196, -110, 2563]$[-5476, -4655, -110, 104]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZWC14BoyEeKuw76gIKt9UA" id="(0.3333329656170553,0.9786150712830958)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZWC14RoyEeKuw76gIKt9UA" id="(0.499999999999999,0.9864690721649482)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_ZPTUsBoyEeKuw76gIKt9UA" source="_ZL73oBoyEeKuw76gIKt9UA" target="_YSl00BoyEeKuw76gIKt9UA" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_ZPT7wBoyEeKuw76gIKt9UA" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPT7whoyEeKuw76gIKt9UA" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPUi0RoyEeKuw76gIKt9UA" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZPUi0BoyEeKuw76gIKt9UA" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZPT7wRoyEeKuw76gIKt9UA" y="-186"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=Schedule%5Bjcu%5Ename=Schedule.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=IModelBase%5Bjcu%5Ename=IModelBase.java%5Bjpack%5Ename=money.Tracker.presentation.model%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=PFM%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZPTUsRoyEeKuw76gIKt9UA" points="[3462, -211, -8694, 925]$[9510, -211, -2646, 925]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZWDc8BoyEeKuw76gIKt9UA" id="(0.0,0.49999999999999983)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZWEEABoyEeKuw76gIKt9UA" id="(0.9718058529621699,0.49999999999999956)"/>
+  </edges>
+</umlnotation:UMLDiagram>

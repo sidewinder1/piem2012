@@ -25,7 +25,7 @@ public class Alert {
 		return instance;
 	}
 
-	public static void notify(Context context, Class<?> activity, String title, String message)
+	public void notify(Context context, Class<?> activity, String title, String message)
 	{
 		NotificationCompat.Builder mBuilder =
 		        new NotificationCompat.Builder(context)
