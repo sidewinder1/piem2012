@@ -71,7 +71,8 @@ public class ReportViewActivity extends Activity {
 		checkMonthly = extras.getBoolean("Monthly");
 		displayNoReportDataText = (TextView) findViewById(R.id.no_report_data);
 		reportListView = (LinearLayout) findViewById(R.id.report_view_list_view);
-
+		reportListView.removeAllViews();
+		
 		if (checkMonthly) {
 			Cursor monthlyEntry = SqlHelper.instance
 					.select("Entry",
