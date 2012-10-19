@@ -90,6 +90,11 @@ public class EntryDetailViewActivity extends Activity {
 			total_entry += entryItem.getTotal();
 		}
 
+		if (entry.getType() == 0)
+		{
+			return;
+		}
+		
 		// Get total budget.
 		Cursor totalBudgetCursor = SqlHelper.instance.select(
 				"Schedule",
