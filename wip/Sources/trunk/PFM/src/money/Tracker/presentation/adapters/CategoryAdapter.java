@@ -5,44 +5,47 @@ import java.util.ArrayList;
 import money.Tracker.presentation.customviews.CategoryCustomView;
 import money.Tracker.presentation.model.Category;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 public class CategoryAdapter extends ArrayAdapter<Category> {
-	public ArrayList<Category> categories;
+	public ArrayList<Category> mCategories;
 
 	public CategoryAdapter(Context context, int textViewResourceId,
 			ArrayList<Category> objects) {
 		super(context, textViewResourceId, objects);
 		// TODO Auto-generated constructor stub
-		categories = objects;
+		mCategories = objects;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		return initView(position, convertView);
+		return initView(position, convertView, false);
 	}
 	
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		return initView(position, convertView);
+		return initView(position, convertView, true);
 	}
 
-	private View initView(int position, View convertView) {
+	private View initView(int position, View convertView, boolean isDropDownView) {
 		CategoryCustomView categoryView = (CategoryCustomView) convertView;
 		if (categoryView == null) {
 			categoryView = new CategoryCustomView(getContext());
 		}
 
-		Category category = categories.get(position);
+		Category category = mCategories.get(position);
 
 		if (category != null) {
-			categoryView.item_content.setText(category.getName());
-			categoryView.item_id.setText(String.valueOf(category.getId()));
-			categoryView.setBackgroundColor(Color.parseColor(category
-					.getUser_color()));
+			categoryView.setName(category.getName());
+			categoryView.setId(String.valueOf(category.getId()));
+			categoryView.setBackgroundColor(category
+					.getUser_color());
+			if (isDropDownView)
+			{
+				categoryView.setBlackColor();
+			}
 		}
 
 		return categoryView;

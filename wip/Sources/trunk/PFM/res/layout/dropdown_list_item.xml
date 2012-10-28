@@ -4,9 +4,24 @@
     android:layout_height="30dp"
     android:orientation="horizontal" >
 
+    <LinearLayout
+        android:background="@color/white_text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp" >
+
+        <LinearLayout
+            android:id="@+id/dropdown_item_color"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_margin="1dp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/item_content"
         android:layout_width="fill_parent"
+        android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
         android:textColor="@color/white_text_color" />
 
