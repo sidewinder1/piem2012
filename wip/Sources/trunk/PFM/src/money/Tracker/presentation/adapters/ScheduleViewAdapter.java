@@ -40,35 +40,39 @@ public class ScheduleViewAdapter extends ArrayAdapter<IModelBase> {
 		if (schedule != null) {
 			// Set content to item title:
 			final TextView item_title = ((ScheduleViewItem) scheduleItemView).schedule_item_title;
-			if (schedule.type == 1)
-			{
-				item_title.setText(DateFormat.format("MMMM yyyy", schedule.end_date));
+			if (schedule.type == 1) {
+				item_title.setText(DateFormat.format("MMMM yyyy",
+						schedule.end_date));
+			} else {
+				item_title.setText(new StringBuilder(DateFormat.format("dd/MM",
+						schedule.start_date))
+						.append("-")
+						.append(DateFormat.format("dd/MM/yyyy",
+								schedule.end_date)).toString());
 			}
-			else
-			{
-				item_title.setText(new StringBuilder(DateFormat.format("dd/MM", schedule.start_date)).append("-")
-						.append(DateFormat.format("dd/MM/yyyy", schedule.end_date)).toString());
-			}
-			
+
 			// Set content to budget
 			final TextView budget = ((ScheduleViewItem) scheduleItemView).total_budget;
 			budget.setText(Converter.toString(schedule.budget));
-			
+
 			scheduleItemView.stacked_bar_chart.removeAllViews();
-			
+
 			// Prepare and display stacked bar chart:
-			for (int i=0; i <schedule.details.size(); i++)
-			{
+			for (int i = 0; i < schedule.details.size(); i++) {
 				View stackItem = new View(getContext());
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					    0, LayoutParams.FILL_PARENT, Float.parseFloat(schedule.details.get(i).getBudget() + ""));
-				Cursor categoryCursor = SqlHelper.instance.select("Category", "Id, User_Color",  "Id = " + schedule.details.get(i).getCategory());
-				
-				if (categoryCursor!=null && categoryCursor.moveToFirst())
-				{
-					stackItem.setBackgroundColor(Color.parseColor(categoryCursor.getString(1)));	
+						0, LayoutParams.FILL_PARENT,
+						Float.parseFloat(schedule.details.get(i).getBudget()
+								+ ""));
+				Cursor categoryCursor = SqlHelper.instance.select("Category",
+						"Id, User_Color", "Id = "
+								+ schedule.details.get(i).getCategory());
+
+				if (categoryCursor != null && categoryCursor.moveToFirst()) {
+					stackItem.setBackgroundColor(Color
+							.parseColor(categoryCursor.getString(1)));
 				}
-				
+
 				scheduleItemView.stacked_bar_chart.addView(stackItem, params);
 			}
 		}

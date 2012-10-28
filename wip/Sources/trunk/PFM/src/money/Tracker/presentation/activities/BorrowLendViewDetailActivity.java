@@ -35,16 +35,15 @@ public class BorrowLendViewDetailActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		Log.d("View Detail", "Check 00");
 		bindData();
-			}
-	
+	}
+
 	@Override
 	protected void onRestart() {
 		bindData();
 		super.onRestart();
 	}
-	
-	private void bindData()
-	{
+
+	private void bindData() {
 		setContentView(R.layout.activity_borrow_lend_view_detail);
 		TextView personName = (TextView) findViewById(R.id.borrow_lend_detail_view_name);
 		TextView personPhone = (TextView) findViewById(R.id.borrow_lend_detail_view_phone);
@@ -89,7 +88,8 @@ public class BorrowLendViewDetailActivity extends Activity {
 
 		totalMoneyTextView.setText(Converter.toString(totalMoney));
 		Log.d("View detail", String.valueOf(totalMoney));
-		totalInterestTextView.setText(Converter.toString(totalInterestCaculate));
+		totalInterestTextView
+				.setText(Converter.toString(totalInterestCaculate));
 		Log.d("View detail", "" + totalInterestCaculate);
 		if (leftDate != 0)
 			leftDayTextView.setText("You only have " + leftDate + " day");

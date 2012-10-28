@@ -23,7 +23,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		return initView(position, convertView, false);
 	}
-	
+
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		return initView(position, convertView, true);
@@ -40,10 +40,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 		if (category != null) {
 			categoryView.setName(category.getName());
 			categoryView.setId(String.valueOf(category.getId()));
-			categoryView.setBackgroundColor(category
-					.getUser_color());
-			if (isDropDownView)
-			{
+			categoryView.setBackgroundColor(category.getUser_color());
+			if (isDropDownView) {
 				categoryView.setBlackColor();
 			}
 		}

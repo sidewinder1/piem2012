@@ -13,13 +13,13 @@ public class BorrowLend {
 	private String personName;
 	private String personPhone;
 	private String personAddress;
-	
+
 	public BorrowLend() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public void setValue(BorrowLend newBorrowLend) {
-		this.id = newBorrowLend.getId(); 
+		this.id = newBorrowLend.getId();
 		this.debtType = newBorrowLend.getDebtType();
 		this.money = newBorrowLend.getMoney();
 		this.interestType = newBorrowLend.getInterestType();

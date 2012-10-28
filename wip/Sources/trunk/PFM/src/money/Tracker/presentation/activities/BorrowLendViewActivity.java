@@ -50,90 +50,93 @@ public class BorrowLendViewActivity extends Activity {
 		checkBorrowing = extras.getBoolean("Borrow");
 		displayText = (TextView) findViewById(R.id.no_borrow_lend_data);
 		borrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
-		bindData();		
-		//borrowLendList.setTextFilterEnabled(true);
-		//borrowLendList.setClickable(true);
-		//borrowLendList.setItemsCanFocus(false);
-		//borrowLendList.setFocusableInTouchMode(false);
+		bindData();
+		// borrowLendList.setTextFilterEnabled(true);
+		// borrowLendList.setClickable(true);
+		// borrowLendList.setItemsCanFocus(false);
+		// borrowLendList.setFocusableInTouchMode(false);
 		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> listView, View view, int position,
-					long id) {
+			public void onItemClick(AdapterView<?> listView, View view,
+					int position, long id) {
 				// TODO Auto-generated method stub
 				Log.d("On Click Item", "Check 1");
-				borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);
+				borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(
+						position);
 				Log.d("On Click Item", "Check 2");
-				if (borrowLend != null)
-				{
-					Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
+				if (borrowLend != null) {
+					Intent borrowLendDetail = new Intent(
+							BorrowLendViewActivity.this,
+							BorrowLendViewDetailActivity.class);
 					Log.d("On Click Item", "Check 3");
-					borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
+					borrowLendDetail.putExtra("borrowLendID",
+							borrowLend.getId());
 					Log.d("On Click Item", "Check 4 - " + borrowLend.getId());
 					borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
 					Log.d("On Click Item", "Check 5 - " + checkBorrowing);
 					startActivity(borrowLendDetail);
-				}				
+				}
 				Log.d("On Click Item", "Check 6");
 			}
-		});		
-		
+		});
+
 		totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_view_total_money);
 		latesExpiredDateTextView = (TextView) findViewById(R.id.borrow_lend_view_lates_expired_date);
-		
+
 		if (checkBorrowing) {
 			debtType = "Borrowing";
 		} else {
 			debtType = "Lending";
 		}
-		
+
 		getTotalInformatation();
-		
+
 		registerForContextMenu(borrowLendList);
 
 	}
-	
-	private void getTotalInformatation()
-	{
-		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*", "Debt_type like '" + debtType + "'");
-		
+
+	private void getTotalInformatation() {
+		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*",
+				"Debt_type like '" + debtType + "'");
+
 		double totalMoney = 0;
 		String latesExpiredDateString = "1/1/1900";
-		
+
 		if (borrowLendData != null) {
 			if (borrowLendData.moveToFirst()) {
 				do {
 					totalMoney += borrowLendData.getDouble(borrowLendData
 							.getColumnIndex("Money"));
-					
+
 					if (!borrowLendData
-							.getString(borrowLendData
-									.getColumnIndex("Expired_date")).trim().equals(""))
-					{
-						String expiredDateString = borrowLendData
-								.getString(borrowLendData
-										.getColumnIndex("Expired_date")).trim();
+							.getString(
+									borrowLendData
+											.getColumnIndex("Expired_date"))
+							.trim().equals("")) {
+						String expiredDateString = borrowLendData.getString(
+								borrowLendData.getColumnIndex("Expired_date"))
+								.trim();
 						Log.d("errorDateTime", expiredDateString);
 						Date _expiredDate = Converter.toDate(expiredDateString,
-								"dd/MM/yyyy");						
-						Date _latesExpiredDate = Converter.toDate(latesExpiredDateString, "dd/MM/yyyy");
-						Long latesExpiredDate = _latesExpiredDate.getTime();						
+								"dd/MM/yyyy");
+						Date _latesExpiredDate = Converter.toDate(
+								latesExpiredDateString, "dd/MM/yyyy");
+						Long latesExpiredDate = _latesExpiredDate.getTime();
 						Long expiredDate = _expiredDate.getTime();
-						
-						if (expiredDate > latesExpiredDate)
-						{
+
+						if (expiredDate > latesExpiredDate) {
 							latesExpiredDateString = expiredDateString;
 						}
 					}
 				} while (borrowLendData.moveToNext());
 			}
 		}
-		
+
 		totalMoneyTextView.setText(Converter.toString(totalMoney));
 		if (!latesExpiredDateString.equals("1/1/1900"))
 			latesExpiredDateTextView.setText(latesExpiredDateString);
 		else
 			latesExpiredDateTextView.setText("");
 	}
-
 
 	@Override
 	protected void onRestart() {
@@ -150,26 +153,26 @@ public class BorrowLendViewActivity extends Activity {
 		}
 
 		BorrowLendRepository bolere = new BorrowLendRepository();
-		values = bolere.getData("Debt_type like '" + debtType + "' order by expired_date DESC");
+		values = bolere.getData("Debt_type like '" + debtType
+				+ "' order by expired_date DESC");
 
 		if (values.size() == 0) {
 			Log.d("Check display", "Check 1");
 			displayText.setVisibility(View.VISIBLE);
-		}
-		else
-		{
+		} else {
 			Log.d("Check display", "Check 2");
 			displayText.setVisibility(View.GONE);
 		}
-		
+
 		sort();
-		borrowLendAdapter = new BorrowLendAdapter(this, R.layout.activity_borrow_lend_view_item, values);
-		
+		borrowLendAdapter = new BorrowLendAdapter(this,
+				R.layout.activity_borrow_lend_view_item, values);
+
 		borrowLendList.setVisibility(View.VISIBLE);
 		borrowLendAdapter.notifyDataSetChanged();
 		borrowLendList.setAdapter(borrowLendAdapter);
 	}
-	
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -189,10 +192,12 @@ public class BorrowLendViewActivity extends Activity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 		int menuItemIndex = item.getItemId();
-		borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(info.position);
+		borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(
+				info.position);
 		switch (menuItemIndex) {
 		case 0: // Edit
-			Intent borrowLendDetail =new Intent(BorrowLendViewActivity.this, BorrowLendInsertActivity.class);
+			Intent borrowLendDetail = new Intent(BorrowLendViewActivity.this,
+					BorrowLendInsertActivity.class);
 			borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
 			startActivity(borrowLendDetail);
 			break;
@@ -201,7 +206,8 @@ public class BorrowLendViewActivity extends Activity {
 			Alert.getInstance().showDialog(getParent(),
 					"Delete selected " + debtType + "?", new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							SqlHelper.instance.delete("BorrowLend", "Id = " + borrowLend.getId());
+							SqlHelper.instance.delete("BorrowLend", "Id = "
+									+ borrowLend.getId());
 							bindData();
 							getTotalInformatation();
 						}
@@ -212,7 +218,7 @@ public class BorrowLendViewActivity extends Activity {
 
 		return true;
 	}
-	
+
 	private void sort() {
 		int i, j;
 		int length = values.size();
@@ -222,27 +228,31 @@ public class BorrowLendViewActivity extends Activity {
 				Date j1ExpiredDate;
 				Date jExpiredDate;
 				if (((BorrowLend) values.get(j - 1)).getExpiredDate() != null)
-					j1ExpiredDate = ((BorrowLend) values.get(j - 1)).getExpiredDate();
-				else{
+					j1ExpiredDate = ((BorrowLend) values.get(j - 1))
+							.getExpiredDate();
+				else {
 					j1ExpiredDate = Converter.toDate("1/1/9999", "dd/MM/yyyy");
 					Log.d("Check sort", "Check 1");
 				}
-				
+
 				if (((BorrowLend) values.get(j)).getExpiredDate() != null)
-					jExpiredDate = ((BorrowLend) values.get(j)).getExpiredDate();
-				else
-				{
+					jExpiredDate = ((BorrowLend) values.get(j))
+							.getExpiredDate();
+				else {
 					jExpiredDate = Converter.toDate("1/1/9999", "dd/MM/yyyy");
 					Log.d("Check sort", "Check 2");
 				}
-				
-				Log.d("Check sort", Converter.toString(j1ExpiredDate, "dd/MM/yyyy"));
-				Log.d("Check sort", Converter.toString(jExpiredDate, "dd/MM/yyyy"));
+
+				Log.d("Check sort",
+						Converter.toString(j1ExpiredDate, "dd/MM/yyyy"));
+				Log.d("Check sort",
+						Converter.toString(jExpiredDate, "dd/MM/yyyy"));
 				if (j1ExpiredDate.compareTo(jExpiredDate) > 0) {
-					Log.d("Check sort", String.valueOf(j1ExpiredDate.compareTo(jExpiredDate)));
+					Log.d("Check sort", String.valueOf(j1ExpiredDate
+							.compareTo(jExpiredDate)));
 					t.setValue((BorrowLend) values.get(j - 1));
-					((BorrowLend) values.get(j - 1)).setValue((BorrowLend) values
-							.get(j));
+					((BorrowLend) values.get(j - 1))
+							.setValue((BorrowLend) values.get(j));
 					((BorrowLend) values.get(j)).setValue(t);
 				}
 			}

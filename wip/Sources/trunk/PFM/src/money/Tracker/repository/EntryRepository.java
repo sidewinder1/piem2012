@@ -24,7 +24,8 @@ public class EntryRepository implements IDataRepository {
 
 	public ArrayList<Entry> updateData(String condition) {
 		if (!"".equals(condition)) {
-			condition = new StringBuilder(" WHERE ").append(condition).toString();
+			condition = new StringBuilder(" WHERE ").append(condition)
+					.toString();
 		}
 
 		Cursor entryCursor = SqlHelper.instance.query(new StringBuilder(

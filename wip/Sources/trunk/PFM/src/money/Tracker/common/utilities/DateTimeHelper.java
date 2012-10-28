@@ -20,18 +20,16 @@ public class DateTimeHelper {
 		return new Date(year - 1900, month, day);
 	}
 
-	public static int getWeekInMonth(Date date)
-	{
+	public static int getWeekInMonth(Date date) {
 		calendar = Calendar.getInstance(TimeZone.getDefault(),
 				Locale.getDefault());
 		calendar.setTime(date);
 		return calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
 	}
-	
+
 	public static int getDayOfMonth(int year, int month) {
-		calendar = new GregorianCalendar(year, month,
-				Calendar.DAY_OF_MONTH);
-		
+		calendar = new GregorianCalendar(year, month, Calendar.DAY_OF_MONTH);
+
 		return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 

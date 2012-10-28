@@ -12,8 +12,9 @@ public class Schedule implements IModelBase {
 
 	public ArrayList<DetailSchedule> details = new ArrayList<DetailSchedule>();
 
-	public Schedule(){}
-	
+	public Schedule() {
+	}
+
 	public Schedule(int id, double budget, Date start_date, Date end_date,
 			int time_id, ArrayList<DetailSchedule> details) {
 		this.id = id;
@@ -32,9 +33,9 @@ public class Schedule implements IModelBase {
 
 	public void setDetails(ArrayList<DetailSchedule> details) {
 		this.details = details;
-	}	
+	}
 
 	public int compareTo(IModelBase value) {
-		return end_date.compareTo(((Schedule)value).end_date);
+		return end_date.compareTo(((Schedule) value).end_date);
 	}
 }

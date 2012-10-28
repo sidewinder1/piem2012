@@ -1,6 +1,6 @@
 package money.Tracker.repository;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
 import money.Tracker.presentation.model.IModelBase;
 

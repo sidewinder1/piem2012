@@ -50,7 +50,7 @@ public class EntryDetailRepository {
 				entryDetails.add(entryDetail);
 			} while (entryCursor.moveToNext());
 		}
-		
+
 		sort();
 		return entries;
 	}
@@ -66,7 +66,7 @@ public class EntryDetailRepository {
 		if (entries == null) {
 			return;
 		}
-		
+
 		int i, j;
 		for (ArrayList<EntryDetail> entryList : entries.values()) {
 			int length = entryList.size();

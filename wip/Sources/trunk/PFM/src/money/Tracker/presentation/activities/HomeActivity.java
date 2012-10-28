@@ -30,12 +30,13 @@ public class HomeActivity extends TabActivity {
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
-		
+
 		// Create Expense & income tab.
 		Intent managementIntent = new Intent(this, MainViewActivity.class);
 		managementIntent.putExtra(typeTabPathId, 0);
-		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost, R.drawable.management_icon);
-		
+		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost,
+				R.drawable.management_icon);
+
 		// Create tab and intent for schedule.
 		Intent scheduleIntent = new Intent(this, MainViewActivity.class);
 		scheduleIntent.putExtra(typeTabPathId, 1);
@@ -44,7 +45,8 @@ public class HomeActivity extends TabActivity {
 		// Create tab and intent for Borrowing and Lending.
 		Intent borrowAndLendIntent = new Intent(this,
 				BorrowLendMainViewActivity.class);
-		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost, R.drawable.small_delete_button);
+		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost,
+				R.drawable.small_delete_button);
 
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
@@ -61,9 +63,10 @@ public class HomeActivity extends TabActivity {
 
 	// Create tab view.
 	private static View createTabView(final Context context, final int id) {
-		View view = LayoutInflater.from(context)
-				.inflate(R.layout.main_tab_background, null);
-		ImageView imageView = (ImageView) view.findViewById(R.id.main_tab_background_icon);
+		View view = LayoutInflater.from(context).inflate(
+				R.layout.main_tab_background, null);
+		ImageView imageView = (ImageView) view
+				.findViewById(R.id.main_tab_background_icon);
 		imageView.setImageResource(id);
 		return view;
 	}

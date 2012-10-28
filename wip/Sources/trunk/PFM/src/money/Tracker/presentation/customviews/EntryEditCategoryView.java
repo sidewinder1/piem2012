@@ -29,7 +29,7 @@ public class EntryEditCategoryView extends LinearLayout {
 	private LinearLayout category_list;
 	private CategoryAdapter categoryAdapter;
 	public EditText category_edit;
-	
+
 	public EntryEditCategoryView(Context context) {
 		super(context);
 	}
@@ -174,7 +174,7 @@ public class EntryEditCategoryView extends LinearLayout {
 			}
 		});
 	}
-	
+
 	public String checkBeforeSave() {
 		if (category_edit.getVisibility() == View.VISIBLE
 				&& "".equals(category_edit.getText().toString())) {
@@ -241,8 +241,8 @@ public class EntryEditCategoryView extends LinearLayout {
 								oldEntryDetail.getInt(0)).toString());
 			} else {
 				values = new String[] { product.getName(),
-						Converter.toString(product.getMoney()), category_id_str,
-						String.valueOf(entry_id) };
+						Converter.toString(product.getMoney()),
+						category_id_str, String.valueOf(entry_id) };
 
 				SqlHelper.instance.insert(subTable, columns, values);
 			}

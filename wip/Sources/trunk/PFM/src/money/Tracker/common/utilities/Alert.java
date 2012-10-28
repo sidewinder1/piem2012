@@ -25,17 +25,16 @@ public class Alert {
 		return instance;
 	}
 
-	public void notify(Context context, Class<?> activity, String title, String message)
-	{
-		NotificationCompat.Builder mBuilder =
-		        new NotificationCompat.Builder(context)
-		        .setSmallIcon(R.drawable.report_icon)
-		        .setContentTitle(title)
-		        .setContentText(message);
+	public void notify(Context context, Class<?> activity, String title,
+			String message) {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				context).setSmallIcon(R.drawable.report_icon)
+				.setContentTitle(title).setContentText(message);
 		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(context, activity);
 
-		// The stack builder object will contain an artificial back stack for the
+		// The stack builder object will contain an artificial back stack for
+		// the
 		// started Activity.
 		// This ensures that navigating backward from the Activity leads out of
 		// your application to the Home screen.
@@ -44,20 +43,17 @@ public class Alert {
 		stackBuilder.addParentStack(activity);
 		// Adds the Intent that starts the Activity to the top of the stack
 		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent =
-		        stackBuilder.getPendingIntent(
-		            0,
-		            PendingIntent.FLAG_UPDATE_CURRENT
-		        );
-		
-		int mId=0;
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
+		int mId = 0;
 		mBuilder.setContentIntent(resultPendingIntent);
-		NotificationManager mNotificationManager =
-		    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(mId, mBuilder.build());
 	}
-	
+
 	public void showDialog(Context context, String message,
 			OnClickListener okAction) {
 		showDialog(context, message, okAction,
@@ -73,7 +69,7 @@ public class Alert {
 		if (alertDialog != null && alertDialog.isShowing()) {
 			return;
 		}
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage(message).setCancelable(false)
 				.setPositiveButton("Yes", okAction)

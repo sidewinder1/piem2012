@@ -22,28 +22,29 @@ public class ContactsAutoCompleteCursorAdapter extends CursorAdapter implements
 		mContent = context.getContentResolver();
 	}
 
-	@Override public View newView(Context context, Cursor cursor, ViewGroup parent) 
-	{      
-		final LayoutInflater mInflater = LayoutInflater.from(context);     
-		final View ret = mInflater.inflate(R.layout.contacts_auto_list, null);      
-		
-		return ret; 
-		
-	} 
+	@Override
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+		final LayoutInflater mInflater = LayoutInflater.from(context);
+		final View ret = mInflater.inflate(R.layout.contacts_auto_list, null);
 
-	@Override 
-	public void bindView(View view, Context context, Cursor cursor) 
-	{
-		int nameIdx = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);		
-		int numberIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-		String name = cursor.getString(nameIdx);     		
-		String number = cursor.getString(numberIdx);      
-		
-		mName = (TextView) view.findViewById(R.id.name);     
-		mNumber = (TextView) view.findViewById(R.id.phonenum);      
-		mName.setText(name);          
-		mNumber.setText(number); 
-	} 
+		return ret;
+
+	}
+
+	@Override
+	public void bindView(View view, Context context, Cursor cursor) {
+		int nameIdx = cursor
+				.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+		int numberIdx = cursor
+				.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+		String name = cursor.getString(nameIdx);
+		String number = cursor.getString(numberIdx);
+
+		mName = (TextView) view.findViewById(R.id.name);
+		mNumber = (TextView) view.findViewById(R.id.phonenum);
+		mName.setText(name);
+		mNumber.setText(number);
+	}
 
 	@Override
 	public String convertToString(Cursor cursor) {

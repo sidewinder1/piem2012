@@ -39,43 +39,53 @@ public class ReportViewDetailActivity extends Activity {
 
 	// get schedule budget
 
-	private void getSchedule() {		
+	private void getSchedule() {
 		double budget = 0;
 		String whereCondition = "";
-		if(checkMonthly)
+		if (checkMonthly)
 			whereCondition = "Type = 1";
 		else
 			whereCondition = "Type = 0";
-		
-		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*", whereCondition);
-		if(scheduleCursor != null)
-		{
-			if(scheduleCursor.moveToFirst())
-			{
-				do
-				{
-					if(checkMonthly)
-					{
-						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+
+		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*",
+				whereCondition);
+		if (scheduleCursor != null) {
+			if (scheduleCursor.moveToFirst()) {
+				do {
+					if (checkMonthly) {
+						Date scheduleStartDate = Converter
+								.toDate(scheduleCursor.getString(scheduleCursor
+										.getColumnIndex("Start_date")));
+						String scheduleMonth = Converter.toString(
+								scheduleStartDate, "MM");
 						Log.d("Check get Month", scheduleMonth);
-						String startDateMonth = Converter.toString(startDate, "MM");
+						String startDateMonth = Converter.toString(startDate,
+								"MM");
 						Log.d("Check get Month", startDateMonth);
-						
-						if(scheduleMonth.equals(startDateMonth))
-							budget = scheduleCursor.getDouble(scheduleCursor.getColumnIndex("Budget"));
-					} else
-					{
-						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						Date scheduleEndDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("End_date")));						
-						
-						if((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) < 0) ||
-								(scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) == 0) ||
-								(scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) == 0) ||
-								(scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) < 0))
-							budget = scheduleCursor.getDouble(scheduleCursor.getColumnIndex("Budget"));
+
+						if (scheduleMonth.equals(startDateMonth))
+							budget = scheduleCursor.getDouble(scheduleCursor
+									.getColumnIndex("Budget"));
+					} else {
+						Date scheduleStartDate = Converter
+								.toDate(scheduleCursor.getString(scheduleCursor
+										.getColumnIndex("Start_date")));
+						Date scheduleEndDate = Converter.toDate(scheduleCursor
+								.getString(scheduleCursor
+										.getColumnIndex("End_date")));
+
+						if ((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate
+								.compareTo(endDate) < 0)
+								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate
+										.compareTo(endDate) == 0)
+								|| (scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate
+										.compareTo(endDate) == 0)
+								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate
+										.compareTo(endDate) < 0))
+							budget = scheduleCursor.getDouble(scheduleCursor
+									.getColumnIndex("Budget"));
 					}
-				}while(scheduleCursor.moveToNext());
+				} while (scheduleCursor.moveToNext());
 			}
 		}
 
@@ -83,27 +93,30 @@ public class ReportViewDetailActivity extends Activity {
 				"Check 5 - " + Converter.toString(startDate, "dd/MM/yyyy"));
 		Log.d("report detail",
 				"Check 5 - " + Converter.toString(endDate, "dd/MM/yyyy"));
-		
-		if (budget != 0)
-		{
+
+		if (budget != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		
-			reportDetail.addView(new ReportDetailCategory(this, "Budget", budget), params);
+
+			reportDetail.addView(new ReportDetailCategory(this, "Budget",
+					budget), params);
 		}
 	}
 
 	private void getIncome() {
 		double totalIncome = 0;
-		
-		Cursor entryIncomeCursor = SqlHelper.instance.select("Entry", "*", "Type=0");
+
+		Cursor entryIncomeCursor = SqlHelper.instance.select("Entry", "*",
+				"Type=0");
 		if (entryIncomeCursor != null) {
 			if (entryIncomeCursor.moveToFirst()) {
 				do {
 					int id = entryIncomeCursor.getInt(entryIncomeCursor
 							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryIncomeCursor
-							.getString(entryIncomeCursor.getColumnIndex("Date")));
+					Date entryDate = Converter
+							.toDate(entryIncomeCursor
+									.getString(entryIncomeCursor
+											.getColumnIndex("Date")));
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -122,13 +135,13 @@ public class ReportViewDetailActivity extends Activity {
 					}
 				} while (entryIncomeCursor.moveToNext());
 			}
-			
-			if (totalIncome != 0)
-			{
+
+			if (totalIncome != 0) {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			
-				reportDetail.addView(new ReportDetailCategory(this, "Income", totalIncome), params);
+
+				reportDetail.addView(new ReportDetailCategory(this, "Income",
+						totalIncome), params);
 			}
 
 			if (entryIncomeCursor.moveToFirst()) {
@@ -137,9 +150,10 @@ public class ReportViewDetailActivity extends Activity {
 					Log.d("report detail", "Check 58");
 					int id = entryIncomeCursor.getInt(entryIncomeCursor
 							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryIncomeCursor
-							.getString(entryIncomeCursor
-									.getColumnIndex("Date")));
+					Date entryDate = Converter
+							.toDate(entryIncomeCursor
+									.getString(entryIncomeCursor
+											.getColumnIndex("Date")));
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -181,16 +195,16 @@ public class ReportViewDetailActivity extends Activity {
 									double value = entryDetailCursor
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Total"));
-									Log.d("report detail",
-											"Check 68");
+									Log.d("report detail", "Check 68");
 									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-											LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-									Log.d("report detail",
-											"Check 69");
-									reportDetail.addView(new ReportDetailProduct(this, name, value), params);
-									Log.d("report detail",
-											"Check 70");
-									
+											LayoutParams.FILL_PARENT,
+											LayoutParams.WRAP_CONTENT);
+									Log.d("report detail", "Check 69");
+									reportDetail.addView(
+											new ReportDetailProduct(this, name,
+													value), params);
+									Log.d("report detail", "Check 70");
+
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
@@ -201,7 +215,7 @@ public class ReportViewDetailActivity extends Activity {
 	}
 
 	private void getExpense() {
-		double totalExpense = 0;		
+		double totalExpense = 0;
 
 		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
 				"Type=1");
@@ -240,13 +254,13 @@ public class ReportViewDetailActivity extends Activity {
 					}
 				} while (entryExpenseCursor.moveToNext());
 			}
-			
-			if (totalExpense != 0)
-			{
+
+			if (totalExpense != 0) {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			
-				reportDetail.addView(new ReportDetailCategory(this, "Expense", totalExpense), params);
+
+				reportDetail.addView(new ReportDetailCategory(this, "Expense",
+						totalExpense), params);
 			}
 
 			if (entryExpenseCursor.moveToFirst()) {
@@ -299,16 +313,16 @@ public class ReportViewDetailActivity extends Activity {
 									double value = entryDetailCursor
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Total"));
-									Log.d("report detail",
-											"Check 68");
+									Log.d("report detail", "Check 68");
 									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-											LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-									Log.d("report detail",
-											"Check 69");
-									reportDetail.addView(new ReportDetailProduct(this, name, value), params);
-									Log.d("report detail",
-											"Check 70");
-									
+											LayoutParams.FILL_PARENT,
+											LayoutParams.WRAP_CONTENT);
+									Log.d("report detail", "Check 69");
+									reportDetail.addView(
+											new ReportDetailProduct(this, name,
+													value), params);
+									Log.d("report detail", "Check 70");
+
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
@@ -317,72 +331,75 @@ public class ReportViewDetailActivity extends Activity {
 			}
 		}
 	}
-	
-	private void getBorrowing()
-	{
-				double totalBorrowing = 0;
-				
-				Cursor borrowingCursor = SqlHelper.instance.select("BorrowLend", "*",
-						"Debt_type like 'Borrowing'");
-				if (borrowingCursor != null) {
-					if (borrowingCursor.moveToFirst()) {
-						do {
-							Date entryDate = Converter.toDate(borrowingCursor
-									.getString(borrowingCursor
-											.getColumnIndex("Start_date")), "dd/MM/yyyy");
-							Date startDate1 = Converter.toDate(_startDate, "dd/MM/yyyy");
-							Date endDate1 = Converter.toDate(_endDate, "dd/MM/yyyy");
-							Log.d("Check date", startDate1.toString());
-							Log.d("Check date", endDate1.toString());
-							if (entryDate.compareTo(startDate) > 0
-									&& entryDate.compareTo(endDate) < 0
-									|| entryDate.compareTo(startDate) == 0
-									|| entryDate.compareTo(endDate) == 0) {
-								Log.d("report detail", "Check 56");
-								totalBorrowing += borrowingCursor
-										.getDouble(borrowingCursor
-												.getColumnIndex("Money"));
-							}
-						} while (borrowingCursor.moveToNext());
-					}
 
-					if (totalBorrowing != 0)
-					{
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-					
-						reportDetail.addView(new ReportDetailCategory(this, "Borrowing", totalBorrowing), params);
-					}
+	private void getBorrowing() {
+		double totalBorrowing = 0;
 
-					if (borrowingCursor.moveToFirst()) {
-						Log.d("report detail", "Check 57");
-						do {
-							Log.d("report detail", "Check 58");
-							Date entryDate = Converter.toDate(borrowingCursor
-									.getString(borrowingCursor
-											.getColumnIndex("Start_date")));
-							if (entryDate.compareTo(startDate) > 0
-									&& entryDate.compareTo(endDate) < 0
-									|| entryDate.compareTo(startDate) == 0
-									|| entryDate.compareTo(endDate) == 0) {
-								String name = borrowingCursor.getString(borrowingCursor
-										.getColumnIndex("Person_name"));
-								double value = Double.parseDouble(borrowingCursor.getString(borrowingCursor
+		Cursor borrowingCursor = SqlHelper.instance.select("BorrowLend", "*",
+				"Debt_type like 'Borrowing'");
+		if (borrowingCursor != null) {
+			if (borrowingCursor.moveToFirst()) {
+				do {
+					Date entryDate = Converter.toDate(borrowingCursor
+							.getString(borrowingCursor
+									.getColumnIndex("Start_date")),
+							"dd/MM/yyyy");
+					Date startDate1 = Converter
+							.toDate(_startDate, "dd/MM/yyyy");
+					Date endDate1 = Converter.toDate(_endDate, "dd/MM/yyyy");
+					Log.d("Check date", startDate1.toString());
+					Log.d("Check date", endDate1.toString());
+					if (entryDate.compareTo(startDate) > 0
+							&& entryDate.compareTo(endDate) < 0
+							|| entryDate.compareTo(startDate) == 0
+							|| entryDate.compareTo(endDate) == 0) {
+						Log.d("report detail", "Check 56");
+						totalBorrowing += borrowingCursor
+								.getDouble(borrowingCursor
+										.getColumnIndex("Money"));
+					}
+				} while (borrowingCursor.moveToNext());
+			}
+
+			if (totalBorrowing != 0) {
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+				reportDetail.addView(new ReportDetailCategory(this,
+						"Borrowing", totalBorrowing), params);
+			}
+
+			if (borrowingCursor.moveToFirst()) {
+				Log.d("report detail", "Check 57");
+				do {
+					Log.d("report detail", "Check 58");
+					Date entryDate = Converter.toDate(borrowingCursor
+							.getString(borrowingCursor
+									.getColumnIndex("Start_date")));
+					if (entryDate.compareTo(startDate) > 0
+							&& entryDate.compareTo(endDate) < 0
+							|| entryDate.compareTo(startDate) == 0
+							|| entryDate.compareTo(endDate) == 0) {
+						String name = borrowingCursor.getString(borrowingCursor
+								.getColumnIndex("Person_name"));
+						double value = Double.parseDouble(borrowingCursor
+								.getString(borrowingCursor
 										.getColumnIndex("Money")));
-								LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-										LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-								
-								reportDetail.addView(new ReportDetailProduct(this, name, value), params);
-							}
-						} while (borrowingCursor.moveToNext());
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
+
+						reportDetail.addView(new ReportDetailProduct(this,
+								name, value), params);
 					}
-				}
+				} while (borrowingCursor.moveToNext());
+			}
+		}
 	}
-	
-	private void getLending()
-	{
+
+	private void getLending() {
 		double totalLending = 0;
-		
+
 		Cursor lendingCursor = SqlHelper.instance.select("BorrowLend", "*",
 				"Debt_type like 'Lending'");
 		if (lendingCursor != null) {
@@ -402,12 +419,12 @@ public class ReportViewDetailActivity extends Activity {
 				} while (lendingCursor.moveToNext());
 			}
 
-			if (totalLending != 0)
-			{
+			if (totalLending != 0) {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			
-				reportDetail.addView(new ReportDetailCategory(this, "Lending", totalLending), params);
+
+				reportDetail.addView(new ReportDetailCategory(this, "Lending",
+						totalLending), params);
 			}
 
 			if (lendingCursor.moveToFirst()) {
@@ -423,18 +440,21 @@ public class ReportViewDetailActivity extends Activity {
 							|| entryDate.compareTo(endDate) == 0) {
 						String name = lendingCursor.getString(lendingCursor
 								.getColumnIndex("Person_name"));
-						double value = Double.parseDouble(lendingCursor.getString(lendingCursor
-								.getColumnIndex("Money")));
-						
+						double value = Double.parseDouble(lendingCursor
+								.getString(lendingCursor
+										.getColumnIndex("Money")));
+
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-						
-						reportDetail.addView(new ReportDetailProduct(this, name, value), params);
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
+
+						reportDetail.addView(new ReportDetailProduct(this,
+								name, value), params);
 					}
 				} while (lendingCursor.moveToNext());
 			}
 		}
-		
+
 	}
 
 	private void bindData() {
@@ -448,10 +468,10 @@ public class ReportViewDetailActivity extends Activity {
 		_endDate = extras.getString("end_date");
 		endDate = Converter.toDate(_endDate);
 		Log.d("report detail", "Check 2 - " + scheduleID);
-		
+
 		reportDetail = (LinearLayout) findViewById(R.id.report_detail_list_view);
 		reportDetail.removeAllViews();
-		
+
 		getSchedule();
 		getIncome();
 		getExpense();

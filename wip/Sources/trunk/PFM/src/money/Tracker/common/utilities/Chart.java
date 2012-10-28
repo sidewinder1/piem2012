@@ -51,54 +51,54 @@ public class Chart extends AbstractChart {
 	public String getDesc() {
 		return "The monthly sales for the last 2 years (horizontal bar chart)";
 	}
-	
-	protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List<double[]> values) {
-	    XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-	    int length = titles.length;
-	    for (int i = 0; i < length; i++) {
-	      CategorySeries series = new CategorySeries(titles[i]);
-	      double[] v = values.get(i);
-	      int seriesLength = v.length;
-	      for (int k = 0; k < seriesLength; k++) {
-	        series.add(v[k]);
-	      }
-	      dataset.addSeries(series.toXYSeries());
-	    }
-	    return dataset;
-	  }
-	
-	protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) 
-	  {
-	      Log.v("abstract","bbb");
-	    XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-	    renderer.setAxisTitleTextSize(16);
-	    renderer.setChartTitleTextSize(20);
-	    renderer.setLabelsTextSize(15);
-	    renderer.setLegendTextSize(15);
-	    int length = colors.length;
-	    for (int i = 0; i < length; i++) {
-	      SimpleSeriesRenderer r = new SimpleSeriesRenderer();
-	      r.setColor(colors[i]);
-	      renderer.addSeriesRenderer(r);
-	    }
-	    return renderer;
-	  }
-	  protected void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle,
-	          String yTitle, double xMin, double xMax, double yMin, double yMax, int axesColor,
-	          int labelsColor) 
-	      {
-	          Log.v("abstract","555"+title  +xMin   +yMin);
-	        renderer.setChartTitle(title);
-	        renderer.setXTitle(xTitle);
-	        renderer.setYTitle(yTitle);
-	        renderer.setXAxisMin(xMin);
-	        renderer.setXAxisMax(xMax);
-	        renderer.setYAxisMin(yMin);
-	        renderer.setYAxisMax(yMax);
-	        renderer.setAxesColor(axesColor);
-	        renderer.setLabelsColor(labelsColor);
-	      }
 
+	protected XYMultipleSeriesDataset buildBarDataset(String[] titles,
+			List<double[]> values) {
+		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+		int length = titles.length;
+		for (int i = 0; i < length; i++) {
+			CategorySeries series = new CategorySeries(titles[i]);
+			double[] v = values.get(i);
+			int seriesLength = v.length;
+			for (int k = 0; k < seriesLength; k++) {
+				series.add(v[k]);
+			}
+			dataset.addSeries(series.toXYSeries());
+		}
+		return dataset;
+	}
+
+	protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) {
+		Log.v("abstract", "bbb");
+		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+		renderer.setAxisTitleTextSize(16);
+		renderer.setChartTitleTextSize(20);
+		renderer.setLabelsTextSize(15);
+		renderer.setLegendTextSize(15);
+		int length = colors.length;
+		for (int i = 0; i < length; i++) {
+			SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+			r.setColor(colors[i]);
+			renderer.addSeriesRenderer(r);
+		}
+		return renderer;
+	}
+
+	protected void setChartSettings(XYMultipleSeriesRenderer renderer,
+			String title, String xTitle, String yTitle, double xMin,
+			double xMax, double yMin, double yMax, int axesColor,
+			int labelsColor) {
+		Log.v("abstract", "555" + title + xMin + yMin);
+		renderer.setChartTitle(title);
+		renderer.setXTitle(xTitle);
+		renderer.setYTitle(yTitle);
+		renderer.setXAxisMin(xMin);
+		renderer.setXAxisMax(xMax);
+		renderer.setYAxisMin(yMin);
+		renderer.setYAxisMax(yMax);
+		renderer.setAxesColor(axesColor);
+		renderer.setLabelsColor(labelsColor);
+	}
 
 	public Intent getBarIntent(Context context) {
 		String[] titles = new String[] { "2007", "2008" };
@@ -221,14 +221,14 @@ public class Chart extends AbstractChart {
 	public void draw(Canvas arg0, int arg1, int arg2, int arg3, int arg4,
 			Paint arg5) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void drawLegendShape(Canvas arg0, SimpleSeriesRenderer arg1,
 			float arg2, float arg3, int arg4, Paint arg5) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

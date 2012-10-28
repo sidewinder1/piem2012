@@ -39,9 +39,9 @@ public class ScheduleDetailViewActivity extends Activity {
 	}
 
 	private void bindData() {
-		Cursor schedule = SqlHelper.instance.select("Schedule",
-				"id, budget, start_date, end_date, Type", "id = "
-						+ schedule_id);
+		Cursor schedule = SqlHelper.instance
+				.select("Schedule", "id, budget, start_date, end_date, Type",
+						"id = " + schedule_id);
 
 		if (schedule != null && schedule.moveToFirst()) {
 			TextView average = (TextView) findViewById(R.id.schedule_avg_budget_value);

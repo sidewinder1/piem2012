@@ -105,13 +105,10 @@ public class BorrowLendInsertActivity extends Activity {
 			Log.d("Check Edit", "Check 3");
 			BorrowLend values = bolere.getDetailData("ID=" + borrow_lend_id);
 			Log.d("Check Edit", "Check 4");
-			if (values.getDebtType().toString().equals("Borrowing"))
-			{
+			if (values.getDebtType().toString().equals("Borrowing")) {
 				debtTypeButton.setChecked(true);
 				debtTypeTextView.setText("Edit Borrowing");
-			}
-			else
-			{
+			} else {
 				debtTypeButton.setChecked(false);
 				debtTypeTextView.setText("Edit Lending");
 			}
@@ -487,33 +484,35 @@ public class BorrowLendInsertActivity extends Activity {
 	private void updateData() {
 		if (interestType.isChecked())
 			interestTypeString = "Simple";
-		else 
-			interestTypeString = "Compound";		
-		
+		else
+			interestTypeString = "Compound";
+
 		column.add("Interest_type");
 		valuesChanged.add(interestTypeString);
-		
+
 		if (debtTypeButton.isChecked())
 			debtType = "Borrowing";
 		else
 			debtType = "Lending";
-		
+
 		column.add("Debt_type");
 		valuesChanged.add(debtType);
-		
+
 		String[] columnUpdate = new String[column.size()];
 		columnUpdate = column.toArray(columnUpdate);
-		
+
 		String[] valusChangedUpdate = new String[valuesChanged.size()];
 		valusChangedUpdate = valuesChanged.toArray(valusChangedUpdate);
-				
+
 		if (!nameEditText.getText().toString().equals("")
 				&& !moneyEditText.getText().toString().equals("")) {
 			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText
 					.getText().toString().equals(""))
 					|| (interestRate.getText().toString().equals(""))) {
-				
-				int check = SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
+
+				int check = SqlHelper.instance.update("BorrowLend",
+						columnUpdate, valusChangedUpdate, "ID = "
+								+ borrow_lend_id);
 				setResult(100);
 				BorrowLendInsertActivity.this.finish();
 			} else {
@@ -536,29 +535,30 @@ public class BorrowLendInsertActivity extends Activity {
 		if (!nameEditText.getText().toString().equals("")
 				&& !moneyEditText.getText().toString().equals("")) {
 			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText
-					.getText().toString().equals("")) || interestRate.getText().toString().equals("")) {
+					.getText().toString().equals(""))
+					|| interestRate.getText().toString().equals("")) {
 				if (debtTypeButton.isChecked()) {
 					debtType = "Borrowing";
 				} else {
 					debtType = "Lending";
 				}
-				long check = SqlHelper.instance.insert("BorrowLend",
-						new String[] { "Debt_type", "Money", "Interest_type",
-								"Interest_rate", "Start_date",
-								"Expired_date", "Person_name",
+				long check = SqlHelper.instance
+						.insert("BorrowLend", new String[] { "Debt_type",
+								"Money", "Interest_type", "Interest_rate",
+								"Start_date", "Expired_date", "Person_name",
 								"Person_phone", "Person_address" },
-						new String[] {
-								debtType,
-								moneyEditText.getText().toString(),
-								interestTypeString,
-								interestRate.getText().toString(),
-								startDateEditText.getText().toString()
-										.trim(),
-								expiredDateEditText.getText().toString()
-										.trim(),
-								nameEditText.getText().toString(),
-								phoneEditText.getText().toString(),
-								addressEditText.getText().toString() });
+								new String[] {
+										debtType,
+										moneyEditText.getText().toString(),
+										interestTypeString,
+										interestRate.getText().toString(),
+										startDateEditText.getText().toString()
+												.trim(),
+										expiredDateEditText.getText()
+												.toString().trim(),
+										nameEditText.getText().toString(),
+										phoneEditText.getText().toString(),
+										addressEditText.getText().toString() });
 				setResult(100);
 				BorrowLendInsertActivity.this.finish();
 			} else {

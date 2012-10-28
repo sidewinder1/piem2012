@@ -29,7 +29,7 @@ public class CategoryRepository {
 								.getString(categoryCursor
 										.getColumnIndex("User_Color"))));
 			} while (categoryCursor.moveToNext());
-			
+
 			sort();
 		}
 	}

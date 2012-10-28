@@ -16,21 +16,20 @@ public class DataManager {
 		IDataRepository dataRepository = new ScheduleRepository();
 
 		if (tableName != null) {
-			
-			if (repository.containsKey(tableName)) 
-			{
+
+			if (repository.containsKey(tableName)) {
 				repository.remove(tableName);
 			}
-			
+
 			repository.put(tableName, dataRepository.getData(param));
 		}
 	}
 
-	public static ArrayList<IModelBase> getObjects(String tableName, String param) {
+	public static ArrayList<IModelBase> getObjects(String tableName,
+			String param) {
 		return repository.get(tableName);
 	}
-	
-	
+
 	public static void sort(ArrayList<IModelBase> values) {
 		int i, j;
 		int length = values.size();
