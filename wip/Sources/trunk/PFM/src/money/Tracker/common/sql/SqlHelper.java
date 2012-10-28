@@ -117,7 +117,7 @@ public class SqlHelper {
 	}
 
 	public void initializeTable() {
-		// Create table for Schedule.		
+		// Create table for Schedule.
 		createTable(
 				"Schedule",
 				new StringBuilder(
@@ -135,16 +135,12 @@ public class SqlHelper {
 				"EntryDetail",
 				new StringBuilder(
 						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT,")
-						.append("Money FLOAT, Entry_Id INTEGER")
-						.toString());
+						.append("Money FLOAT, Entry_Id INTEGER").toString());
 
 		// Create table for Entry Detail.
-		createTable(
-				"Entry",
-				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, ")
-						.append("Date DATE, Type INTEGER")
-						.toString());
+		createTable("Entry",
+				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT, ")
+						.append("Date DATE, Type INTEGER").toString());
 
 		// Create table for Borrow and Lending.
 		createTable("BorrowLend", "ID INTEGER PRIMARY KEY autoincrement,"

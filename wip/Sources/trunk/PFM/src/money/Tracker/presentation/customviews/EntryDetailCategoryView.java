@@ -16,7 +16,6 @@ public class EntryDetailCategoryView extends LinearLayout {
 	private TextView category_name, category_count, category_total;
 	private LinearLayout category_list;
 
-	
 	public EntryDetailCategoryView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
@@ -50,9 +49,9 @@ public class EntryDetailCategoryView extends LinearLayout {
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 			category_list.addView(item, params);
 		}
-		
-		category_count.setText(new StringBuilder(" (").append(count).append(")")
-				.toString());
+
+		category_count.setText(new StringBuilder(" (").append(count)
+				.append(")").toString());
 		this.category_total.setText(Converter.toString(total));
 	}
 }

@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class EntryWeekView  extends LinearLayout {
+public class EntryWeekView extends LinearLayout {
 	private TextView name;
 	private TextView cost;
 	private LinearLayout chart;
@@ -29,7 +29,8 @@ public class EntryWeekView  extends LinearLayout {
 		super(context);
 	}
 
-	public EntryWeekView(Context context, String keyMonth, LinkedHashMap<String, ArrayList<Entry>> arrayData) {
+	public EntryWeekView(Context context, String keyMonth,
+			LinkedHashMap<String, ArrayList<Entry>> arrayData) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -58,7 +59,8 @@ public class EntryWeekView  extends LinearLayout {
 		if (entrySet != null) {
 			double total = 0;
 			// Set count.
-			count_text.setText(new StringBuilder("(").append(entrySet.size()).append(")"));
+			count_text.setText(new StringBuilder("(").append(entrySet.size())
+					.append(")"));
 
 			// Draw chart.
 			entryDayList.removeAllViews();

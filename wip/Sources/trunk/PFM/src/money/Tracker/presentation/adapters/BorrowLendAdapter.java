@@ -20,8 +20,9 @@ import android.widget.BaseAdapter;
 public class BorrowLendAdapter extends ArrayAdapter<Object> {
 	private Context mContext;
 	private ArrayList<Object> arrayListBorrowLend;
-	
-	public BorrowLendAdapter(Context context, int resource, ArrayList<Object> object) {
+
+	public BorrowLendAdapter(Context context, int resource,
+			ArrayList<Object> object) {
 		super(context, resource, object);
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
@@ -48,23 +49,25 @@ public class BorrowLendAdapter extends ArrayAdapter<Object> {
 		// get selected entry
 		BorrowLend entry = (BorrowLend) arrayListBorrowLend.get(pos);
 		BorrowLendViewItemActivity borrowLendViewItem = (BorrowLendViewItemActivity) convertView;
-		//borrowLendViewItem.setClickable(true);
-		//borrowLendViewItem.setFocusable(true);
-		
-		if(borrowLendViewItem == null)
-		{
+		// borrowLendViewItem.setClickable(true);
+		// borrowLendViewItem.setFocusable(true);
+
+		if (borrowLendViewItem == null) {
 			borrowLendViewItem = new BorrowLendViewItemActivity(mContext);
 		}
-	    
+
 		borrowLendViewItem.personNameTextView.setText(entry.getPersonName());
-		borrowLendViewItem.moneyTextView.setText(Converter.toString(entry.getMoney()));
+		borrowLendViewItem.moneyTextView.setText(Converter.toString(entry
+				.getMoney()));
 		Log.d("Check number", String.valueOf(entry.getMoney()));
-		borrowLendViewItem.startDateTextView.setText(Converter.toString(entry.getStartDate(), "MMM dd, yyyy"));
+		borrowLendViewItem.startDateTextView.setText(Converter.toString(
+				entry.getStartDate(), "MMM dd, yyyy"));
 		if (entry.getExpiredDate() != null)
-			borrowLendViewItem.expiredDateTextView.setText(Converter.toString(entry.getExpiredDate(), "MMM dd, yyyy"));
+			borrowLendViewItem.expiredDateTextView.setText(Converter.toString(
+					entry.getExpiredDate(), "MMM dd, yyyy"));
 		else
 			borrowLendViewItem.expiredDateTextView.setText("");
-		
+
 		return borrowLendViewItem;
 	}
 }

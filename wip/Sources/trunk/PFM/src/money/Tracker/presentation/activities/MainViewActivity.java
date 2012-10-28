@@ -61,8 +61,8 @@ public class MainViewActivity extends TabActivity {
 		addSchedule.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (tab_type == 0) {
-					Intent entryEditIntent = new Intent(
-							MainViewActivity.this, EntryEditActivity.class);
+					Intent entryEditIntent = new Intent(MainViewActivity.this,
+							EntryEditActivity.class);
 					entryEditIntent.putExtra("entry_id", -1);
 					startActivityForResult(entryEditIntent, 100);
 				} else {

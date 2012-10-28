@@ -11,7 +11,7 @@ public class ScheduleViewItem extends LinearLayout {
 	public TextView schedule_item_title, total_budget;
 	public LinearLayout stacked_bar_chart;
 	Intent viewDetail;
-	
+
 	public ScheduleViewItem(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -19,9 +19,8 @@ public class ScheduleViewItem extends LinearLayout {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.schedule_view_item, this, true);
 
-		
-		schedule_item_title = (TextView)findViewById(R.id.schedule_item_name);
-		total_budget = (TextView)findViewById(R.id.schedule_total_budget);
-		stacked_bar_chart = (LinearLayout)findViewById(R.id.stacked_bar_chart);
+		schedule_item_title = (TextView) findViewById(R.id.schedule_item_name);
+		total_budget = (TextView) findViewById(R.id.schedule_total_budget);
+		stacked_bar_chart = (LinearLayout) findViewById(R.id.stacked_bar_chart);
 	}
 }

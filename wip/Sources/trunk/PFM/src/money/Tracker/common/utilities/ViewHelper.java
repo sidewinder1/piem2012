@@ -14,13 +14,14 @@ import android.widget.TabHost.TabSpec;
 
 public class ViewHelper {
 	// This method is used to setup a tab with Name tab and content of tab.
-	public static void setupTab(final Intent intent, final String tag, TabHost mTabHost) {
+	public static void setupTab(final Intent intent, final String tag,
+			TabHost mTabHost) {
 		View tabview = createTabView(mTabHost.getContext(), tag);
 		TabSpec setContent = mTabHost.newTabSpec(tag).setIndicator(tabview);
-		setContent.setContent(intent);   
+		setContent.setContent(intent);
 		mTabHost.addTab(setContent);
 	}
-	
+
 	// Create tab view.
 	private static View createTabView(final Context context, final String text) {
 		View view = LayoutInflater.from(context)

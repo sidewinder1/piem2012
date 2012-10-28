@@ -4,7 +4,7 @@ public class Contact {
 	private String name;
 	private String phone;
 	private String address;
-	
+
 	public Contact() {
 		// TODO Auto-generated constructor stub
 	}

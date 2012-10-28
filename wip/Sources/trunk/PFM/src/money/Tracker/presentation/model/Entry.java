@@ -22,7 +22,7 @@ public class Entry implements IModelBase {
 		if (entryDetails == null) {
 			return 0;
 		}
-		
+
 		double total = 0;
 		for (EntryDetail entryDetail : entryDetails) {
 			if (entryDetail.getCategory_id() == category) {
@@ -37,9 +37,9 @@ public class Entry implements IModelBase {
 		if (entryDetails == null) {
 			return 0;
 		}
-		
+
 		double total = 0;
-		
+
 		for (EntryDetail entryKey : entryDetails) {
 			total += entryKey.getMoney();
 		}

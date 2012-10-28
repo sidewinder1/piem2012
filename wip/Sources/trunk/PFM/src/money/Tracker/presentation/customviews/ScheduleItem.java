@@ -27,7 +27,7 @@ public class ScheduleItem extends LinearLayout {
 		addBtn = (Button) findViewById(R.id.schedule_item_add);
 		removeBtn = (Button) findViewById(R.id.schedule_item_remove);
 		category_edit = (EditText) findViewById(R.id.schedule_item_category_edit);
-		
+
 		// Apply the adapter to the spinner.
 		category.setAdapter(categoryAdapter);
 	}

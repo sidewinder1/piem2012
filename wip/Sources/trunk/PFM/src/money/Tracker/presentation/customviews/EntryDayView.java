@@ -76,7 +76,7 @@ public class EntryDayView extends LinearLayout {
 			});
 		}
 	}
-	
+
 	public String getName() {
 		return String.valueOf(name.getText());
 	}

@@ -109,8 +109,7 @@ public class EntryEditActivity extends Activity {
 								: R.string.entry_edit_income_title)
 								: (entryType.isChecked() ? R.string.entry_new_expense_title
 										: R.string.entry_new_income_title)))
-				.replace(
-						"{0}", dateEdit.getText().toString()));
+				.replace("{0}", dateEdit.getText().toString()));
 	}
 
 	public void doneBtnClicked(View v) {
@@ -142,25 +141,22 @@ public class EntryEditActivity extends Activity {
 		}
 
 		int type = entryType.isChecked() ? 1 : 0;
-		Date inputDate = Converter.toDate(
-				String.valueOf(dateEdit.getText()), "dd/MM/yyyy");
-		if (inputDate.after(new Date()))
-		{
+		Date inputDate = Converter.toDate(String.valueOf(dateEdit.getText()),
+				"dd/MM/yyyy");
+		if (inputDate.after(new Date())) {
 			Alert.getInstance().show(this, "Not the future!");
 			return false;
 		}
-		
+
 		String date = Converter.toString(inputDate);
 		String table = "Entry";
 		String subTable = "EntryDetail";
 		long id = passed_entry_id;
 
 		if (passed_entry_id == -1) {
-			Cursor oldEntry = SqlHelper.instance.select(
-					"Entry",
-					"Id",
-					new StringBuilder("Date = '")
-							.append(date).append("'").append(" AND Type = ").append(type).toString());
+			Cursor oldEntry = SqlHelper.instance.select("Entry", "Id",
+					new StringBuilder("Date = '").append(date).append("'")
+							.append(" AND Type = ").append(type).toString());
 			if (oldEntry != null && oldEntry.moveToFirst()) {
 				id = oldEntry.getInt(0);
 			} else {

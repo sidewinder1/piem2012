@@ -10,7 +10,7 @@ public class SqlConnector extends SQLiteOpenHelper {
 	public SqlConnector(Context context) {
 		super(context, dBName, null, 1);
 	}
-	
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 	}

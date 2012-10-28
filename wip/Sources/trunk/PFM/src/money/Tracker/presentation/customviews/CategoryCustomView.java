@@ -25,19 +25,16 @@ public class CategoryCustomView extends LinearLayout {
 	public void setBackgroundColor(String color) {
 		mColor.setBackgroundColor(Color.parseColor(color));
 	}
-	
-	public void setName(String name)
-	{
+
+	public void setName(String name) {
 		mItemContent.setText(name);
 	}
-	
-	public void setId(String id)
-	{
+
+	public void setId(String id) {
 		mItemId.setText(id);
 	}
-	
-	public void setBlackColor()
-	{
+
+	public void setBlackColor() {
 		mItemContent.setTextColor(Color.BLACK);
 	}
 }

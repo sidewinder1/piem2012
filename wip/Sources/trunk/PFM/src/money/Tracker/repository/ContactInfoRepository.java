@@ -76,7 +76,7 @@ public class ContactInfoRepository {
 							ContactsContract.Data.CONTENT_URI, null, addrWhere,
 							addrWhereParams, null);
 
-					while (addrCur.moveToNext()) {						
+					while (addrCur.moveToNext()) {
 						String street = addrCur
 								.getString(addrCur
 										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
@@ -88,29 +88,22 @@ public class ContactInfoRepository {
 										.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
 
 						// Do something with these....
-						if (street == null)
-						{
+						if (street == null) {
 							street = "";
-						}						
-						
-						if (city == null)
-						{
-							city = "";
 						}
-						else
-						{
+
+						if (city == null) {
+							city = "";
+						} else {
 							city = ", " + city;
 						}
-						
-						if (state == null)
-						{
+
+						if (state == null) {
 							state = "";
-						}
-						else
-						{
+						} else {
 							state = ", " + state;
 						}
-						
+
 						returnNameAddress = street + city + state;
 
 					}

@@ -72,7 +72,7 @@ public class ReportViewActivity extends Activity {
 		displayNoReportDataText = (TextView) findViewById(R.id.no_report_data);
 		reportListView = (LinearLayout) findViewById(R.id.report_view_list_view);
 		reportListView.removeAllViews();
-		
+
 		if (checkMonthly) {
 			Cursor monthlyEntry = SqlHelper.instance
 					.select("Entry",
@@ -86,12 +86,16 @@ public class ReportViewActivity extends Activity {
 								.getColumnIndex("monthEntry"));
 						String year = monthlyEntry.getString(monthlyEntry
 								.getColumnIndex("yearEntry"));
-						Log.d("Check report view", monthlyEntry
-								.getString(monthlyEntry
-										.getColumnIndex("monthEntry")) + " - " + String.valueOf(month));
-						Log.d("Check report view", monthlyEntry
-								.getString(monthlyEntry
-										.getColumnIndex("yearEntry")) + " - " + String.valueOf(year));
+						Log.d("Check report view",
+								monthlyEntry.getString(monthlyEntry
+										.getColumnIndex("monthEntry"))
+										+ " - "
+										+ String.valueOf(month));
+						Log.d("Check report view",
+								monthlyEntry.getString(monthlyEntry
+										.getColumnIndex("yearEntry"))
+										+ " - "
+										+ String.valueOf(year));
 
 						Cursor entry = SqlHelper.instance
 								.select("Entry",
@@ -106,15 +110,15 @@ public class ReportViewActivity extends Activity {
 									Date entryDate = Converter.toDate(entry
 											.getString(entry
 													.getColumnIndex("Date")));
-									String entryMonth = entry
-											.getString(entry
-													.getColumnIndex("monthEntry"));
-									String entryYear = entry
-											.getString(entry
-													.getColumnIndex("yearEntry"));
-									
-									Log.d("Check report view", "entryMonth - " + entryMonth);
-									Log.d("Check report view", "entryYear - " + entryYear);
+									String entryMonth = entry.getString(entry
+											.getColumnIndex("monthEntry"));
+									String entryYear = entry.getString(entry
+											.getColumnIndex("yearEntry"));
+
+									Log.d("Check report view", "entryMonth - "
+											+ entryMonth);
+									Log.d("Check report view", "entryYear - "
+											+ entryYear);
 									if (entryMonth.equals(month)
 											&& entryYear.equals(year)) {
 										if (startDate == null) {
@@ -138,26 +142,30 @@ public class ReportViewActivity extends Activity {
 								} while (entry.moveToNext());
 							}
 						}
-						
-						Log.d("Check report view", "Start date - " + Converter.toString(startDate, "dd/MM/yyyy"));
-						if(endDate != null)
-							Log.d("Check report view", "End date - " + Converter.toString(endDate, "dd/MM/yyyy"));
-						else
-						{
+
+						Log.d("Check report view",
+								"Start date - "
+										+ Converter.toString(startDate,
+												"dd/MM/yyyy"));
+						if (endDate != null)
+							Log.d("Check report view", "End date - "
+									+ Converter.toString(endDate, "dd/MM/yyyy"));
+						else {
 							Log.d("Check report view", "End date - null");
 							endDate = startDate;
 						}
-						
+
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-						
-						reportListView.addView(new ReportViewItem(this, startDate, endDate, checkMonthly), params);
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
+
+						reportListView.addView(new ReportViewItem(this,
+								startDate, endDate, checkMonthly), params);
 					} while (monthlyEntry.moveToNext());
 				}
 			}
 
-		} else
-		{
+		} else {
 			Cursor weekEntry = SqlHelper.instance
 					.select("Entry",
 							"DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
@@ -170,12 +178,16 @@ public class ReportViewActivity extends Activity {
 								.getColumnIndex("weekEntry"));
 						String year = weekEntry.getString(weekEntry
 								.getColumnIndex("yearEntry"));
-						Log.d("Check report view", weekEntry
-								.getString(weekEntry
-										.getColumnIndex("weekEntry")) + " - " + String.valueOf(week));
-						Log.d("Check report view", weekEntry
-								.getString(weekEntry
-										.getColumnIndex("yearEntry")) + " - " + String.valueOf(year));
+						Log.d("Check report view",
+								weekEntry.getString(weekEntry
+										.getColumnIndex("weekEntry"))
+										+ " - "
+										+ String.valueOf(week));
+						Log.d("Check report view",
+								weekEntry.getString(weekEntry
+										.getColumnIndex("yearEntry"))
+										+ " - "
+										+ String.valueOf(year));
 
 						Cursor entry = SqlHelper.instance
 								.select("Entry",
@@ -190,15 +202,15 @@ public class ReportViewActivity extends Activity {
 									Date entryDate = Converter.toDate(entry
 											.getString(entry
 													.getColumnIndex("Date")));
-									String entryWeek = entry
-											.getString(entry
-													.getColumnIndex("weekEntry"));
-									String entryYear = entry
-											.getString(entry
-													.getColumnIndex("yearEntry"));
-									
-									Log.d("Check report view", "entryMonth - " + entryWeek);
-									Log.d("Check report view", "entryYear - " + entryYear);
+									String entryWeek = entry.getString(entry
+											.getColumnIndex("weekEntry"));
+									String entryYear = entry.getString(entry
+											.getColumnIndex("yearEntry"));
+
+									Log.d("Check report view", "entryMonth - "
+											+ entryWeek);
+									Log.d("Check report view", "entryYear - "
+											+ entryYear);
 									if (entryWeek.equals(week)
 											&& entryYear.equals(year)) {
 										if (startDate == null) {
@@ -222,20 +234,25 @@ public class ReportViewActivity extends Activity {
 								} while (entry.moveToNext());
 							}
 						}
-						
-						Log.d("Check report view", "Start date - " + Converter.toString(startDate, "dd/MM/yyyy"));
-						if(endDate != null)
-							Log.d("Check report view", "End date - " + Converter.toString(endDate, "dd/MM/yyyy"));
-						else
-						{
+
+						Log.d("Check report view",
+								"Start date - "
+										+ Converter.toString(startDate,
+												"dd/MM/yyyy"));
+						if (endDate != null)
+							Log.d("Check report view", "End date - "
+									+ Converter.toString(endDate, "dd/MM/yyyy"));
+						else {
 							Log.d("Check report view", "End date - null");
 							endDate = startDate;
 						}
-						
+
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-						
-						reportListView.addView(new ReportViewItem(this, startDate, endDate, checkMonthly), params);
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
+
+						reportListView.addView(new ReportViewItem(this,
+								startDate, endDate, checkMonthly), params);
 					} while (weekEntry.moveToNext());
 				}
 			}

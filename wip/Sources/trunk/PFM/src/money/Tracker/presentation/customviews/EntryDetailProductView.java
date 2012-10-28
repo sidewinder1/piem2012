@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class EntryDetailProductView  extends LinearLayout {
+public class EntryDetailProductView extends LinearLayout {
 	private TextView product_name, product_total;
 
 	public EntryDetailProductView(Context context) {

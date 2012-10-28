@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class CategoryLegendItemView extends LinearLayout {
 	private LinearLayout colorContent;
 	private TextView itemName;
-	
+
 	public CategoryLegendItemView(Context context) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
@@ -24,9 +24,8 @@ public class CategoryLegendItemView extends LinearLayout {
 	public void setColor(String color) {
 		colorContent.setBackgroundColor(Color.parseColor(color));
 	}
-	
-	public void setName(String name)
-	{
+
+	public void setName(String name) {
 		itemName.setText(name);
 	}
 }

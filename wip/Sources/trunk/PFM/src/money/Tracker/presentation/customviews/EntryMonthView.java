@@ -59,7 +59,8 @@ public class EntryMonthView extends LinearLayout {
 		if (entrySet != null) {
 			double total = 0;
 			// Set count.
-			count_text.setText(new StringBuilder("(").append(entrySet.size()).append(")"));
+			count_text.setText(new StringBuilder("(").append(entrySet.size())
+					.append(")"));
 
 			// Draw chart.
 			entryDayList.removeAllViews();

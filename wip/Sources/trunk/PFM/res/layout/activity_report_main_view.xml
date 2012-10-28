@@ -7,7 +7,7 @@
     
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:background="@drawable/title_background"
         android:orientation="horizontal" >
 
@@ -18,7 +18,7 @@
             android:layout_gravity="left|center_vertical"
             android:text="@string/report_management_title"
             android:textColor="@android:color/white"
-            android:textSize="25dp" />
+            android:textSize="18dp" />
     </RelativeLayout>
 
     <TabHost
@@ -36,7 +36,7 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp" />
 
             <FrameLayout
                 android:id="@android:id/tabcontent"

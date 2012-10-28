@@ -96,7 +96,8 @@ public class TabViewActivity extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		selectedEntryItem = (EntryDayView) v;
-		if (v.getId() == R.id.tab_content_view_list || selectedEntryItem != null) {
+		if (v.getId() == R.id.tab_content_view_list
+				|| selectedEntryItem != null) {
 			menu.setHeaderTitle(getResources().getString(
 					R.string.schedule_menu_title));
 			String[] menuItems = getResources().getStringArray(
@@ -110,21 +111,21 @@ public class TabViewActivity extends Activity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		int id = -1;
-		
+
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 		int menuItemIndex = item.getItemId();
-		
+
 		if (selectedEntryItem != null) {
 			id = selectedEntryItem.id;
-		} else {		
+		} else {
 			if (isEntry) {
 				id = ((Entry) values.get(info.position)).getId();
 			} else {
 				id = ((Schedule) values.get(info.position)).id;
 			}
 		}
-		
+
 		switch (menuItemIndex) {
 		case 0: // Edit
 			Intent edit = null;
@@ -144,8 +145,8 @@ public class TabViewActivity extends Activity {
 					getResources().getString(R.string.delete_confirm),
 					new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							SqlHelper.instance
-									.delete(table, new StringBuilder("Id = ").append(sId).toString());
+							SqlHelper.instance.delete(table, new StringBuilder(
+									"Id = ").append(sId).toString());
 							bindData();
 						}
 					});
@@ -229,7 +230,7 @@ public class TabViewActivity extends Activity {
 
 				if ((index % 2 == 0) || index == category.getCount()) {
 					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
-						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+							LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 					chart_legend.addView(itemView, params1);
 					itemView = new LinearLayout(this);
 				}

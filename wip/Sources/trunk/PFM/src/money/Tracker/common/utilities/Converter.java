@@ -13,49 +13,45 @@ public class Converter {
 		return String.valueOf(android.text.format.DateFormat.format(format,
 				date));
 	}
-	
-	public static String toString(double value, String format)
-	{
+
+	public static String toString(double value, String format) {
 		return new DecimalFormat(format).format(value);
 	}
-	
-	public static String toString(double value)
-	{
+
+	public static String toString(double value) {
 		return toString(value, "####0.00");
 	}
-	
-	public static String toString(Color color)
-	{
+
+	public static String toString(Color color) {
 		return "#99000000";
 	}
-	
+
 	public static String toString(Date date) {
 		return String.valueOf(android.text.format.DateFormat.format(
 				dateFormatString, date));
 	}
 
 	public static Date toDate(String date, String inputFormatString) {
-		SimpleDateFormat inputFormat = new SimpleDateFormat(
-				inputFormatString);		
+		SimpleDateFormat inputFormat = new SimpleDateFormat(inputFormatString);
 		Date parsed = new Date();
 		try {
 			parsed = inputFormat.parse(date);
-			
+
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 		}
 
 		return parsed;
 	}
-	
+
 	public static Date toDate(String date) {
 		java.text.DateFormat inputFormat = new SimpleDateFormat(
 				dateFormatString);
 		Date parsed = new Date();
 		try {
-			parsed = inputFormat.parse(date);			
+			parsed = inputFormat.parse(date);
 		} catch (Exception e) {
-			// TODO Add log			
+			// TODO Add log
 		}
 
 		return parsed;
