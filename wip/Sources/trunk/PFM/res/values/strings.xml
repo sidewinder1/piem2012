@@ -7,6 +7,7 @@
     <string name="title_activity_home">Money Tracker</string>
     <string name="dummy_data">Dummy data</string>
     <string name="no_data">No data</string>
+    <string name="image_icon_description">Image of tab</string>
     <string name="delete_confirm">Delete it?</string>
 
     <!-- These are resources for Schedule function -->
