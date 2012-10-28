@@ -34,7 +34,7 @@ public class HomeActivity extends TabActivity {
 		Intent managementIntent = new Intent(this, MainViewActivity.class);
 		managementIntent.putExtra(typeTabPathId, 0);
 		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost);
-		Alert.getInstance().notify(this, MainViewActivity.class, "Test", "Test 1234");
+		
 		// Create tab and intent for schedule.
 		Intent scheduleIntent = new Intent(this, MainViewActivity.class);
 		scheduleIntent.putExtra(typeTabPathId, 1);
