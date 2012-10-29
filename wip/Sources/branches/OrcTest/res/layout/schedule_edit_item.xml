@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <Spinner
+        android:id="@+id/schedule_item_category"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="2dp"
+        android:background="@color/blue_background"
+        android:layout_weight="5"
+        android:gravity="center_vertical" />
+    <EditText
+        android:id="@+id/schedule_item_category_edit"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:visibility="gone"
+        android:textColor="@color/white_text_color"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="2dp"
+        android:layout_weight="5"
+        android:textSize="16dp"
+        android:hint="@string/schedule_new_category"
+        android:gravity="center_vertical" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/schedule_item_price"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_weight="3"
+        android:gravity="bottom"
+        android:inputType="numberDecimal"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/schedule_item_add"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        android:background="@drawable/small_add_button" />
+
+    <Button
+        android:id="@+id/schedule_item_remove"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        android:background="@drawable/small_delete_button" />
+
+</LinearLayout>

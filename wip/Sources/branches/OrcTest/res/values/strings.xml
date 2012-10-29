@@ -1,0 +1,77 @@
+<resources>
+
+    <!-- These are common resources for app -->
+    <string name="app_name">Money Tracker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_home">Money Tracker</string>
+    <string name="dummy_data">Dummy data</string>
+    <string name="no_data">No data</string>
+    <string name="image_icon_description">Image of tab</string>
+    <string name="delete_confirm">Delete it?</string>
+
+    <!-- These are resources for Schedule function -->
+    <string name="schedule_start_day">From</string>
+    <string name="schedule_end_day">To</string>
+    <string name="schedule_budget">Total Budget</string>
+    <string name="schedule_living_cost">Living cost</string>
+    <string name="schedule_price">Price</string>
+    <string name="schedule_duration">Duration</string>
+    <string name="schedule_monthly">Monthly</string>
+    <string name="schedule_detail_budget_title">Budget</string>
+    <string name="schedule_weekly">Weekly</string>
+    <string name="schedule_title">Schedule</string>
+    <string name="schedule_edit_title">New Schedule</string>
+    <string name="schedule_new_category">New Category</string>
+    <string name="schedule_view_detail_title">View Schedule</string>
+    <string name="schedule_detail_average_title">Average</string>
+    <string name="schedule_menu_title">Menu</string>
+
+    <!-- These are resources for Entry function -->
+    <string name="entry_management_title">Quản lý chi tiêu</string>
+    <string name="entry_expense_title">Chi phí</string>
+    <string name="entry_income_title">Thu nhập</string>
+    <string name="entry_new_expense_title">Thêm chi phí</string>
+    <string name="entry_new_income_title">Thêm thu nhập</string>
+    <string name="entry_price_hint">Giá</string>
+    <string name="entry_view_week_item_title">Week</string>
+    <string name="entry_product_name_hint">Tên sản phẩm</string>
+    <string name="entry_daily_total_expense_title">Tổng chi phí ngày</string>
+    <string name="entry_daily_total_income_title">Tổng thu nhập ngày</string>
+    <string name="entry_total_budget_week">Ngân sách tuần còn lại</string>
+    <string name="entry_total_budget_month">Ngân sách tháng còn lại</string>
+    <string name="entry_daily_expense_title">Chi phí ngày {0}</string>
+    <string name="entry_daily_income_title">Thu nhập ngày {0}</string>
+    <string name="entry_edit_expense_title">Sửa chi phí {0}</string>
+    <string name="entry_edit_income_title">Sửa thu nhập {0}</string>
+
+    <!-- These are resources for Report function -->
+    <string name="report_management_title">Báo cáo</string>
+    <string name="report_management_detail_budget">Budget</string>
+    <string name="report_management_detail_income">Income</string>
+    <string name="report_management_detail_expense">Expense</string>
+    <string name="report_management_detail_borrowing">Borrowing</string>
+    <string name="report_management_detail_lending">Lending</string>
+
+    <!-- Others resources -->
+    <string name="title_activity_borrow_view">BorrowViewActivity</string>
+    <string name="title_activity_lend_view">LendViewActivity</string>
+    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
+    <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
+
+    <string-array name="currency_symbol">
+        <item>VND</item>
+        <item>USD</item>
+    </string-array>
+    <string-array name="schedule_context_menu_item">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
+
+    <color name="white_text_color">#F9FFFFFF</color>
+    <color name="blue_background">#432230FF</color>
+    <color name="light_gray_background">#33F8F8F8</color>
+
+    <string name="title_activity_report_chart">ReportChartActivity</string>
+
+</resources>
