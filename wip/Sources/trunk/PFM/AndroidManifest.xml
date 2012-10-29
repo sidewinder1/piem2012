@@ -40,6 +40,7 @@
         <activity android:name=".ReportMainViewDetailActivity" />
         <activity android:name="org.achartengine.GraphicalActivity" />
         <activity android:name=".ReportChartActivity" />
+        <uses-library android:name="android.test.runner"/>
     </application>
 
 </manifest>
