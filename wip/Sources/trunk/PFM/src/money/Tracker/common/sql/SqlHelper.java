@@ -145,8 +145,8 @@ public class SqlHelper {
 		// Create table for Borrow and Lending.
 		createTable("BorrowLend", "ID INTEGER PRIMARY KEY autoincrement,"
 				+ "Debt_type TEXT," + "Money INTEGER," + "Interest_type TEXT,"
-				+ "Interest_rate INTEGER," + "Start_date TEXT,"
-				+ "Expired_date TEXT," + "Person_name TEXT,"
+				+ "Interest_rate INTEGER," + "Start_date DATE,"
+				+ "Expired_date DATE," + "Person_name TEXT,"
 				+ "Person_phone TEXT," + "Person_address TEXT");
 
 		// Create table for Category.

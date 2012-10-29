@@ -51,6 +51,8 @@ public class HomeActivity extends TabActivity {
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
 		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.report_icon);
+		
+		
 	}
 
 	public static void setupTab(final Intent intent, final String tag,

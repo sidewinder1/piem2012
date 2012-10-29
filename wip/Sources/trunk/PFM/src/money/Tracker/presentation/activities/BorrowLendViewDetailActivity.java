@@ -70,11 +70,11 @@ public class BorrowLendViewDetailActivity extends Activity {
 		interestType.setText(String.valueOf(values.getInterestType()));
 		Log.d("View Detail", String.valueOf(values.getStartDate()));
 		startDate.setText(Converter.toString(values.getStartDate(),
-				"MMM dd, yyyy"));
+				"MMMM dd, yyyy"));
 		Log.d("View Detail", String.valueOf(values.getExpiredDate()));
 		if (values.getExpiredDate() != null) {
 			expriedDate.setText(Converter.toString(values.getExpiredDate(),
-					"MMM dd, yyyy"));
+					"MMMM dd, yyyy"));
 		} else {
 			expriedDate.setText("");
 		}
