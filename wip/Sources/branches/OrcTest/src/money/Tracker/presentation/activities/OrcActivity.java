@@ -46,7 +46,6 @@ public class OrcActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
 
 		for (String path : paths) {
@@ -55,7 +54,7 @@ public class OrcActivity extends Activity {
 				if (!dir.mkdirs()) {
 					Log.v(TAG, "ERROR: Creation of directory " + path
 							+ " on sdcard failed");
-					return;
+					continue;
 				} else {
 					Log.v(TAG, "Created directory " + path + " on sdcard");
 				}
