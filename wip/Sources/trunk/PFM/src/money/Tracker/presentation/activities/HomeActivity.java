@@ -1,22 +1,26 @@
 package money.Tracker.presentation.activities;
 
+import java.util.ArrayList;
+
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.Alert;
+import money.Tracker.common.utilities.NfcHelper;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.app.TabActivity;
+import android.os.Parcelable;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
-public class HomeActivity extends TabActivity {
+public class HomeActivity extends NfcDetectorActivity {
 	private final String typeTabPathId = "type.tab.path.id";
+	private NdefMessage[] msgs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,5 +81,35 @@ public class HomeActivity extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
+	}
+
+	public void nfcIntentDetected(Intent intent, String action) {
+		
+	}
+
+	@Override
+	protected void onNfcFeatureNotFound() {
+		
+	}
+
+	@Override
+	protected void onNfcFeatureFound() {
+		Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(
+				NfcAdapter.EXTRA_NDEF_MESSAGES);
+		if (rawMsgs != null) {
+			ArrayList<String> nfcData = new ArrayList<String>();
+			msgs = new NdefMessage[rawMsgs.length];
+			for (int i = 0; i < rawMsgs.length; i++) {
+				msgs[i] = (NdefMessage) rawMsgs[i];
+
+				for (NdefRecord record : msgs[i].getRecords()) {
+					nfcData.add(NfcHelper.parse(record).getTag());
+				}
+			}
+			
+			Intent edit = new Intent(this, EntryEditActivity.class);
+			edit.putExtra("nfc_entry_id", nfcData);
+			startActivity(edit);
+		}
 	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-
 import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
 import jim.h.common.android.lib.zxing.integrator.IntentResult;
@@ -14,7 +13,6 @@ import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
-import money.Tracker.presentation.model.BorrowLend;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.CategoryRepository;
@@ -23,21 +21,14 @@ import money.Tracker.repository.EntryRepository;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -57,7 +48,7 @@ public class EntryEditActivity extends Activity {
 	private int passed_entry_id = -1;
 	LinearLayout entryList;
 	private ZXingLibConfig zxingLibConfig;
-	private Handler handler; 
+	private static ArrayList<EntryDetail> nfcData = new ArrayList<EntryDetail>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +56,17 @@ public class EntryEditActivity extends Activity {
 		setContentView(R.layout.entry_edit);
 
 		Bundle extras = getIntent().getExtras();
-		passed_entry_id = extras.getInt("entry_id");
+		if (extras != null) {
+			passed_entry_id = extras.getInt("entry_id");
+			
+			ArrayList<String> nfcList = extras.getStringArrayList("nfc_entry_id");
+			if(nfcList != null){
+				for(String nfc : nfcList)
+				{
+					nfcData.add(getEntryDetail(nfc));
+				}
+			}
+		}
 
 		entryList = (LinearLayout) findViewById(R.id.entry_edit_list);
 		title = (TextView) findViewById(R.id.entry_edit_tilte);
@@ -95,9 +96,13 @@ public class EntryEditActivity extends Activity {
 		// New Mode
 		if (passed_entry_id == -1) {
 			updateDisplay();
-
-			entryList.addView(new EntryEditCategoryView(this, null), params);
-
+			if (nfcData.size() != 0) {
+				entryList.addView(new EntryEditCategoryView(this, nfcData),
+						params);
+			} else {
+				entryList
+						.addView(new EntryEditCategoryView(this, null), params);
+			}
 		} else { // Edit mode
 			Entry entry = (Entry) EntryRepository.getInstance()
 					.getData("Id = " + passed_entry_id).get(0);
@@ -119,52 +124,50 @@ public class EntryEditActivity extends Activity {
 
 		updateTitle();
 	}
-	
-	private void getQRCode()
-	{
-		handler = new Handler();
+
+	private void getQRCode() {
 		zxingLibConfig = new ZXingLibConfig();
-        zxingLibConfig.useFrontLight = true;
-		
-        IntentIntegrator.initiateScan(EntryEditActivity.this, zxingLibConfig);
+		zxingLibConfig.useFrontLight = true;
+
+		IntentIntegrator.initiateScan(EntryEditActivity.this, zxingLibConfig);
 	}
-	
+
 	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case IntentIntegrator.REQUEST_CODE:
-                IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode,
-                        resultCode, data);
-                if (scanResult == null) {
-                    return;
-                }
-                final String result = scanResult.getContents();
-                if (result != null) {
-                	
-                	String [] _result = result.split("\n");
-                	String nameProduct = _result[0].substring(6);
-                	String price = _result[1].substring(7, _result[1].length() - 3);
-                	
-                	EntryDetail entryDetail = new EntryDetail();
-                	entryDetail.setEntry_id(1);
-                	entryDetail.setName(nameProduct);
-                	entryDetail.setMoney(Double.parseDouble(price.trim()));
-                	
-                	ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
-                	dataEntryDetail.add(entryDetail);
-                	
-                	LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-            				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-                	
-                	entryList.addView(new EntryEditCategoryView(this, dataEntryDetail),
-    						params);
-    						
-                	//txtScanResult.setText(result);
-                }
-                break;            
-        }
-    }
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case IntentIntegrator.REQUEST_CODE:
+			IntentResult scanResult = IntentIntegrator.parseActivityResult(
+					requestCode, resultCode, data);
+			if (scanResult == null) {
+				return;
+			}
+			final String result = scanResult.getContents();
+			if (result != null) {
+
+				String[] _result = result.split("\n");
+				String nameProduct = _result[0].substring(6);
+				String price = _result[1].substring(7, _result[1].length() - 3);
+
+				EntryDetail entryDetail = new EntryDetail();
+				entryDetail.setEntry_id(1);
+				entryDetail.setName(nameProduct);
+				entryDetail.setMoney(Double.parseDouble(price.trim()));
+
+				ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
+				dataEntryDetail.add(entryDetail);
+
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+				entryList.addView(new EntryEditCategoryView(this,
+						dataEntryDetail), params);
+
+				// txtScanResult.setText(result);
+			}
+			break;
+		}
+	}
 
 	private void updateTitle() {
 		title.setText(getResources()
@@ -291,25 +294,50 @@ public class EntryEditActivity extends Activity {
 
 		return null;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.entry_edit_menu, menu);
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.entry_edit_menu, menu);
+		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.entry_edit_get_QR_Code:
-	            getQRCode();
-	            return true;
-	        case R.id.entry_edit_get_NFC:
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.entry_edit_get_QR_Code:
+			getQRCode();
+			return true;
+		case R.id.entry_edit_get_NFC:
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
+	
+	private EntryDetail getEntryDetail(String tag) {
+		String[] strs = tag.split("\n");
+		EntryDetail value = new EntryDetail();
+		try {
+			for (String str : strs) {
+				if (str.toLowerCase().contains("name")
+						|| str.toLowerCase().contains("ten")) {
+					value.setName(str.split(":")[1].trim());
+				} else {
+					if (str.toLowerCase().contains("price")
+							|| str.toLowerCase().contains("gia")) {
+						value.setMoney(Double.parseDouble(str.split(":")[1]
+								.trim()));
+					}
+				}
+			}
+		} catch (Exception e) {
+			Alert.getInstance()
+					.show(this, "Unformated data: " + e.getMessage());
+		}
+
+		return value;
+	}
+
 }
