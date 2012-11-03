@@ -44,7 +44,12 @@
     <string name="entry_daily_income_title">Thu nhập ngày {0}</string>
     <string name="entry_edit_expense_title">Sửa chi phí {0}</string>
     <string name="entry_edit_income_title">Sửa thu nhập {0}</string>
-
+	
+    <!-- These are resources for Entry function -->
+    <string name="entry_edit_menu_title">Menu</string>
+    <string name="entry_edit_qr_code">QR Code</string>
+    <string name="entry_edit_nfc">NFC</string>
+    
     <!-- These are resources for Report function -->
     <string name="report_management_title">Báo cáo</string>
     <string name="report_management_detail_budget">Budget</string>
@@ -67,7 +72,10 @@
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
-
+	<string-array name="entry_edit_context_menu_item">
+        <item>Get QR</item>
+        <item>Get NFC</item>
+    </string-array>
     <color name="white_text_color">#F9FFFFFF</color>
     <color name="blue_background">#432230FF</color>
     <color name="light_gray_background">#33F8F8F8</color>
