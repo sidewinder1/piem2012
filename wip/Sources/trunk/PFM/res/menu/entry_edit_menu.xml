@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Single menu item
+		 Set id, icon and Title for each menu item
+	-->
+    <item android:id="@+id/entry_edit_get_QR_Code"
+                  android:title="@string/entry_edit_qr_code" />
+            <item android:id="@+id/entry_edit_get_NFC"
+                  android:title="@string/entry_edit_nfc" />
+</menu>
