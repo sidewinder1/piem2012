@@ -9,10 +9,6 @@
 
     <uses-permission android:name="android.permission.NFC" />
 
-    <uses-feature
-        android:name="android.hardware.nfc"
-        android:required="false" />
-
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -35,9 +31,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data android:mimeType="text/plain" />
-                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter >
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity android:name=".ScheduleDetailViewActivity" />
@@ -45,10 +43,6 @@
         <activity android:name=".MainViewActivity" />
         <activity android:name=".ScheduleEditActivity" />
         <activity android:name=".EntryEditActivity" >
-            <action android:name="android.intent.action.MAIN" />
-            <data android:mimeType="text/plain" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <action android:name="android.nfc.action.NDEF_DISCOVERED" />
         </activity>
         <activity android:name=".EntryDetailViewActivity" />
         <activity android:name=".BorrowLendMainViewActivity" />

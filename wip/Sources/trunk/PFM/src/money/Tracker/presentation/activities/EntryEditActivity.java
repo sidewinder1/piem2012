@@ -48,7 +48,8 @@ public class EntryEditActivity extends Activity {
 	private int passed_entry_id = -1;
 	LinearLayout entryList;
 	private ZXingLibConfig zxingLibConfig;
-	private static ArrayList<EntryDetail> nfcData = new ArrayList<EntryDetail>();
+	private ArrayList<EntryDetail> nfcData = new ArrayList<EntryDetail>();
+	private String tem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,17 +58,22 @@ public class EntryEditActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			passed_entry_id = extras.getInt("entry_id");
-			
-			ArrayList<String> nfcList = extras.getStringArrayList("nfc_entry_id");
-			if(nfcList != null){
-				for(String nfc : nfcList)
-				{
-					nfcData.add(getEntryDetail(nfc));
+			if (extras.containsKey("entry_id")) {
+				passed_entry_id = extras.getInt("entry_id");
+			}
+
+			if (extras.containsKey("nfc_entry_id")) {
+				ArrayList<String> nfcList = extras
+						.getStringArrayList("nfc_entry_id");
+				if (nfcList != null) {
+					for (String nfc : nfcList) {
+						nfcData.add(getEntryDetail(nfc));
+						tem += nfc;///////////////////
+					}
 				}
 			}
 		}
-
+		Alert.getInstance().show(this, passed_entry_id + ", " + tem);///////////////////////////
 		entryList = (LinearLayout) findViewById(R.id.entry_edit_list);
 		title = (TextView) findViewById(R.id.entry_edit_tilte);
 		dateEdit = (EditText) findViewById(R.id.entry_edit_date);
@@ -315,7 +321,7 @@ public class EntryEditActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	private EntryDetail getEntryDetail(String tag) {
 		String[] strs = tag.split("\n");
 		EntryDetail value = new EntryDetail();
