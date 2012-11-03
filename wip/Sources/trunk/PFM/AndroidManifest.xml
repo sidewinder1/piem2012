@@ -4,35 +4,52 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="10"
         android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-feature android:name="android.hardware.camera" />
-	<uses-feature android:name="android.hardware.camera.autofocus" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:name="money.Tracker.presentation.PfmApplication"
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <application
+        android:name="money.Tracker.presentation.PfmApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" >
+            android:label="@string/title_activity_home"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data android:mimeType="text/plain" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
             </intent-filter>
         </activity>
         <activity android:name=".ScheduleDetailViewActivity" />
         <activity android:name=".TabViewActivity" />
         <activity android:name=".MainViewActivity" />
         <activity android:name=".ScheduleEditActivity" />
-        <activity android:name=".EntryEditActivity" />
+        <activity android:name=".EntryEditActivity" >
+            <action android:name="android.intent.action.MAIN" />
+            <data android:mimeType="text/plain" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+        </activity>
         <activity android:name=".EntryDetailViewActivity" />
         <activity android:name=".BorrowLendMainViewActivity" />
         <activity android:name=".BorrowViewActivity" />
@@ -46,15 +63,18 @@
         <activity android:name=".ReportMainViewDetailActivity" />
         <activity android:name="org.achartengine.GraphicalActivity" />
         <activity android:name=".ReportChartActivity" />
-        <activity android:name="jim.h.common.android.lib.zxing.CaptureActivity"
-			android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden"
-			android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-			android:windowSoftInputMode="stateAlwaysHidden" />
-        
-        <uses-library android:name="android.test.runner"/>
-       
+        <activity
+            android:name="jim.h.common.android.lib.zxing.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <uses-library android:name="android.test.runner" />
     </application>
-<instrumentation 
-    android:name="money.Tracker.unittests.PfmInstrumentationTestRuner"
-    android:targetPackage="money.Tracker.presentation.activities" />
+
+    <instrumentation
+        android:name="money.Tracker.unittests.PfmInstrumentationTestRuner"
+        android:targetPackage="money.Tracker.presentation.activities" />
+
 </manifest>
