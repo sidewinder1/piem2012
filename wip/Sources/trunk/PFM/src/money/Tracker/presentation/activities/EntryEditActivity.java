@@ -43,14 +43,13 @@ public class EntryEditActivity extends Activity {
 	private int mDay;
 	private TextView title;
 	private static final int DATE_DIALOG_ID = 0;
-	private EditText dateEdit;
-	private ToggleButton entryType;
-	private int passed_entry_id = -1;
-	LinearLayout entryList;
+	private EditText mDateEdit;
+	private ToggleButton mEntryType;
+	private int mPassedEntryId = -1;
+	LinearLayout mEntryList;
 	private ZXingLibConfig zxingLibConfig;
-	private ArrayList<EntryDetail> nfcData = new ArrayList<EntryDetail>();
-	private String tem;
-
+	private static HashMap<String, ArrayList<EntryDetail>> sCachedData;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,32 +58,45 @@ public class EntryEditActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			if (extras.containsKey("entry_id")) {
-				passed_entry_id = extras.getInt("entry_id");
+				mPassedEntryId = extras.getInt("entry_id");
+				sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
 			}
 
 			if (extras.containsKey("nfc_entry_id")) {
 				ArrayList<String> nfcList = extras
 						.getStringArrayList("nfc_entry_id");
-				if (nfcList != null) {
-					for (String nfc : nfcList) {
-						nfcData.add(getEntryDetail(nfc));
-						tem += nfc;///////////////////
+				if (nfcList != null && nfcList.size() != 0) {
+					if (sCachedData == null)
+					{
+						sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
 					}
+					
+					for (String nfc : nfcList) {
+						ArrayList<EntryDetail> array = new ArrayList<EntryDetail>();
+						array.add(getEntryDetail(nfc));
+						sCachedData.put(String.valueOf(sCachedData.size()), array);
+					}
+					
+					Alert.getInstance().show(
+							this,
+							getResources().getString(
+									R.string.entry_detect_record).replace(
+									"{0}", String.valueOf(nfcList.size())));
 				}
 			}
 		}
-		Alert.getInstance().show(this, passed_entry_id + ", " + tem);///////////////////////////
-		entryList = (LinearLayout) findViewById(R.id.entry_edit_list);
+
+		mEntryList = (LinearLayout) findViewById(R.id.entry_edit_list);
 		title = (TextView) findViewById(R.id.entry_edit_tilte);
-		dateEdit = (EditText) findViewById(R.id.entry_edit_date);
-		dateEdit.setOnClickListener(new View.OnClickListener() {
+		mDateEdit = (EditText) findViewById(R.id.entry_edit_date);
+		mDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
 
-		entryType = (ToggleButton) findViewById(R.id.entry_edit_type);
-		entryType.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		mEntryType = (ToggleButton) findViewById(R.id.entry_edit_type);
+		mEntryType.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				updateTitle();
@@ -100,35 +112,48 @@ public class EntryEditActivity extends Activity {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		// New Mode
-		if (passed_entry_id == -1) {
+		if (mPassedEntryId == -1) {
 			updateDisplay();
-			if (nfcData.size() != 0) {
-				entryList.addView(new EntryEditCategoryView(this, nfcData),
-						params);
+			if (sCachedData.size() != 0) {
+				for (ArrayList<EntryDetail> entryDetail : sCachedData.values()) {
+					mEntryList.addView(new EntryEditCategoryView(this, entryDetail),
+							params);
+				}
 			} else {
-				entryList
+				mEntryList
 						.addView(new EntryEditCategoryView(this, null), params);
 			}
 		} else { // Edit mode
 			Entry entry = (Entry) EntryRepository.getInstance()
-					.getData("Id = " + passed_entry_id).get(0);
+					.getData("Id = " + mPassedEntryId).get(0);
 			if (entry != null) {
-				dateEdit.setText(Converter.toString(entry.getDate(),
+				mDateEdit.setText(Converter.toString(entry.getDate(),
 						"dd/MM/yyyy"));
 
-				entryType.setChecked(entry.getType() == 1);
+				mEntryType.setChecked(entry.getType() == 1);
 			}
 
 			HashMap<String, ArrayList<EntryDetail>> values = EntryDetailRepository
-					.getInstance().updateData("Entry_Id = " + passed_entry_id,
+					.getInstance().updateData("Entry_Id = " + mPassedEntryId,
 							"Category_Id");
 			for (ArrayList<EntryDetail> entryDetail : values.values()) {
-				entryList.addView(new EntryEditCategoryView(this, entryDetail),
+				mEntryList.addView(new EntryEditCategoryView(this, entryDetail),
 						params);
 			}
 		}
 
 		updateTitle();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		sCachedData = getAllEntryDetails();
 	}
 
 	private void getQRCode() {
@@ -166,7 +191,7 @@ public class EntryEditActivity extends Activity {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-				entryList.addView(new EntryEditCategoryView(this,
+				mEntryList.addView(new EntryEditCategoryView(this,
 						dataEntryDetail), params);
 
 				// txtScanResult.setText(result);
@@ -175,14 +200,32 @@ public class EntryEditActivity extends Activity {
 		}
 	}
 
+	private HashMap<String, ArrayList<EntryDetail>> getAllEntryDetails()
+	{
+		HashMap<String, ArrayList<EntryDetail>> returnValue = new HashMap<String, ArrayList<EntryDetail>>();
+		for (int index = 0; index < mEntryList.getChildCount(); index++)
+		{
+			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList.getChildAt(index);
+			if (item != null)
+			{
+				ArrayList<EntryDetail> entries = item.getDetails();
+				if (entries.size() != 0){
+					returnValue.put(String.valueOf(returnValue.size()), entries);
+				}
+			}
+		}
+		
+		return returnValue;
+	}
+	
 	private void updateTitle() {
 		title.setText(getResources()
 				.getString(
-						((passed_entry_id != -1) ? (entryType.isChecked() ? R.string.entry_edit_expense_title
+						((mPassedEntryId != -1) ? (mEntryType.isChecked() ? R.string.entry_edit_expense_title
 								: R.string.entry_edit_income_title)
-								: (entryType.isChecked() ? R.string.entry_new_expense_title
+								: (mEntryType.isChecked() ? R.string.entry_new_expense_title
 										: R.string.entry_new_income_title)))
-				.replace("{0}", dateEdit.getText().toString()));
+				.replace("{0}", mDateEdit.getText().toString()));
 	}
 
 	public void doneBtnClicked(View v) {
@@ -194,8 +237,8 @@ public class EntryEditActivity extends Activity {
 	}
 
 	private String checkBeforeSave() {
-		for (int index = 0; index < entryList.getChildCount(); index++) {
-			EntryEditCategoryView item = (EntryEditCategoryView) entryList
+		for (int index = 0; index < mEntryList.getChildCount(); index++) {
+			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
 					.getChildAt(index);
 			String temp = item.checkBeforeSave();
 			if (item != null && temp != null) {
@@ -213,8 +256,8 @@ public class EntryEditActivity extends Activity {
 			return false;
 		}
 
-		int type = entryType.isChecked() ? 1 : 0;
-		Date inputDate = Converter.toDate(String.valueOf(dateEdit.getText()),
+		int type = mEntryType.isChecked() ? 1 : 0;
+		Date inputDate = Converter.toDate(String.valueOf(mDateEdit.getText()),
 				"dd/MM/yyyy");
 		if (inputDate.after(new Date())) {
 			Alert.getInstance().show(this, "Not the future!");
@@ -224,9 +267,9 @@ public class EntryEditActivity extends Activity {
 		String date = Converter.toString(inputDate);
 		String table = "Entry";
 		String subTable = "EntryDetail";
-		long id = passed_entry_id;
+		long id = mPassedEntryId;
 
-		if (passed_entry_id == -1) {
+		if (mPassedEntryId == -1) {
 			Cursor oldEntry = SqlHelper.instance.select("Entry", "Id",
 					new StringBuilder("Date = '").append(date).append("'")
 							.append(" AND Type = ").append(type).toString());
@@ -239,15 +282,15 @@ public class EntryEditActivity extends Activity {
 		} else {
 			SqlHelper.instance.update(table, new String[] { "Date", "Type" },
 					new String[] { date, String.valueOf(type) },
-					new StringBuilder("Id = ").append(passed_entry_id)
+					new StringBuilder("Id = ").append(mPassedEntryId)
 							.toString());
 			SqlHelper.instance.delete(subTable,
-					new StringBuilder("Entry_Id = ").append(passed_entry_id)
+					new StringBuilder("Entry_Id = ").append(mPassedEntryId)
 							.toString());
 		}
 
-		for (int index = 0; index < entryList.getChildCount(); index++) {
-			EntryEditCategoryView item = (EntryEditCategoryView) entryList
+		for (int index = 0; index < mEntryList.getChildCount(); index++) {
+			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
 					.getChildAt(index);
 			if (item != null) {
 				item.save(id);
@@ -255,10 +298,12 @@ public class EntryEditActivity extends Activity {
 		}
 
 		Alert.getInstance().show(this, "Save successfully!");
+		sCachedData = null;
 		return true;
 	}
 
 	public void cancelBtnClicked(View v) {
+		sCachedData = null;
 		setResult(100);
 		this.finish();
 	}
@@ -266,7 +311,7 @@ public class EntryEditActivity extends Activity {
 	// updates the date in the TextView
 	private void updateDisplay() {
 		Date startDate = DateTimeHelper.getDate(mYear, mMonth, mDay);
-		dateEdit.setText(Converter.toString(startDate, "dd/MM/yyyy"));
+		mDateEdit.setText(Converter.toString(startDate, "dd/MM/yyyy"));
 		updateTitle();
 	}
 
@@ -336,11 +381,22 @@ public class EntryEditActivity extends Activity {
 						value.setMoney(Double.parseDouble(str.split(":")[1]
 								.trim()));
 					}
+					else
+					{
+						if (str.toLowerCase().contains("category")
+								|| str.toLowerCase().contains("loai")) {
+							value.setCategory_id(CategoryRepository.getInstance().getId(str.split(":")[1]
+									.trim()));
+						}
+						else{
+							value.setCategory_id(CategoryRepository.getInstance().getId("Others"));
+						}
+					}
 				}
 			}
 		} catch (Exception e) {
-			Alert.getInstance()
-					.show(this, "Unformated data: " + e.getMessage());
+			Alert.getInstance().show(this,
+					getResources().getString(R.string.entry_unformated_data));
 		}
 
 		return value;

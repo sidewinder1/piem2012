@@ -34,6 +34,8 @@
     <string name="entry_new_expense_title">Thêm chi phí</string>
     <string name="entry_new_income_title">Thêm thu nhập</string>
     <string name="entry_price_hint">Giá</string>
+    <string name="entry_detect_record">Phát hiện {0} bản ghi</string>
+    <string name="entry_unformated_data">Định dạng sai</string>
     <string name="entry_view_week_item_title">Week</string>
     <string name="entry_product_name_hint">Tên sản phẩm</string>
     <string name="entry_daily_total_expense_title">Tổng chi phí ngày</string>
