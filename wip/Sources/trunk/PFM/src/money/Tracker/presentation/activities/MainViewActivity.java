@@ -63,7 +63,7 @@ public class MainViewActivity extends TabActivity {
 				if (tab_type == 0) {
 					Intent entryEditIntent = new Intent(MainViewActivity.this,
 							EntryEditActivity.class);
-					entryEditIntent.putExtra("entry_id2", -1);
+					entryEditIntent.putExtra("entry_id", -1);
 					startActivityForResult(entryEditIntent, 100);
 				} else {
 					Intent scheduleEditIntent = new Intent(
