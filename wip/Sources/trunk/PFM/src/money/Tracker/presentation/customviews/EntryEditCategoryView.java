@@ -192,6 +192,33 @@ public class EntryEditCategoryView extends LinearLayout {
 
 		return null;
 	}
+	
+	public ArrayList<EntryDetail> getDetails()
+	{
+		ArrayList<EntryDetail> data = new ArrayList<EntryDetail>();
+		int category_id_str = CategoryRepository
+				.getInstance().getId(category.getSelectedItemPosition());
+		if (category_edit.getVisibility() == View.VISIBLE) {
+			category_id_str = (int) SqlHelper.instance.insert(
+					"Category",
+					new String[] { "Name", "User_Color" },
+					new String[] { category_edit.getText().toString(),
+							String.valueOf(category_edit.getTag()) });
+
+			CategoryRepository.getInstance().updateData();
+		}
+		
+		for (int index = 0; index < category_list.getChildCount(); index++)
+		{
+			EntryEditProductView item = (EntryEditProductView)category_list.getChildAt(index);
+			if (item != null && !"".equals(item.getName())){
+				EntryDetail entryDetail = new EntryDetail(category_id_str, item.getName(), item.getMoney());
+				data.add(entryDetail);	
+			}
+		}
+		
+		return data;
+	}
 
 	public void save(long entry_id) {
 		String[] columns = new String[] { "Name", "Money", "Category_Id",

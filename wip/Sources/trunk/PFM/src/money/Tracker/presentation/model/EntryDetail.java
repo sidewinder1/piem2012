@@ -8,6 +8,14 @@ public class EntryDetail implements IModelBase {
 	public EntryDetail() {
 		super();
 	}
+	
+	public EntryDetail(int category_id, String name,
+			double money) {
+		super();
+		this.category_id = category_id;
+		this.name = name;
+		this.money = money;
+	}
 
 	public EntryDetail(int id, int entry_id, int category_id, String name,
 			double money) {
