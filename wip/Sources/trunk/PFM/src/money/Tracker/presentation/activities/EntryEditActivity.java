@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,14 +55,16 @@ public class EntryEditActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry_edit);
-
+		Log.d("Check Entry Edit", "Check 1");
+		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			if (extras.containsKey("entry_id")) {
 				mPassedEntryId = extras.getInt("entry_id");
 				sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
 			}
-
+			
+			Log.d("Check Entry Edit", "Check 2");
 			if (extras.containsKey("nfc_entry_id")) {
 				ArrayList<String> nfcList = extras
 						.getStringArrayList("nfc_entry_id");
@@ -85,6 +88,7 @@ public class EntryEditActivity extends Activity {
 				}
 			}
 		}
+		Log.d("Check Entry Edit", "Check 3");
 
 		mEntryList = (LinearLayout) findViewById(R.id.entry_edit_list);
 		title = (TextView) findViewById(R.id.entry_edit_tilte);
@@ -102,27 +106,32 @@ public class EntryEditActivity extends Activity {
 				updateTitle();
 			}
 		});
+		Log.d("Check Entry Edit", "Check 4");
 
 		// get the current date
 		final Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
-
+		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
+			Log.d("Check Entry Edit", "Check 5");
 			if (sCachedData.size() != 0) {
 				for (ArrayList<EntryDetail> entryDetail : sCachedData.values()) {
 					mEntryList.addView(new EntryEditCategoryView(this, entryDetail),
 							params);
 				}
 			} else {
+				Log.d("Check Entry Edit", "Check 5a");
 				mEntryList
 						.addView(new EntryEditCategoryView(this, null), params);
+				Log.d("Check Entry Edit", "Check 6");
 			}
+			Log.d("Check Entry Edit", "Check 7");
 		} else { // Edit mode
 			Entry entry = (Entry) EntryRepository.getInstance()
 					.getData("Id = " + mPassedEntryId).get(0);
@@ -141,8 +150,9 @@ public class EntryEditActivity extends Activity {
 						params);
 			}
 		}
-
+		
 		updateTitle();
+		Log.d("Check Entry Edit", "Check 6");
 	}
 
 	@Override
@@ -177,8 +187,8 @@ public class EntryEditActivity extends Activity {
 			if (result != null) {
 
 				String[] _result = result.split("\n");
-				String nameProduct = _result[0].substring(6);
-				String price = _result[1].substring(7, _result[1].length() - 3);
+				String nameProduct = _result[0].substring(14);
+				String price = _result[1].substring(5, _result[1].length() - 3).replace(".", "");
 
 				EntryDetail entryDetail = new EntryDetail();
 				entryDetail.setEntry_id(1);
