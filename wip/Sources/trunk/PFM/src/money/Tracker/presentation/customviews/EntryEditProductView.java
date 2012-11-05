@@ -52,10 +52,10 @@ public class EntryEditProductView extends LinearLayout {
 				}
 
 				if ("".equals(total_text_view.getText())) {
-					total_text_view.setText("0.00");
+					total_text_view.setText(Converter.toString(0));
 				}
 
-				double currentValue = Double.parseDouble(String
+				double currentValue = Converter.toDouble(String
 						.valueOf(total_text_view.getText()));
 				total_text_view.setText(Converter.toString(currentValue
 						+ Double.parseDouble(cValue.toString()) - sValue));
@@ -63,6 +63,23 @@ public class EntryEditProductView extends LinearLayout {
 			}
 		});
 
+		product.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			public void onFocusChange(View view, boolean hasFocus) {
+				if (hasFocus)
+				{
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+							0, LayoutParams.WRAP_CONTENT, 5);
+					view.setLayoutParams(params);
+				}
+				else{
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+							0, 36, 5);
+					view.setLayoutParams(params);
+				}
+			}
+		});
+		
 		addBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				LinearLayout parent = (LinearLayout) v.getParent().getParent()

@@ -17,6 +17,16 @@ public class Converter {
 	public static String toString(double value, String format) {
 		return new DecimalFormat(format).format(value);
 	}
+	
+	public static Double toDouble(String value) {
+		try{
+			return Double.parseDouble(value);
+		}
+		catch(Exception e)
+		{
+			return 0.0;
+		}
+	}
 
 	public static String toString(double value) {
 		return toString(value, "####0.00");
