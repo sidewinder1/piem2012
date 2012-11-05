@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -55,8 +56,6 @@ public class HomeActivity extends NfcDetectorActivity {
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
 		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.report_icon);
-		
-		
 	}
 
 	public static void setupTab(final Intent intent, final String tag,
