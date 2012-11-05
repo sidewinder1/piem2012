@@ -258,6 +258,12 @@ public class EntryEditActivity extends Activity {
 
 		return null;
 	}
+	
+	@Override
+	public void onBackPressed() {
+		sCachedData = null;
+		super.onBackPressed();
+	};
 
 	private boolean save() {
 		String temp = checkBeforeSave();
@@ -383,13 +389,14 @@ public class EntryEditActivity extends Activity {
 		try {
 			for (String str : strs) {
 				if (str.toLowerCase().contains("name")
-						|| str.toLowerCase().contains("ten")) {
+						|| str.toLowerCase().contains("ten san pham")) {
 					value.setName(str.split(":")[1].trim());
 				} else {
 					if (str.toLowerCase().contains("price")
 							|| str.toLowerCase().contains("gia")) {
-						value.setMoney(Double.parseDouble(str.split(":")[1]
-								.trim()));
+						String money = str.split(":")[1];
+						money = money.toLowerCase().replace("vnd", "").replace(".", "").trim();
+						value.setMoney(Double.parseDouble(money));
 					}
 					else
 					{
