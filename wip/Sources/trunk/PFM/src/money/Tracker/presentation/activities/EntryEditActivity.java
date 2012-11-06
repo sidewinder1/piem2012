@@ -54,7 +54,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private int mPassedEntryId = -1;
 	private LinearLayout mEntryList;
 	private static boolean sIsSaveCached;
-	private ZXingLibConfig zxingLibConfig;
 	private static LinkedHashMap<String, ArrayList<EntryDetail>> sCachedData;
 	private NdefMessage[] msgs;
 
@@ -65,7 +64,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry_edit);
-		Log.d("Check Entry Edit", "Check 1");
 		sIsSaveCached = true;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -73,7 +71,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				mPassedEntryId = extras.getInt("entry_id");
 			}
 
-			Log.d("Check Entry Edit", "Check 2");
 			
 			if (extras.containsKey("nfc_entry_id")) {
 				ArrayList<String> nfcList = extras
@@ -111,7 +108,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 //			sCachedData.put(String.valueOf(sCachedData.size()),
 //					array);
 		}
-		Log.d("Check Entry Edit", "Check 3");
 
 		mEntryList = (LinearLayout) findViewById(R.id.entry_edit_list);
 		title = (TextView) findViewById(R.id.entry_edit_tilte);
@@ -129,7 +125,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				updateTitle();
 			}
 		});
-		Log.d("Check Entry Edit", "Check 4");
 
 		// get the current date
 		final Calendar c = Calendar.getInstance();
@@ -140,19 +135,15 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
-			Log.d("Check Entry Edit", "Check 5");
 			if (sCachedData != null && sCachedData.size() != 0) {
 				for (ArrayList<EntryDetail> entryDetail : sCachedData.values()) {
 					mEntryList.addView(new EntryEditCategoryView(this,
 							entryDetail), mParams);
 				}
 			} else {
-				Log.d("Check Entry Edit", "Check 5a");
 				mEntryList.addView(new EntryEditCategoryView(this, null),
 						mParams);
-				Log.d("Check Entry Edit", "Check 6");
 			}
-			Log.d("Check Entry Edit", "Check 7");
 		} else { // Edit mode
 			Entry entry = (Entry) EntryRepository.getInstance()
 					.getData("Id = " + mPassedEntryId).get(0);
@@ -173,11 +164,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 
 		updateTitle();
-		Log.d("Check Entry Edit", "Check 6");
 	}
 
 	private void getQRCode() {
-		zxingLibConfig = new ZXingLibConfig();
+		ZXingLibConfig zxingLibConfig = new ZXingLibConfig();
 		zxingLibConfig.useFrontLight = true;
 
 		IntentIntegrator.initiateScan(EntryEditActivity.this, zxingLibConfig);
@@ -200,21 +190,19 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				String nameProduct = _result[0].substring(14);
 				String price = _result[1].substring(5, _result[1].length() - 3)
 						.replace(".", "");
-
+				
+				
 				EntryDetail entryDetail = new EntryDetail();
 				entryDetail.setEntry_id(1);
 				entryDetail.setName(nameProduct);
 				entryDetail.setMoney(Converter.toDouble(price.trim()));
-
 				ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
 				dataEntryDetail.add(entryDetail);
-
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 				mEntryList.addView(new EntryEditCategoryView(this,
 						dataEntryDetail), params);
-
 				// txtScanResult.setText(result);
 			}
 
