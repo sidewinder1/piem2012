@@ -3,15 +3,10 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.NfcHelper;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -19,9 +14,8 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
-public class HomeActivity extends NfcDetectorActivity {
+public class HomeActivity extends TabActivity {
 	private final String typeTabPathId = "type.tab.path.id";
-	private NdefMessage[] msgs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +50,6 @@ public class HomeActivity extends NfcDetectorActivity {
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
 		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.report_icon);
-		
-		//TODO: Hardcode to test.
-//		onNfcFeatureNotFound();
 	}
 
 	public static void setupTab(final Intent intent, final String tag,
@@ -83,47 +74,5 @@ public class HomeActivity extends NfcDetectorActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
-	}
-
-	public void nfcIntentDetected(Intent intent, String action) {
-
-	}
-
-	@Override
-	protected void onNfcFeatureNotFound() {
-		//TODO: Hardcode to test.
-//		ArrayList<String> nfcData = new ArrayList<String>();
-//		nfcData.add("ten: Bim bim\n gia: 2.500,00");
-//		nfcData.add("ten: My tom\n gia: 4.710,00");
-//		nfcData.add("ten: Trung ga\n gia: 3.340,00");
-//		
-//		Intent edit = new Intent(this, EntryEditActivity.class);
-//		edit.putExtra("nfc_entry_id", nfcData);
-//		startActivity(edit);
-	}
-
-	@Override
-	protected void onNfcFeatureFound() {
-		Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(
-				NfcAdapter.EXTRA_NDEF_MESSAGES);
-		if (rawMsgs != null) {
-			ArrayList<String> nfcData = new ArrayList<String>();
-			msgs = new NdefMessage[rawMsgs.length];
-			for (int i = 0; i < rawMsgs.length; i++) {
-				msgs[i] = (NdefMessage) rawMsgs[i];
-
-				for (NdefRecord record : msgs[i].getRecords()) {
-					String[] result = NfcHelper.parse(record).getTag()
-							.split("(v|V)(n|N)(d|D)");
-					for (String string : result) {
-						nfcData.add(string);
-					}
-				}
-			}
-
-			Intent edit = new Intent(this, EntryEditActivity.class);
-			edit.putExtra("nfc_entry_id", nfcData);
-			startActivity(edit);
-		}
 	}
 }

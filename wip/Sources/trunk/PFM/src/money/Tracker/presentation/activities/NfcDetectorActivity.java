@@ -1,13 +1,13 @@
 package money.Tracker.presentation.activities;
 
 import money.Tracker.common.utilities.NfcDetector;
-import android.app.TabActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
-public abstract class NfcDetectorActivity extends TabActivity implements NfcDetector.NfcIntentListener {
+public abstract class NfcDetectorActivity extends Activity implements NfcDetector.NfcIntentListener {
     private static final String TAG = NfcDetectorActivity.class.getSimpleName();
 
     protected NfcDetector detector;

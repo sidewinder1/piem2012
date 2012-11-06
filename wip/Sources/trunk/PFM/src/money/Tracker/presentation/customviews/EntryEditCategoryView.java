@@ -176,18 +176,18 @@ public class EntryEditCategoryView extends LinearLayout {
 	}
 
 	public String checkBeforeSave() {
-		if (category_edit.getVisibility() == View.VISIBLE){
-			if("".equals(category_edit.getText().toString())) {
+		if (category_edit.getVisibility() == View.VISIBLE) {
+			if ("".equals(category_edit.getText().toString())) {
 				return "Category is empty!";
-			}
-			else{
+			} else {
 				// Check duplicate.
-				Cursor oldCategory = SqlHelper.instance.select("Category",
+				Cursor oldCategory = SqlHelper.instance.select(
+						"Category",
 						"Name",
-						new StringBuilder("Name = '").append(category_edit.getText().toString())
+						new StringBuilder("Name = '")
+								.append(category_edit.getText().toString())
 								.append("'").toString());
-				if (oldCategory != null && oldCategory.moveToFirst())
-				{
+				if (oldCategory != null && oldCategory.moveToFirst()) {
 					return "Duplicate category";
 				}
 			}
@@ -254,33 +254,11 @@ public class EntryEditCategoryView extends LinearLayout {
 				continue;
 			}
 
-			Cursor oldEntryDetail = SqlHelper.instance.select(subTable,
-					"Id, Money",
-					new StringBuilder("Category_Id = ").append(category_id_str)
-							.append(" AND Entry_Id = ").append(entry_id)
-							.append(" AND Name = '").append(product.getName())
-							.append("'").toString());
+			values = new String[] { product.getName(),
+					Converter.toString(product.getMoney(), "###0.00"),
+					category_id_str, String.valueOf(entry_id) };
 
-			if (oldEntryDetail != null && oldEntryDetail.moveToFirst()) {
-				values = new String[] {
-						product.getName(),
-						Converter.toString(product.getMoney()
-								+ oldEntryDetail.getDouble(1)),
-						category_id_str, String.valueOf(entry_id) };
-
-				SqlHelper.instance.update(
-						subTable,
-						columns,
-						values,
-						new StringBuilder("Id = ").append(
-								oldEntryDetail.getInt(0)).toString());
-			} else {
-				values = new String[] { product.getName(),
-						Converter.toString(product.getMoney()),
-						category_id_str, String.valueOf(entry_id) };
-
-				SqlHelper.instance.insert(subTable, columns, values);
-			}
+			SqlHelper.instance.insert(subTable, columns, values);
 		}
 	}
 }

@@ -5,29 +5,30 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-
 import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
 import jim.h.common.android.lib.zxing.integrator.IntentResult;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
-//import money.Tracker.common.utilities.Logger;
+import money.Tracker.common.utilities.NfcHelper;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.CategoryRepository;
 import money.Tracker.repository.EntryDetailRepository;
 import money.Tracker.repository.EntryRepository;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class EntryEditActivity extends Activity {
+public class EntryEditActivity extends NfcDetectorActivity {
 	private int mYear;
 	private int mMonth;
 	private int mDay;
@@ -51,10 +52,14 @@ public class EntryEditActivity extends Activity {
 	private EditText mDateEdit;
 	private ToggleButton mEntryType;
 	private int mPassedEntryId = -1;
-	LinearLayout mEntryList;
+	private LinearLayout mEntryList;
 	private static boolean sIsSaveCached;
 	private ZXingLibConfig zxingLibConfig;
 	private static LinkedHashMap<String, ArrayList<EntryDetail>> sCachedData;
+	private NdefMessage[] msgs;
+
+	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
+			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -132,8 +137,6 @@ public class EntryEditActivity extends Activity {
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
@@ -141,12 +144,12 @@ public class EntryEditActivity extends Activity {
 			if (sCachedData != null && sCachedData.size() != 0) {
 				for (ArrayList<EntryDetail> entryDetail : sCachedData.values()) {
 					mEntryList.addView(new EntryEditCategoryView(this,
-							entryDetail), params);
+							entryDetail), mParams);
 				}
 			} else {
 				Log.d("Check Entry Edit", "Check 5a");
 				mEntryList.addView(new EntryEditCategoryView(this, null),
-						params);
+						mParams);
 				Log.d("Check Entry Edit", "Check 6");
 			}
 			Log.d("Check Entry Edit", "Check 7");
@@ -165,32 +168,12 @@ public class EntryEditActivity extends Activity {
 							"Category_Id");
 			for (ArrayList<EntryDetail> entryDetail : values.values()) {
 				mEntryList.addView(
-						new EntryEditCategoryView(this, entryDetail), params);
+						new EntryEditCategoryView(this, entryDetail), mParams);
 			}
 		}
 
 		updateTitle();
 		Log.d("Check Entry Edit", "Check 6");
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		//TODO: delete after checking.
-		Logger.Log("On resume:", "EntryEdit");
-		
-		if (sIsSaveCached) {
-			sCachedData = getAllEntryDetails();
-		}
-		else
-		{
-			sCachedData = null;
-		}
 	}
 
 	private void getQRCode() {
@@ -238,24 +221,7 @@ public class EntryEditActivity extends Activity {
 			break;
 		}
 	}
-
-	private LinkedHashMap<String, ArrayList<EntryDetail>> getAllEntryDetails() {
-		LinkedHashMap<String, ArrayList<EntryDetail>> returnValue = new LinkedHashMap<String, ArrayList<EntryDetail>>();
-		for (int index = 0; index < mEntryList.getChildCount(); index++) {
-			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
-					.getChildAt(index);
-			if (item != null) {
-				ArrayList<EntryDetail> entries = item.getDetails();
-				if (entries.size() != 0) {
-					returnValue
-							.put(String.valueOf(returnValue.size()), entries);
-				}
-			}
-		}
-
-		return returnValue;
-	}
-
+	
 	private void updateTitle() {
 		title.setText(getResources()
 				.getString(
@@ -446,4 +412,42 @@ public class EntryEditActivity extends Activity {
 		return value;
 	}
 
+	@Override
+	protected void onNfcFeatureNotFound() {
+		//TODO: Hardcode to test.
+//		ArrayList<String> nfcData = new ArrayList<String>();
+//		nfcData.add("ten: Bim bim\n gia: 2.500,00");
+//		nfcData.add("ten: My tom\n gia: 4.710,00");
+//		nfcData.add("ten: Trung ga\n gia: 3.340,00");
+//		
+//		Intent edit = new Intent(this, EntryEditActivity.class);
+//		edit.putExtra("nfc_entry_id", nfcData);
+//		startActivity(edit);
+	}
+
+	@Override
+	protected void onNfcFeatureFound() {
+		Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(
+				NfcAdapter.EXTRA_NDEF_MESSAGES);
+		if (rawMsgs != null) {
+			msgs = new NdefMessage[rawMsgs.length];
+			ArrayList<EntryDetail> nfcData = new ArrayList<EntryDetail>();
+			for (int i = 0; i < rawMsgs.length; i++) {
+				msgs[i] = (NdefMessage) rawMsgs[i];
+
+				for (NdefRecord record : msgs[i].getRecords()) {
+					String[] result = NfcHelper.parse(record).getTag()
+							.split("(v|V)(n|N)(d|D)");
+					for (String string : result) {
+						nfcData.add(getEntryDetail(string));
+					}
+				}
+			}
+			
+			mEntryList.addView(new EntryEditCategoryView(this, nfcData));
+		}
+	}
+	
+	public void nfcIntentDetected(Intent intent, String action) {
+	}
 }
