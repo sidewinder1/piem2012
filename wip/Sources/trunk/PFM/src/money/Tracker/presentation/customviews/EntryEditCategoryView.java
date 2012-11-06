@@ -74,7 +74,7 @@ public class EntryEditCategoryView extends LinearLayout {
 				EntryEditProductView item = new EntryEditProductView(context,
 						total_money);
 				item.setName(entryDetail.getName());
-				item.setCost(String.valueOf(entryDetail.getMoney()));
+				item.setCost(Converter.toString(entryDetail.getMoney()));
 				category.setSelection(CategoryRepository.getInstance()
 						.getIndex(entryDetail.getCategory_id()));
 				total += Double.parseDouble(item.getCost());
