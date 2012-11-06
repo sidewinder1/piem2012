@@ -56,6 +56,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private static boolean sIsSaveCached;
 	private static LinkedHashMap<String, ArrayList<EntryDetail>> sCachedData;
 	private NdefMessage[] msgs;
+	private int count = 0;
 
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -195,12 +196,17 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				EntryDetail entryDetail = new EntryDetail();
 				entryDetail.setEntry_id(1);
 				entryDetail.setName(nameProduct);
-				entryDetail.setMoney(Converter.toDouble(price.trim()));
+				entryDetail.setMoney(Converter.toDouble(price.trim()) / 1000);
 				ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
 				dataEntryDetail.add(entryDetail);
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-
+				
+				if (mPassedEntryId == -1 && count == 0)
+				{
+					mEntryList.removeAllViews();
+				}
+				count++;
 				mEntryList.addView(new EntryEditCategoryView(this,
 						dataEntryDetail), params);
 				// txtScanResult.setText(result);
