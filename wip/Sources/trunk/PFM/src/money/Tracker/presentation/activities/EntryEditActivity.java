@@ -12,6 +12,7 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
@@ -48,37 +49,41 @@ public class EntryEditActivity extends Activity {
 	private ToggleButton mEntryType;
 	private int mPassedEntryId = -1;
 	LinearLayout mEntryList;
+	private static boolean sIsSaveCached;
 	private ZXingLibConfig zxingLibConfig;
 	private static HashMap<String, ArrayList<EntryDetail>> sCachedData;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry_edit);
 		Log.d("Check Entry Edit", "Check 1");
-		
+		sIsSaveCached = true;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			if (extras.containsKey("entry_id")) {
 				mPassedEntryId = extras.getInt("entry_id");
-				sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
 			}
-			
+
 			Log.d("Check Entry Edit", "Check 2");
 			if (extras.containsKey("nfc_entry_id")) {
 				ArrayList<String> nfcList = extras
 						.getStringArrayList("nfc_entry_id");
 				if (nfcList != null && nfcList.size() != 0) {
-					if (sCachedData == null)
-					{
+					if (sCachedData == null) {
 						sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
 					}
-					
+
 					for (String nfc : nfcList) {
 						ArrayList<EntryDetail> array = new ArrayList<EntryDetail>();
 						array.add(getEntryDetail(nfc));
-						sCachedData.put(String.valueOf(sCachedData.size()), array);
+						sCachedData.put(String.valueOf(sCachedData.size()),
+								array);
+						//TODO: delete after checking.
+						Logger.Log("On create:", "EntryEdit.add nfc item.");
 					}
+					//TODO: delete after checking.
+					Logger.Log("On create:", "EntryEdit");
 					
 					Alert.getInstance().show(
 							this,
@@ -113,22 +118,22 @@ public class EntryEditActivity extends Activity {
 		mYear = c.get(Calendar.YEAR);
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
-		
+
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
 			Log.d("Check Entry Edit", "Check 5");
-			if (sCachedData.size() != 0) {
+			if (sCachedData != null && sCachedData.size() != 0) {
 				for (ArrayList<EntryDetail> entryDetail : sCachedData.values()) {
-					mEntryList.addView(new EntryEditCategoryView(this, entryDetail),
-							params);
+					mEntryList.addView(new EntryEditCategoryView(this,
+							entryDetail), params);
 				}
 			} else {
 				Log.d("Check Entry Edit", "Check 5a");
-				mEntryList
-						.addView(new EntryEditCategoryView(this, null), params);
+				mEntryList.addView(new EntryEditCategoryView(this, null),
+						params);
 				Log.d("Check Entry Edit", "Check 6");
 			}
 			Log.d("Check Entry Edit", "Check 7");
@@ -146,11 +151,11 @@ public class EntryEditActivity extends Activity {
 					.getInstance().updateData("Entry_Id = " + mPassedEntryId,
 							"Category_Id");
 			for (ArrayList<EntryDetail> entryDetail : values.values()) {
-				mEntryList.addView(new EntryEditCategoryView(this, entryDetail),
-						params);
+				mEntryList.addView(
+						new EntryEditCategoryView(this, entryDetail), params);
 			}
 		}
-		
+
 		updateTitle();
 		Log.d("Check Entry Edit", "Check 6");
 	}
@@ -159,11 +164,20 @@ public class EntryEditActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
-		sCachedData = getAllEntryDetails();
+		//TODO: delete after checking.
+		Logger.Log("On resume:", "EntryEdit");
+		
+		if (sIsSaveCached) {
+			sCachedData = getAllEntryDetails();
+		}
+		else
+		{
+			sCachedData = null;
+		}
 	}
 
 	private void getQRCode() {
@@ -188,7 +202,8 @@ public class EntryEditActivity extends Activity {
 
 				String[] _result = result.split("\n");
 				String nameProduct = _result[0].substring(14);
-				String price = _result[1].substring(5, _result[1].length() - 3).replace(".", "");
+				String price = _result[1].substring(5, _result[1].length() - 3)
+						.replace(".", "");
 
 				EntryDetail entryDetail = new EntryDetail();
 				entryDetail.setEntry_id(1);
@@ -206,28 +221,28 @@ public class EntryEditActivity extends Activity {
 
 				// txtScanResult.setText(result);
 			}
+
 			break;
 		}
 	}
 
-	private HashMap<String, ArrayList<EntryDetail>> getAllEntryDetails()
-	{
+	private HashMap<String, ArrayList<EntryDetail>> getAllEntryDetails() {
 		HashMap<String, ArrayList<EntryDetail>> returnValue = new HashMap<String, ArrayList<EntryDetail>>();
-		for (int index = 0; index < mEntryList.getChildCount(); index++)
-		{
-			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList.getChildAt(index);
-			if (item != null)
-			{
+		for (int index = 0; index < mEntryList.getChildCount(); index++) {
+			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
+					.getChildAt(index);
+			if (item != null) {
 				ArrayList<EntryDetail> entries = item.getDetails();
-				if (entries.size() != 0){
-					returnValue.put(String.valueOf(returnValue.size()), entries);
+				if (entries.size() != 0) {
+					returnValue
+							.put(String.valueOf(returnValue.size()), entries);
 				}
 			}
 		}
-		
+
 		return returnValue;
 	}
-	
+
 	private void updateTitle() {
 		title.setText(getResources()
 				.getString(
@@ -258,10 +273,10 @@ public class EntryEditActivity extends Activity {
 
 		return null;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-		sCachedData = null;
+		sIsSaveCached = false;
 		super.onBackPressed();
 	};
 
@@ -314,12 +329,12 @@ public class EntryEditActivity extends Activity {
 		}
 
 		Alert.getInstance().show(this, "Save successfully!");
-		sCachedData = null;
+		sIsSaveCached = false;
 		return true;
 	}
 
 	public void cancelBtnClicked(View v) {
-		sCachedData = null;
+		sIsSaveCached = false;
 		setResult(100);
 		this.finish();
 	}
@@ -395,18 +410,18 @@ public class EntryEditActivity extends Activity {
 					if (str.toLowerCase().contains("price")
 							|| str.toLowerCase().contains("gia")) {
 						String money = str.split(":")[1];
-						money = money.toLowerCase().replace("vnd", "").replace(".", "").trim();
+						money = money.toLowerCase().replace("vnd", "")
+								.replace(".", "").trim();
 						value.setMoney(Double.parseDouble(money));
-					}
-					else
-					{
+					} else {
 						if (str.toLowerCase().contains("category")
 								|| str.toLowerCase().contains("loai")) {
-							value.setCategory_id(CategoryRepository.getInstance().getId(str.split(":")[1]
-									.trim()));
-						}
-						else{
-							value.setCategory_id(CategoryRepository.getInstance().getId("Others"));
+							value.setCategory_id(CategoryRepository
+									.getInstance().getId(
+											str.split(":")[1].trim()));
+						} else {
+							value.setCategory_id(CategoryRepository
+									.getInstance().getId("Others"));
 						}
 					}
 				}

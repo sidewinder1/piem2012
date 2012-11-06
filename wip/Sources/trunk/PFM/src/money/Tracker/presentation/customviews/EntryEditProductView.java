@@ -76,9 +76,11 @@ public class EntryEditProductView extends LinearLayout {
 					params.setMargins(5, 0, 0, 0);
 					view.setLayoutParams(params);
 					((EditText)view).setEllipsize(null);
+					((EditText)view).setSingleLine(false);
 				} else {
 					view.setLayoutParams(mLastParams);
-					((EditText)view).setEllipsize(TextUtils.TruncateAt.MIDDLE);
+					((EditText)view).setEllipsize(TextUtils.TruncateAt.END);
+					((EditText)view).setSingleLine();
 				}
 			}
 		});

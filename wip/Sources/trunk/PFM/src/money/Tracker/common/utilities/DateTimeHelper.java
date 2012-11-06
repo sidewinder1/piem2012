@@ -20,6 +20,12 @@ public class DateTimeHelper {
 		return new Date(year - 1900, month, day);
 	}
 
+	public static Date now() {
+		calendar = Calendar.getInstance(TimeZone.getDefault(),
+				Locale.getDefault());
+		return calendar.getTime();
+	}
+	
 	public static int getWeekInMonth(Date date) {
 		calendar = Calendar.getInstance(TimeZone.getDefault(),
 				Locale.getDefault());

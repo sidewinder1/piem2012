@@ -176,9 +176,21 @@ public class EntryEditCategoryView extends LinearLayout {
 	}
 
 	public String checkBeforeSave() {
-		if (category_edit.getVisibility() == View.VISIBLE
-				&& "".equals(category_edit.getText().toString())) {
-			return "Category is empty!";
+		if (category_edit.getVisibility() == View.VISIBLE){
+			if("".equals(category_edit.getText().toString())) {
+				return "Category is empty!";
+			}
+			else{
+				// Check duplicate.
+				Cursor oldCategory = SqlHelper.instance.select("Category",
+						"Name",
+						new StringBuilder("Name = '").append(category_edit.getText().toString())
+								.append("'").toString());
+				if (oldCategory != null && oldCategory.moveToFirst())
+				{
+					return "Duplicate category";
+				}
+			}
 		}
 
 		for (int index = 0; index < category_list.getChildCount(); index++) {
@@ -192,31 +204,27 @@ public class EntryEditCategoryView extends LinearLayout {
 
 		return null;
 	}
-	
-	public ArrayList<EntryDetail> getDetails()
-	{
-		ArrayList<EntryDetail> data = new ArrayList<EntryDetail>();
-		int category_id_str = CategoryRepository
-				.getInstance().getId(category.getSelectedItemPosition());
-		if (category_edit.getVisibility() == View.VISIBLE) {
-			category_id_str = (int) SqlHelper.instance.insert(
-					"Category",
-					new String[] { "Name", "User_Color" },
-					new String[] { category_edit.getText().toString(),
-							String.valueOf(category_edit.getTag()) });
 
-			CategoryRepository.getInstance().updateData();
+	public ArrayList<EntryDetail> getDetails() {
+		ArrayList<EntryDetail> data = new ArrayList<EntryDetail>();
+		int category_id_str = CategoryRepository.getInstance().getId(
+				category.getSelectedItemPosition());
+		if (category_edit.getVisibility() == View.VISIBLE) {
+
+			category_id_str = CategoryRepository.getInstance().getId(
+					category_edit.getText().toString());
 		}
-		
-		for (int index = 0; index < category_list.getChildCount(); index++)
-		{
-			EntryEditProductView item = (EntryEditProductView)category_list.getChildAt(index);
-			if (item != null && !"".equals(item.getName())){
-				EntryDetail entryDetail = new EntryDetail(category_id_str, item.getName(), item.getMoney());
-				data.add(entryDetail);	
+
+		for (int index = 0; index < category_list.getChildCount(); index++) {
+			EntryEditProductView item = (EntryEditProductView) category_list
+					.getChildAt(index);
+			if (item != null && !"".equals(item.getName())) {
+				EntryDetail entryDetail = new EntryDetail(category_id_str,
+						item.getName(), item.getMoney());
+				data.add(entryDetail);
 			}
 		}
-		
+
 		return data;
 	}
 
