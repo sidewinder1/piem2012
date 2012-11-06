@@ -27,7 +27,7 @@ public class Converter {
 			}
 			else
 			{
-				value = value.replace(".", "").replace(",", "");
+				value = value.replace(".", "").replace(",", ".");
 			}
 			
 			return Double.parseDouble(value);
