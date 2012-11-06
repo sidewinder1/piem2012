@@ -45,7 +45,7 @@ public class EntryEditProductView extends LinearLayout {
 				if ("".equals(s.toString())) {
 					sValue = 0;
 				} else {
-					sValue = Double.parseDouble(s.toString());
+					sValue = Converter.toDouble(s.toString());
 				}
 			}
 
@@ -62,7 +62,7 @@ public class EntryEditProductView extends LinearLayout {
 				double currentValue = Converter.toDouble(String
 						.valueOf(total_text_view.getText()));
 				total_text_view.setText(Converter.toString(currentValue
-						+ Double.parseDouble(cValue.toString()) - sValue));
+						+ Converter.toDouble(cValue.toString()) - sValue));
 
 			}
 		});
@@ -174,6 +174,6 @@ public class EntryEditProductView extends LinearLayout {
 			return 0;
 		}
 
-		return Double.parseDouble(value);
+		return Converter.toDouble(value);
 	}
 }

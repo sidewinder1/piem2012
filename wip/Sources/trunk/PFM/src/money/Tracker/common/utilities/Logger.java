@@ -1,10 +1,11 @@
 package money.Tracker.common.utilities;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+
 import android.os.Environment;
 
 public class Logger {
@@ -16,7 +17,7 @@ public class Logger {
 	public static void Log(String logMessage, String module) {
 		if (mFile.exists()) {
 			try {
-				FileOutputStream fiStream = new FileOutputStream(mFile);
+				OutputStream fiStream = new FileOutputStream(mBaseDir + File.separator + mFileName);
 				try {
 					fiStream.write(new StringBuilder("- ")
 							.append(Converter.toString(DateTimeHelper.now(),
