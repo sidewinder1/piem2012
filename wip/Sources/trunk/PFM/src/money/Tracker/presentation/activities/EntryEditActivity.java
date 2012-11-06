@@ -12,7 +12,7 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
-import money.Tracker.common.utilities.Logger;
+//import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
@@ -66,6 +66,7 @@ public class EntryEditActivity extends Activity {
 			}
 
 			Log.d("Check Entry Edit", "Check 2");
+			
 			if (extras.containsKey("nfc_entry_id")) {
 				ArrayList<String> nfcList = extras
 						.getStringArrayList("nfc_entry_id");
@@ -80,10 +81,10 @@ public class EntryEditActivity extends Activity {
 						sCachedData.put(String.valueOf(sCachedData.size()),
 								array);
 						//TODO: delete after checking.
-						Logger.Log("On create:", "EntryEdit.add nfc item.");
+//						Logger.Log("On create:", "EntryEdit.add nfc item.");
 					}
 					//TODO: delete after checking.
-					Logger.Log("On create:", "EntryEdit");
+//					Logger.Log("On create:", "EntryEdit");
 					
 					Alert.getInstance().show(
 							this,
@@ -92,6 +93,15 @@ public class EntryEditActivity extends Activity {
 									"{0}", String.valueOf(nfcList.size())));
 				}
 			}
+			
+			// TODO: Hardcode for testing.
+			if (sCachedData == null) {
+				sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
+			}
+			ArrayList<EntryDetail> array = new ArrayList<EntryDetail>();
+			array.add(getEntryDetail("ten: Banh quy\n gia: 120000000"));
+			sCachedData.put(String.valueOf(sCachedData.size()),
+					array);
 		}
 		Log.d("Check Entry Edit", "Check 3");
 
@@ -169,7 +179,7 @@ public class EntryEditActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		//TODO: delete after checking.
-		Logger.Log("On resume:", "EntryEdit");
+//		Logger.Log("On resume:", "EntryEdit");
 		
 		if (sIsSaveCached) {
 			sCachedData = getAllEntryDetails();

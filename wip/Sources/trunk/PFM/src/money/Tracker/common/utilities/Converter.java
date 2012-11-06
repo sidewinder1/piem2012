@@ -20,6 +20,16 @@ public class Converter {
 	
 	public static Double toDouble(String value) {
 		try{
+			String testComma = toString(1000, "#,##0");
+			if (testComma.contains(","))
+			{
+				value = value.replace(",", "");
+			}
+			else
+			{
+				value = value.replace(".", "").replace(",", "");
+			}
+			
 			return Double.parseDouble(value);
 		}
 		catch(Exception e)
