@@ -83,12 +83,12 @@ public class HomeActivity extends NfcDetectorActivity {
 	}
 
 	public void nfcIntentDetected(Intent intent, String action) {
-		
+
 	}
 
 	@Override
 	protected void onNfcFeatureNotFound() {
-		
+
 	}
 
 	@Override
@@ -102,10 +102,14 @@ public class HomeActivity extends NfcDetectorActivity {
 				msgs[i] = (NdefMessage) rawMsgs[i];
 
 				for (NdefRecord record : msgs[i].getRecords()) {
-					nfcData.add(NfcHelper.parse(record).getTag());
+					String[] result = NfcHelper.parse(record).getTag()
+							.split("(v|V)(n|N)(d|D)");
+					for (String string : result) {
+						nfcData.add(string);
+					}
 				}
 			}
-			
+
 			Intent edit = new Intent(this, EntryEditActivity.class);
 			edit.putExtra("nfc_entry_id", nfcData);
 			startActivity(edit);

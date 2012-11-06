@@ -5,6 +5,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ public class EntryEditProductView extends LinearLayout {
 	public EditText product, price;
 	private Button addBtn, removeBtn;
 	final TextView total_text_view;
+	private LinearLayout.LayoutParams mLastParams;
 
 	public EntryEditProductView(Context context, TextView total_view) {
 		super(context);
@@ -29,6 +31,8 @@ public class EntryEditProductView extends LinearLayout {
 		addBtn = (Button) findViewById(R.id.entry_edit_product_item_add);
 		removeBtn = (Button) findViewById(R.id.entry_edit_product_remove);
 
+		mLastParams = (LayoutParams) product.getLayoutParams();
+		
 		price.addTextChangedListener(new TextWatcher() {
 			double sValue = 0;
 
@@ -64,22 +68,21 @@ public class EntryEditProductView extends LinearLayout {
 		});
 
 		product.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			public void onFocusChange(View view, boolean hasFocus) {
-				if (hasFocus)
-				{
+				if (hasFocus) {
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 							0, LayoutParams.WRAP_CONTENT, 5);
+					params.setMargins(5, 0, 0, 0);
 					view.setLayoutParams(params);
-				}
-				else{
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-							0, 36, 5);
-					view.setLayoutParams(params);
+					((EditText)view).setEllipsize(null);
+				} else {
+					view.setLayoutParams(mLastParams);
+					((EditText)view).setEllipsize(TextUtils.TruncateAt.MIDDLE);
 				}
 			}
 		});
-		
+
 		addBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				LinearLayout parent = (LinearLayout) v.getParent().getParent()
