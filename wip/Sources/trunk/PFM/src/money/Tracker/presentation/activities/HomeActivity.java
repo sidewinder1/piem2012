@@ -56,6 +56,9 @@ public class HomeActivity extends NfcDetectorActivity {
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
 		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.report_icon);
+		
+		//TODO: Hardcode to test.
+//		onNfcFeatureNotFound();
 	}
 
 	public static void setupTab(final Intent intent, final String tag,
@@ -88,7 +91,15 @@ public class HomeActivity extends NfcDetectorActivity {
 
 	@Override
 	protected void onNfcFeatureNotFound() {
-
+		//TODO: Hardcode to test.
+//		ArrayList<String> nfcData = new ArrayList<String>();
+//		nfcData.add("ten: Bim bim\n gia: 2.500,00");
+//		nfcData.add("ten: My tom\n gia: 4.710,00");
+//		nfcData.add("ten: Trung ga\n gia: 3.340,00");
+//		
+//		Intent edit = new Intent(this, EntryEditActivity.class);
+//		edit.putExtra("nfc_entry_id", nfcData);
+//		startActivity(edit);
 	}
 
 	@Override

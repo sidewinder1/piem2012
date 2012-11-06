@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
 import jim.h.common.android.lib.zxing.integrator.IntentResult;
@@ -12,6 +14,7 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
+import money.Tracker.common.utilities.Logger;
 //import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
@@ -51,7 +54,7 @@ public class EntryEditActivity extends Activity {
 	LinearLayout mEntryList;
 	private static boolean sIsSaveCached;
 	private ZXingLibConfig zxingLibConfig;
-	private static HashMap<String, ArrayList<EntryDetail>> sCachedData;
+	private static LinkedHashMap<String, ArrayList<EntryDetail>> sCachedData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class EntryEditActivity extends Activity {
 						.getStringArrayList("nfc_entry_id");
 				if (nfcList != null && nfcList.size() != 0) {
 					if (sCachedData == null) {
-						sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
+						sCachedData = new LinkedHashMap<String, ArrayList<EntryDetail>>();
 					}
 
 					for (String nfc : nfcList) {
@@ -81,10 +84,10 @@ public class EntryEditActivity extends Activity {
 						sCachedData.put(String.valueOf(sCachedData.size()),
 								array);
 						//TODO: delete after checking.
-//						Logger.Log("On create:", "EntryEdit.add nfc item.");
+						Logger.Log("On create:", "EntryEdit.add nfc item.");
 					}
 					//TODO: delete after checking.
-//					Logger.Log("On create:", "EntryEdit");
+					Logger.Log("On create:", "EntryEdit");
 					
 					Alert.getInstance().show(
 							this,
@@ -93,15 +96,15 @@ public class EntryEditActivity extends Activity {
 									"{0}", String.valueOf(nfcList.size())));
 				}
 			}
-			
-			// TODO: Hardcode for testing.
-			if (sCachedData == null) {
-				sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
-			}
-			ArrayList<EntryDetail> array = new ArrayList<EntryDetail>();
-			array.add(getEntryDetail("ten: Banh quy\n gia: 120000000"));
-			sCachedData.put(String.valueOf(sCachedData.size()),
-					array);
+//			
+//			// TODO: Hardcode for testing.
+//			if (sCachedData == null) {
+//				sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
+//			}
+//			ArrayList<EntryDetail> array = new ArrayList<EntryDetail>();
+//			array.add(getEntryDetail("ten: Banh quy\n gia: 120000000"));
+//			sCachedData.put(String.valueOf(sCachedData.size()),
+//					array);
 		}
 		Log.d("Check Entry Edit", "Check 3");
 
@@ -179,7 +182,7 @@ public class EntryEditActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		//TODO: delete after checking.
-//		Logger.Log("On resume:", "EntryEdit");
+		Logger.Log("On resume:", "EntryEdit");
 		
 		if (sIsSaveCached) {
 			sCachedData = getAllEntryDetails();
@@ -218,7 +221,7 @@ public class EntryEditActivity extends Activity {
 				EntryDetail entryDetail = new EntryDetail();
 				entryDetail.setEntry_id(1);
 				entryDetail.setName(nameProduct);
-				entryDetail.setMoney(Double.parseDouble(price.trim()));
+				entryDetail.setMoney(Converter.toDouble(price.trim()));
 
 				ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
 				dataEntryDetail.add(entryDetail);
@@ -236,8 +239,8 @@ public class EntryEditActivity extends Activity {
 		}
 	}
 
-	private HashMap<String, ArrayList<EntryDetail>> getAllEntryDetails() {
-		HashMap<String, ArrayList<EntryDetail>> returnValue = new HashMap<String, ArrayList<EntryDetail>>();
+	private LinkedHashMap<String, ArrayList<EntryDetail>> getAllEntryDetails() {
+		LinkedHashMap<String, ArrayList<EntryDetail>> returnValue = new LinkedHashMap<String, ArrayList<EntryDetail>>();
 		for (int index = 0; index < mEntryList.getChildCount(); index++) {
 			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
 					.getChildAt(index);
@@ -414,14 +417,13 @@ public class EntryEditActivity extends Activity {
 		try {
 			for (String str : strs) {
 				if (str.toLowerCase().contains("name")
-						|| str.toLowerCase().contains("ten san pham")) {
+						|| str.toLowerCase().contains("ten")) {
 					value.setName(str.split(":")[1].trim());
 				} else {
 					if (str.toLowerCase().contains("price")
 							|| str.toLowerCase().contains("gia")) {
 						String money = str.split(":")[1];
-						money = money.toLowerCase().replace("vnd", "")
-								.replace(".", "").trim();
+						money = money.replace(".", "").replace(",", ".").trim();
 						value.setMoney(Double.parseDouble(money));
 					} else {
 						if (str.toLowerCase().contains("category")
