@@ -15,16 +15,20 @@ public class Logger {
 	private static File mFile = new File(mBaseDir + File.separator + mFileName);
 
 	public static void Log(String logMessage, String module) {
+		if (!mFile.exists()) {
+			mFile.mkdir();
+		}
 		if (mFile.exists()) {
 			try {
-				OutputStream fiStream = new FileOutputStream(mBaseDir + File.separator + mFileName);
+				OutputStream fiStream = new FileOutputStream(mBaseDir
+						+ File.separator + mFileName);
 				try {
 					fiStream.write(new StringBuilder("- ")
 							.append(Converter.toString(DateTimeHelper.now(),
 									"dd/MM/yyyy HH:mm:ss \n   - ["))
 							.append(module).append("]: ").append(logMessage)
 							.toString().getBytes());
-					
+
 					fiStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();

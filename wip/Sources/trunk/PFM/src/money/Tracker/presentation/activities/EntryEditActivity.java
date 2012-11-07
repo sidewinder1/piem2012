@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
 import jim.h.common.android.lib.zxing.integrator.IntentResult;
@@ -12,7 +11,6 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
-import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.NfcHelper;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
@@ -53,9 +51,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private ToggleButton mEntryType;
 	private int mPassedEntryId = -1;
 	private LinearLayout mEntryList;
-	private static boolean sIsSaveCached;
-	private static LinkedHashMap<String, ArrayList<EntryDetail>> sCachedData;
 	private NdefMessage[] msgs;
+	private boolean mFoundNfcTag;
 	private int count = 0;
 
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
@@ -65,49 +62,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry_edit);
-		sIsSaveCached = true;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			if (extras.containsKey("entry_id")) {
 				mPassedEntryId = extras.getInt("entry_id");
 			}
 
-			
-			if (extras.containsKey("nfc_entry_id")) {
-				ArrayList<String> nfcList = extras
-						.getStringArrayList("nfc_entry_id");
-				if (nfcList != null && nfcList.size() != 0) {
-					if (sCachedData == null) {
-						sCachedData = new LinkedHashMap<String, ArrayList<EntryDetail>>();
-					}
-
-					for (String nfc : nfcList) {
-						ArrayList<EntryDetail> array = new ArrayList<EntryDetail>();
-						array.add(getEntryDetail(nfc));
-						sCachedData.put(String.valueOf(sCachedData.size()),
-								array);
-						//TODO: delete after checking.
-						Logger.Log("On create:", "EntryEdit.add nfc item.");
-					}
-					//TODO: delete after checking.
-					Logger.Log("On create:", "EntryEdit");
-					
-					Alert.getInstance().show(
-							this,
-							getResources().getString(
-									R.string.entry_detect_record).replace(
-									"{0}", String.valueOf(nfcList.size())));
-				}
-			}
-//			
-//			// TODO: Hardcode for testing.
-//			if (sCachedData == null) {
-//				sCachedData = new HashMap<String, ArrayList<EntryDetail>>();
-//			}
-//			ArrayList<EntryDetail> array = new ArrayList<EntryDetail>();
-//			array.add(getEntryDetail("ten: Banh quy\n gia: 120000000"));
-//			sCachedData.put(String.valueOf(sCachedData.size()),
-//					array);
 		}
 
 		mEntryList = (LinearLayout) findViewById(R.id.entry_edit_list);
@@ -136,12 +96,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
-			if (sCachedData != null && sCachedData.size() != 0) {
-				for (ArrayList<EntryDetail> entryDetail : sCachedData.values()) {
-					mEntryList.addView(new EntryEditCategoryView(this,
-							entryDetail), mParams);
-				}
-			} else {
+			// NfcData.
+			if (!mFoundNfcTag) {
 				mEntryList.addView(new EntryEditCategoryView(this, null),
 						mParams);
 			}
@@ -191,8 +147,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				String nameProduct = _result[0].substring(14);
 				String price = _result[1].substring(5, _result[1].length() - 3)
 						.replace(".", "");
-				
-				
+
 				EntryDetail entryDetail = new EntryDetail();
 				entryDetail.setEntry_id(1);
 				entryDetail.setName(nameProduct);
@@ -201,9 +156,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				dataEntryDetail.add(entryDetail);
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-				
-				if (mPassedEntryId == -1 && count == 0)
-				{
+
+				if (mPassedEntryId == -1 && count == 0) {
 					mEntryList.removeAllViews();
 				}
 				count++;
@@ -215,7 +169,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			break;
 		}
 	}
-	
+
 	private void updateTitle() {
 		title.setText(getResources()
 				.getString(
@@ -246,12 +200,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 		return null;
 	}
-
-	@Override
-	public void onBackPressed() {
-		sIsSaveCached = false;
-		super.onBackPressed();
-	};
 
 	private boolean save() {
 		String temp = checkBeforeSave();
@@ -302,12 +250,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 
 		Alert.getInstance().show(this, "Save successfully!");
-		sIsSaveCached = false;
 		return true;
 	}
 
 	public void cancelBtnClicked(View v) {
-		sIsSaveCached = false;
 		setResult(100);
 		this.finish();
 	}
@@ -401,6 +347,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		} catch (Exception e) {
 			Alert.getInstance().show(this,
 					getResources().getString(R.string.entry_unformated_data));
+			return null;
 		}
 
 		return value;
@@ -408,24 +355,28 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 	@Override
 	protected void onNfcFeatureNotFound() {
-		//TODO: Hardcode to test.
-//		ArrayList<String> nfcData = new ArrayList<String>();
-//		nfcData.add("ten: Bim bim\n gia: 2.500,00");
-//		nfcData.add("ten: My tom\n gia: 4.710,00");
-//		nfcData.add("ten: Trung ga\n gia: 3.340,00");
-//		
-//		Intent edit = new Intent(this, EntryEditActivity.class);
-//		edit.putExtra("nfc_entry_id", nfcData);
-//		startActivity(edit);
+		// TODO: Hardcode to test.
+		// ArrayList<String> strData = new ArrayList<String>();
+		// strData.add("ten: Bim bim\n gia: 2.500,00");
+		// strData.add("ten: My tom\n gia: 4.710,00");
+		// strData.add("ten: Trung ga\n gia: 3.340,00");
+		//
+		// for (String string : strData) {
+		// mNfcData.add(getEntryDetail(string));
+		// }
 	}
 
 	@Override
 	protected void onNfcFeatureFound() {
+		mFoundNfcTag = true;
+	}
+
+	public void nfcIntentDetected(Intent intent, String action) {
 		Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(
 				NfcAdapter.EXTRA_NDEF_MESSAGES);
 		if (rawMsgs != null) {
 			msgs = new NdefMessage[rawMsgs.length];
-			ArrayList<EntryDetail> nfcData = new ArrayList<EntryDetail>();
+			int count = 0;
 			for (int i = 0; i < rawMsgs.length; i++) {
 				msgs[i] = (NdefMessage) rawMsgs[i];
 
@@ -433,15 +384,35 @@ public class EntryEditActivity extends NfcDetectorActivity {
 					String[] result = NfcHelper.parse(record).getTag()
 							.split("(v|V)(n|N)(d|D)");
 					for (String string : result) {
-						nfcData.add(getEntryDetail(string));
+						EntryDetail entryDetail = getEntryDetail(string);
+						if (mEntryList != null && entryDetail != null
+								&& !"".equals(String.valueOf(entryDetail.getName()))) {
+							for(int index = 0; index < mEntryList.getChildCount(); index++)
+							{
+								EntryEditCategoryView item = (EntryEditCategoryView)mEntryList.getChildAt(index);
+								
+								if (item != null)
+								{
+									item.removeEmptyEntry();
+								}
+							}
+							
+							ArrayList<EntryDetail> mNfcData = new ArrayList<EntryDetail>();
+							mNfcData.add(entryDetail);
+							mEntryList.addView(new EntryEditCategoryView(this,
+									mNfcData));
+							count++;
+						}
 					}
 				}
 			}
+
+			mFoundNfcTag = count != 0;
 			
-			mEntryList.addView(new EntryEditCategoryView(this, nfcData));
+			Alert.getInstance().show(
+					this,
+					getResources().getString(R.string.entry_detect_record)
+							.replace("{0}", String.valueOf(count)));
 		}
-	}
-	
-	public void nfcIntentDetected(Intent intent, String action) {
 	}
 }

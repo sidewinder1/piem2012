@@ -1,8 +1,5 @@
 package money.Tracker.presentation.activities;
 
-import java.util.ArrayList;
-
-import money.Tracker.common.sql.SqlHelper;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
@@ -21,10 +18,6 @@ public class HomeActivity extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
-
-		// Create db connector
-		SqlHelper.instance = new SqlHelper(this);
-		SqlHelper.instance.initializeTable();
 
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
