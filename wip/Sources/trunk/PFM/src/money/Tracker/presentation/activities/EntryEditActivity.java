@@ -144,26 +144,56 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			if (result != null) {
 
 				String[] _result = result.split("\n");
-				String nameProduct = _result[0].substring(14);
-				String price = _result[1].substring(5, _result[1].length() - 3)
+				if(_result.length > 2 || _result.length == 2)
+				{
+					
+				String nameProduct = "";
+				if (_result[0].length() > 14 && _result[0].contains("Tên sản phẩm: "))
+				{
+					nameProduct = _result[0].substring(14);
+				}
+				
+				String price = "";
+				if (_result[1].length() > 8 && _result[1].contains("Giá: "))
+				{
+				price = _result[1].substring(5, _result[1].length() - 3)
 						.replace(".", "");
-
+				}
+				
+				if (!nameProduct.equals("") && !price.equals(""))
+				{
+					
 				EntryDetail entryDetail = new EntryDetail();
+				try
+				{
 				entryDetail.setEntry_id(1);
 				entryDetail.setName(nameProduct);
 				entryDetail.setMoney(Converter.toDouble(price.trim()) / 1000);
+				} catch (Exception e)
+				{
+					
+				}
+				
 				ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
 				dataEntryDetail.add(entryDetail);
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-				if (mPassedEntryId == -1 && count == 0) {
-					mEntryList.removeAllViews();
+				for(int index = 0; index < mEntryList.getChildCount(); index++)
+				{
+					EntryEditCategoryView item = (EntryEditCategoryView)mEntryList.getChildAt(index);
+					
+					if (item != null)
+					{
+						//item.removeEmptyEntry();
+					}
 				}
-				count++;
+				
 				mEntryList.addView(new EntryEditCategoryView(this,
 						dataEntryDetail), params);
 				// txtScanResult.setText(result);
+				}
+				}
 			}
 
 			break;
@@ -393,7 +423,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 								
 								if (item != null)
 								{
-									item.removeEmptyEntry();
+									//item.removeEmptyEntry();
 								}
 							}
 							
