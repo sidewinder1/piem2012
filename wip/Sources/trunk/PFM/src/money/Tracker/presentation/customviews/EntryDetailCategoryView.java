@@ -9,12 +9,14 @@ import money.Tracker.repository.CategoryRepository;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class EntryDetailCategoryView extends LinearLayout {
 	private TextView category_name, category_count, category_total;
 	private LinearLayout category_list;
+	private boolean mSwitcher;
 
 	public EntryDetailCategoryView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -53,5 +55,12 @@ public class EntryDetailCategoryView extends LinearLayout {
 		category_count.setText(new StringBuilder(" (").append(count)
 				.append(")").toString());
 		this.category_total.setText(Converter.toString(total));
+		
+		setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				category_list.setVisibility(mSwitcher ? View.VISIBLE : View.GONE);
+				mSwitcher = !mSwitcher;
+			}
+		});
 	}
 }

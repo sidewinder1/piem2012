@@ -175,6 +175,18 @@ public class EntryEditCategoryView extends LinearLayout {
 		});
 	}
 
+	public void removeEmptyEntry(){
+		for(int index = 0; index < category_list.getChildCount(); index++)
+		{
+			EntryEditProductView item = (EntryEditProductView)category_list.getChildAt(index);
+			
+			if (item != null && "".equals(item.getName()))
+			{
+				category_list.removeView(item);
+			}
+		}
+	}
+	
 	public String checkBeforeSave() {
 		if (category_edit.getVisibility() == View.VISIBLE) {
 			if ("".equals(category_edit.getText().toString())) {

@@ -7,6 +7,7 @@ public class EntryDetail implements IModelBase {
 
 	public EntryDetail() {
 		super();
+		name = "";
 	}
 	
 	public EntryDetail(int category_id, String name,
