@@ -58,8 +58,8 @@ public class EntryDetailCategoryView extends LinearLayout {
 		
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				category_list.setVisibility(mSwitcher ? View.VISIBLE : View.GONE);
 				mSwitcher = !mSwitcher;
+				category_list.setVisibility(mSwitcher ? View.VISIBLE : View.GONE);
 			}
 		});
 	}
