@@ -73,7 +73,7 @@ public class EntryDetailRepository {
 			EntryDetail t = new EntryDetail();
 			for (i = 0; i < length; i++) {
 				for (j = 1; j < (length - i); j++) {
-					if (entryList.get(j - 1).compareTo(entryList.get(j)) < 0) {
+					if (entryList.get(j - 1).compareTo(entryList.get(j)) > 0) {
 						t = entryList.get(j - 1);
 						entryList.set(j - 1, entryList.get(j));
 						entryList.set(j, t);

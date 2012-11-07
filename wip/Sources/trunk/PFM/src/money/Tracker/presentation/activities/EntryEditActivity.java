@@ -437,7 +437,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				}
 			}
 
-			mFoundNfcTag = count != 0;
+			if (count == 0) {
+				mEntryList.addView(new EntryEditCategoryView(this, null),
+						mParams);
+			}
 			
 			Alert.getInstance().show(
 					this,

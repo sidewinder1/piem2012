@@ -39,11 +39,9 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white_text_color"
-        android:height="1dp" >
-    </LinearLayout>
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/white_text_color" />
 
     <LinearLayout
         android:id="@+id/entry_detail_category_list"
