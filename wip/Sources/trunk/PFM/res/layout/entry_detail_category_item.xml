@@ -46,6 +46,7 @@
     <LinearLayout
         android:id="@+id/entry_detail_category_list"
         android:layout_width="fill_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
