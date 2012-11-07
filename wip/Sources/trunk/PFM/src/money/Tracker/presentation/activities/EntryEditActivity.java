@@ -96,11 +96,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
-			// NfcData.
-			if (!mFoundNfcTag) {
-				mEntryList.addView(new EntryEditCategoryView(this, null),
-						mParams);
-			}
+			mEntryList.addView(new EntryEditCategoryView(this, null), mParams);
 		} else { // Edit mode
 			Entry entry = (Entry) EntryRepository.getInstance()
 					.getData("Id = " + mPassedEntryId).get(0);
@@ -144,55 +140,52 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			if (result != null) {
 
 				String[] _result = result.split("\n");
-				if(_result.length > 2 || _result.length == 2)
-				{
-					
-				String nameProduct = "";
-				if (_result[0].length() > 14 && _result[0].contains("Tên sản phẩm: "))
-				{
-					nameProduct = _result[0].substring(14);
-				}
-				
-				String price = "";
-				if (_result[1].length() > 8 && _result[1].contains("Giá: "))
-				{
-				price = _result[1].substring(5, _result[1].length() - 3)
-						.replace(".", "");
-				}
-				
-				if (!nameProduct.equals("") && !price.equals(""))
-				{
-					
-				EntryDetail entryDetail = new EntryDetail();
-				try
-				{
-				entryDetail.setEntry_id(1);
-				entryDetail.setName(nameProduct);
-				entryDetail.setMoney(Converter.toDouble(price.trim()) / 1000);
-				} catch (Exception e)
-				{
-					
-				}
-				
-				ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
-				dataEntryDetail.add(entryDetail);
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+				if (_result.length > 2 || _result.length == 2) {
 
-				for(int index = 0; index < mEntryList.getChildCount(); index++)
-				{
-					EntryEditCategoryView item = (EntryEditCategoryView)mEntryList.getChildAt(index);
-					
-					if (item != null)
-					{
-						//item.removeEmptyEntry();
+					String nameProduct = "";
+					if (_result[0].length() > 14
+							&& _result[0].contains("Tên sản phẩm: ")) {
+						nameProduct = _result[0].substring(14);
 					}
-				}
-				
-				mEntryList.addView(new EntryEditCategoryView(this,
-						dataEntryDetail), params);
-				// txtScanResult.setText(result);
-				}
+
+					String price = "";
+					if (_result[1].length() > 8 && _result[1].contains("Giá: ")) {
+						price = _result[1]
+								.substring(5, _result[1].length() - 3).replace(
+										".", "");
+					}
+
+					if (!nameProduct.equals("") && !price.equals("")) {
+
+						EntryDetail entryDetail = new EntryDetail();
+						try {
+							entryDetail.setEntry_id(1);
+							entryDetail.setName(nameProduct);
+							entryDetail.setMoney(Converter.toDouble(price
+									.trim()) / 1000);
+						} catch (Exception e) {
+
+						}
+
+						ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
+						dataEntryDetail.add(entryDetail);
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
+
+						for (int index = 0; index < mEntryList.getChildCount(); index++) {
+							EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
+									.getChildAt(index);
+
+							if (item != null) {
+								// item.removeEmptyEntry();
+							}
+						}
+
+						mEntryList.addView(new EntryEditCategoryView(this,
+								dataEntryDetail), params);
+						// txtScanResult.setText(result);
+					}
 				}
 			}
 
@@ -415,18 +408,20 @@ public class EntryEditActivity extends NfcDetectorActivity {
 							.split("(v|V)(n|N)(d|D)");
 					for (String string : result) {
 						EntryDetail entryDetail = getEntryDetail(string);
-						if (mEntryList != null && entryDetail != null
-								&& !"".equals(String.valueOf(entryDetail.getName()))) {
-							for(int index = 0; index < mEntryList.getChildCount(); index++)
-							{
-								EntryEditCategoryView item = (EntryEditCategoryView)mEntryList.getChildAt(index);
-								
-								if (item != null)
-								{
-									//item.removeEmptyEntry();
+						if (mEntryList != null
+								&& entryDetail != null
+								&& !"".equals(String.valueOf(entryDetail
+										.getName()))) {
+							for (int index = 0; index < mEntryList
+									.getChildCount(); index++) {
+								EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
+										.getChildAt(index);
+
+								if (item != null) {
+									item.removeEmptyEntry();
 								}
 							}
-							
+
 							ArrayList<EntryDetail> mNfcData = new ArrayList<EntryDetail>();
 							mNfcData.add(entryDetail);
 							mEntryList.addView(new EntryEditCategoryView(this,
@@ -438,12 +433,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 
 			mFoundNfcTag = count != 0;
-			
+
 			if (count == 0) {
 				mEntryList.addView(new EntryEditCategoryView(this, null),
 						mParams);
 			}
-			
+
 			Alert.getInstance().show(
 					this,
 					getResources().getString(R.string.entry_detect_record)
