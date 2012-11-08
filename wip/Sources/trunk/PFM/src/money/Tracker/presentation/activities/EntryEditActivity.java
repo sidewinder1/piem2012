@@ -13,6 +13,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.NfcHelper;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
+import money.Tracker.presentation.customviews.EntryEditProductView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.CategoryRepository;
@@ -145,20 +146,32 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 					String nameProduct = "";
 					if (_result[0].length() > 14
-							&& _result[0].contains("Tên sản phẩm: ")) {
-						nameProduct = _result[0].substring(14);
+							&& (_result[0].contains("Tên sản phẩm: ") || _result[0].contains("Ten san pham: ") || _result[0].contains("Name: "))) {
+						if(_result[0].contains("Tên sản phẩm: ") || _result[0].contains("Ten san pham: "))
+							nameProduct = _result[0].substring(14);
+						else
+							nameProduct = _result[0].substring(6);
 					}
 
 					String price = "";
-					if (_result[1].length() > 8 && _result[1].contains("Giá: ")) {
-						if (_result[1].contains("VND"))
-						price = _result[1]
-								.substring(5, _result[1].length() - 3).replace(
-										".", "");
-						else
+					if (_result[1].length() > 8 && (_result[1].contains("Giá: ") || _result[1].contains("Gia: ")  || _result[1].contains("Price: "))) {
+						if(_result[1].contains("Giá: ") || _result[1].contains("Gia: "))
+						{
+							if (_result[1].contains("VND"))
 							price = _result[1]
-									.substring(5).replace(
+									.substring(5, _result[1].length() - 3).replace(
 											".", "");
+							else
+								price = _result[1]
+										.substring(5).replace(
+												".", "");
+							}
+							else
+							{
+								price = _result[1]
+										.substring(7).replace(
+												".", "");
+							}
 					}
 
 					if (!nameProduct.equals("") && !price.equals("")) {
@@ -168,7 +181,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 							entryDetail.setEntry_id(1);
 							entryDetail.setName(nameProduct);
 							entryDetail.setMoney(Converter.toDouble(price
-									.trim()) / 1000);
+									.trim()));
 						} catch (Exception e) {
 
 						}
@@ -184,7 +197,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 									.getChildAt(index);
 
 							if (item != null) {
-								item.removeEmptyEntry();
+								if (item.removeEmptyCatagory())
+								{
+									mEntryList.removeView(item);
+								}
 							}
 						}
 
