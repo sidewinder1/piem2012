@@ -178,7 +178,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 									.getChildAt(index);
 
 							if (item != null) {
-								// item.removeEmptyEntry();
+								item.removeEmptyEntry();
 							}
 						}
 
