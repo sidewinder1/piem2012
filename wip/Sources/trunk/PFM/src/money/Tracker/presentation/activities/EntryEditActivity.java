@@ -151,9 +151,14 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 					String price = "";
 					if (_result[1].length() > 8 && _result[1].contains("Giá: ")) {
+						if (_result[1].contains("VND"))
 						price = _result[1]
 								.substring(5, _result[1].length() - 3).replace(
 										".", "");
+						else
+							price = _result[1]
+									.substring(5).replace(
+											".", "");
 					}
 
 					if (!nameProduct.equals("") && !price.equals("")) {
