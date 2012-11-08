@@ -21,7 +21,7 @@ public class HomeActivity extends TabActivity {
 
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
+		// mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
 		// Create Expense & income tab.
 		Intent managementIntent = new Intent(this, MainViewActivity.class);

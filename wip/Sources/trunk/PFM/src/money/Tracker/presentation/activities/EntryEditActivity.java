@@ -53,8 +53,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private LinearLayout mEntryList;
 	private NdefMessage[] msgs;
 	private boolean mFoundNfcTag;
-	private int count = 0;
-
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -96,7 +94,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
-			mEntryList.addView(new EntryEditCategoryView(this, null), mParams);
+			if (mEntryList.getChildCount() == 0 && !mFoundNfcTag) {
+				mEntryList.addView(new EntryEditCategoryView(this, null),
+						mParams);
+			}
 		} else { // Edit mode
 			Entry entry = (Entry) EntryRepository.getInstance()
 					.getData("Id = " + mPassedEntryId).get(0);
@@ -412,15 +413,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 								&& entryDetail != null
 								&& !"".equals(String.valueOf(entryDetail
 										.getName()))) {
-							for (int index = 0; index < mEntryList
-									.getChildCount(); index++) {
-								EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
-										.getChildAt(index);
-
-								if (item != null) {
-									item.removeEmptyEntry();
-								}
-							}
+							removeEmptyItems();
 
 							ArrayList<EntryDetail> mNfcData = new ArrayList<EntryDetail>();
 							mNfcData.add(entryDetail);
@@ -434,7 +427,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 			mFoundNfcTag = count != 0;
 
-			if (count == 0) {
+			if (count == 0 && mEntryList.getChildCount() == 0) {
 				mEntryList.addView(new EntryEditCategoryView(this, null),
 						mParams);
 			}
@@ -443,6 +436,18 @@ public class EntryEditActivity extends NfcDetectorActivity {
 					this,
 					getResources().getString(R.string.entry_detect_record)
 							.replace("{0}", String.valueOf(count)));
+		}
+	}
+
+	private void removeEmptyItems() {
+		for (int index = 0; index < mEntryList
+				.getChildCount(); index++) {
+			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
+					.getChildAt(index);
+
+			if (item != null) {
+				item.removeEmptyEntry();
+			}
 		}
 	}
 }
