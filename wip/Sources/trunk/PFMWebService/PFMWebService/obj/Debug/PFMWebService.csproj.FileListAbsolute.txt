@@ -1,0 +1,5 @@
+C:\Project\PFM2012\wip\Sources\trunk\PFMWebService\PFMWebService\bin\PFMWebService.dll
+C:\Project\PFM2012\wip\Sources\trunk\PFMWebService\PFMWebService\bin\PFMWebService.pdb
+C:\Project\PFM2012\wip\Sources\trunk\PFMWebService\PFMWebService\obj\Debug\ResolveAssemblyReference.cache
+C:\Project\PFM2012\wip\Sources\trunk\PFMWebService\PFMWebService\obj\Debug\PFMWebService.dll
+C:\Project\PFM2012\wip\Sources\trunk\PFMWebService\PFMWebService\obj\Debug\PFMWebService.pdb
