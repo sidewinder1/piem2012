@@ -24,7 +24,6 @@ public abstract class NfcDetectorActivity extends Activity implements NfcDetecto
         } else {
             detector = new NfcDetector(this);
             detector.setListener(this);
-
             onNfcFeatureFound();
         }
     }
@@ -55,11 +54,7 @@ public abstract class NfcDetectorActivity extends Activity implements NfcDetecto
 
     @Override
     public void onNewIntent(Intent intent) {
-
-        Log.d(TAG, "onNewIntent");
-
         // onResume gets called after this to handle the intent
         setIntent(intent);
     }
-
 }
