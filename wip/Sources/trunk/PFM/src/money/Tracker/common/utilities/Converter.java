@@ -39,7 +39,7 @@ public class Converter {
 	}
 
 	public static String toString(double value) {
-		return toString(value, "#,##0.00");
+		return toString(value, "#,##0");
 	}
 
 	public static String toString(Color color) {

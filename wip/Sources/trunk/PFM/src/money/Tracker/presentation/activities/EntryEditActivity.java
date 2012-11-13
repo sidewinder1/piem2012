@@ -53,7 +53,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private int mPassedEntryId = -1;
 	private LinearLayout mEntryList;
 	private NdefMessage[] msgs;
-	private boolean mFoundNfcTag;
+	private boolean mBlocked;
+	
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -95,7 +96,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		// New Mode
 		if (mPassedEntryId == -1) {
 			updateDisplay();
-			if (mEntryList.getChildCount() == 0 && !mFoundNfcTag) {
+
+			if (mEntryList.getChildCount() == 0) {
 				mEntryList.addView(new EntryEditCategoryView(this, null),
 						mParams);
 			}
@@ -398,6 +400,24 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		return value;
 	}
 
+	String test = "";
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mBlocked = true;
+		test += "Paused: " + mBlocked + ", ";
+		Alert.getInstance().show(this, test);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mBlocked = false;
+		test += "Resumed: " + mBlocked + ", ";
+		Alert.getInstance().show(this, test);
+	}
+	
 	@Override
 	protected void onNfcFeatureNotFound() {
 		// TODO: Hardcode to test.
@@ -413,12 +433,19 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 	@Override
 	protected void onNfcFeatureFound() {
-		mFoundNfcTag = true;
 	}
 
 	public void nfcIntentDetected(Intent intent, String action) {
+		test += "Get Data: " + mBlocked + ", ";
+		Alert.getInstance().show(this, test);
+		if (mBlocked)
+		{
+			return;
+		}
+		
 		Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(
 				NfcAdapter.EXTRA_NDEF_MESSAGES);
+		
 		if (rawMsgs != null) {
 			msgs = new NdefMessage[rawMsgs.length];
 			int count = 0;
@@ -446,8 +473,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				}
 			}
 
-			mFoundNfcTag = count != 0;
-
 			if (count == 0 && mEntryList.getChildCount() == 0) {
 				mEntryList.addView(new EntryEditCategoryView(this, null),
 						mParams);
@@ -461,13 +486,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	}
 
 	private void removeEmptyItems() {
-		for (int index = 0; index < mEntryList
-				.getChildCount(); index++) {
+		for (int index = 0; index < mEntryList.getChildCount(); index++) {
 			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
 					.getChildAt(index);
 
-			if (item != null) {
-				item.removeEmptyEntry();
+			if (item != null && item.removeEmptyEntry()) {
+				mEntryList.removeView(item);
 			}
 		}
 	}

@@ -9,34 +9,19 @@ import java.io.OutputStream;
 import android.os.Environment;
 
 public class Logger {
-	private static final String mFileName = "/PfmLogger.pfm";
+	private static final String mAppFolderName = "/Pfm";
+	private static final String mFileLog = "/log.pfm";
 	private static String mBaseDir = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
-	private static File mFile = new File(mBaseDir + File.separator + mFileName);
 
 	public static void Log(String logMessage, String module) {
-		if (!mFile.exists()) {
-			mFile.mkdir();
-		}
-		if (mFile.exists()) {
-			try {
-				OutputStream fiStream = new FileOutputStream(mBaseDir
-						+ File.separator + mFileName);
-				try {
-					fiStream.write(new StringBuilder("- ")
-							.append(Converter.toString(DateTimeHelper.now(),
-									"dd/MM/yyyy HH:mm:ss \n   - ["))
-							.append(module).append("]: ").append(logMessage)
-							.toString().getBytes());
+		String content = new StringBuilder("- ")
+				.append(Converter.toString(DateTimeHelper.now(),
+						"dd/MM/yyyy HH:mm:ss \n   - [")).append(module)
+				.append("]: ").append(logMessage).toString();
 
-					fiStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-
-		}
+		IOHelper.getInstance().writeFile(
+				mBaseDir + File.separator + mAppFolderName + File.separator
+						+ mFileLog, content);
 	}
 }
