@@ -1,0 +1,15 @@
+C:\Workings\vLocation\WebServiceSample\WebServiceSample\bin\WebServiceSample.dll
+C:\Workings\vLocation\WebServiceSample\WebServiceSample\bin\WebServiceSample.pdb
+C:\Workings\vLocation\WebServiceSample\WebServiceSample\obj\Debug\ResolveAssemblyReference.cache
+C:\Workings\vLocation\WebServiceSample\WebServiceSample\obj\Debug\WebServiceSample.dll
+C:\Workings\vLocation\WebServiceSample\WebServiceSample\obj\Debug\WebServiceSample.pdb
+C:\Users\KHANH\Dropbox\vLocation\WebServiceSample\WebServiceSample\bin\WebServiceSample.dll
+C:\Users\KHANH\Dropbox\vLocation\WebServiceSample\WebServiceSample\bin\WebServiceSample.pdb
+C:\Users\KHANH\Dropbox\vLocation\WebServiceSample\WebServiceSample\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KHANH\Dropbox\vLocation\WebServiceSample\WebServiceSample\obj\Debug\WebServiceSample.dll
+C:\Users\KHANH\Dropbox\vLocation\WebServiceSample\WebServiceSample\obj\Debug\WebServiceSample.pdb
+E:\Users\TUANNA01030\Desktop\WebServiceSample\WebServiceSample\bin\WebServiceSample.dll
+E:\Users\TUANNA01030\Desktop\WebServiceSample\WebServiceSample\bin\WebServiceSample.pdb
+E:\Users\TUANNA01030\Desktop\WebServiceSample\WebServiceSample\obj\Debug\ResolveAssemblyReference.cache
+E:\Users\TUANNA01030\Desktop\WebServiceSample\WebServiceSample\obj\Debug\WebServiceSample.dll
+E:\Users\TUANNA01030\Desktop\WebServiceSample\WebServiceSample\obj\Debug\WebServiceSample.pdb
