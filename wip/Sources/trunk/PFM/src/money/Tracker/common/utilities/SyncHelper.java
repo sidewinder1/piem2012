@@ -10,7 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 public class SyncHelper {
 	String NAMESPACE = "http://tempuri.org/";
-	String URL = "http://10.0.2.2:8701/Projects1/Service.asmx";
+	String URL = "http://10.0.2.2:1242/Service1.asmx";
 	String CONFIG_FILE = "Fpm/FpmConfig.cnfg";
 
 	private static SyncHelper _instance;
@@ -36,25 +36,24 @@ public class SyncHelper {
 		}
 
 		NAMESPACE = "http://tempuri.org/";
-		URL = "http://10.0.2.2:8701/Projects1/Service.asmx";
+		URL = "http://10.0.2.2:1242/Service1.asmx";
 	}
 
 	/// Invoke a function from web server.
 	/// Return a value that server's method returned.
 	public SoapObject invokeServerMethod(String methodName){
-		return invokeServerMethod(methodName, null);
+		return invokeServerMethod(methodName, null, null);
 	}
 	
-	public SoapObject invokeServerMethod(String methodName, Object[] params) {
+	public SoapObject invokeServerMethod(String methodName, String [] paramNames, Object[] params) {
 		String SOAP_ACTIONS = new StringBuilder(NAMESPACE).append(
 				methodName).toString();
 
 		SoapObject request = new SoapObject(NAMESPACE, methodName);
 		
-		if (params != null && params.length != 0){
-			int index = 0;
-			for (Object param : params){
-				request.setProperty(index++, param);		
+		if (paramNames != null && paramNames.length != 0){
+			for (int index = 0; index < paramNames.length; index++){
+				request.addProperty(paramNames[index], params[index]);		
 			}
 		}
 		
