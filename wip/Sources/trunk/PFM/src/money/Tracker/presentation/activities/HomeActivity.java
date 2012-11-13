@@ -1,11 +1,14 @@
 package money.Tracker.presentation.activities;
 
+import money.Tracker.common.utilities.Alert;
+import money.Tracker.common.utilities.SyncHelper;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -19,6 +22,12 @@ public class HomeActivity extends TabActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
 
+		String str = SyncHelper
+				.getInstance()
+				.invokeServerMethod("Login",
+						new String[] { "userName", "password" },
+						new Object[] { "", "" }).getProperty(0).toString();
+		Alert.getInstance().show(this, str);
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
 		// mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
@@ -43,8 +52,7 @@ public class HomeActivity extends TabActivity {
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
 		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.report_icon);
-		
-		
+
 	}
 
 	public static void setupTab(final Intent intent, final String tag,
@@ -68,6 +76,16 @@ public class HomeActivity extends TabActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_settings) {
+			Intent sync = new Intent(this, SyncSettingActivity.class);
+			startActivity(sync);
+		}
+		
 		return true;
 	}
 }
