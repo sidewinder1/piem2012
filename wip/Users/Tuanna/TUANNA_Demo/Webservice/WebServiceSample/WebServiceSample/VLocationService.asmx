@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="C#" CodeBehind="VLocationService.asmx.cs" Class="WebServiceSample.Service1" %>

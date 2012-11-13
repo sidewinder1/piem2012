@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PFMDatabaseModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="PFMDatabaseModelStoreContainer">
+          <EntitySet Name="BorrowingLend" EntityType="PFMDatabaseModel.Store.BorrowingLend" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Category" EntityType="PFMDatabaseModel.Store.Category" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Entry" EntityType="PFMDatabaseModel.Store.Entry" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EntryDetail" EntityType="PFMDatabaseModel.Store.EntryDetail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Schedule" EntityType="PFMDatabaseModel.Store.Schedule" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ScheduleDetail" EntityType="PFMDatabaseModel.Store.ScheduleDetail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="PFMDatabaseModel.Store.User" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="BorrowingLend">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="DebtType" Type="varchar" MaxLength="100" />
+          <Property Name="Money" Type="float" />
+          <Property Name="InterestType" Type="varchar" MaxLength="100" />
+          <Property Name="InterestRate" Type="int" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="ExpiredDate" Type="date" />
+          <Property Name="PersonName" Type="varchar" MaxLength="100" />
+          <Property Name="PersonPhone" Type="varchar" MaxLength="100" />
+          <Property Name="PersonAddress" Type="varchar" MaxLength="100" />
+          <Property Name="IsDelete" Type="int" />
+          <Property Name="DateModify" Type="date" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="UserColor" Type="varchar" MaxLength="100" />
+          <Property Name="IsDelete" Type="int" />
+          <Property Name="Date" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Entry">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Type" Type="int" />
+        </EntityType>
+        <EntityType Name="EntryDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="Money" Type="float" />
+          <Property Name="ScheduleID" Type="int" />
+          <Property Name="IsDelete" Type="int" />
+          <Property Name="ModifiedDate" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Budget" Type="float" />
+          <Property Name="Type" Type="varchar" MaxLength="100" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="IsDelete" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Budget" Type="float" />
+          <Property Name="CategoryID" Type="int" />
+          <Property Name="ScheduleID" Type="int" />
+          <Property Name="IsDelete" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" />
+          <Property Name="LastSync" Type="date" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PFMDatabaseModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="PFMDatabaseEntities">
+          <EntitySet Name="BorrowingLends" EntityType="PFMDatabaseModel.BorrowingLend" />
+          <EntitySet Name="Categories" EntityType="PFMDatabaseModel.Category" />
+          <EntitySet Name="Entries" EntityType="PFMDatabaseModel.Entry" />
+          <EntitySet Name="EntryDetails" EntityType="PFMDatabaseModel.EntryDetail" />
+          <EntitySet Name="Schedules" EntityType="PFMDatabaseModel.Schedule" />
+          <EntitySet Name="ScheduleDetails" EntityType="PFMDatabaseModel.ScheduleDetail" />
+          <EntitySet Name="Users" EntityType="PFMDatabaseModel.User" />
+        </EntityContainer>
+        <EntityType Name="BorrowingLend">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="DebtType" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Money" Type="Double" />
+          <Property Name="InterestType" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="InterestRate" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" />
+          <Property Name="ExpiredDate" Type="DateTime" />
+          <Property Name="PersonName" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="PersonPhone" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="PersonAddress" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="IsDelete" Type="Int32" />
+          <Property Name="DateModify" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="UserColor" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="IsDelete" Type="Int32" />
+          <Property Name="Date" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+        </EntityType>
+        <EntityType Name="Entry">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" />
+          <Property Name="Type" Type="Int32" />
+        </EntityType>
+        <EntityType Name="EntryDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Money" Type="Double" />
+          <Property Name="ScheduleID" Type="Int32" />
+          <Property Name="IsDelete" Type="Int32" />
+          <Property Name="ModifiedDate" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Budget" Type="Double" />
+          <Property Name="Type" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="StartDate" Type="DateTime" />
+          <Property Name="EndDate" Type="DateTime" />
+          <Property Name="IsDelete" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Budget" Type="Double" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="ScheduleID" Type="Int32" />
+          <Property Name="IsDelete" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="LastSync" Type="DateTime" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="PFMDatabaseModelStoreContainer" CdmEntityContainer="PFMDatabaseEntities">
+          <EntitySetMapping Name="BorrowingLends"><EntityTypeMapping TypeName="PFMDatabaseModel.BorrowingLend"><MappingFragment StoreEntitySet="BorrowingLend">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="DebtType" ColumnName="DebtType" />
+            <ScalarProperty Name="Money" ColumnName="Money" />
+            <ScalarProperty Name="InterestType" ColumnName="InterestType" />
+            <ScalarProperty Name="InterestRate" ColumnName="InterestRate" />
+            <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+            <ScalarProperty Name="ExpiredDate" ColumnName="ExpiredDate" />
+            <ScalarProperty Name="PersonName" ColumnName="PersonName" />
+            <ScalarProperty Name="PersonPhone" ColumnName="PersonPhone" />
+            <ScalarProperty Name="PersonAddress" ColumnName="PersonAddress" />
+            <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+            <ScalarProperty Name="DateModify" ColumnName="DateModify" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Categories"><EntityTypeMapping TypeName="PFMDatabaseModel.Category"><MappingFragment StoreEntitySet="Category">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="UserColor" ColumnName="UserColor" />
+            <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+            <ScalarProperty Name="Date" ColumnName="Date" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Entries"><EntityTypeMapping TypeName="PFMDatabaseModel.Entry"><MappingFragment StoreEntitySet="Entry">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="Date" ColumnName="Date" />
+            <ScalarProperty Name="Type" ColumnName="Type" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="EntryDetails"><EntityTypeMapping TypeName="PFMDatabaseModel.EntryDetail"><MappingFragment StoreEntitySet="EntryDetail">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Money" ColumnName="Money" />
+            <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+            <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+            <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Schedules"><EntityTypeMapping TypeName="PFMDatabaseModel.Schedule"><MappingFragment StoreEntitySet="Schedule">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="Budget" ColumnName="Budget" />
+            <ScalarProperty Name="Type" ColumnName="Type" />
+            <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+            <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+            <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+            <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ScheduleDetails"><EntityTypeMapping TypeName="PFMDatabaseModel.ScheduleDetail"><MappingFragment StoreEntitySet="ScheduleDetail">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="Budget" ColumnName="Budget" />
+            <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+            <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+            <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+            <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Users"><EntityTypeMapping TypeName="PFMDatabaseModel.User"><MappingFragment StoreEntitySet="User">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="UserName" ColumnName="UserName" />
+            <ScalarProperty Name="LastSync" ColumnName="LastSync" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="PFMDatabaseModel.BorrowingLend" Width="1.5" PointX="0.75" PointY="0.75" Height="3.0714322916666665" IsExpanded="true" />
+        <EntityTypeShape EntityType="PFMDatabaseModel.Category" Width="1.5" PointX="2.75" PointY="0.75" Height="1.9210009765624996" IsExpanded="true" />
+        <EntityTypeShape EntityType="PFMDatabaseModel.Entry" Width="1.5" PointX="2.75" PointY="3.75" Height="1.592306315104167" IsExpanded="true" />
+        <EntityTypeShape EntityType="PFMDatabaseModel.EntryDetail" Width="1.5" PointX="4.75" PointY="0.75" Height="2.2496956380208335" IsExpanded="true" />
+        <EntityTypeShape EntityType="PFMDatabaseModel.Schedule" Width="1.5" PointX="4.75" PointY="3.75" Height="2.2496956380208335" IsExpanded="true" />
+        <EntityTypeShape EntityType="PFMDatabaseModel.ScheduleDetail" Width="1.5" PointX="6.75" PointY="0.75" Height="2.0853483072916665" IsExpanded="true" />
+        <EntityTypeShape EntityType="PFMDatabaseModel.User" Width="1.5" PointX="0.75" PointY="6.75" Height="1.4279589843749996" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
