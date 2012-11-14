@@ -52,13 +52,20 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public DataSet GetData(String tableName)
+        public DataSet GetData(String username, String tableName)
         {
-            
+            var userNameVar = from c in context.Users where c.UserName == username select c.ID;
+            int userID = -1;
+
+            foreach (int s in userNameVar)
+            {
+                userID = s;
+            }
+
             const string connectionString = "Data Source=TUANNA01030-PC;Initial Catalog=PFMDatabase;Integrated Security=True"; 
             using (var sqlConnection = new SqlConnection(connectionString)) 
             { 
-                var table = new SqlCommand("SELECT * FROM dbo." + tableName, sqlConnection);
+                var table = new SqlCommand("SELECT * FROM dbo." + tableName + " WHERE UserID = " + userID, sqlConnection);
 
                 var adapterTable = new SqlDataAdapter(table);
                 var ds = new DataSet(); 
