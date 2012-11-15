@@ -29,17 +29,10 @@ namespace PFMWebService
         [WebMethod]
         public bool Login(String userName, String password)
         {
-            var username = from c in context.Users where c.UserName == userName select c;
-
-            /*
-            if (username.ToList() == null)
-                return false;
-            else
-                return true;
-            */
 
             if (!userName.Equals("") && !password.Equals(""))
             {
+                
                 return true;
             }
 
@@ -61,14 +54,13 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public DataSet GetData(String username, String tableName)
+        public DataSet GetData(String username, String tableName, String lastSyncTime)
         {
             var userNameVar = from c in context.Users where c.UserName == username select c.ID;
-            var userId = -1;
-
-            foreach (var id in userNameVar)
+            int userId = -1;
+            if (userNameVar != null)
             {
-                userId = id;
+                userId = (int)userNameVar.Single();
             }
 
             if (userId == -1)
@@ -79,7 +71,18 @@ namespace PFMWebService
             const string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
             using (var sqlConnection = new SqlConnection(connectionString))
             {
-                var table = new SqlCommand("SELECT * FROM dbo." + tableName + " WHERE UserID = " + userId, sqlConnection);
+                String sqlCommand = "select * " +
+                                    "from dbo.Category t " +
+                                    "where t.UserID = " + userId + " " +
+                                    "and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "')" +
+                                    " union " +
+                                    "select * " +
+                                    "from dbo.Category t " +
+                                    "where t.UserID = " + userId + " " +
+                                    "and t.ModifiedDate = CONVERT(datetime, '" + lastSyncTime + "')";
+
+
+                var table = new SqlCommand(sqlCommand, sqlConnection);
 
                 var adapterTable = new SqlDataAdapter(table);
                 var ds = new DataSet();
@@ -98,6 +101,14 @@ namespace PFMWebService
 
             }
             */
+        }
+
+        [WebMethod]
+        public bool UpdateDataCategory(List<Category> cate)
+        {
+
+
+            return true;
         }
     }
 }
