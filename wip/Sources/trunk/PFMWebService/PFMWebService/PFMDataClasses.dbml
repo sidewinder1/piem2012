@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PFMDatabase" Class="PFMDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=TUANNA01030-PC;Initial Catalog=PFMDatabase;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PFMDatabaseConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=TUANNA01030-PC;Initial Catalog=PFMDatabase;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PFMDatabaseConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BorrowingLending" Member="BorrowingLendings">
     <Type Name="BorrowingLending">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -13,7 +13,8 @@
       <Column Name="PersonName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="PersonPhone" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="PersonAddress" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="IsDelte" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsDelete" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AddedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="User_BorrowingLending" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
     </Type>
@@ -35,7 +36,8 @@
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="UserColor" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="IsDelte" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsDelete" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AddedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Category_EntryDetail" Member="EntryDetails" ThisKey="ID,UserID" OtherKey="CategoryID,UserID" Type="EntryDetail" />
       <Association Name="Category_ScheduleDetail" Member="ScheduleDetails" ThisKey="ID,UserID" OtherKey="CategoryID,UserID" Type="ScheduleDetail" />
@@ -47,7 +49,8 @@
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="IsDelte" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsDelete" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AddedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Entry_EntryDetail" Member="EntryDetails" ThisKey="ID,UserID" OtherKey="EntryID,UserID" Type="EntryDetail" />
       <Association Name="User_Entry" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
@@ -61,7 +64,8 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="Money" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="EntryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IsDelte" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsDelete" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AddedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Entry_EntryDetail" Member="Entry" ThisKey="EntryID,UserID" OtherKey="ID,UserID" Type="Entry" IsForeignKey="true" />
       <Association Name="Category_EntryDetail" Member="Category" ThisKey="CategoryID,UserID" OtherKey="ID,UserID" Type="Category" IsForeignKey="true" />
@@ -75,7 +79,8 @@
       <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="StartDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="IsDelte" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsDelete" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AddedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Schedule_ScheduleDetail" Member="ScheduleDetails" ThisKey="ID,UserID" OtherKey="ScheduleID,UserID" Type="ScheduleDetail" />
       <Association Name="User_Schedule" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
@@ -88,7 +93,8 @@
       <Column Name="Budget" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="CategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ScheduleID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IsDelte" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsDelete" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AddedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Schedule_ScheduleDetail" Member="Schedule" ThisKey="ScheduleID,UserID" OtherKey="ID,UserID" Type="Schedule" IsForeignKey="true" />
       <Association Name="Category_ScheduleDetail" Member="Category" ThisKey="CategoryID,UserID" OtherKey="ID,UserID" Type="Category" IsForeignKey="true" />
