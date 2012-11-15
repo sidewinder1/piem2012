@@ -54,8 +54,26 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public DataSet GetData(String username, String tableName, String lastSyncTime)
+        public List<String> GetData(String username, String tableName, String lastSyncTime)
         {
+            List<String> result = new List<String>();
+
+            String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
+            String[] sColumns = {"Id, Budget, Type, CreatedDate, ModifiedDate, IsDeleted, Start_date, End_date",
+                                 "Id, Budget, CreatedDate, ModifiedDate, IsDeleted, Category_Id, Schedule_Id",
+                                 "Id, Category_Id, Name, CreatedDate, ModifiedDate, IsDeleted,Money, Entry_Id",
+                                 "Id, CreatedDate, ModifiedDate, IsDeleted,Date, Type",
+                                 "ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address",
+                                 "Id,Name, CreatedDate, ModifiedDate, IsDeleted,User_Color"};
+
+            int position = 0;
+
+            for(int i=0; i<sTables.Length; i++)
+            {
+                if (tableName.Equals(sTables[i]))
+                    position = i;
+            }
+
             var userNameVar = from c in context.Users where c.UserName == username select c.ID;
             int userId = -1;
             if (userNameVar != null)
@@ -68,18 +86,15 @@ namespace PFMWebService
                 return null;
             }
 
+
+
             const string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
             using (var sqlConnection = new SqlConnection(connectionString))
             {
-                String sqlCommand = "select * " +
+                String sqlCommand = "select " + sColumns[position] +
                                     "from dbo.Category t " +
                                     "where t.UserID = " + userId + " " +
-                                    "and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "')" +
-                                    " union " +
-                                    "select * " +
-                                    "from dbo.Category t " +
-                                    "where t.UserID = " + userId + " " +
-                                    "and t.ModifiedDate = CONVERT(datetime, '" + lastSyncTime + "')";
+                                    "and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "')";
 
 
                 var table = new SqlCommand(sqlCommand, sqlConnection);
@@ -89,18 +104,11 @@ namespace PFMWebService
 
                 adapterTable.Fill(ds, tableName);
 
-                return ds;
             }
 
-            /*
-            DataSet ds = new DataSet();
+            
 
-            if (tableName.Equals("BorrowLend"))
-            {
-                var dataTable = from c in context.BorrowingLendings select c;
-
-            }
-            */
+            return result;
         }
 
         [WebMethod]
