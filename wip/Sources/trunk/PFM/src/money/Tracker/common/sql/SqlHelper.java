@@ -1,10 +1,12 @@
 package money.Tracker.common.sql;
 
+import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.DateTimeHelper;
+import money.Tracker.common.utilities.Logger;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class SqlHelper {
 	public static SqlHelper instance;
@@ -22,7 +24,7 @@ public class SqlHelper {
 					.append(tableName).append("(").append(columnsInfo)
 					.append(")").toString());
 		} catch (Exception e) {
-			// TODO: log exception later.
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 			return false;
 		}
 
@@ -37,11 +39,13 @@ public class SqlHelper {
 			contentValues.put(columnNames[index], columnValues[index]);
 		}
 
+		contentValues.put("Create", Converter.toString(DateTimeHelper.now()));
+		contentValues.put("ModifiedDate", Converter.toString(DateTimeHelper.now()));
+		
 		try {
 			return currentDb.insert(tableName, null, contentValues);
 		} catch (Exception e) {
-			// TODO: add to log file.
-			Log.e("SQLHelper", "Exception: " + e.getMessage());
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 			return -1;
 		}
 	}
@@ -54,11 +58,14 @@ public class SqlHelper {
 		for (int i = 0; i < columns.length; i++) {
 			newValueContent.put(columns[i], newValues[i]);
 		}
-
+		
+		newValueContent.put("ModifiedDate", Converter.toString(DateTimeHelper.now()));
+		
 		try {
 			return currentDb.update(tableName, newValueContent, whereCondition,
 					null);
 		} catch (Exception e) {
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 			return 0;
 		}
 	}
@@ -69,6 +76,7 @@ public class SqlHelper {
 		try {
 			currentDb.execSQL(sql.toString());
 		} catch (Exception e) {
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 			return false;
 		}
 		return true;
@@ -79,6 +87,7 @@ public class SqlHelper {
 			currentDb.execSQL("DROP TABLE IF EXISTS " + tableName);
 			return true;
 		} catch (Exception e) {
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 			return false;
 		}
 	}
@@ -88,7 +97,7 @@ public class SqlHelper {
 		try {
 			cursor = currentDb.rawQuery(sqlStatement, null);
 		} catch (Exception e) {
-			// TODO: add log file.
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 		}
 
 		return cursor;
@@ -110,7 +119,7 @@ public class SqlHelper {
 							.append(" FROM ").append(tableName)
 							.append(whereCondition).toString(), null);
 		} catch (Exception e) {
-			// TODO: add log file.
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 		}
 
 		return cursor;
@@ -121,12 +130,12 @@ public class SqlHelper {
 		createTable(
 				"Schedule",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Type INTEGER,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Type INTEGER, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
 						.append("Start_date DATE, End_date DATE").toString());
 		// Create table for Schedule Detail.
 		createTable("ScheduleDetail",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
 						.append("Category_Id INTEGER, Schedule_Id INTEGER")
 						.toString());
 
@@ -134,16 +143,16 @@ public class SqlHelper {
 		createTable(
 				"EntryDetail",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
 						.append("Money FLOAT, Entry_Id INTEGER").toString());
 
 		// Create table for Entry Detail.
 		createTable("Entry",
-				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT, ")
+				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
 						.append("Date DATE, Type INTEGER").toString());
 
 		// Create table for Borrow and Lending.
-		createTable("BorrowLend", "ID INTEGER PRIMARY KEY autoincrement,"
+		createTable("BorrowLend", "ID INTEGER PRIMARY KEY autoincrement, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,"
 				+ "Debt_type TEXT," + "Money INTEGER," + "Interest_type TEXT,"
 				+ "Interest_rate INTEGER," + "Start_date DATE,"
 				+ "Expired_date DATE," + "Person_name TEXT,"
@@ -152,7 +161,7 @@ public class SqlHelper {
 		// Create table for Category.
 		createTable("Category",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
 						.append("User_Color TEXT").toString());
 		String[] names = { "Birthday", "Food", "Entertainment", "Shopping",
 				"Others" };
