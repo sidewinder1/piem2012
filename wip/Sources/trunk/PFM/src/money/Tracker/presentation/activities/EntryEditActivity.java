@@ -13,7 +13,6 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.NfcHelper;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
-import money.Tracker.presentation.customviews.EntryEditProductView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.repository.CategoryRepository;
@@ -28,7 +27,6 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -400,35 +398,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		return value;
 	}
 
-	String test = "";
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		mBlocked = true;
-		test += "Paused: " + mBlocked + ", ";
-		Alert.getInstance().show(this, test);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		mBlocked = false;
-		test += "Resumed: " + mBlocked + ", ";
-		Alert.getInstance().show(this, test);
-	}
-	
 	@Override
 	protected void onNfcFeatureNotFound() {
-		// TODO: Hardcode to test.
-		// ArrayList<String> strData = new ArrayList<String>();
-		// strData.add("ten: Bim bim\n gia: 2.500,00");
-		// strData.add("ten: My tom\n gia: 4.710,00");
-		// strData.add("ten: Trung ga\n gia: 3.340,00");
-		//
-		// for (String string : strData) {
-		// mNfcData.add(getEntryDetail(string));
-		// }
 	}
 
 	@Override
@@ -436,8 +407,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	}
 
 	public void nfcIntentDetected(Intent intent, String action) {
-		test += "Get Data: " + mBlocked + ", ";
-		Alert.getInstance().show(this, test);
 		if (mBlocked)
 		{
 			return;
