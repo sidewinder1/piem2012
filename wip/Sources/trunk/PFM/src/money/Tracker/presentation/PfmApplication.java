@@ -16,7 +16,7 @@ public class PfmApplication extends Application{
 	        
 			// Create db connector
 			SqlHelper.instance = new SqlHelper(this);
-			SqlHelper.instance.initializeTable();
+			SqlHelper.instance.initializeTable();		
 	    }
 
 	    public static Context getAppContext() {

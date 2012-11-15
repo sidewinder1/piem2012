@@ -39,9 +39,12 @@ public class SqlHelper {
 			contentValues.put(columnNames[index], columnValues[index]);
 		}
 
-		contentValues.put("Create", Converter.toString(DateTimeHelper.now()));
-		contentValues.put("ModifiedDate", Converter.toString(DateTimeHelper.now()));
-		
+		contentValues.put("CreatedDate",
+				Converter.toString(DateTimeHelper.now()));
+		contentValues.put("IsDeleted", "0");
+		contentValues.put("ModifiedDate",
+				Converter.toString(DateTimeHelper.now()));
+
 		try {
 			return currentDb.insert(tableName, null, contentValues);
 		} catch (Exception e) {
@@ -58,9 +61,10 @@ public class SqlHelper {
 		for (int i = 0; i < columns.length; i++) {
 			newValueContent.put(columns[i], newValues[i]);
 		}
-		
-		newValueContent.put("ModifiedDate", Converter.toString(DateTimeHelper.now()));
-		
+
+		newValueContent.put("ModifiedDate",
+				Converter.toString(DateTimeHelper.now()));
+
 		try {
 			return currentDb.update(tableName, newValueContent, whereCondition,
 					null);
@@ -71,6 +75,22 @@ public class SqlHelper {
 	}
 
 	public boolean delete(String tableName, String whereCondition) {
+		ContentValues newValueContent = new ContentValues();
+
+		newValueContent.put("ModifiedDate",
+				Converter.toString(DateTimeHelper.now()));
+		newValueContent.put("IsDeleted", "1");
+
+		try {
+			currentDb.update(tableName, newValueContent, whereCondition, null);
+		} catch (Exception e) {
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean deepDelete(String tableName, String whereCondition) {
 		StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName)
 				.append(" WHERE ").append(whereCondition);
 		try {
@@ -94,6 +114,26 @@ public class SqlHelper {
 
 	public Cursor query(String sqlStatement) {
 		Cursor cursor = null;
+		int whereIndex = sqlStatement.toLowerCase().indexOf(" where ") + 6;
+		
+		int fromIndex = sqlStatement.toLowerCase().indexOf(" from ") + 5;
+		String tableName = sqlStatement.substring(fromIndex).trim()
+				.split(" ")[0];
+		
+		if (whereIndex >= 6) {
+			String addedWhere = new StringBuilder(" ").append(tableName).append(".IsDeleted=0 AND ").toString();
+			sqlStatement = new StringBuilder(sqlStatement).insert(whereIndex, addedWhere
+					).toString();
+		} else {
+			
+			int tableNameIndex = sqlStatement.substring(fromIndex).indexOf(
+					tableName)
+					+ tableName.length() + 1;
+
+			sqlStatement = new StringBuilder(sqlStatement).insert(
+					fromIndex + tableNameIndex, " WHERE IsDeleted=0 ")
+					.toString();
+		}
 		try {
 			cursor = currentDb.rawQuery(sqlStatement, null);
 		} catch (Exception e) {
@@ -106,12 +146,13 @@ public class SqlHelper {
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
 		if (whereCondition != null && !"".equals(whereCondition)) {
-			whereCondition = new StringBuilder(" WHERE ")
+			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 AND ")
 					.append(whereCondition).toString();
-		} else {
-			whereCondition = "";
 		}
-
+		else{
+			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 ").toString();
+		}
+		
 		Cursor cursor = null;
 		try {
 			cursor = currentDb.rawQuery(
@@ -125,17 +166,28 @@ public class SqlHelper {
 		return cursor;
 	}
 
+	public void dropAllTables() {
+		drop("Schedule");
+		drop("ScheduleDetail");
+		drop("EntryDetail");
+		drop("Entry");
+		drop("BorrowLend");
+		drop("Category");
+		drop("UserColor");
+	}
+
 	public void initializeTable() {
 		// Create table for Schedule.
 		createTable(
 				"Schedule",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Type INTEGER, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Type INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Start_date DATE, End_date DATE").toString());
 		// Create table for Schedule Detail.
-		createTable("ScheduleDetail",
+		createTable(
+				"ScheduleDetail",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Category_Id INTEGER, Schedule_Id INTEGER")
 						.toString());
 
@@ -143,25 +195,35 @@ public class SqlHelper {
 		createTable(
 				"EntryDetail",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Money FLOAT, Entry_Id INTEGER").toString());
 
 		// Create table for Entry Detail.
-		createTable("Entry",
-				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
+		createTable(
+				"Entry",
+				new StringBuilder(
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Date DATE, Type INTEGER").toString());
 
 		// Create table for Borrow and Lending.
-		createTable("BorrowLend", "ID INTEGER PRIMARY KEY autoincrement, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,"
-				+ "Debt_type TEXT," + "Money INTEGER," + "Interest_type TEXT,"
-				+ "Interest_rate INTEGER," + "Start_date DATE,"
-				+ "Expired_date DATE," + "Person_name TEXT,"
-				+ "Person_phone TEXT," + "Person_address TEXT");
+		createTable(
+				"BorrowLend",
+				"ID INTEGER PRIMARY KEY autoincrement, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,"
+						+ "Debt_type TEXT,"
+						+ "Money INTEGER,"
+						+ "Interest_type TEXT,"
+						+ "Interest_rate INTEGER,"
+						+ "Start_date DATE,"
+						+ "Expired_date DATE,"
+						+ "Person_name TEXT,"
+						+ "Person_phone TEXT,"
+						+ "Person_address TEXT");
 
 		// Create table for Category.
-		createTable("Category",
+		createTable(
+				"Category",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, Create DATE, ModefiedDate DATE, IsDeleted INTEGER,")
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("User_Color TEXT").toString());
 		String[] names = { "Birthday", "Food", "Entertainment", "Shopping",
 				"Others" };
@@ -180,8 +242,10 @@ public class SqlHelper {
 		}
 
 		// Create table for Color.
-		createTable("UserColor",
-				new StringBuilder("Id INTEGER PRIMARY KEY AUTOINCREMENT,")
+		createTable(
+				"UserColor",
+				new StringBuilder(
+						"Id INTEGER PRIMARY KEY AUTOINCREMENT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("User_Color TEXT").toString());
 
 		String[] color_codes = { "#9900FFFF", "#99ADD8E6", "#99FFA500",
