@@ -39,42 +39,56 @@ namespace PFMWebService
             */
 
             if (!userName.Equals("") && !password.Equals(""))
+            {
                 return true;
-            else
-                return false;
+            }
+
+            return false;
         }
 
         [WebMethod]
-        public DateTime CheckLastSync(int UserID)
+        public DateTime CheckLastSync(string username)
         {
-            var lastSync = from c in context.Users where c.ID == UserID select c.LastSync;
-            return (DateTime)lastSync.Single();
+            var lastSync = from c in context.Users where c.UserName == username select c.LastSync;
+            var dateTime = lastSync.Single();
+           
+            if (dateTime != null)
+            {
+                return (DateTime)dateTime;
+            }
+
+            return new DateTime();
         }
 
         [WebMethod]
         public DataSet GetData(String username, String tableName)
         {
             var userNameVar = from c in context.Users where c.UserName == username select c.ID;
-            int userID = -1;
+            var userId = -1;
 
-            foreach (int s in userNameVar)
+            foreach (var id in userNameVar)
             {
-                userID = s;
+                userId = id;
             }
 
-            const string connectionString = "Data Source=TUANNA01030-PC;Initial Catalog=PFMDatabase;Integrated Security=True"; 
-            using (var sqlConnection = new SqlConnection(connectionString)) 
-            { 
-                var table = new SqlCommand("SELECT * FROM dbo." + tableName + " WHERE UserID = " + userID, sqlConnection);
+            if (userId == -1)
+            {
+                return null;
+            }
+
+            const string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
+            using (var sqlConnection = new SqlConnection(connectionString))
+            {
+                var table = new SqlCommand("SELECT * FROM dbo." + tableName + " WHERE UserID = " + userId, sqlConnection);
 
                 var adapterTable = new SqlDataAdapter(table);
-                var ds = new DataSet(); 
+                var ds = new DataSet();
 
                 adapterTable.Fill(ds, tableName);
 
-                return ds; 
+                return ds;
             }
-            
+
             /*
             DataSet ds = new DataSet();
 

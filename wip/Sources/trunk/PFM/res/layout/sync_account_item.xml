@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <ImageView android:src="@drawable/small_add_button" 
+        android:contentDescription="@string/image_icon_description"
+        android:layout_height="25dp"
+        android:layout_width="25dp"/>
+    <LinearLayout android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView android:id="@+id/sync_email_account"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_width="fill_parent"
+            android:text="@string/dummy_data"
+            android:textColor="@color/white_text_color"/>
+        <TextView android:id="@+id/sync_email_account_status"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_data"
+            android:layout_width="fill_parent"
+            android:layout_gravity="center_vertical|left"
+            android:textColor="@color/white_text_color"/>
+    </LinearLayout>
+<Button android:layout_width="22dp"
+    android:id="@+id/sync_refresh_sync"
+    android:layout_height="22dp"
+    android:layout_gravity="top"/>
+</LinearLayout>

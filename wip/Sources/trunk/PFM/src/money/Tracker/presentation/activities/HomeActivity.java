@@ -1,6 +1,7 @@
 package money.Tracker.presentation.activities;
 
 import money.Tracker.common.utilities.Alert;
+import money.Tracker.common.utilities.IOHelper;
 import money.Tracker.common.utilities.SyncHelper;
 import android.os.Bundle;
 import android.app.TabActivity;
@@ -16,18 +17,12 @@ import android.widget.TabHost.TabSpec;
 
 public class HomeActivity extends TabActivity {
 	private final String typeTabPathId = "type.tab.path.id";
-
+	private String CONFIG_FILE = "Fpm/FpmConfig.cnfg";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
 
-		String str = SyncHelper
-				.getInstance()
-				.invokeServerMethod("Login",
-						new String[] { "userName", "password" },
-						new Object[] { "", "" }).getProperty(0).toString();
-		Alert.getInstance().show(this, str);
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
 		// mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
@@ -77,6 +72,13 @@ public class HomeActivity extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// String content = 
+		// IOHelper.getInstance().writeFile(CONFIG_FILE, content);
 	}
 
 	@Override
