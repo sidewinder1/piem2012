@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections;
 
 namespace PFMWebService
 {
@@ -32,7 +33,7 @@ namespace PFMWebService
 
             if (!userName.Equals("") && !password.Equals(""))
             {
-                
+
                 return true;
             }
 
@@ -44,7 +45,7 @@ namespace PFMWebService
         {
             var lastSync = from c in context.Users where c.UserName == username select c.LastSync;
             var dateTime = lastSync.Single();
-           
+
             if (dateTime != null)
             {
                 return (DateTime)dateTime;
@@ -54,21 +55,21 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public List<String> GetData(String username, String tableName, String lastSyncTime)
+        public List<ArrayList> GetData(String username, String tableName, String lastSyncTime)
         {
-            List<String> result = new List<String>();
+            List<ArrayList> result = new List<ArrayList>();
 
             String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
-            String[] sColumns = {"Id, Budget, Type, CreatedDate, ModifiedDate, IsDeleted, Start_date, End_date",
-                                 "Id, Budget, CreatedDate, ModifiedDate, IsDeleted, Category_Id, Schedule_Id",
-                                 "Id, Category_Id, Name, CreatedDate, ModifiedDate, IsDeleted,Money, Entry_Id",
-                                 "Id, CreatedDate, ModifiedDate, IsDeleted,Date, Type",
-                                 "ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address",
-                                 "Id,Name, CreatedDate, ModifiedDate, IsDeleted,User_Color"};
+            String[] sColumns = {"Id, Budget, Type, CreatedDate, ModifiedDate, IsDelete, StartDate, EndDate",
+                                 "Id, Budget, CreatedDate, ModifiedDate, IsDelete, CategoryID, ScheduleID",
+                                 "Id, Category_Id, Name, CreatedDate, ModifiedDate, IsDelete, Money, EntryID",
+                                 "Id, CreatedDate, ModifiedDate, IsDelete, [Date], Type",
+                                 "ID, CreatedDate, ModifiedDate, IsDelete, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress",
+                                 "Id, Name, CreatedDate, ModifiedDate, IsDelete, UserColor"};
 
             int position = 0;
 
-            for(int i=0; i<sTables.Length; i++)
+            for (int i = 0; i < sTables.Length; i++)
             {
                 if (tableName.Equals(sTables[i]))
                     position = i;
@@ -88,25 +89,40 @@ namespace PFMWebService
 
 
 
-            const string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
-            using (var sqlConnection = new SqlConnection(connectionString))
+            string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
+
+            var conn = new SqlConnection(connectionString);
+
+            conn.Open();
+
+            var cmd = "select " + sColumns[position] + " " +
+                      "from dbo.[" + tableName + "]t " +
+                      "where t.UserID = " + userId + " " +
+                      "and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "')";
+
+            var dataAdapter = new SqlDataAdapter(cmd, conn);
+
+            var dataSet = new DataSet();
+
+            dataAdapter.Fill(dataSet, tableName);
+
+            var dataTable = new DataTable();
+
+            dataTable = dataSet.Tables[tableName];
+
+            foreach (DataRow row in dataTable.Rows)
             {
-                String sqlCommand = "select " + sColumns[position] +
-                                    "from dbo.Category t " +
-                                    "where t.UserID = " + userId + " " +
-                                    "and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "')";
+                ArrayList subResult = new ArrayList();
+                
+                foreach(DataColumn col in dataTable.Columns)
+                {
+                    subResult.Add(row[col].ToString());
+                }
 
-
-                var table = new SqlCommand(sqlCommand, sqlConnection);
-
-                var adapterTable = new SqlDataAdapter(table);
-                var ds = new DataSet();
-
-                adapterTable.Fill(ds, tableName);
-
+                result.Add(subResult);
             }
 
-            
+            conn.Close();
 
             return result;
         }
