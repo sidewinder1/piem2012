@@ -60,12 +60,12 @@ namespace PFMWebService
             List<ArrayList> result = new List<ArrayList>();
 
             String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
-            String[] sColumns = {"Id, Budget, Type, CreatedDate, ModifiedDate, IsDelete, StartDate, EndDate",
-                                 "Id, Budget, CreatedDate, ModifiedDate, IsDelete, CategoryID, ScheduleID",
-                                 "Id, Category_Id, Name, CreatedDate, ModifiedDate, IsDelete, Money, EntryID",
-                                 "Id, CreatedDate, ModifiedDate, IsDelete, [Date], Type",
-                                 "ID, CreatedDate, ModifiedDate, IsDelete, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress",
-                                 "Id, Name, CreatedDate, ModifiedDate, IsDelete, UserColor"};
+            String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDelete, StartDate, EndDate",
+                                 "Id, CreatedDate, ModifiedDate, Budget, IsDelete, CategoryID, ScheduleID",
+                                 "Id, CreatedDate, ModifiedDate, CategoryID, Name, CreatedDate, ModifiedDate, IsDelete, Money, EntryID",
+                                 "Id, CreatedDate, ModifiedDate, IsDelete, Date, Type",
+                                 "Id, CreatedDate, ModifiedDate, IsDelete, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress",
+                                 "Id, CreatedDate, ModifiedDate, Name, IsDelete, UserColor"};
 
             int position = 0;
 
