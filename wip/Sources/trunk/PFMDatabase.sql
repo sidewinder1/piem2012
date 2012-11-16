@@ -11,7 +11,7 @@ CREATE TABLE "User"(
 )
 GO
 	
-CREATE TABLE BorrowingLending(
+CREATE TABLE BorrowLend(
 	ID INT,
 	UserID INT,
 	DebtType nvarchar(100),
@@ -24,7 +24,7 @@ CREATE TABLE BorrowingLending(
 	PersonPhone NVARCHAR(100),
 	PersonAddress NVARCHAR(100),
 	IsDelete INT, 
-	AddedDate DATETIME,
+	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID)
@@ -37,7 +37,7 @@ CREATE TABLE Category(
 	Name NVARCHAR(100),
 	UserColor NVARCHAR(100),
 	IsDelete INT, 
-	AddedDate DATETIME,
+	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID),
@@ -52,7 +52,7 @@ CREATE TABLE Schedule(
 	StartDate Date,
 	EndDate Date,
 	IsDelete INT, 
-	AddedDate DATETIME,
+	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID)
@@ -66,7 +66,7 @@ CREATE TABLE ScheduleDetail(
 	CategoryID int,
 	ScheduleID int,
 	IsDelete INT, 
-	AddedDate DATETIME,
+	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (ScheduleID, UserID) REFERENCES "Schedule"(ID, UserID),
@@ -79,7 +79,8 @@ CREATE TABLE "Entry"(
 	UserID INT,
 	"Date" Date,
 	IsDelete INT, 
-	AddedDate DATETIME,
+	"Type" INT,
+	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID),
@@ -94,7 +95,7 @@ CREATE TABLE "EntryDetail"(
 	"Money" Float,
 	EntryID INT,
 	IsDelete INT, 
-	AddedDate DATETIME,
+	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (EntryID, UserID) REFERENCES "Entry"(ID, UserID),
