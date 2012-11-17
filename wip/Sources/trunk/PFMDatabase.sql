@@ -12,7 +12,7 @@ CREATE TABLE "User"(
 GO
 	
 CREATE TABLE BorrowLend(
-	ID INT,
+	ID BIGINT,
 	UserID INT,
 	DebtType nvarchar(100),
 	"Money" Float,
@@ -33,7 +33,7 @@ CREATE TABLE BorrowLend(
 GO
 
 CREATE TABLE Category(
-	ID INT,
+	ID BIGINT,
 	UserID INT,
 	Name NVARCHAR(100),
 	UserColor NVARCHAR(100),
@@ -47,7 +47,7 @@ CREATE TABLE Category(
 GO
 
 CREATE TABLE Schedule(
-	ID INT,
+	ID BIGINT,
 	UserID INT,
 	Budget Float,
 	"Type" int,
@@ -63,7 +63,7 @@ CREATE TABLE Schedule(
 GO
 
 CREATE TABLE ScheduleDetail(
-	ID INT,
+	ID BIGINT,
 	UserID INT,
 	Budget Float,
 	CategoryID int,
@@ -79,7 +79,7 @@ CREATE TABLE ScheduleDetail(
 GO
 
 CREATE TABLE "Entry"(
-	ID INT,
+	ID BIGINT,
 	UserID INT,
 	"Date" Date,
 	IsDeleted INT, 
@@ -93,7 +93,7 @@ CREATE TABLE "Entry"(
 GO
 
 CREATE TABLE "EntryDetail"(
-	ID INT,
+	ID BIGINT,
 	UserID INT,
 	CategoryID INT,
 	Name NVARCHAR(100),
