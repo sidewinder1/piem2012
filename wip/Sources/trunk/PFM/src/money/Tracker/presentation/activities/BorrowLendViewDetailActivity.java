@@ -57,7 +57,7 @@ public class BorrowLendViewDetailActivity extends Activity {
 
 		Log.d("View Detail", "Check 1");
 		Bundle extras = getIntent().getExtras();
-		final int borrow_lend_id = extras.getInt("borrowLendID");
+		final long borrow_lend_id = extras.getLong("borrowLendID");
 
 		BorrowLendRepository bolere = new BorrowLendRepository();
 		values = bolere.getDetailData("ID=" + borrow_lend_id);

@@ -26,6 +26,12 @@ public class DateTimeHelper {
 		return calendar.getTime();
 	}
 	
+	public static long nowInMillis() {
+		calendar = Calendar.getInstance(TimeZone.getDefault(),
+				Locale.getDefault());
+		return calendar.getTimeInMillis();
+	}
+	
 	public static int getWeekInMonth(Date date) {
 		calendar = Calendar.getInstance(TimeZone.getDefault(),
 				Locale.getDefault());

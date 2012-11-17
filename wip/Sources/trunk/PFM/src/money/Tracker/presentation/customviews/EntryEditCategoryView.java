@@ -238,7 +238,7 @@ public class EntryEditCategoryView extends LinearLayout {
 
 	public ArrayList<EntryDetail> getDetails() {
 		ArrayList<EntryDetail> data = new ArrayList<EntryDetail>();
-		int category_id_str = CategoryRepository.getInstance().getId(
+		long category_id_str = CategoryRepository.getInstance().getId(
 				category.getSelectedItemPosition());
 		if (category_edit.getVisibility() == View.VISIBLE) {
 

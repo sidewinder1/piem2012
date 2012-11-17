@@ -1,17 +1,12 @@
 package money.Tracker.presentation.customviews;
 
-import org.ksoap2.serialization.SoapObject;
-
-import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.SyncHelper;
 import money.Tracker.presentation.activities.R;
-import android.accounts.Account;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class EmailAccountCustomView extends LinearLayout {

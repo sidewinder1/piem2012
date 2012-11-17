@@ -36,7 +36,7 @@ public class EntryRepository implements IDataRepository {
 			orderedEntries = new LinkedHashMap<String, ArrayList<Entry>>();
 
 			do {
-				int id = entryCursor.getInt(entryCursor.getColumnIndex("Id"));
+				long id = entryCursor.getLong(entryCursor.getColumnIndex("Id"));
 				String keyMonth = Converter.toString(Converter
 						.toDate(entryCursor.getString(entryCursor
 								.getColumnIndex("Date"))), "MMMM, yyyy");
@@ -81,7 +81,7 @@ public class EntryRepository implements IDataRepository {
 			orderedEntries = new LinkedHashMap<String, ArrayList<Entry>>();
 
 			do {
-				int id = entryCursor.getInt(entryCursor.getColumnIndex("Id"));
+				long id = entryCursor.getLong(entryCursor.getColumnIndex("Id"));
 				String keyMonth = Converter.toString(Converter
 						.toDate(entryCursor.getString(entryCursor
 								.getColumnIndex("Date"))), "MMMM, yyyy");

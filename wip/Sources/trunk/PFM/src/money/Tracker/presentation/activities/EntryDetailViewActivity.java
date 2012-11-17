@@ -20,7 +20,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class EntryDetailViewActivity extends Activity {
-	int entry_id;
+	long entry_id;
 	LinearLayout entry_list;
 	TextView entry_title;
 	TextView total_entry_title, total_entry_value, remain_budget_title,
@@ -33,7 +33,7 @@ public class EntryDetailViewActivity extends Activity {
 		setContentView(R.layout.entry_detail_view);
 
 		Bundle extras = getIntent().getExtras();
-		entry_id = extras.getInt("entry_id");
+		entry_id = extras.getLong("entry_id");
 		entry_list = (LinearLayout) findViewById(R.id.entry_detail_list_item);
 		entry_title = (TextView) findViewById(R.id.entry_detail_view_title);
 		total_entry_title = (TextView) findViewById(R.id.entry_detail_day_total_entry_title);

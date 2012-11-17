@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class ScheduleDetailViewActivity extends Activity {
 	ScheduleDetailViewAdapter detailAdapter;
-	int schedule_id;
+	long schedule_id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class ScheduleDetailViewActivity extends Activity {
 		setContentView(R.layout.schedule_view_detail);
 
 		Bundle extras = getIntent().getExtras();
-		schedule_id = extras.getInt("schedule_id");
+		schedule_id = extras.getLong("schedule_id");
 
 		bindData();
 	}
@@ -66,9 +66,9 @@ public class ScheduleDetailViewActivity extends Activity {
 
 			if (detail_schedule != null && detail_schedule.moveToFirst()) {
 				do {
-					data.add(new DetailSchedule(detail_schedule.getInt(3),
-							detail_schedule.getInt(0), detail_schedule
-									.getDouble(1), detail_schedule.getInt(2)));
+					data.add(new DetailSchedule(detail_schedule.getLong(3),
+							detail_schedule.getLong(0), detail_schedule
+									.getDouble(1), detail_schedule.getLong(2)));
 				} while (detail_schedule.moveToNext());
 
 				detailAdapter = new ScheduleDetailViewAdapter(this,

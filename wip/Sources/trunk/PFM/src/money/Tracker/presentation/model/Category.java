@@ -1,14 +1,14 @@
 package money.Tracker.presentation.model;
 
 public class Category {
-	private int id;
+	private long id;
 	private String name, user_color;
 
 	public Category() {
 		super();
 	}
 
-	public Category(int id, String name, String user_color) {
+	public Category(long id, String name, String user_color) {
 		this.id = id;
 		this.name = name;
 		this.user_color = user_color;
@@ -30,11 +30,11 @@ public class Category {
 		this.name = name;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

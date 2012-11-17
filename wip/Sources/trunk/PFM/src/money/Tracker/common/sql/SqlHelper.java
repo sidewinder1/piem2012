@@ -38,7 +38,9 @@ public class SqlHelper {
 		for (int index = 0; index < columnNames.length; index++) {
 			contentValues.put(columnNames[index], columnValues[index]);
 		}
-
+		
+		long id = DateTimeHelper.nowInMillis();
+		contentValues.put("Id", id);
 		contentValues.put("CreatedDate",
 				Converter.toString(DateTimeHelper.now()));
 		contentValues.put("IsDeleted", "0");
@@ -46,7 +48,8 @@ public class SqlHelper {
 				Converter.toString(DateTimeHelper.now()));
 
 		try {
-			return currentDb.insert(tableName, null, contentValues);
+			currentDb.insert(tableName, null, contentValues);
+			return id;
 		} catch (Exception e) {
 			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
 			return -1;
@@ -181,13 +184,13 @@ public class SqlHelper {
 		createTable(
 				"Schedule",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, Type INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Budget FLOAT, Type INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Start_date DATE, End_date DATE").toString());
 		// Create table for Schedule Detail.
 		createTable(
 				"ScheduleDetail",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Budget FLOAT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Budget FLOAT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Category_Id INTEGER, Schedule_Id INTEGER")
 						.toString());
 
@@ -195,20 +198,20 @@ public class SqlHelper {
 		createTable(
 				"EntryDetail",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, Category_Id INTEGER, Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Category_Id INTEGER, Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Money FLOAT, Entry_Id INTEGER").toString());
 
 		// Create table for Entry Detail.
 		createTable(
 				"Entry",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Date DATE, Type INTEGER").toString());
 
 		// Create table for Borrow and Lending.
 		createTable(
 				"BorrowLend",
-				"ID INTEGER PRIMARY KEY autoincrement, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,"
+				"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,"
 						+ "Debt_type TEXT,"
 						+ "Money INTEGER,"
 						+ "Interest_type TEXT,"
@@ -223,7 +226,7 @@ public class SqlHelper {
 		createTable(
 				"Category",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("User_Color TEXT").toString());
 		String[] names = { "Birthday", "Food", "Entertainment", "Shopping",
 				"Others" };
@@ -245,7 +248,7 @@ public class SqlHelper {
 		createTable(
 				"UserColor",
 				new StringBuilder(
-						"Id INTEGER PRIMARY KEY AUTOINCREMENT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("User_Color TEXT").toString());
 
 		String[] color_codes = { "#9900FFFF", "#99ADD8E6", "#99FFA500",

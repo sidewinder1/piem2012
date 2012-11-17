@@ -45,7 +45,7 @@ public class ScheduleEditActivity extends Activity {
 	private EditText endDateEdit;
 	private ToggleButton periodic;
 	private EditText total_budget;
-	private int passed_schedule_id = -1;
+	private long passed_schedule_id = -1;
 	LinearLayout list;
 	private CategoryAdapter categoryAdapter;
 
@@ -55,7 +55,7 @@ public class ScheduleEditActivity extends Activity {
 		setContentView(R.layout.schedule_edit);
 		// new ScheduleRepository();
 		Bundle extras = getIntent().getExtras();
-		passed_schedule_id = extras.getInt("schedule_id");
+		passed_schedule_id = extras.getLong("schedule_id");
 
 		// Add item for detail schedule.
 		categoryAdapter = new CategoryAdapter(this,
@@ -464,7 +464,7 @@ public class ScheduleEditActivity extends Activity {
 				"Schedule",
 				new String[] { "Budget", "Start_date", "End_date", "Type" },
 				new String[] {
-						Converter.toString(getTotalBudget()),
+						String.valueOf(getTotalBudget()),
 						Converter.toString(Converter.toDate(startDateEdit
 								.getText().toString(), "MMMM dd, yyyy")),
 						Converter.toString(Converter.toDate(endDateEdit
@@ -513,7 +513,7 @@ public class ScheduleEditActivity extends Activity {
 			SqlHelper.instance.insert(
 					"ScheduleDetail",
 					new String[] { "Budget", "Category_id", "Schedule_id" },
-					new String[] { Converter.toString(detailItem.getBudget()),
+					new String[] { String.valueOf(detailItem.getBudget()),
 							String.valueOf(category_id),
 							String.valueOf(newScheduleId) });
 		}

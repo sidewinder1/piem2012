@@ -62,7 +62,7 @@ public class BorrowLendInsertActivity extends Activity {
 	private String interestTypeString;
 	private ArrayList<String> column;
 	private ArrayList<String> valuesChanged;
-	private int borrow_lend_id = -1;
+	private long borrow_lend_id = -1;
 	private String debtType = "";
 
 	@Override
@@ -91,7 +91,7 @@ public class BorrowLendInsertActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 
 		try {
-			borrow_lend_id = extras.getInt("borrowLendID");
+			borrow_lend_id = extras.getLong("borrowLendID");
 		} catch (Exception e) {
 
 		}

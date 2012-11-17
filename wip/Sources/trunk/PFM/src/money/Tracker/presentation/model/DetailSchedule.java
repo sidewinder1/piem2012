@@ -1,31 +1,31 @@
 package money.Tracker.presentation.model;
 
 public class DetailSchedule {
-	private int category_id;
+	private long category_id;
 	private double budget;
-	private int schedule_id;
-	private int id;
+	private long schedule_id;
+	private long id;
 
-	public DetailSchedule(int id, int category_id, double budget,
-			int schedule_id) {
+	public DetailSchedule(long id, long category_id, double budget,
+			long schedule_id) {
 		this.category_id = category_id;
 		this.budget = budget;
 		this.setId(id);
 		this.schedule_id = schedule_id;
 	}
 
-	public DetailSchedule(int id, int category_id, double budget) {
+	public DetailSchedule(long id, long category_id, double budget) {
 		// TODO Auto-generated constructor stub
 		this.category_id = category_id;
 		this.budget = budget;
 		this.setId(id);
 	}
 
-	public int getCategory() {
+	public long getCategory() {
 		return category_id;
 	}
 
-	public void setCategory(int category) {
+	public void setCategory(long category) {
 		this.category_id = category;
 	}
 
@@ -37,19 +37,19 @@ public class DetailSchedule {
 		this.budget = detailBudget;
 	}
 
-	public int getSchedule() {
+	public long getSchedule() {
 		return schedule_id;
 	}
 
-	public void setSchedule(int schedule_id) {
+	public void setSchedule(long schedule_id) {
 		this.schedule_id = schedule_id;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 }

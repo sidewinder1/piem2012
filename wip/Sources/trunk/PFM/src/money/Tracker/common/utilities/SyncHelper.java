@@ -83,7 +83,7 @@ public class SyncHelper {
 		String LAST_SYNC_METHOD = "CheckLastSync";
 		String UPDATE_FROM_SERVER = "GetData";
 		// TODO: hardcode table
-		String CATEGORY_TABLE = "Category";
+		// String CATEGORY_TABLE = "Category";
 		// Check this account is existing on Server or not.
 		String results = String
 				.valueOf(invokeServerMethod(
@@ -116,8 +116,8 @@ public class SyncHelper {
 						new String[] { "userName", "tableName", "data" },
 						new Object[] {
 								AccountProvider.getInstance().currentAccount.name,
-								CATEGORY_TABLE,
-								getModifiedRecords(CATEGORY_TABLE,
+								table,
+								getModifiedRecords(table,
 										Converter.toString(mLocalLastSync)) });
 			}
 
@@ -130,7 +130,7 @@ public class SyncHelper {
 									"lastSyncTime" },
 							new Object[] {
 									AccountProvider.getInstance().currentAccount.name,
-									CATEGORY_TABLE,
+									table,
 									Converter.toString(mLocalLastSync) });
 					// returnedValue is a Array of array of string.
 					SoapObject returnedValue = (SoapObject) updatedRecords
@@ -142,8 +142,8 @@ public class SyncHelper {
 									.getProperty(index));
 							if (updatedValue != null) {
 								Cursor checkGlobalId = SqlHelper.instance
-										.select(CATEGORY_TABLE,
-												tableMap.get(CATEGORY_TABLE),
+										.select(table,
+												tableMap.get(table),
 												new StringBuilder("Id = ")
 														.append(updatedValue
 																.getProperty(0))
@@ -167,8 +167,8 @@ public class SyncHelper {
 									}
 
 									SqlHelper.instance.insert(
-											CATEGORY_TABLE,
-											tableMap.get(CATEGORY_TABLE).split(
+											table,
+											tableMap.get(table).split(
 													","), columnValues);
 								}
 							}
@@ -220,11 +220,6 @@ public class SyncHelper {
 			} while (modifiedRecords.moveToNext());
 		}
 
-//		PropertyInfo returnedPropertyInfo = new PropertyInfo();
-//		returnedPropertyInfo.setType(records.getClass());
-//		returnedPropertyInfo.setValue(records);
-//		returnedPropertyInfo.setName("ArrayOfArray");
-//		returnedPropertyInfo.setNamespace(NAMESPACE);
 		return records;
 	}
 
@@ -268,51 +263,4 @@ public class SyncHelper {
 
 		return null;
 	}
-}
-
-class StringArraySerializer extends Vector<String> implements KvmSerializable {
-
-	String NAMESPACE = "http://tempuri.org/";
-
-	public Object getProperty(int arg0) {
-		return this.get(arg0);
-	}
-
-	public int getPropertyCount() {
-		return this.size();
-	}
-
-	public void getPropertyInfo(int arg0, Hashtable arg1, PropertyInfo arg2) {
-		arg2.setName("string");
-		arg2.setType(PropertyInfo.STRING_CLASS);
-		arg2.setNamespace(NAMESPACE);
-	}
-
-	public void setProperty(int arg0, Object arg1) {
-		this.add(arg1.toString());
-	}
-}
-
-class ArrayOfArraySerializer extends Vector<PropertyInfo> implements
-		KvmSerializable {
-	String NAMESPACE = "http://tempuri.org/";
-
-	public Object getProperty(int arg0) {
-		return this.get(arg0);
-	}
-
-	public int getPropertyCount() {
-		return this.size();
-	}
-
-	public void getPropertyInfo(int arg0, Hashtable arg1, PropertyInfo arg2) {
-		arg2.setName("ArrayOfString");
-		arg2.setType(PropertyInfo.VECTOR_CLASS);
-		arg2.setNamespace(NAMESPACE);
-	}
-
-	public void setProperty(int arg0, Object arg1) {
-		this.add((PropertyInfo) arg1);
-	}
-
 }

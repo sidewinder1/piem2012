@@ -1,6 +1,7 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
@@ -55,7 +56,7 @@ public class EntryMonthView extends LinearLayout {
 
 		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository
 				.getInstance().orderedEntries.get(keyMonth);
-		SparseArray<Double> valueOnCategory = new SparseArray<Double>();
+		HashMap<Long, Double> valueOnCategory = new HashMap<Long, Double>();
 		if (entrySet != null) {
 			double total = 0;
 			// Set count.
@@ -69,16 +70,17 @@ public class EntryMonthView extends LinearLayout {
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 
 				for (EntryDetail entryDetail : entry.getEntryDetails()) {
-					if (valueOnCategory
-							.indexOfKey(entryDetail.getCategory_id()) < 0) {
-						valueOnCategory.put(entryDetail.getCategory_id(), 0D);
+					double currentValue =  entryDetail.getMoney();
+					if (valueOnCategory.containsKey(entryDetail
+							.getCategory_id())) {
+						currentValue = valueOnCategory.get(entryDetail
+								.getCategory_id())+ currentValue;
+
+						valueOnCategory.remove(entryDetail.getCategory_id());
 					}
 
-					double currentValue = valueOnCategory.get(entryDetail
-							.getCategory_id());
-					valueOnCategory.setValueAt(valueOnCategory
-							.indexOfKey(entryDetail.getCategory_id()),
-							currentValue + entryDetail.getMoney());
+					valueOnCategory.put(entryDetail.getCategory_id(),
+							currentValue);
 				}
 			}
 
@@ -88,16 +90,16 @@ public class EntryMonthView extends LinearLayout {
 			getChart().removeAllViews();
 
 			// Prepare and display stacked bar chart:
-			for (int i = 0; i < valueOnCategory.size(); i++) {
+			for (long value : valueOnCategory.keySet()) {
 				View stackItem = new View(getContext());
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						0, LayoutParams.FILL_PARENT,
-						Float.parseFloat(valueOnCategory.valueAt(i) + ""));
+						Float.parseFloat(valueOnCategory.get(value) + ""));
 				Cursor categoryCursor = SqlHelper.instance.select(
 						"Category",
 						"Id, User_Color",
 						new StringBuilder("Id = ").append(
-								valueOnCategory.keyAt(i)).toString());
+								value).toString());
 
 				if (categoryCursor != null && categoryCursor.moveToFirst()) {
 					stackItem.setBackgroundColor(Color
