@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Vector;
 
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.presentation.PfmApplication;
-
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.KvmSerializable;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
@@ -24,14 +26,14 @@ public class SyncHelper {
 
 	private final static String[] sTables = { "Schedule", "ScheduleDetail",
 			"EntryDetail", "Entry", "BorrowLend", "Category" };
-	private final static String[] sColumns = {"Id, Budget, Type, CreatedDate, ModifiedDate, IsDeleted, Start_date, End_date",
-		"Id, Budget, CreatedDate, ModifiedDate, IsDeleted, Category_Id, Schedule_Id",
-		"Id, Category_Id, Name, CreatedDate, ModifiedDate, IsDeleted,Money, Entry_Id",
-		"Id, CreatedDate, ModifiedDate, IsDeleted,Date, Type",
-		"ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address",
-		"Id,Name, CreatedDate, ModifiedDate, IsDeleted,User_Color"
-		};
-	private HashMap<String, String[]> tableMap = new HashMap<String, String[]>();
+	private final static String[] sColumns = {
+			"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, Start_date, End_date",
+			"Id, CreatedDate, ModifiedDate, Budget, IsDeleted, Category_Id, Schedule_Id",
+			"Id, CreatedDate, ModifiedDate, Category_Id, Name, IsDeleted,Money, Entry_Id",
+			"Id, CreatedDate, ModifiedDate, IsDeleted,Date, Type",
+			"ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address",
+			"Id, CreatedDate, ModifiedDate, Name, IsDeleted,User_Color" };
+	private HashMap<String, String> tableMap = new HashMap<String, String>();
 	private static SyncHelper _instance;
 
 	public SyncHelper() {
@@ -41,8 +43,8 @@ public class SyncHelper {
 	}
 
 	private void createDictionary() {
-		for(int index=0; index < sTables.length; index++){
-			tableMap.put(sTables[index], sColumns[index].split(","));
+		for (int index = 0; index < sTables.length; index++) {
+			tableMap.put(sTables[index], sColumns[index]);
 		}
 	}
 
@@ -79,85 +81,150 @@ public class SyncHelper {
 
 	public void synchronize() {
 		String LAST_SYNC_METHOD = "CheckLastSync";
-
+		String UPDATE_FROM_SERVER = "GetData";
+		// TODO: hardcode table
+		String CATEGORY_TABLE = "Category";
 		// Check this account is existing on Server or not.
 		String results = String
-				.valueOf(SyncHelper
-						.getInstance()
-						.invokeServerMethod(
-								"Login",
-								new String[] { "userName", "password" },
-								new Object[] {
-										AccountProvider.getInstance().currentAccount.name,
-										AccountProvider
-												.getInstance()
-												.getPasswordByAccount(
-														AccountProvider
-																.getInstance().currentAccount) })
+				.valueOf(invokeServerMethod(
+						"Login",
+						new String[] { "userName", "password" },
+						new Object[] {
+								AccountProvider.getInstance().currentAccount.name,
+								AccountProvider
+										.getInstance()
+										.getPasswordByAccount(
+												AccountProvider.getInstance().currentAccount) })
 						.getProperty(0));
 
-		// Get data if it exists.
-		if (results != null) {
-			boolean isExisting = Boolean.parseBoolean(results);
+		// Get data if this account exists on server.
+		if (results != null && Boolean.parseBoolean(results)) {
+			SoapObject syncDate = SyncHelper
+					.getInstance()
+					.invokeServerMethod(
+							LAST_SYNC_METHOD,
+							new String[] { "userName" },
+							new Object[] { AccountProvider.getInstance().currentAccount.name });
+			Date lastDateSync = Converter.toDate(
+					String.valueOf(syncDate.getProperty(0)),
+					"yyyy-MM-dd hh:mm:ss");
 
-			if (isExisting) {
-				SoapObject syncDate = SyncHelper
-						.getInstance()
-						.invokeServerMethod(
-								LAST_SYNC_METHOD,
-								new String[] { "username" },
-								new Object[] { AccountProvider.getInstance().currentAccount.name });
-				Date lastDateSync = Converter.toDate(
-						String.valueOf(syncDate.getProperty(0)), "yyyy-MM-dd");
-
-				if (mLocalLastSync.equals(lastDateSync)) {
-					// Find records are modified after last date sync.
-					for (String table : sTables) {
-						getModifiedRecords(table,
-								Converter.toString(mLocalLastSync));
-					}
-				} else {
-					// Update data from server.
-					//for (String table : sTables){
-						SoapObject updatedRecords = invokeServerMethod("GetData", new String[] { "username",
-								"tableName", "lastSyncTime" }, new Object[] {
+			// Find records are modified after last date sync.
+			for (String table : sTables) {
+				invokeServerMethod(
+						"SaveData",
+						new String[] { "userName", "tableName", "data" },
+						new Object[] {
 								AccountProvider.getInstance().currentAccount.name,
-								"Category", Converter.toString(mLocalLastSync) });
-						
-						SoapObject returnedValue = (SoapObject)updatedRecords.getProperty(0);
-						if (returnedValue != null){
-							for (int index = 0; index < returnedValue.getPropertyCount(); index++){
-								SoapObject updatedValue = ((SoapObject)returnedValue.getProperty(index));
-								String b = "";
-								for (int id=0;id < updatedValue.getPropertyCount(); id++){
-									String a = updatedValue.getProperty(id).toString();
-									b += (a +  ", "); 
-								}
-								
-
-								Alert.getInstance().show(PfmApplication.getAppContext(), b);
-							}
-						}				
-					//}
-				}
-			} else {
-
+								CATEGORY_TABLE,
+								getModifiedRecords(CATEGORY_TABLE,
+										Converter.toString(mLocalLastSync)) });
 			}
+
+			if (mLocalLastSync.before(lastDateSync)) {
+				// Update data from server.
+				for (String table : sTables) {
+					SoapObject updatedRecords = invokeServerMethod(
+							UPDATE_FROM_SERVER,
+							new String[] { "userName", "tableName",
+									"lastSyncTime" },
+							new Object[] {
+									AccountProvider.getInstance().currentAccount.name,
+									CATEGORY_TABLE,
+									Converter.toString(mLocalLastSync) });
+					// returnedValue is a Array of array of string.
+					SoapObject returnedValue = (SoapObject) updatedRecords
+							.getProperty(0);
+					if (returnedValue != null) {
+						for (int index = 0; index < returnedValue
+								.getPropertyCount(); index++) {
+							SoapObject updatedValue = ((SoapObject) returnedValue
+									.getProperty(index));
+							if (updatedValue != null) {
+								Cursor checkGlobalId = SqlHelper.instance
+										.select(CATEGORY_TABLE,
+												tableMap.get(CATEGORY_TABLE),
+												new StringBuilder("Id = ")
+														.append(updatedValue
+																.getProperty(0))
+														.toString());
+
+								if (checkGlobalId != null
+										&& checkGlobalId.moveToFirst()) {
+									// Global Id exists, then check whether
+									// update it or not.
+
+								} else {
+									// This Global Id doesn't exist, then
+									// insert
+									// it into local database.
+									int length = updatedValue
+											.getPropertyCount();
+									String[] columnValues = new String[length];
+									for (int i = 0; i < length; i++) {
+										columnValues[i] = updatedValue
+												.getProperty(i).toString();
+									}
+
+									SqlHelper.instance.insert(
+											CATEGORY_TABLE,
+											tableMap.get(CATEGORY_TABLE).split(
+													","), columnValues);
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			// This account doesn't exist on server.
+			// Then upload its data to server.
+
 		}
+
+		markAsSynchronized();
 	}
 
-	private ArrayList<Object> getModifiedRecords(String table, String lastTime) {
-		ArrayList<Object> records = new ArrayList<Object>();
-		Cursor modifiedRecords = SqlHelper.instance.select(table, "*",
-				new StringBuilder("ModifiedDate > ").append(lastTime)
-						.toString());
+	private void markAsSynchronized() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private SoapObject getModifiedRecords(String table, String lastTime) {
+		//ArrayOfArraySerializer records = new ArrayOfArraySerializer();
+		SoapObject records = new SoapObject();
+		// ArrayList<ArrayList<String>> records = new
+		// ArrayList<ArrayList<String>>();
+		Cursor modifiedRecords = SqlHelper.instance.select(table,
+				tableMap.get(table), new StringBuilder("ModifiedDate > '")
+						.append(lastTime).append("'").toString());
 
 		if (modifiedRecords != null && modifiedRecords.moveToFirst()) {
 			do {
-				// records.add(new )
+				SoapObject values = new SoapObject();
+				for (int index = 0; index < modifiedRecords.getColumnCount(); index++) {
+					PropertyInfo propertyInfo = new PropertyInfo();
+					propertyInfo.setType(PropertyInfo.STRING_CLASS);
+					propertyInfo.setName("anyType");
+					propertyInfo.setValue(modifiedRecords.getString(index));
+					values.addProperty(propertyInfo);
+				}
+				// StringArraySerializer values = new StringArraySerializer();
+				PropertyInfo arrayOfArrayProperty = new PropertyInfo();
+				arrayOfArrayProperty.setType(values.getClass());
+				arrayOfArrayProperty.setName("ArrayOfAnyType");
+				arrayOfArrayProperty.setValue(values);
+				
+				records.addProperty(arrayOfArrayProperty);
+				// return propertyInfo;
 			} while (modifiedRecords.moveToNext());
 		}
 
+//		PropertyInfo returnedPropertyInfo = new PropertyInfo();
+//		returnedPropertyInfo.setType(records.getClass());
+//		returnedPropertyInfo.setValue(records);
+//		returnedPropertyInfo.setName("ArrayOfArray");
+//		returnedPropertyInfo.setNamespace(NAMESPACE);
 		return records;
 	}
 
@@ -201,4 +268,51 @@ public class SyncHelper {
 
 		return null;
 	}
+}
+
+class StringArraySerializer extends Vector<String> implements KvmSerializable {
+
+	String NAMESPACE = "http://tempuri.org/";
+
+	public Object getProperty(int arg0) {
+		return this.get(arg0);
+	}
+
+	public int getPropertyCount() {
+		return this.size();
+	}
+
+	public void getPropertyInfo(int arg0, Hashtable arg1, PropertyInfo arg2) {
+		arg2.setName("string");
+		arg2.setType(PropertyInfo.STRING_CLASS);
+		arg2.setNamespace(NAMESPACE);
+	}
+
+	public void setProperty(int arg0, Object arg1) {
+		this.add(arg1.toString());
+	}
+}
+
+class ArrayOfArraySerializer extends Vector<PropertyInfo> implements
+		KvmSerializable {
+	String NAMESPACE = "http://tempuri.org/";
+
+	public Object getProperty(int arg0) {
+		return this.get(arg0);
+	}
+
+	public int getPropertyCount() {
+		return this.size();
+	}
+
+	public void getPropertyInfo(int arg0, Hashtable arg1, PropertyInfo arg2) {
+		arg2.setName("ArrayOfString");
+		arg2.setType(PropertyInfo.VECTOR_CLASS);
+		arg2.setNamespace(NAMESPACE);
+	}
+
+	public void setProperty(int arg0, Object arg1) {
+		this.add((PropertyInfo) arg1);
+	}
+
 }
