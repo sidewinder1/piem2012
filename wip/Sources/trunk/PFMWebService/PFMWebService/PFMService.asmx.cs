@@ -158,7 +158,7 @@ namespace PFMWebService
                 {
                     foreach (ArrayList subData in data[i])
                     {
-                        int id = Convert.ToInt32(subData[0].ToString());
+                        long id = Convert.ToInt64(subData[0].ToString());
                         DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
                         DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
                         double budget = Convert.ToDouble(subData[3].ToString());
@@ -203,7 +203,7 @@ namespace PFMWebService
                 {
                     foreach (ArrayList subData in data[i])
                     {
-                        int id = Convert.ToInt32(subData[0].ToString());
+                        long id = Convert.ToInt64(subData[0].ToString());
                         DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
                         DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
                         double budget = Convert.ToDouble(subData[3].ToString());
@@ -241,7 +241,7 @@ namespace PFMWebService
                 {
                     foreach (ArrayList subData in data[i])
                     {
-                        int id = Convert.ToInt32(subData[0].ToString());
+                        long id = Convert.ToInt64(subData[0].ToString());
                         DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
                         DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
                         int categoryID = Convert.ToInt32(subData[3].ToString());
@@ -280,7 +280,7 @@ namespace PFMWebService
                 {
                     foreach (ArrayList subData in data[i])
                     {
-                        int id = Convert.ToInt32(subData[0].ToString());
+                        long id = Convert.ToInt64(subData[0].ToString());
                         DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
                         DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
                         int isDeleted = Convert.ToInt32(subData[3].ToString());
@@ -317,7 +317,7 @@ namespace PFMWebService
                 {
                     foreach (ArrayList subData in data[i])
                     {
-                        int id = Convert.ToInt32(subData[0].ToString());
+                        long id = Convert.ToInt64(subData[0].ToString());
                         DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
                         DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
                         int isDeleted = Convert.ToInt32(subData[3].ToString());
@@ -373,7 +373,7 @@ namespace PFMWebService
                 {
                     foreach (ArrayList subData in data[i])
                     {
-                        int id = Convert.ToInt32(subData[0].ToString());
+                        long id = Convert.ToInt64(subData[0].ToString());
                         DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
                         DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
                         String name = subData[3].ToString();
