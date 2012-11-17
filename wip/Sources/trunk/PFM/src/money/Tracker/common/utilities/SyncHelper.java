@@ -20,7 +20,7 @@ import android.database.Cursor;
 
 public class SyncHelper {
 	String NAMESPACE = "http://tempuri.org/";
-	String URL = "http://10.0.2.2:1242/Service1.asmx";
+	String URL = "http://10.0.2.2:1242/PFMService.asmx";
 	String CONFIG_FILE = "Fpm/FpmConfig.cnfg";
 	private Date mLocalLastSync;
 
@@ -63,9 +63,6 @@ public class SyncHelper {
 			// Parse xml to data.
 			return;
 		}
-
-		NAMESPACE = "http://tempuri.org/";
-		URL = "http://10.0.2.2:1242/Service1.asmx";
 	}
 
 	private void getLocalLastSync() {

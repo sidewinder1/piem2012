@@ -6,19 +6,18 @@ using System.Web.Services;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
-using PFMWebServiceModel;
 
 namespace PFMWebService
 {
     /// <summary>
-    /// Summary description for Service1
+    /// Summary description for PFMService
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class Service1 : System.Web.Services.WebService
+    public class PFMService : System.Web.Services.WebService
     {
         PFMDataClassesDataContext context = new PFMDataClassesDataContext();
 
@@ -42,9 +41,9 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public DateTime CheckLastSync(string username)
+        public DateTime CheckLastSync(string userName)
         {
-            var lastSync = from c in context.Users where c.UserName == username select c.LastSync;
+            var lastSync = from c in context.Users where c.UserName == userName select c.LastSync;
             var dateTime = lastSync.Single();
 
             if (dateTime != null)
