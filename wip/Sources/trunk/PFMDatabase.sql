@@ -23,9 +23,10 @@ CREATE TABLE BorrowLend(
 	PersonName NVARCHAR(100),
 	PersonPhone NVARCHAR(100),
 	PersonAddress NVARCHAR(100),
-	IsDelete INT, 
+	IsDeleted INT, 
 	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
+	LastSync DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID)
 )
@@ -36,9 +37,10 @@ CREATE TABLE Category(
 	UserID INT,
 	Name NVARCHAR(100),
 	UserColor NVARCHAR(100),
-	IsDelete INT, 
+	IsDeleted INT, 
 	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
+	LastSync DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID),
 )
@@ -51,9 +53,10 @@ CREATE TABLE Schedule(
 	"Type" int,
 	StartDate Date,
 	EndDate Date,
-	IsDelete INT, 
+	IsDeleted INT, 
 	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
+	LastSync DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID)
 )
@@ -65,9 +68,10 @@ CREATE TABLE ScheduleDetail(
 	Budget Float,
 	CategoryID int,
 	ScheduleID int,
-	IsDelete INT, 
+	IsDeleted INT, 
 	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
+	LastSync DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (ScheduleID, UserID) REFERENCES "Schedule"(ID, UserID),
 	FOREIGN KEY (CategoryID, UserID) REFERENCES "Category"(ID, UserID)
@@ -78,10 +82,11 @@ CREATE TABLE "Entry"(
 	ID INT,
 	UserID INT,
 	"Date" Date,
-	IsDelete INT, 
+	IsDeleted INT, 
 	"Type" INT,
 	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
+	LastSync DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (UserID) REFERENCES "User"(ID),
 )
@@ -94,9 +99,10 @@ CREATE TABLE "EntryDetail"(
 	Name NVARCHAR(100),
 	"Money" Float,
 	EntryID INT,
-	IsDelete INT, 
+	IsDeleted INT, 
 	CreatedDate DATETIME,
 	ModifiedDate DATETIME,
+	LastSync DATETIME,
 	PRIMARY KEY (ID, UserID), 
 	FOREIGN KEY (EntryID, UserID) REFERENCES "Entry"(ID, UserID),
 	FOREIGN KEY (CategoryID, UserID) REFERENCES "Category"(ID, UserID)
