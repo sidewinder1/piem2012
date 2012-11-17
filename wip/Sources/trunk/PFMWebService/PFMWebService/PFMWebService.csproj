@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PFMModel">
+      <HintPath>..\..\PFMModel\PFMModel\bin\Debug\PFMModel.dll</HintPath>
+    </Reference>
+    <Reference Include="PFMWebServiceModel">
+      <HintPath>..\..\PFMWebServiceModel\PFMWebServiceModel\bin\Debug\PFMWebServiceModel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
@@ -47,7 +53,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Service1.asmx" />
+    <Content Include="PFMService.asmx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -62,8 +68,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PFMDataClasses.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Service1.asmx.cs">
-      <DependentUpon>Service1.asmx</DependentUpon>
+    <Compile Include="PFMService.asmx.cs">
+      <DependentUpon>PFMService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

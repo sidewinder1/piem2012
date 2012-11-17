@@ -30,9 +30,9 @@ namespace PFMWebService
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertBorrowingLending(BorrowingLending instance);
-    partial void UpdateBorrowingLending(BorrowingLending instance);
-    partial void DeleteBorrowingLending(BorrowingLending instance);
+    partial void InsertBorrowLend(BorrowLend instance);
+    partial void UpdateBorrowLend(BorrowLend instance);
+    partial void DeleteBorrowLend(BorrowLend instance);
     partial void InsertCategory(Category instance);
     partial void UpdateCategory(Category instance);
     partial void DeleteCategory(Category instance);
@@ -54,7 +54,7 @@ namespace PFMWebService
     #endregion
 		
 		public PFMDataClassesDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["PFMDatabaseConnectionString1"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["PFMDatabaseConnectionString2"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -83,11 +83,11 @@ namespace PFMWebService
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<BorrowingLending> BorrowingLendings
+		public System.Data.Linq.Table<BorrowLend> BorrowLends
 		{
 			get
 			{
-				return this.GetTable<BorrowingLending>();
+				return this.GetTable<BorrowLend>();
 			}
 		}
 		
@@ -140,8 +140,8 @@ namespace PFMWebService
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BorrowingLending")]
-	public partial class BorrowingLending : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BorrowLend")]
+	public partial class BorrowLend : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -168,11 +168,13 @@ namespace PFMWebService
 		
 		private string _PersonAddress;
 		
-		private System.Nullable<int> _IsDelete;
+		private System.Nullable<int> _IsDeleted;
 		
 		private System.Nullable<System.DateTime> _CreatedDate;
 		
 		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private System.Nullable<System.DateTime> _LastSync;
 		
 		private EntityRef<User> _User;
 		
@@ -202,15 +204,17 @@ namespace PFMWebService
     partial void OnPersonPhoneChanged();
     partial void OnPersonAddressChanging(string value);
     partial void OnPersonAddressChanged();
-    partial void OnIsDeleteChanging(System.Nullable<int> value);
-    partial void OnIsDeleteChanged();
+    partial void OnIsDeletedChanging(System.Nullable<int> value);
+    partial void OnIsDeletedChanged();
     partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnCreatedDateChanged();
     partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedDateChanged();
+    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSyncChanged();
     #endregion
 		
-		public BorrowingLending()
+		public BorrowLend()
 		{
 			this._User = default(EntityRef<User>);
 			OnCreated();
@@ -440,22 +444,22 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDelete", DbType="Int")]
-		public System.Nullable<int> IsDelete
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Int")]
+		public System.Nullable<int> IsDeleted
 		{
 			get
 			{
-				return this._IsDelete;
+				return this._IsDeleted;
 			}
 			set
 			{
-				if ((this._IsDelete != value))
+				if ((this._IsDeleted != value))
 				{
-					this.OnIsDeleteChanging(value);
+					this.OnIsDeletedChanging(value);
 					this.SendPropertyChanging();
-					this._IsDelete = value;
-					this.SendPropertyChanged("IsDelete");
-					this.OnIsDeleteChanged();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}
@@ -500,7 +504,27 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_BorrowingLending", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSync
+		{
+			get
+			{
+				return this._LastSync;
+			}
+			set
+			{
+				if ((this._LastSync != value))
+				{
+					this.OnLastSyncChanging(value);
+					this.SendPropertyChanging();
+					this._LastSync = value;
+					this.SendPropertyChanged("LastSync");
+					this.OnLastSyncChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_BorrowLend", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
 		public User User
 		{
 			get
@@ -517,12 +541,12 @@ namespace PFMWebService
 					if ((previousValue != null))
 					{
 						this._User.Entity = null;
-						previousValue.BorrowingLendings.Remove(this);
+						previousValue.BorrowLends.Remove(this);
 					}
 					this._User.Entity = value;
 					if ((value != null))
 					{
-						value.BorrowingLendings.Add(this);
+						value.BorrowLends.Add(this);
 						this._UserID = value.ID;
 					}
 					else
@@ -569,11 +593,13 @@ namespace PFMWebService
 		
 		private string _UserColor;
 		
-		private System.Nullable<int> _IsDelete;
+		private System.Nullable<int> _IsDeleted;
 		
 		private System.Nullable<System.DateTime> _CreatedDate;
 		
 		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private System.Nullable<System.DateTime> _LastSync;
 		
 		private EntitySet<EntryDetail> _EntryDetails;
 		
@@ -593,12 +619,14 @@ namespace PFMWebService
     partial void OnNameChanged();
     partial void OnUserColorChanging(string value);
     partial void OnUserColorChanged();
-    partial void OnIsDeleteChanging(System.Nullable<int> value);
-    partial void OnIsDeleteChanged();
+    partial void OnIsDeletedChanging(System.Nullable<int> value);
+    partial void OnIsDeletedChanged();
     partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnCreatedDateChanged();
     partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedDateChanged();
+    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSyncChanged();
     #endregion
 		
 		public Category()
@@ -693,22 +721,22 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDelete", DbType="Int")]
-		public System.Nullable<int> IsDelete
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Int")]
+		public System.Nullable<int> IsDeleted
 		{
 			get
 			{
-				return this._IsDelete;
+				return this._IsDeleted;
 			}
 			set
 			{
-				if ((this._IsDelete != value))
+				if ((this._IsDeleted != value))
 				{
-					this.OnIsDeleteChanging(value);
+					this.OnIsDeletedChanging(value);
 					this.SendPropertyChanging();
-					this._IsDelete = value;
-					this.SendPropertyChanged("IsDelete");
-					this.OnIsDeleteChanged();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}
@@ -749,6 +777,26 @@ namespace PFMWebService
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
 					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSync
+		{
+			get
+			{
+				return this._LastSync;
+			}
+			set
+			{
+				if ((this._LastSync != value))
+				{
+					this.OnLastSyncChanging(value);
+					this.SendPropertyChanging();
+					this._LastSync = value;
+					this.SendPropertyChanged("LastSync");
+					this.OnLastSyncChanged();
 				}
 			}
 		}
@@ -870,11 +918,15 @@ namespace PFMWebService
 		
 		private System.Nullable<System.DateTime> _Date;
 		
-		private System.Nullable<int> _IsDelete;
+		private System.Nullable<int> _IsDeleted;
+		
+		private System.Nullable<int> _Type;
 		
 		private System.Nullable<System.DateTime> _CreatedDate;
 		
 		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private System.Nullable<System.DateTime> _LastSync;
 		
 		private EntitySet<EntryDetail> _EntryDetails;
 		
@@ -890,12 +942,16 @@ namespace PFMWebService
     partial void OnUserIDChanged();
     partial void OnDateChanging(System.Nullable<System.DateTime> value);
     partial void OnDateChanged();
-    partial void OnIsDeleteChanging(System.Nullable<int> value);
-    partial void OnIsDeleteChanged();
+    partial void OnIsDeletedChanging(System.Nullable<int> value);
+    partial void OnIsDeletedChanged();
+    partial void OnTypeChanging(System.Nullable<int> value);
+    partial void OnTypeChanged();
     partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnCreatedDateChanged();
     partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedDateChanged();
+    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSyncChanged();
     #endregion
 		
 		public Entry()
@@ -969,22 +1025,42 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDelete", DbType="Int")]
-		public System.Nullable<int> IsDelete
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Int")]
+		public System.Nullable<int> IsDeleted
 		{
 			get
 			{
-				return this._IsDelete;
+				return this._IsDeleted;
 			}
 			set
 			{
-				if ((this._IsDelete != value))
+				if ((this._IsDeleted != value))
 				{
-					this.OnIsDeleteChanging(value);
+					this.OnIsDeletedChanging(value);
 					this.SendPropertyChanging();
-					this._IsDelete = value;
-					this.SendPropertyChanged("IsDelete");
-					this.OnIsDeleteChanged();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int")]
+		public System.Nullable<int> Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
 				}
 			}
 		}
@@ -1025,6 +1101,26 @@ namespace PFMWebService
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
 					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSync
+		{
+			get
+			{
+				return this._LastSync;
+			}
+			set
+			{
+				if ((this._LastSync != value))
+				{
+					this.OnLastSyncChanging(value);
+					this.SendPropertyChanging();
+					this._LastSync = value;
+					this.SendPropertyChanged("LastSync");
+					this.OnLastSyncChanged();
 				}
 			}
 		}
@@ -1127,11 +1223,13 @@ namespace PFMWebService
 		
 		private System.Nullable<int> _EntryID;
 		
-		private System.Nullable<int> _IsDelete;
+		private System.Nullable<int> _IsDeleted;
 		
 		private System.Nullable<System.DateTime> _CreatedDate;
 		
 		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private System.Nullable<System.DateTime> _LastSync;
 		
 		private EntityRef<Entry> _Entry;
 		
@@ -1153,12 +1251,14 @@ namespace PFMWebService
     partial void OnMoneyChanged();
     partial void OnEntryIDChanging(System.Nullable<int> value);
     partial void OnEntryIDChanged();
-    partial void OnIsDeleteChanging(System.Nullable<int> value);
-    partial void OnIsDeleteChanged();
+    partial void OnIsDeletedChanging(System.Nullable<int> value);
+    partial void OnIsDeletedChanged();
     partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnCreatedDateChanged();
     partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedDateChanged();
+    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSyncChanged();
     #endregion
 		
 		public EntryDetail()
@@ -1300,22 +1400,22 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDelete", DbType="Int")]
-		public System.Nullable<int> IsDelete
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Int")]
+		public System.Nullable<int> IsDeleted
 		{
 			get
 			{
-				return this._IsDelete;
+				return this._IsDeleted;
 			}
 			set
 			{
-				if ((this._IsDelete != value))
+				if ((this._IsDeleted != value))
 				{
-					this.OnIsDeleteChanging(value);
+					this.OnIsDeletedChanging(value);
 					this.SendPropertyChanging();
-					this._IsDelete = value;
-					this.SendPropertyChanged("IsDelete");
-					this.OnIsDeleteChanged();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}
@@ -1356,6 +1456,26 @@ namespace PFMWebService
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
 					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSync
+		{
+			get
+			{
+				return this._LastSync;
+			}
+			set
+			{
+				if ((this._LastSync != value))
+				{
+					this.OnLastSyncChanging(value);
+					this.SendPropertyChanging();
+					this._LastSync = value;
+					this.SendPropertyChanged("LastSync");
+					this.OnLastSyncChanged();
 				}
 			}
 		}
@@ -1471,11 +1591,13 @@ namespace PFMWebService
 		
 		private System.Nullable<System.DateTime> _EndDate;
 		
-		private System.Nullable<int> _IsDelete;
+		private System.Nullable<int> _IsDeleted;
 		
 		private System.Nullable<System.DateTime> _CreatedDate;
 		
 		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private System.Nullable<System.DateTime> _LastSync;
 		
 		private EntitySet<ScheduleDetail> _ScheduleDetails;
 		
@@ -1497,12 +1619,14 @@ namespace PFMWebService
     partial void OnStartDateChanged();
     partial void OnEndDateChanging(System.Nullable<System.DateTime> value);
     partial void OnEndDateChanged();
-    partial void OnIsDeleteChanging(System.Nullable<int> value);
-    partial void OnIsDeleteChanged();
+    partial void OnIsDeletedChanging(System.Nullable<int> value);
+    partial void OnIsDeletedChanged();
     partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnCreatedDateChanged();
     partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedDateChanged();
+    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSyncChanged();
     #endregion
 		
 		public Schedule()
@@ -1636,22 +1760,22 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDelete", DbType="Int")]
-		public System.Nullable<int> IsDelete
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Int")]
+		public System.Nullable<int> IsDeleted
 		{
 			get
 			{
-				return this._IsDelete;
+				return this._IsDeleted;
 			}
 			set
 			{
-				if ((this._IsDelete != value))
+				if ((this._IsDeleted != value))
 				{
-					this.OnIsDeleteChanging(value);
+					this.OnIsDeletedChanging(value);
 					this.SendPropertyChanging();
-					this._IsDelete = value;
-					this.SendPropertyChanged("IsDelete");
-					this.OnIsDeleteChanged();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}
@@ -1692,6 +1816,26 @@ namespace PFMWebService
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
 					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSync
+		{
+			get
+			{
+				return this._LastSync;
+			}
+			set
+			{
+				if ((this._LastSync != value))
+				{
+					this.OnLastSyncChanging(value);
+					this.SendPropertyChanging();
+					this._LastSync = value;
+					this.SendPropertyChanged("LastSync");
+					this.OnLastSyncChanged();
 				}
 			}
 		}
@@ -1792,11 +1936,13 @@ namespace PFMWebService
 		
 		private System.Nullable<int> _ScheduleID;
 		
-		private System.Nullable<int> _IsDelete;
+		private System.Nullable<int> _IsDeleted;
 		
 		private System.Nullable<System.DateTime> _CreatedDate;
 		
 		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private System.Nullable<System.DateTime> _LastSync;
 		
 		private EntityRef<Schedule> _Schedule;
 		
@@ -1816,12 +1962,14 @@ namespace PFMWebService
     partial void OnCategoryIDChanged();
     partial void OnScheduleIDChanging(System.Nullable<int> value);
     partial void OnScheduleIDChanged();
-    partial void OnIsDeleteChanging(System.Nullable<int> value);
-    partial void OnIsDeleteChanged();
+    partial void OnIsDeletedChanging(System.Nullable<int> value);
+    partial void OnIsDeletedChanged();
     partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnCreatedDateChanged();
     partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedDateChanged();
+    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSyncChanged();
     #endregion
 		
 		public ScheduleDetail()
@@ -1943,22 +2091,22 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDelete", DbType="Int")]
-		public System.Nullable<int> IsDelete
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Int")]
+		public System.Nullable<int> IsDeleted
 		{
 			get
 			{
-				return this._IsDelete;
+				return this._IsDeleted;
 			}
 			set
 			{
-				if ((this._IsDelete != value))
+				if ((this._IsDeleted != value))
 				{
-					this.OnIsDeleteChanging(value);
+					this.OnIsDeletedChanging(value);
 					this.SendPropertyChanging();
-					this._IsDelete = value;
-					this.SendPropertyChanged("IsDelete");
-					this.OnIsDeleteChanged();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}
@@ -1999,6 +2147,26 @@ namespace PFMWebService
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
 					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSync
+		{
+			get
+			{
+				return this._LastSync;
+			}
+			set
+			{
+				if ((this._LastSync != value))
+				{
+					this.OnLastSyncChanging(value);
+					this.SendPropertyChanging();
+					this._LastSync = value;
+					this.SendPropertyChanged("LastSync");
+					this.OnLastSyncChanged();
 				}
 			}
 		}
@@ -2108,7 +2276,7 @@ namespace PFMWebService
 		
 		private System.Nullable<System.DateTime> _LastSync;
 		
-		private EntitySet<BorrowingLending> _BorrowingLendings;
+		private EntitySet<BorrowLend> _BorrowLends;
 		
 		private EntitySet<Category> _Categories;
 		
@@ -2130,7 +2298,7 @@ namespace PFMWebService
 		
 		public User()
 		{
-			this._BorrowingLendings = new EntitySet<BorrowingLending>(new Action<BorrowingLending>(this.attach_BorrowingLendings), new Action<BorrowingLending>(this.detach_BorrowingLendings));
+			this._BorrowLends = new EntitySet<BorrowLend>(new Action<BorrowLend>(this.attach_BorrowLends), new Action<BorrowLend>(this.detach_BorrowLends));
 			this._Categories = new EntitySet<Category>(new Action<Category>(this.attach_Categories), new Action<Category>(this.detach_Categories));
 			this._Entries = new EntitySet<Entry>(new Action<Entry>(this.attach_Entries), new Action<Entry>(this.detach_Entries));
 			this._Schedules = new EntitySet<Schedule>(new Action<Schedule>(this.attach_Schedules), new Action<Schedule>(this.detach_Schedules));
@@ -2197,16 +2365,16 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_BorrowingLending", Storage="_BorrowingLendings", ThisKey="ID", OtherKey="UserID")]
-		public EntitySet<BorrowingLending> BorrowingLendings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_BorrowLend", Storage="_BorrowLends", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<BorrowLend> BorrowLends
 		{
 			get
 			{
-				return this._BorrowingLendings;
+				return this._BorrowLends;
 			}
 			set
 			{
-				this._BorrowingLendings.Assign(value);
+				this._BorrowLends.Assign(value);
 			}
 		}
 		
@@ -2269,13 +2437,13 @@ namespace PFMWebService
 			}
 		}
 		
-		private void attach_BorrowingLendings(BorrowingLending entity)
+		private void attach_BorrowLends(BorrowLend entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = this;
 		}
 		
-		private void detach_BorrowingLendings(BorrowingLending entity)
+		private void detach_BorrowLends(BorrowLend entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
