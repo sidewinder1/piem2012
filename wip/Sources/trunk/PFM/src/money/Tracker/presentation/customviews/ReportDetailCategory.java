@@ -1,17 +1,13 @@
 package money.Tracker.presentation.customviews;
 
-import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
-import money.Tracker.presentation.model.EntryDetail;
 import android.content.Context;
-import android.database.Cursor;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class ReportDetailCategory extends LinearLayout {
 

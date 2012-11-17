@@ -36,10 +36,10 @@ public class EntryDetailRepository {
 					entries.put(categoryKey, new ArrayList<EntryDetail>());
 				}
 				EntryDetail entryDetail = new EntryDetail(
-						entryCursor.getInt(entryCursor.getColumnIndex("Id")),
-						entryCursor.getInt(entryCursor
+						entryCursor.getLong(entryCursor.getColumnIndex("Id")),
+						entryCursor.getLong(entryCursor
 								.getColumnIndex("Entry_Id")),
-						entryCursor.getInt(entryCursor
+						entryCursor.getLong(entryCursor
 								.getColumnIndex("Category_Id")),
 						entryCursor.getString(entryCursor
 								.getColumnIndex("Name")),

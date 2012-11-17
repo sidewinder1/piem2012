@@ -111,7 +111,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (entryIncomeCursor != null) {
 			if (entryIncomeCursor.moveToFirst()) {
 				do {
-					int id = entryIncomeCursor.getInt(entryIncomeCursor
+					long id = entryIncomeCursor.getLong(entryIncomeCursor
 							.getColumnIndex("Id"));
 					Date entryDate = Converter
 							.toDate(entryIncomeCursor
@@ -148,7 +148,7 @@ public class ReportViewDetailActivity extends Activity {
 				Log.d("report detail", "Check 57");
 				do {
 					Log.d("report detail", "Check 58");
-					int id = entryIncomeCursor.getInt(entryIncomeCursor
+					long id = entryIncomeCursor.getLong(entryIncomeCursor
 							.getColumnIndex("Id"));
 					Date entryDate = Converter
 							.toDate(entryIncomeCursor
@@ -170,8 +170,8 @@ public class ReportViewDetailActivity extends Activity {
 								Log.d("report detail", "Check 62");
 								do {
 									Log.d("report detail", "Check 63");
-									int categoryID = entryDetailCursor
-											.getInt(entryDetailCursor
+									long categoryID = entryDetailCursor
+											.getLong(entryDetailCursor
 													.getColumnIndex("Category_Id"));
 									String name = "";
 									Cursor categoryCursor = SqlHelper.instance
@@ -226,7 +226,7 @@ public class ReportViewDetailActivity extends Activity {
 				Log.d("report detail", "Check 53");
 				do {
 					Log.d("report detail", "Check 54");
-					int id = entryExpenseCursor.getInt(entryExpenseCursor
+					long id = entryExpenseCursor.getLong(entryExpenseCursor
 							.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor
 							.getString(entryExpenseCursor
@@ -267,7 +267,7 @@ public class ReportViewDetailActivity extends Activity {
 				Log.d("report detail", "Check 57");
 				do {
 					Log.d("report detail", "Check 58");
-					int id = entryExpenseCursor.getInt(entryExpenseCursor
+					long id = entryExpenseCursor.getLong(entryExpenseCursor
 							.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor
 							.getString(entryExpenseCursor
@@ -288,8 +288,8 @@ public class ReportViewDetailActivity extends Activity {
 								Log.d("report detail", "Check 62");
 								do {
 									Log.d("report detail", "Check 63");
-									int categoryID = entryDetailCursor
-											.getInt(entryDetailCursor
+									long categoryID = entryDetailCursor
+											.getLong(entryDetailCursor
 													.getColumnIndex("Category_Id"));
 									String name = "";
 									Cursor categoryCursor = SqlHelper.instance
@@ -461,7 +461,7 @@ public class ReportViewDetailActivity extends Activity {
 		// TODO Auto-generated method stub
 		Log.d("report detail", "Check 1");
 		Bundle extras = getIntent().getExtras();
-		int scheduleID = extras.getInt("schedule_id");
+		long scheduleID = extras.getLong("schedule_id");
 		checkMonthly = extras.getBoolean("checkMonthly");
 		_startDate = extras.getString("start_date");
 		startDate = Converter.toDate(_startDate);

@@ -35,27 +35,27 @@ public class ScheduleRepository implements IDataRepository {
 							"ScheduleDetail",
 							"*",
 							"Schedule_Id = "
-									+ scheduleData.getInt(scheduleData
+									+ scheduleData.getLong(scheduleData
 											.getColumnIndex("Id")));
 					if (detailData != null) {
 						if (detailData.moveToFirst()) {
 
 							do {
 								details.add(new DetailSchedule(
-										detailData.getInt(detailData
+										detailData.getLong(detailData
 												.getColumnIndex("Id")),
-										detailData.getInt(detailData
+										detailData.getLong(detailData
 												.getColumnIndex("Category_Id")),
 										detailData.getDouble(detailData
 												.getColumnIndex("Budget")),
-										detailData.getInt(detailData
+										detailData.getLong(detailData
 												.getColumnIndex("Schedule_Id"))));
 							} while (detailData.moveToNext());
 						}
 					}
 
 					returnValues.add(new Schedule(scheduleData
-							.getInt(scheduleData.getColumnIndex("Id")),
+							.getLong(scheduleData.getColumnIndex("Id")),
 							scheduleData.getFloat(scheduleData
 									.getColumnIndex("Budget")), Converter
 									.toDate(scheduleData.getString(scheduleData

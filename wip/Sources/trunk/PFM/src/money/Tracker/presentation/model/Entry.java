@@ -5,11 +5,12 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class Entry implements IModelBase {
-	private int id, type;
+	private long id;
+	private int type;
 	private Date date;
 	private ArrayList<EntryDetail> entryDetails;
 
-	public Entry(int id, int type, Date date,
+	public Entry(long id, int type, Date date,
 			ArrayList<EntryDetail> entryDetails) {
 		super();
 		this.id = id;
@@ -18,7 +19,7 @@ public class Entry implements IModelBase {
 		this.setEntryDetails(entryDetails);
 	}
 
-	public double getTotal(int category) {
+	public double getTotal(long category) {
 		if (entryDetails == null) {
 			return 0;
 		}
@@ -51,11 +52,11 @@ public class Entry implements IModelBase {
 		super();
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

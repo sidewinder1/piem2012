@@ -24,11 +24,11 @@ public class DetailScheduleRepository {
 		if (detail != null && detail.moveToFirst()) {
 			detailSchedules = new ArrayList<DetailSchedule>();
 			do {
-				detailSchedules.add(new DetailSchedule(detail.getInt(detail
-						.getColumnIndex("Id")), detail.getInt(detail
+				detailSchedules.add(new DetailSchedule(detail.getLong(detail
+						.getColumnIndex("Id")), detail.getLong(detail
 						.getColumnIndex("Category_Id")), detail
 						.getDouble(detail.getColumnIndex("Budget")), detail
-						.getInt(detail.getColumnIndex("Schedule_Id"))));
+						.getLong(detail.getColumnIndex("Schedule_Id"))));
 			} while (detail.moveToNext());
 		}
 

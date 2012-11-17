@@ -48,7 +48,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private static final int DATE_DIALOG_ID = 0;
 	private EditText mDateEdit;
 	private ToggleButton mEntryType;
-	private int mPassedEntryId = -1;
+	private long mPassedEntryId = -1;
 	private LinearLayout mEntryList;
 	private NdefMessage[] msgs;
 	private boolean mBlocked;
@@ -63,7 +63,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			if (extras.containsKey("entry_id")) {
-				mPassedEntryId = extras.getInt("entry_id");
+				mPassedEntryId = extras.getLong("entry_id");
 			}
 
 		}
@@ -271,7 +271,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 					new StringBuilder("Date = '").append(date).append("'")
 							.append(" AND Type = ").append(type).toString());
 			if (oldEntry != null && oldEntry.moveToFirst()) {
-				id = oldEntry.getInt(0);
+				id = oldEntry.getLong(0);
 			} else {
 				id = SqlHelper.instance.insert(table, new String[] { "Date",
 						"Type" }, new String[] { date, String.valueOf(type) });

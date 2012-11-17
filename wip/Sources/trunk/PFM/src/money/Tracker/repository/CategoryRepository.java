@@ -23,7 +23,7 @@ public class CategoryRepository {
 
 			do {
 				categories.add(new Category(categoryCursor
-						.getInt(categoryCursor.getColumnIndex("Id")),
+						.getLong(categoryCursor.getColumnIndex("Id")),
 						categoryCursor.getString(categoryCursor
 								.getColumnIndex("Name")), categoryCursor
 								.getString(categoryCursor
@@ -34,11 +34,11 @@ public class CategoryRepository {
 		}
 	}
 
-	public int getId(int index) {
+	public long getId(int index) {
 		return categories.get(index).getId();
 	}
 
-	public int getId(String name) {
+	public long getId(String name) {
 		for (Category category : categories) {
 			if (category.getName() == name) {
 				return category.getId();
@@ -48,7 +48,7 @@ public class CategoryRepository {
 		return 1;
 	}
 
-	public String getName(int id) {
+	public String getName(long id) {
 		for (Category category : categories) {
 			if (category.getId() == id) {
 				return category.getName();
@@ -58,7 +58,7 @@ public class CategoryRepository {
 		return "Birthday";
 	}
 
-	public String getColor(int id) {
+	public String getColor(long id) {
 		for (Category category : categories) {
 			if (category.getId() == id) {
 				return category.getUser_color();
@@ -79,7 +79,7 @@ public class CategoryRepository {
 		return null;
 	}
 
-	public int getIndex(int id) {
+	public int getIndex(long id) {
 		for (int index = 0; index < categories.size(); index++) {
 			if (categories.get(index).getId() == id) {
 				return index;

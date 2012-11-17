@@ -32,7 +32,7 @@ public class ScheduleItem extends LinearLayout {
 		category.setAdapter(categoryAdapter);
 	}
 
-	public int getCategory() {
+	public long getCategory() {
 		return CategoryRepository.getInstance().getId(
 				category.getSelectedItemPosition());
 	}

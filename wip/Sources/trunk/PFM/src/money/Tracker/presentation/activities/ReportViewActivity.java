@@ -53,7 +53,7 @@ public class ReportViewActivity extends Activity {
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> listView, View view,
 				int position, long id) {
-			int data_id = -1;
+			long data_id = -1;
 			Schedule schedule = (Schedule) listView.getAdapter().getItem(
 					position);
 			data_id = schedule.id;

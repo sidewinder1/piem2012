@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Schedule implements IModelBase {
-	public int id;
+	public long id;
 	public Date start_date;
 	public Date end_date;
 	public double budget;
@@ -15,7 +15,7 @@ public class Schedule implements IModelBase {
 	public Schedule() {
 	}
 
-	public Schedule(int id, double budget, Date start_date, Date end_date,
+	public Schedule(long id, double budget, Date start_date, Date end_date,
 			int time_id, ArrayList<DetailSchedule> details) {
 		this.id = id;
 		this.budget = budget;

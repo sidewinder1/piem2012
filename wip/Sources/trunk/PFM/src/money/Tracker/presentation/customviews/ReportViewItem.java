@@ -53,7 +53,7 @@ public class ReportViewItem extends LinearLayout {
 				Log.d("Check spent", "Check 2");
 				do {
 					Log.d("Check spent", "Check 3");
-					int id = entryExpenseCursor.getInt(entryExpenseCursor
+					long id = entryExpenseCursor.getLong(entryExpenseCursor
 							.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor
 							.getString(entryExpenseCursor

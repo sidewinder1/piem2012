@@ -40,8 +40,8 @@ public class BorrowLendRepository {
 					Log.d("Select", "Check 3");
 					BorrowLend bole = new BorrowLend();
 					Log.d("Select", "Check 4");
-					bole.setId(borrowLendData.getInt(borrowLendData
-							.getColumnIndex("ID")));
+					bole.setId(borrowLendData.getLong(borrowLendData
+							.getColumnIndex("Id")));
 					Log.d("Select", "Check 5");
 					bole.setDebtType(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Debt_type")));
@@ -106,8 +106,8 @@ public class BorrowLendRepository {
 		if (borrowLendData != null) {
 			if (borrowLendData.moveToFirst()) {
 				do {
-					bole.setId(borrowLendData.getInt(borrowLendData
-							.getColumnIndex("ID")));
+					bole.setId(borrowLendData.getLong(borrowLendData
+							.getColumnIndex("Id")));
 					bole.setDebtType(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Debt_type")));
 					bole.setMoney(borrowLendData.getDouble(borrowLendData

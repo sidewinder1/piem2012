@@ -67,7 +67,7 @@ public class TabViewActivity extends Activity {
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> listView, View view,
 				int position, long id) {
-			int data_id = -1;
+			long data_id = -1;
 			if (isEntry) {
 				Entry entry = (Entry) listView.getAdapter().getItem(position);
 				data_id = entry.getId();
@@ -110,7 +110,7 @@ public class TabViewActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		int id = -1;
+		long id = -1;
 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
@@ -139,7 +139,7 @@ public class TabViewActivity extends Activity {
 			startActivity(edit);
 			break;
 		case 1: // Delete
-			final int sId = id;
+			final long sId = id;
 			final String table = isEntry ? "Entry" : "Schedule";
 			Alert.getInstance().showDialog(getParent(),
 					getResources().getString(R.string.delete_confirm),

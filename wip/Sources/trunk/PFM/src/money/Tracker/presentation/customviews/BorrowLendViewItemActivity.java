@@ -1,16 +1,9 @@
 package money.Tracker.presentation.customviews;
 
 import money.Tracker.presentation.activities.R;
-import money.Tracker.presentation.activities.R.layout;
-import money.Tracker.presentation.activities.R.menu;
-import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 

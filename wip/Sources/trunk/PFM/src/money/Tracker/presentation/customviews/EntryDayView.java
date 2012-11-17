@@ -19,7 +19,7 @@ import android.widget.TextView;
 public class EntryDayView extends LinearLayout {
 	private TextView name, cost;
 	private LinearLayout chart;
-	public int id;
+	public long id;
 
 	public EntryDayView(Context context) {
 		super(context);
