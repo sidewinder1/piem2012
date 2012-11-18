@@ -16,6 +16,8 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.google.zxing.common.GlobalHistogramBinarizer;
+
 import android.database.Cursor;
 
 public class SyncHelper {
@@ -79,12 +81,16 @@ public class SyncHelper {
 	public void synchronize() {
 		String LAST_SYNC_METHOD = "CheckLastSync";
 		String UPDATE_FROM_SERVER = "GetData";
-		// TODO: hardcode table
-		// String CATEGORY_TABLE = "Category";
+		String SAVE_DATA_METHOD = "SaveData";
+		String LOGIN_METHOD = "Login";
+		String[] SAVE_PARAMS = new String[] { "userName", "tableName", "data" };
+		String[] UPDATE_PARAMS = new String[] { "userName", "tableName",
+				"lastSyncTime" };
+
 		// Check this account is existing on Server or not.
 		String results = String
 				.valueOf(invokeServerMethod(
-						"Login",
+						LOGIN_METHOD,
 						new String[] { "userName", "password" },
 						new Object[] {
 								AccountProvider.getInstance().currentAccount.name,
@@ -109,8 +115,8 @@ public class SyncHelper {
 			// Find records are modified after last date sync.
 			for (String table : sTables) {
 				invokeServerMethod(
-						"SaveData",
-						new String[] { "userName", "tableName", "data" },
+						SAVE_DATA_METHOD,
+						SAVE_PARAMS,
 						new Object[] {
 								AccountProvider.getInstance().currentAccount.name,
 								table,
@@ -123,75 +129,124 @@ public class SyncHelper {
 				for (String table : sTables) {
 					SoapObject updatedRecords = invokeServerMethod(
 							UPDATE_FROM_SERVER,
-							new String[] { "userName", "tableName",
-									"lastSyncTime" },
+							UPDATE_PARAMS,
 							new Object[] {
 									AccountProvider.getInstance().currentAccount.name,
-									table,
-									Converter.toString(mLocalLastSync) });
+									table, Converter.toString(mLocalLastSync) });
 					// returnedValue is a Array of array of string.
 					SoapObject returnedValue = (SoapObject) updatedRecords
 							.getProperty(0);
-					if (returnedValue != null) {
-						for (int index = 0; index < returnedValue
-								.getPropertyCount(); index++) {
-							SoapObject updatedValue = ((SoapObject) returnedValue
-									.getProperty(index));
-							if (updatedValue != null) {
-								Cursor checkGlobalId = SqlHelper.instance
-										.select(table,
-												tableMap.get(table),
+					if (returnedValue == null) {
+						continue;
+					}
+
+					SoapObject savedObject = new SoapObject();
+					for (int index = 0; index < returnedValue
+							.getPropertyCount(); index++) {
+						SoapObject updatedValue = ((SoapObject) returnedValue
+								.getProperty(index));
+
+						if (updatedValue == null) {
+							continue;
+						}
+
+						Cursor checkGlobalId = SqlHelper.instance.select(table,
+								tableMap.get(table), new StringBuilder("Id = ")
+										.append(updatedValue.getProperty(0))
+										.toString());
+
+						if (checkGlobalId != null
+								&& checkGlobalId.moveToFirst()) {
+							// Global Id exists, then check whether
+							// update it or not.
+							if (checkGlobalId.getString(2).compareTo(
+									updatedValue.getProperty(2).toString()) > 0) {
+								// Save data into server's db.
+								SoapObject values = new SoapObject();
+								for (int j = 0; j < checkGlobalId
+										.getColumnCount(); j++) {
+									values.addProperty(createPropertyInfo(checkGlobalId
+											.getString(j)));
+								}
+
+								PropertyInfo arrayOfArrayProperty = new PropertyInfo();
+								arrayOfArrayProperty.setType(values.getClass());
+								arrayOfArrayProperty.setName("ArrayOfAnyType");
+								arrayOfArrayProperty.setValue(values);
+
+								savedObject.addProperty(arrayOfArrayProperty);
+							} else if (checkGlobalId.getString(2).compareTo(
+									updatedValue.getProperty(2).toString()) < 0) {
+								// update data.
+								int length = updatedValue.getPropertyCount();
+								String[] columnValues = new String[length];
+
+								for (int i = 0; i < length; i++) {
+									columnValues[i] = updatedValue
+											.getPropertyAsString(i);
+								}
+
+								SqlHelper.instance
+										.update(table,
+												tableMap.get(table).split(","),
+												columnValues,
 												new StringBuilder("Id = ")
 														.append(updatedValue
-																.getProperty(0))
+																.getPropertyAsString(0))
 														.toString());
-
-								if (checkGlobalId != null
-										&& checkGlobalId.moveToFirst()) {
-									// Global Id exists, then check whether
-									// update it or not.
-
-								} else {
-									// This Global Id doesn't exist, then
-									// insert
-									// it into local database.
-									int length = updatedValue
-											.getPropertyCount();
-									String[] columnValues = new String[length];
-									for (int i = 0; i < length; i++) {
-										columnValues[i] = updatedValue
-												.getProperty(i).toString();
-									}
-
-									SqlHelper.instance.insert(
-											table,
-											tableMap.get(table).split(
-													","), columnValues);
-								}
 							}
+						} else {
+							// This Global Id doesn't exist, then
+							// insert
+							// it into local database.
+							int length = updatedValue.getPropertyCount();
+							String[] columnValues = new String[length];
+							for (int i = 0; i < length; i++) {
+								columnValues[i] = updatedValue.getProperty(i)
+										.toString();
+							}
+
+							SqlHelper.instance.insert(table, tableMap
+									.get(table).split(","), columnValues);
 						}
 					}
+
+					// Upload data to server.
+					invokeServerMethod(
+							SAVE_DATA_METHOD,
+							SAVE_PARAMS,
+							new Object[] {
+									AccountProvider.getInstance().currentAccount,
+									table, savedObject });
 				}
 			}
 		} else {
 			// This account doesn't exist on server.
 			// Then upload its data to server.
-
+			// Need to call create account method.
+			
+			for (String table : sTables) {
+				invokeServerMethod(
+						SAVE_DATA_METHOD,
+						SAVE_PARAMS,
+						new Object[] {
+								AccountProvider.getInstance().currentAccount.name,
+								table,
+								getModifiedRecords(table,
+										Converter.toString(mLocalLastSync)) });
+			}
 		}
 
 		markAsSynchronized();
 	}
 
 	private void markAsSynchronized() {
-		// TODO Auto-generated method stub
-
+		invokeServerMethod("MarkSynchronized");
+		
 	}
 
 	private SoapObject getModifiedRecords(String table, String lastTime) {
-		//ArrayOfArraySerializer records = new ArrayOfArraySerializer();
 		SoapObject records = new SoapObject();
-		// ArrayList<ArrayList<String>> records = new
-		// ArrayList<ArrayList<String>>();
 		Cursor modifiedRecords = SqlHelper.instance.select(table,
 				tableMap.get(table), new StringBuilder("ModifiedDate > '")
 						.append(lastTime).append("'").toString());
@@ -200,24 +255,34 @@ public class SyncHelper {
 			do {
 				SoapObject values = new SoapObject();
 				for (int index = 0; index < modifiedRecords.getColumnCount(); index++) {
-					PropertyInfo propertyInfo = new PropertyInfo();
-					propertyInfo.setType(PropertyInfo.STRING_CLASS);
-					propertyInfo.setName("anyType");
-					propertyInfo.setValue(modifiedRecords.getString(index));
-					values.addProperty(propertyInfo);
+					values.addProperty(createPropertyInfo(modifiedRecords
+							.getString(index)));
 				}
 				// StringArraySerializer values = new StringArraySerializer();
 				PropertyInfo arrayOfArrayProperty = new PropertyInfo();
 				arrayOfArrayProperty.setType(values.getClass());
 				arrayOfArrayProperty.setName("ArrayOfAnyType");
 				arrayOfArrayProperty.setValue(values);
-				
+
 				records.addProperty(arrayOfArrayProperty);
 				// return propertyInfo;
 			} while (modifiedRecords.moveToNext());
 		}
 
 		return records;
+	}
+
+	/**
+	 * @param modifiedRecords
+	 * @param index
+	 * @return
+	 */
+	private PropertyInfo createPropertyInfo(String value) {
+		PropertyInfo propertyInfo = new PropertyInfo();
+		propertyInfo.setType(PropertyInfo.STRING_CLASS);
+		propertyInfo.setName("anyType");
+		propertyInfo.setValue(value);
+		return propertyInfo;
 	}
 
 	// / Invoke a function from web server.
@@ -252,12 +317,12 @@ public class SyncHelper {
 			return reponse;
 		} catch (IOException e) {
 			Logger.Log(e.getMessage(), "SyncHelper");
-			e.printStackTrace();
 		} catch (XmlPullParserException e) {
 			Logger.Log(e.getMessage(), "SyncHelper");
-			e.printStackTrace();
+		} catch (ClassCastException e){
+			Logger.Log(e.getMessage(), "SyncHelper");
 		}
-
+		
 		return null;
 	}
 }
