@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Services;
 using System.Data;
 using System.Data.SqlClient;
-using System.Collections;
+using System.Linq;
+using System.Web.Services;
 
 namespace PFMWebService
 {
@@ -17,33 +16,43 @@ namespace PFMWebService
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class PFMService : System.Web.Services.WebService
+    public class PfmService : WebService
     {
-        PFMDataClassesDataContext context = new PFMDataClassesDataContext();
+        readonly PFMDataClassesDataContext _context = new PFMDataClassesDataContext();
+        readonly Dictionary<string, string> _tableMap = new Dictionary<string, string>();
+        const string CONNECTION_STRING = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
+
+        public PfmService()
+        {
+            String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
+            String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, StartDate, EndDate", // Schedule
+                                 "Id, CreatedDate, ModifiedDate, Budget, IsDeleted, CategoryID, ScheduleID", // Schedule Detail
+                                 "Id, CreatedDate, ModifiedDate, CategoryID, Name, IsDeleted, Money, EntryID", // Entry Detail
+                                 "Id, CreatedDate, ModifiedDate, IsDeleted, Date, Type", // Entry
+                                 "Id, CreatedDate, ModifiedDate, IsDeleted, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress", //BorrowLend
+                                 "Id, CreatedDate, ModifiedDate, Name, IsDeleted, UserColor"}; //Category
+
+            for (var index = 0; index < sTables.Count(); index++)
+            {
+                _tableMap[sTables[index]] = sColumns[index];
+            }
+        }
 
         [WebMethod]
-        public string HelloWorld()
+        public void MarkSynchronized()
         {
-            return "Hello World";
         }
 
         [WebMethod]
         public bool Login(String userName, String password)
         {
-
-            if (!userName.Equals("") && !password.Equals(""))
-            {
-
-                return true;
-            }
-
-            return false;
+            return !userName.Equals("") && !password.Equals("");
         }
 
         [WebMethod]
         public DateTime CheckLastSync(string userName)
         {
-            var lastSync = from c in context.Users where c.UserName == userName select c.LastSync;
+            var lastSync = from c in _context.Users where c.UserName == userName select c.LastSync;
             var dateTime = lastSync.Single();
 
             if (dateTime != null)
@@ -57,45 +66,22 @@ namespace PFMWebService
         [WebMethod]
         public List<ArrayList> GetData(String userName, String tableName, String lastSyncTime)
         {
-            List<ArrayList> result = new List<ArrayList>();
+            var result = new List<ArrayList>();
 
-            String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
-            String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, StartDate, EndDate", // Schedule
-                                 "Id, CreatedDate, ModifiedDate, Budget, IsDeleted, CategoryID, ScheduleID", // Schedule Detail
-                                 "Id, CreatedDate, ModifiedDate, CategoryID, Name, IsDeleted, Money, EntryID", // Entry Detail
-                                 "Id, CreatedDate, ModifiedDate, IsDeleted, Date, Type", // Entry
-                                 "Id, CreatedDate, ModifiedDate, IsDeleted, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress", //BorrowLend
-                                 "Id, CreatedDate, ModifiedDate, Name, IsDeleted, UserColor"}; //Category
-
-            int position = 0;
-
-            for (int i = 0; i < sTables.Length; i++)
+            var userNameVar = from c in _context.Users where c.UserName == userName select c.ID;
+            if (userNameVar.Count() != 1)
             {
-                if (tableName.Equals(sTables[i]))
-                    position = i;
+                return result;
             }
 
-            var userNameVar = from c in context.Users where c.UserName == userName select c.ID;
-            int userId = -1;
-            if (userNameVar != null)
-            {
-                userId = (int)userNameVar.Single();
-            }
-
-            if (userId == -1)
-            {
-                return null;
-            }
+            var userId = userNameVar.Single();
 
 
-
-            string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
-
-            var conn = new SqlConnection(connectionString);
+            var conn = new SqlConnection(CONNECTION_STRING);
 
             conn.Open();
 
-            var cmd = "select " + sColumns[position] + " " +
+            var cmd = "select " + _tableMap[tableName] + " " +
                       "from dbo.[" + tableName + "]t " +
                       "where t.UserID = " + userId + " " +
                       "and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "') " +
@@ -107,15 +93,13 @@ namespace PFMWebService
 
             dataAdapter.Fill(dataSet, tableName);
 
-            var dataTable = new DataTable();
-
-            dataTable = dataSet.Tables[tableName];
+            var dataTable = dataSet.Tables[tableName];
 
             foreach (DataRow row in dataTable.Rows)
             {
-                ArrayList subResult = new ArrayList();
-                
-                foreach(DataColumn col in dataTable.Columns)
+                var subResult = new ArrayList();
+
+                foreach (DataColumn col in dataTable.Columns)
                 {
                     subResult.Add(row[col].ToString());
                 }
@@ -133,123 +117,82 @@ namespace PFMWebService
         {
             if (data.Count != 0)
             {
-                String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
-                String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, StartDate, EndDate", // Schedule
-                                 "Id, CreatedDate, ModifiedDate, Budget, IsDeleted, CategoryID, ScheduleID", // Schedule Detail
-                                 "Id, CreatedDate, ModifiedDate, CategoryID, Name, IsDeleted, Money, EntryID", // Entry Detail
-                                 "Id, CreatedDate, ModifiedDate, IsDeleted, Date, Type", // Entry
-                                 "Id, CreatedDate, ModifiedDate, IsDeleted, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress", //BorrowLend
-                                 "Id, CreatedDate, ModifiedDate, Name, IsDeleted, UserColor"}; //Category
-
-                int position = -1;
-
-                for (int i = 0; i < sTables.Length; i++)
-                {
-                    if (tableName.Equals(sTables[i]))
-                        position = i;
-                }
-
-                var userNameVar = from c in context.Users where c.UserName == userName select c.ID;
-                int userId = -1;
-                if (userNameVar != null)
-                {
-                    userId = (int)userNameVar.Single();
-                }
-
-                if (userId == -1)
+                var userNameVar = from c in _context.Users where c.UserName == userName select c.ID;
+                if (userNameVar.Count() != 1)
                 {
                     return false;
                 }
 
-                string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
-
-                var conn = new SqlConnection(connectionString);
+                var userId = userNameVar.Single();
+                var conn = new SqlConnection(CONNECTION_STRING);
 
                 conn.Open();
 
-                for (int i = 0; i < data.Count; i++)
+                foreach (var recordRow in data)
                 {
-                    long id = 0;
-                    DateTime modifiedDate = Convert.ToDateTime("1/1/1900");
-                    String resultGetData = "";
-                    int count = 0;
+                    var clientModifiedDate = Convert.ToDateTime(recordRow[2]);
 
-                    foreach (String subData in data[i])
+                    var resultGetData = recordRow.Cast<string>().Aggregate("", (current, subData) => current + ("'" + subData + "', "));
+
+                    var sqlCheckCount = "select ModifiedDate from " + tableName + " where UserID = '" + userId +
+                                        "' and id= '" + recordRow[0] + "'";
+                    var command = conn.CreateCommand();
+                    command.CommandText = sqlCheckCount;
+                    var countRecord = command.ExecuteReader();
+
+                    if (!countRecord.HasRows)
                     {
-                        if (count == 0)
+                        var sqlCommand = "Insert into " + tableName + "(" + _tableMap[tableName] + ", LastSync, UserID) values (" + resultGetData + "GETDATE(), " + userId + ")";
+                        countRecord.Close();
+                        try
                         {
-                            id = Convert.ToInt64(subData.ToString());
-                            resultGetData += "'" + id + "', ";
+                            command.CommandText = sqlCommand;
+                            command.ExecuteNonQuery();
                         }
-                        else if (count == 2)
-                        {
-                            modifiedDate = Convert.ToDateTime(subData.ToString());
-                            resultGetData += "'" + modifiedDate + "', ";
-                        }
-                        else
-                        {
-                            resultGetData += "'" + subData + "', ";
-                        }
-
-                        count++;
-                    }
-
-                    var countVar = (from c in context.Schedules where c.UserID == userId && c.ID == id select c).Count();
-
-                    if (Convert.ToInt32(countVar.ToString()) == 0)
-                    {
-                        String sqlCommand = "Insert into " + tableName + "(" + sColumns[position] + ", LastSync, UserID) values (" + resultGetData + "GETDATE(), " + userId +")";
-
-                        try{
-                        var cmd = conn.CreateCommand();
-                        cmd.CommandText = sqlCommand;
-                        cmd.ExecuteNonQuery();
-                        }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             return false;
                         }
                     }
                     else
                     {
-                        var modifiedDateVar = from c in context.Schedules where c.UserID == userId && c.ID == id select c.ModifiedDate;
-
-                        if (modifiedDate.CompareTo(Convert.ToDateTime(modifiedDateVar.Single().ToString())) > 0)
+                        countRecord.Read();
+                        var serverModifiedDate = countRecord["ModifiedDate"];
+                        if (clientModifiedDate.CompareTo(Convert.ToDateTime(serverModifiedDate.ToString())) > 0)
                         {
-                            String[] subSColumns = sColumns[position].Split(',');
-                            String[] subResultGetData = resultGetData.Split(',');
+                            var subSColumns = _tableMap[tableName].Split(',');
+                            var subResultGetData = resultGetData.Split(',');
 
-                            String sqlCommand = "Update " + tableName + " set";
+                            var sqlCommand = "Update " + tableName + " set (";
 
-                            for (int j = 1; j < subSColumns.Length; j++)
+                            for (var j = 1; j < subSColumns.Length; j++)
                             {
                                 sqlCommand += subSColumns[j] + " = " + subResultGetData[j] + ",";
                             }
 
-                            sqlCommand += " LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
+                            sqlCommand += " LastSync = GETDATE()) where ID = " + recordRow[0] + " and UserID = " + userId;
 
                             try
                             {
-                                var cmd = conn.CreateCommand();
-                                cmd.CommandText = sqlCommand;
-                                cmd.ExecuteNonQuery();
+                                command.CommandText = sqlCommand;
+                                command.ExecuteNonQuery();
                             }
-                            catch (Exception e)
+                            catch (Exception)
                             {
                                 return false;
                             }
                         }
                     }
+
+                    countRecord.Close();
                 }
 
                 conn.Close();
 
                 return true;
             }
-            else 
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 }
