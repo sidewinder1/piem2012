@@ -131,103 +131,125 @@ namespace PFMWebService
         [WebMethod]
         public bool SaveData(String userName, String tableName, List<ArrayList> data)
         {
-            String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
-            String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, StartDate, EndDate", // Schedule
+            if (data.Count != 0)
+            {
+                String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
+                String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, StartDate, EndDate", // Schedule
                                  "Id, CreatedDate, ModifiedDate, Budget, IsDeleted, CategoryID, ScheduleID", // Schedule Detail
                                  "Id, CreatedDate, ModifiedDate, CategoryID, Name, IsDeleted, Money, EntryID", // Entry Detail
                                  "Id, CreatedDate, ModifiedDate, IsDeleted, Date, Type", // Entry
                                  "Id, CreatedDate, ModifiedDate, IsDeleted, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress", //BorrowLend
                                  "Id, CreatedDate, ModifiedDate, Name, IsDeleted, UserColor"}; //Category
 
-            int position = -1;
+                int position = -1;
 
-            for (int i = 0; i < sTables.Length; i++)
-            {
-                if (tableName.Equals(sTables[i]))
-                    position = i;
-            }
-
-            var userNameVar = from c in context.Users where c.UserName == userName select c.ID;
-            int userId = -1;
-            if (userNameVar != null)
-            {
-                userId = (int)userNameVar.Single();
-            }
-
-            if (userId == -1)
-            {
-                return false;
-            }
-
-            string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
-
-            var conn = new SqlConnection(connectionString);
-
-            conn.Open();
-
-            for (int i = 0; i < data.Count; i++)
-            {
-                long id = 0;
-                DateTime modifiedDate = Convert.ToDateTime("1/1/1900");
-                String resultGetData = "";
-                int count = 0;
-
-                foreach (String subData in data[i])
+                for (int i = 0; i < sTables.Length; i++)
                 {
-                    if (count == 0)
-                    {
-                        id = Convert.ToInt64(subData.ToString());
-                        resultGetData += id + ", ";
-                    }
-                    else if (count == 2)
-                    {
-                        modifiedDate = Convert.ToDateTime(subData.ToString());
-                        resultGetData += modifiedDate + ", ";
-                    }
-                    else
-                    {
-                        resultGetData += subData + ", ";
-                    }
-
-                    count++;
+                    if (tableName.Equals(sTables[i]))
+                        position = i;
                 }
 
-                var modifiedDateVar = from c in context.Schedules where c.UserID == userId && c.ID == id select c.ModifiedDate;
-
-                if (modifiedDateVar == null)
+                var userNameVar = from c in context.Users where c.UserName == userName select c.ID;
+                int userId = -1;
+                if (userNameVar != null)
                 {
-                    String sqlCommand = "Insert into " + tableName + "(" + sColumns[position] + ", LastSync) values (" + resultGetData + ", GETDATE())";
-
-                    var cmd = conn.CreateCommand();
-                    cmd.CommandText = sqlCommand;
-                    cmd.ExecuteNonQuery();
+                    userId = (int)userNameVar.Single();
                 }
-                else
+
+                if (userId == -1)
                 {
-                    if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
+                    return false;
+                }
+
+                string connectionString = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
+
+                var conn = new SqlConnection(connectionString);
+
+                conn.Open();
+
+                for (int i = 0; i < data.Count; i++)
+                {
+                    long id = 0;
+                    DateTime modifiedDate = Convert.ToDateTime("1/1/1900");
+                    String resultGetData = "";
+                    int count = 0;
+
+                    foreach (String subData in data[i])
                     {
-                        String[] subSColumns = sColumns[position].Split(',');
-                        String[] subResultGetData = resultGetData.Split(',');
-
-                        String sqlCommand = "Update " + tableName + " set";
-
-                        for (int j = 1; j < subSColumns.Length; j++)
-                        { 
-                            sqlCommand += subSColumns[j] + " = " + subResultGetData[j] + ",";
+                        if (count == 0)
+                        {
+                            id = Convert.ToInt64(subData.ToString());
+                            resultGetData += "'" + id + "', ";
+                        }
+                        else if (count == 2)
+                        {
+                            modifiedDate = Convert.ToDateTime(subData.ToString());
+                            resultGetData += "'" + modifiedDate + "', ";
+                        }
+                        else
+                        {
+                            resultGetData += "'" + subData + "', ";
                         }
 
-                        sqlCommand += " LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
+                        count++;
+                    }
 
+                    var countVar = (from c in context.Schedules where c.UserID == userId && c.ID == id select c).Count();
+
+                    if (Convert.ToInt32(countVar.ToString()) == 0)
+                    {
+                        String sqlCommand = "Insert into " + tableName + "(" + sColumns[position] + ", LastSync, UserID) values (" + resultGetData + "GETDATE(), " + userId +")";
+
+                        try{
                         var cmd = conn.CreateCommand();
                         cmd.CommandText = sqlCommand;
                         cmd.ExecuteNonQuery();
+                        }
+                        catch (Exception e)
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        var modifiedDateVar = from c in context.Schedules where c.UserID == userId && c.ID == id select c.ModifiedDate;
+
+                        if (modifiedDate.CompareTo(Convert.ToDateTime(modifiedDateVar.Single().ToString())) > 0)
+                        {
+                            String[] subSColumns = sColumns[position].Split(',');
+                            String[] subResultGetData = resultGetData.Split(',');
+
+                            String sqlCommand = "Update " + tableName + " set";
+
+                            for (int j = 1; j < subSColumns.Length; j++)
+                            {
+                                sqlCommand += subSColumns[j] + " = " + subResultGetData[j] + ",";
+                            }
+
+                            sqlCommand += " LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
+
+                            try
+                            {
+                                var cmd = conn.CreateCommand();
+                                cmd.CommandText = sqlCommand;
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (Exception e)
+                            {
+                                return false;
+                            }
+                        }
                     }
                 }
+
+                conn.Close();
+
+                return true;
             }
-
-            conn.Close();
-
-            return true;
+            else 
+            {
+                return false;
+            }
         }
     }
 }
