@@ -35,6 +35,21 @@
     <string name="sync_view_account_management">Quản lý tài khoản</string>
     <string name="sync_view_new_account">Tạo tài khoản</string>
 
+    <!-- These are resources for Warning function -->
+    <string name="warning_title">Thiết lập cảnh báo chung</string>
+    <string name="warning_schedule_title">Kế hoạch</string>
+    <string name="warning_borrow_title">Cho vay và nợ</string>
+    <string name="warning_schedule_warn_before">Cảnh báo khi đến</string>
+    <string name="warning_borrow_warn_before">Cảnh báo trước khi đáo hạn</string>
+    <string name="warning_ring">Nhạc chuông</string>
+    <string name="warning_remain">Nhắc lại</string>
+
+    <string-array name="warning_ring_array">
+        <item>Không có</item>
+        <item>Mặc định</item>
+        <item>Thư mục</item>
+    </string-array>
+
     <!-- These are resources for Entry function -->
     <string name="entry_management_title">Quản lý chi tiêu</string>
     <string name="entry_expense_title">Chi phí</string>

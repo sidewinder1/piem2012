@@ -1,22 +1,16 @@
 package money.Tracker.common.utilities;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Vector;
 
 import money.Tracker.common.sql.SqlHelper;
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
-
-import com.google.zxing.common.GlobalHistogramBinarizer;
 
 import android.database.Cursor;
 
@@ -26,15 +20,15 @@ public class SyncHelper {
 	String CONFIG_FILE = "Fpm/FpmConfig.cnfg";
 	private Date mLocalLastSync;
 
-	private final static String[] sTables = { "Schedule", "ScheduleDetail",
-			"EntryDetail", "Entry", "BorrowLend", "Category" };
+	private final static String[] sTables = { "Category", "Schedule",
+			"ScheduleDetail", "Entry", "EntryDetail", "BorrowLend" };
 	private final static String[] sColumns = {
+			"Id, CreatedDate, ModifiedDate, Name, IsDeleted,User_Color",
 			"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, Start_date, End_date",
 			"Id, CreatedDate, ModifiedDate, Budget, IsDeleted, Category_Id, Schedule_Id",
-			"Id, CreatedDate, ModifiedDate, Category_Id, Name, IsDeleted,Money, Entry_Id",
 			"Id, CreatedDate, ModifiedDate, IsDeleted,Date, Type",
-			"ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address",
-			"Id, CreatedDate, ModifiedDate, Name, IsDeleted,User_Color" };
+			"Id, CreatedDate, ModifiedDate, Category_Id, Name, IsDeleted,Money, Entry_Id",
+			"ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address" };
 	private HashMap<String, String> tableMap = new HashMap<String, String>();
 	private static SyncHelper _instance;
 
@@ -133,6 +127,11 @@ public class SyncHelper {
 							new Object[] {
 									AccountProvider.getInstance().currentAccount.name,
 									table, Converter.toString(mLocalLastSync) });
+					
+					if (updatedRecords == null){
+						continue;
+					}
+					
 					// returnedValue is a Array of array of string.
 					SoapObject returnedValue = (SoapObject) updatedRecords
 							.getProperty(0);
@@ -216,7 +215,7 @@ public class SyncHelper {
 							SAVE_DATA_METHOD,
 							SAVE_PARAMS,
 							new Object[] {
-									AccountProvider.getInstance().currentAccount,
+									AccountProvider.getInstance().currentAccount.name,
 									table, savedObject });
 				}
 			}
@@ -224,7 +223,7 @@ public class SyncHelper {
 			// This account doesn't exist on server.
 			// Then upload its data to server.
 			// Need to call create account method.
-			
+
 			for (String table : sTables) {
 				invokeServerMethod(
 						SAVE_DATA_METHOD,
@@ -242,7 +241,7 @@ public class SyncHelper {
 
 	private void markAsSynchronized() {
 		invokeServerMethod("MarkSynchronized");
-		
+
 	}
 
 	private SoapObject getModifiedRecords(String table, String lastTime) {
@@ -319,10 +318,10 @@ public class SyncHelper {
 			Logger.Log(e.getMessage(), "SyncHelper");
 		} catch (XmlPullParserException e) {
 			Logger.Log(e.getMessage(), "SyncHelper");
-		} catch (ClassCastException e){
+		} catch (ClassCastException e) {
 			Logger.Log(e.getMessage(), "SyncHelper");
 		}
-		
+
 		return null;
 	}
 }
