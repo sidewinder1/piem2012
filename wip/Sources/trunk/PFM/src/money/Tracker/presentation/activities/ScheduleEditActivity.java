@@ -90,8 +90,7 @@ public class ScheduleEditActivity extends Activity {
 				if (!hasFocus) {
 					String str = total_budget.getText().toString();
 					if (!"".equals(str) && str.endsWith(".")) {
-						total_budget.setText(Converter.toString(Long
-								.parseLong(str)));
+						total_budget.setText(Converter.toString(Converter.toLong(str)));
 					}
 				}
 			}
@@ -128,7 +127,7 @@ public class ScheduleEditActivity extends Activity {
 		if (passed_schedule_id == -1) {
 			updateDisplay();
 			addToList(
-					new DetailSchedule(0, 0, Long.parseLong(initialValue)),
+					new DetailSchedule(0, 0, Converter.toLong(initialValue)),
 					-1, false);
 
 		} else { // Edit mode
@@ -152,7 +151,7 @@ public class ScheduleEditActivity extends Activity {
 			if (values.size() == 0) {
 				addToList(
 						new DetailSchedule(0, 0,
-								Long.parseLong(initialValue)), -1, false);
+								Converter.toLong(initialValue)), -1, false);
 			} else {
 				for (DetailSchedule value : values) {
 					addToList(value, -1, true);
@@ -299,8 +298,7 @@ public class ScheduleEditActivity extends Activity {
 			if (!hasFocus) {
 				String str = ((EditText) v).getText().toString();
 				if (!"".equals(str)) {
-					((EditText) v).setText(Converter.toString(Long
-							.parseLong(str)));
+					((EditText) v).setText(Converter.toString(Converter.toLong(str)));
 				}
 			}
 		}
@@ -351,7 +349,7 @@ public class ScheduleEditActivity extends Activity {
 			}
 		}
 
-		return Math.max(0, Long.parseLong(budget_value));
+		return Math.max(0, Converter.toLong(budget_value));
 	}
 
 	public boolean updateTotalBudget(boolean eanbleDialog) {
