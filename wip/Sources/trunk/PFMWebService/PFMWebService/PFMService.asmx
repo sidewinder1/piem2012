@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="PFMService.asmx.cs" Class="PFMWebService.PFMService" %>
+﻿<%@ WebService Language="C#" CodeBehind="PFMService.asmx.cs" Class="PFMWebService.PfmService" %>

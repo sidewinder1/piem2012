@@ -101,7 +101,9 @@ namespace PFMWebService
 
                 foreach (DataColumn col in dataTable.Columns)
                 {
-                    subResult.Add(row[col].ToString());
+                    subResult.Add(col.DataType == typeof (DateTime)
+                                      ? Convert.ToDateTime(row[col]).ToString("yyyy-MM-dd HH:mm:ss")
+                                      : row[col].ToString());
                 }
 
                 result.Add(subResult);
