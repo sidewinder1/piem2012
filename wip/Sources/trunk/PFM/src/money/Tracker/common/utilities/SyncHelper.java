@@ -17,7 +17,7 @@ import android.database.Cursor;
 public class SyncHelper {
 	String NAMESPACE = "http://tempuri.org/";
 	String URL = "http://10.0.2.2:1242/PFMService.asmx";
-	String CONFIG_FILE = "Fpm/FpmConfig.cnfg";
+	String CONFIG_FILE = "Pfm/PfmConfig.cfg";
 	private Date mLocalLastSync;
 
 	private final static String[] sTables = { "Category", "Schedule",
@@ -53,19 +53,16 @@ public class SyncHelper {
 	}
 
 	private void getServerAddress() {
-		String content = IOHelper.getInstance().readFile(CONFIG_FILE);
-
-		if (content.length() != 0) {
-			// Parse xml to data.
-			return;
-		}
+		NAMESPACE = XmlParser.getInstance().getConfigContent("namespace");
+		URL = XmlParser.getInstance().getConfigContent("url");
 	}
 
 	private void getLocalLastSync() {
-		String content = IOHelper.getInstance().readFile(CONFIG_FILE);
+		String lastSync = XmlParser.getInstance().getConfigContent("lastSync");
 
-		if (content.length() != 0) {
+		if (lastSync.length() != 0) {
 			// Parse xml to data.
+			mLocalLastSync = Converter.toDate(lastSync);
 			return;
 		}
 
@@ -82,13 +79,17 @@ public class SyncHelper {
 				"lastSyncTime" };
 
 		// Check this account is existing on Server or not.
-		String results = invokeServerMethod(
+		SoapObject loginRequest = invokeServerMethod(
 				LOGIN_METHOD,
 				new String[] { "userName", "password" },
 				new Object[] {
 						AccountProvider.getInstance().currentAccount.name,
 						AccountProvider.getInstance().getPasswordByAccount(
-								AccountProvider.getInstance().currentAccount) })
+								AccountProvider.getInstance().currentAccount) });
+		if (loginRequest == null){
+			return;
+		}
+		String results = loginRequest
 				.getPropertyAsString(0);
 
 		// Get data if this account exists on server.
@@ -241,8 +242,8 @@ public class SyncHelper {
 	}
 
 	private void markAsSynchronized() {
-		invokeServerMethod("MarkSynchronized");
-
+		invokeServerMethod("MarkSynchronized", new String[]{"userName"}, new Object[] {AccountProvider.getInstance().currentAccount.name});
+		XmlParser.getInstance().setConfigContent("lastSync", Converter.toString(DateTimeHelper.now()));
 	}
 
 	private SoapObject getModifiedRecords(String table, String lastTime) {
