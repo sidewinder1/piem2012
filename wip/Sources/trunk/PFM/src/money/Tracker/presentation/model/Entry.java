@@ -19,12 +19,12 @@ public class Entry implements IModelBase {
 		this.setEntryDetails(entryDetails);
 	}
 
-	public double getTotal(long category) {
+	public long getTotal(long category) {
 		if (entryDetails == null) {
 			return 0;
 		}
 
-		double total = 0;
+		long total = 0;
 		for (EntryDetail entryDetail : entryDetails) {
 			if (entryDetail.getCategory_id() == category) {
 				total += entryDetail.getMoney();
@@ -34,12 +34,12 @@ public class Entry implements IModelBase {
 		return total;
 	}
 
-	public double getTotal() {
+	public long getTotal() {
 		if (entryDetails == null) {
 			return 0;
 		}
 
-		double total = 0;
+		long total = 0;
 
 		for (EntryDetail entryKey : entryDetails) {
 			total += entryKey.getMoney();

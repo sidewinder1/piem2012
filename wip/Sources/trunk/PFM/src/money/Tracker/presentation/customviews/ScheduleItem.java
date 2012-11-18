@@ -1,5 +1,6 @@
 package money.Tracker.presentation.customviews;
 
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.repository.CategoryRepository;
@@ -37,11 +38,11 @@ public class ScheduleItem extends LinearLayout {
 				category.getSelectedItemPosition());
 	}
 
-	public double getBudget() {
+	public long getBudget() {
 		String budgetValue = String.valueOf(budget.getText());
 		if ("".equals(budgetValue)) {
 			budgetValue = "0";
 		}
-		return Double.parseDouble(budgetValue);
+		return Converter.toLong(budgetValue);
 	}
 }

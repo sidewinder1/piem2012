@@ -43,7 +43,7 @@ public class EntryDetailRepository {
 								.getColumnIndex("Category_Id")),
 						entryCursor.getString(entryCursor
 								.getColumnIndex("Name")),
-						entryCursor.getDouble(entryCursor
+						entryCursor.getLong(entryCursor
 								.getColumnIndex("Money")));
 
 				entries.get(categoryKey).add(entryDetail);

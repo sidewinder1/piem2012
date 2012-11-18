@@ -180,7 +180,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 						try {
 							entryDetail.setEntry_id(1);
 							entryDetail.setName(nameProduct);
-							entryDetail.setMoney(Converter.toDouble(price
+							entryDetail.setMoney(Converter.toLong(price
 									.trim()));
 						} catch (Exception e) {
 
@@ -375,7 +375,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 							|| str.toLowerCase().contains("gia")) {
 						String money = str.split(":")[1];
 						money = money.replace(".", "").replace(",", ".").trim();
-						value.setMoney(Double.parseDouble(money));
+						value.setMoney(Long.parseLong(money));
 					} else {
 						if (str.toLowerCase().contains("category")
 								|| str.toLowerCase().contains("loai")) {

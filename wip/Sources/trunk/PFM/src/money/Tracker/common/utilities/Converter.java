@@ -18,7 +18,7 @@ public class Converter {
 		return new DecimalFormat(format).format(value);
 	}
 	
-	public static Double toDouble(String value) {
+	public static double toDouble(String value) {
 		try{
 			String testComma = toString(1000, "#,##0");
 			if (testComma.contains(","))
@@ -38,10 +38,35 @@ public class Converter {
 		}
 	}
 
+	public static long toLong(String value) {
+		try{
+			String testComma = toString(1000, "#,##0");
+			if (testComma.contains(","))
+			{
+				value = value.replace(",", "");
+			}
+			else
+			{
+				value = value.replace(".", "").replace(",", ".");
+			}
+			
+			return Long.parseLong(value);
+		}
+		catch(Exception e)
+		{
+			return 0;
+		}
+	}
+
+	
 	public static String toString(double value) {
 		return toString(value, "#,##0");
 	}
 
+	public static String toString(long value) {
+		return toString(value, "#,##0");
+	}
+	
 	public static String toString(Color color) {
 		return "#99000000";
 	}

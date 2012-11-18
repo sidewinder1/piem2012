@@ -45,9 +45,11 @@ namespace PFMWebService
         [WebMethod]
         public void MarkSynchronized(string userName)
         {
+            conn.Open();
             var updateLastSync = new StringBuilder("update [user] set LastSync = GetDate() where userName = '").Append(userName).Append("'").ToString();
             command.CommandText = updateLastSync;
             command.ExecuteNonQuery();
+            conn.Close();
         }
 
         [WebMethod]

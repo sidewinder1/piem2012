@@ -90,8 +90,8 @@ public class ScheduleEditActivity extends Activity {
 				if (!hasFocus) {
 					String str = total_budget.getText().toString();
 					if (!"".equals(str) && str.endsWith(".")) {
-						total_budget.setText(Converter.toString(Double
-								.parseDouble(str)));
+						total_budget.setText(Converter.toString(Long
+								.parseLong(str)));
 					}
 				}
 			}
@@ -128,7 +128,7 @@ public class ScheduleEditActivity extends Activity {
 		if (passed_schedule_id == -1) {
 			updateDisplay();
 			addToList(
-					new DetailSchedule(0, 0, Double.parseDouble(initialValue)),
+					new DetailSchedule(0, 0, Long.parseLong(initialValue)),
 					-1, false);
 
 		} else { // Edit mode
@@ -152,7 +152,7 @@ public class ScheduleEditActivity extends Activity {
 			if (values.size() == 0) {
 				addToList(
 						new DetailSchedule(0, 0,
-								Double.parseDouble(initialValue)), -1, false);
+								Long.parseLong(initialValue)), -1, false);
 			} else {
 				for (DetailSchedule value : values) {
 					addToList(value, -1, true);
@@ -177,7 +177,7 @@ public class ScheduleEditActivity extends Activity {
 		itemView.budget.setOnFocusChangeListener(completeAfterLostFocus);
 
 		itemView.budget.addTextChangedListener(new TextWatcher() {
-			double sValue = 0;
+			long sValue = 0;
 
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
@@ -186,13 +186,13 @@ public class ScheduleEditActivity extends Activity {
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				if (!"".equals(s.toString())) {
-					sValue = Double.parseDouble(s.toString());
+					sValue = Converter.toLong(s.toString());
 				}
 			}
 
 			public void afterTextChanged(Editable s) {
 				if (!"".equals(s.toString())) {
-					updateTotalBudget(Double.parseDouble(s.toString()) > sValue);
+					updateTotalBudget(Converter.toLong(s.toString()) > sValue);
 				}
 			}
 		});
@@ -299,8 +299,8 @@ public class ScheduleEditActivity extends Activity {
 			if (!hasFocus) {
 				String str = ((EditText) v).getText().toString();
 				if (!"".equals(str)) {
-					((EditText) v).setText(Converter.toString(Double
-							.parseDouble(str)));
+					((EditText) v).setText(Converter.toString(Long
+							.parseLong(str)));
 				}
 			}
 		}
@@ -328,12 +328,12 @@ public class ScheduleEditActivity extends Activity {
 		}
 	}
 
-	public double getNextHint() {
+	public long getNextHint() {
 		return Math.max(0, getTotalBudget() - getTotalDetailBudget());
 	}
 
-	public double getTotalDetailBudget() {
-		double total = 0;
+	public long getTotalDetailBudget() {
+		long total = 0;
 		for (int index = 0; index < list.getChildCount(); index++) {
 			total += ((ScheduleItem) list.getChildAt(index)).getBudget();
 		}
@@ -341,7 +341,7 @@ public class ScheduleEditActivity extends Activity {
 		return Math.max(0, total);
 	}
 
-	public double getTotalBudget() {
+	public long getTotalBudget() {
 		String budget_value = total_budget.getText().toString();
 		if ("".equals(budget_value)) {
 			budget_value = total_budget.getHint().toString();
@@ -351,11 +351,11 @@ public class ScheduleEditActivity extends Activity {
 			}
 		}
 
-		return Math.max(0, Double.parseDouble(budget_value));
+		return Math.max(0, Long.parseLong(budget_value));
 	}
 
 	public boolean updateTotalBudget(boolean eanbleDialog) {
-		double totalDetail = getTotalDetailBudget();
+		long totalDetail = getTotalDetailBudget();
 
 		if ("".equals(total_budget.getText().toString())) {
 			total_budget.setHint(Converter.toString(totalDetail));

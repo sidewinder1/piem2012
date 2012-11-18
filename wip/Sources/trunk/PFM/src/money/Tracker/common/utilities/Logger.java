@@ -13,7 +13,7 @@ public class Logger {
 	public static void Log(String logMessage, String module) {
 		String content = new StringBuilder("- ")
 				.append(Converter.toString(DateTimeHelper.now(),
-						"dd/MM/yyyy HH:mm:ss \n   - [")).append(module)
+						"dd/MM/yyyy hh:mm:ss \n   - [")).append(module)
 				.append("]: ").append(logMessage).toString();
 
 		IOHelper.getInstance().writeFile(

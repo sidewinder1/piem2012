@@ -7,7 +7,7 @@ public class Schedule implements IModelBase {
 	public long id;
 	public Date start_date;
 	public Date end_date;
-	public double budget;
+	public long budget;
 	public int type;
 
 	public ArrayList<DetailSchedule> details = new ArrayList<DetailSchedule>();
@@ -15,7 +15,7 @@ public class Schedule implements IModelBase {
 	public Schedule() {
 	}
 
-	public Schedule(long id, double budget, Date start_date, Date end_date,
+	public Schedule(long id, long budget, Date start_date, Date end_date,
 			int time_id, ArrayList<DetailSchedule> details) {
 		this.id = id;
 		this.budget = budget;
@@ -25,7 +25,7 @@ public class Schedule implements IModelBase {
 		this.details = details;
 	}
 
-	public Schedule(float budget, Date start_date, Date end_date) {
+	public Schedule(long budget, Date start_date, Date end_date) {
 		this.budget = budget;
 		this.start_date = start_date;
 		this.end_date = end_date;
