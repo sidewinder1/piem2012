@@ -15,7 +15,7 @@ public class ReportDetailProduct extends LinearLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReportDetailProduct(Context context, String name, double value) {
+	public ReportDetailProduct(Context context, String name, long value) {
 		// TODO Auto-generated constructor stub
 		super(context);
 

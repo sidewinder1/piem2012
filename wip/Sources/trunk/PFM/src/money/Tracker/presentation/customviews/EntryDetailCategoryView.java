@@ -38,7 +38,7 @@ public class EntryDetailCategoryView extends LinearLayout {
 		category_name.setText(CategoryRepository.getInstance().getName(
 				(data.get(0).getCategory_id())));
 
-		double total = 0;
+		long total = 0;
 		int count = 0;
 		category_list.removeAllViews();
 		for (EntryDetail entryDetail : data) {

@@ -184,13 +184,13 @@ public class SqlHelper {
 		createTable(
 				"Schedule",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY, Budget FLOAT, Type INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Budget LONG, Type INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Start_date DATE, End_date DATE").toString());
 		// Create table for Schedule Detail.
 		createTable(
 				"ScheduleDetail",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY, Budget FLOAT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Budget LONG, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
 						.append("Category_Id INTEGER, Schedule_Id INTEGER")
 						.toString());
 
@@ -199,7 +199,7 @@ public class SqlHelper {
 				"EntryDetail",
 				new StringBuilder(
 						"Id LONG PRIMARY KEY, Category_Id INTEGER, Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
-						.append("Money FLOAT, Entry_Id INTEGER").toString());
+						.append("Money LONG, Entry_Id INTEGER").toString());
 
 		// Create table for Entry Detail.
 		createTable(
@@ -213,7 +213,7 @@ public class SqlHelper {
 				"BorrowLend",
 				"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,"
 						+ "Debt_type TEXT,"
-						+ "Money INTEGER,"
+						+ "Money LONG,"
 						+ "Interest_type TEXT,"
 						+ "Interest_rate INTEGER,"
 						+ "Start_date DATE,"

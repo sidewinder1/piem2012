@@ -5,7 +5,7 @@ import java.util.Date;
 public class BorrowLend {
 	private long id;
 	private String debtType;
-	private double money;
+	private long money;
 	private String interestType;
 	private int interestRate;
 	private Date startDate;
@@ -47,11 +47,11 @@ public class BorrowLend {
 		this.debtType = debtType;
 	}
 
-	public double getMoney() {
+	public long getMoney() {
 		return money;
 	}
 
-	public void setMoney(double money) {
+	public void setMoney(long money) {
 		this.money = money;
 	}
 

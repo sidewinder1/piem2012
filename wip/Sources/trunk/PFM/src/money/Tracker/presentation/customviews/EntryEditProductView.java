@@ -34,7 +34,7 @@ public class EntryEditProductView extends LinearLayout {
 		mLastParams = (LayoutParams) product.getLayoutParams();
 		
 		price.addTextChangedListener(new TextWatcher() {
-			double sValue = 0;
+			long sValue = 0;
 
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
@@ -45,7 +45,7 @@ public class EntryEditProductView extends LinearLayout {
 				if ("".equals(s.toString())) {
 					sValue = 0;
 				} else {
-					sValue = Converter.toDouble(s.toString());
+					sValue = Converter.toLong(s.toString());
 				}
 			}
 
@@ -59,10 +59,10 @@ public class EntryEditProductView extends LinearLayout {
 					total_text_view.setText(Converter.toString(0));
 				}
 
-				double currentValue = Converter.toDouble(String
+				long currentValue = Converter.toLong(String
 						.valueOf(total_text_view.getText()));
 				total_text_view.setText(Converter.toString(currentValue
-						+ Converter.toDouble(cValue.toString()) - sValue));
+						+ Converter.toLong(cValue.toString()) - sValue));
 
 			}
 		});
@@ -168,12 +168,12 @@ public class EntryEditProductView extends LinearLayout {
 		return String.valueOf(price.getText());
 	}
 
-	public double getMoney() {
+	public long getMoney() {
 		String value = getCost();
 		if ("".equals(value)) {
 			return 0;
 		}
 
-		return Converter.toDouble(value);
+		return Converter.toLong(value);
 	}
 }

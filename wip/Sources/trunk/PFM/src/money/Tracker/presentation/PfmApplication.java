@@ -11,7 +11,7 @@ import android.os.Environment;
 
 public class PfmApplication extends Application{
 	 private static Context context;
-     private String CONFIG_FILE = "Pfm/PfmConfig.cfg";
+     private String CONFIG_FILE = "Pfm/PfmConfig.xml";
  	private static String mBaseDir = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
 

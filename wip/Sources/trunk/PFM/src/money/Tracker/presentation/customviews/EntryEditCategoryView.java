@@ -68,7 +68,7 @@ public class EntryEditCategoryView extends LinearLayout {
 			category_list.addView(item, params);
 			total_money.setText(Converter.toString(0D));
 		} else {
-			double total = 0;
+			long total = 0;
 
 			for (EntryDetail entryDetail : data) {
 				EntryEditProductView item = new EntryEditProductView(context,

@@ -3,7 +3,7 @@ package money.Tracker.presentation.model;
 public class EntryDetail implements IModelBase {
 	private long id, category_id, entry_id;
 	private String name;
-	private double money;
+	private long money;
 
 	public EntryDetail() {
 		super();
@@ -11,7 +11,7 @@ public class EntryDetail implements IModelBase {
 	}
 	
 	public EntryDetail(long category_id, String name,
-			double money) {
+			long money) {
 		super();
 		this.category_id = category_id;
 		this.name = name;
@@ -19,7 +19,7 @@ public class EntryDetail implements IModelBase {
 	}
 
 	public EntryDetail(long id, long entry_id, long category_id, String name,
-			double money) {
+			long money) {
 		super();
 		this.id = id;
 		this.entry_id = entry_id;
@@ -52,11 +52,11 @@ public class EntryDetail implements IModelBase {
 		this.name = name;
 	}
 
-	public double getMoney() {
+	public long getMoney() {
 		return money;
 	}
 
-	public void setMoney(double money) {
+	public void setMoney(long money) {
 		this.money = money;
 	}
 

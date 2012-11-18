@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 import android.os.Environment;
 
 public class XmlParser {
-	private String CONFIG_FILE = "Pfm/PfmConfig.cfg";
+	private String CONFIG_FILE = "Pfm/PfmConfig.xml";
 	private static String mBaseDir = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
 	
@@ -54,6 +54,9 @@ public class XmlParser {
 		if (_configDocument == null){
 			_configDocument = getDocument(mBaseDir + File.separator + CONFIG_FILE);
 			new DOMSource(_configDocument);
+		}
+		if (_configDocument == null){
+			return "";
 		}
 		
 		NodeList nodeList = _configDocument.getElementsByTagName(attributeName);

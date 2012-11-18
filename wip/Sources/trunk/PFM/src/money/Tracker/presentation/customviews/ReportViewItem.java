@@ -43,7 +43,7 @@ public class ReportViewItem extends LinearLayout {
 					Converter.toString(endDate, "dd/MM/yyyy")));
 
 		// get spent
-		double spent = 0;
+		long spent = 0;
 
 		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
 				"Type=1");
@@ -74,7 +74,7 @@ public class ReportViewItem extends LinearLayout {
 								do {
 									Log.d("Check spent", "Check 9");
 									spent += entryDetailCursor
-											.getDouble(entryDetailCursor
+											.getLong(entryDetailCursor
 													.getColumnIndex("Money"));
 									Log.d("Check spent", String.valueOf(spent));
 								} while (entryDetailCursor.moveToNext());
@@ -86,7 +86,7 @@ public class ReportViewItem extends LinearLayout {
 		}
 
 		// get budget
-		double budget = 0;
+		long budget = 0;
 		String whereCondition = "";
 		if (checkMonthly)
 			whereCondition = "Type = 1";
@@ -110,7 +110,7 @@ public class ReportViewItem extends LinearLayout {
 						Log.d("Check get Month", startDateMonth);
 
 						if (scheduleMonth.equals(startDateMonth))
-							budget = scheduleCursor.getDouble(scheduleCursor
+							budget = scheduleCursor.getLong(scheduleCursor
 									.getColumnIndex("Budget"));
 					} else {
 						Date scheduleStartDate = Converter
@@ -128,7 +128,7 @@ public class ReportViewItem extends LinearLayout {
 										.compareTo(endDate) == 0)
 								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate
 										.compareTo(endDate) < 0))
-							budget = scheduleCursor.getDouble(scheduleCursor
+							budget = scheduleCursor.getLong(scheduleCursor
 									.getColumnIndex("Budget"));
 					}
 				} while (scheduleCursor.moveToNext());

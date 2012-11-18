@@ -46,7 +46,7 @@ public class BorrowLendRepository {
 					bole.setDebtType(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Debt_type")));
 					Log.d("Select", "Check 6");
-					bole.setMoney(borrowLendData.getDouble(borrowLendData
+					bole.setMoney(borrowLendData.getLong(borrowLendData
 							.getColumnIndex("Money")));
 					Log.d("Select", "Check 7");
 					bole.setInterestType(borrowLendData
@@ -110,7 +110,7 @@ public class BorrowLendRepository {
 							.getColumnIndex("Id")));
 					bole.setDebtType(borrowLendData.getString(borrowLendData
 							.getColumnIndex("Debt_type")));
-					bole.setMoney(borrowLendData.getDouble(borrowLendData
+					bole.setMoney(borrowLendData.getLong(borrowLendData
 							.getColumnIndex("Money")));
 					bole.setInterestType(borrowLendData
 							.getString(borrowLendData

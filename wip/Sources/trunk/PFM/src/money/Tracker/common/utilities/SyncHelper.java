@@ -17,7 +17,7 @@ import android.database.Cursor;
 public class SyncHelper {
 	String NAMESPACE = "http://tempuri.org/";
 	String URL = "http://10.0.2.2:1242/PFMService.asmx";
-	String CONFIG_FILE = "Pfm/PfmConfig.cfg";
+	String CONFIG_FILE = "Pfm/PfmConfig.xml";
 	private Date mLocalLastSync;
 
 	private final static String[] sTables = { "Category", "Schedule",
@@ -86,11 +86,10 @@ public class SyncHelper {
 						AccountProvider.getInstance().currentAccount.name,
 						AccountProvider.getInstance().getPasswordByAccount(
 								AccountProvider.getInstance().currentAccount) });
-		if (loginRequest == null){
+		if (loginRequest == null) {
 			return;
 		}
-		String results = loginRequest
-				.getPropertyAsString(0);
+		String results = loginRequest.getPropertyAsString(0);
 
 		// Get data if this account exists on server.
 		if (results != null && Boolean.parseBoolean(results)) {
@@ -212,13 +211,15 @@ public class SyncHelper {
 						}
 					}
 
-					// Upload data to server.
-					invokeServerMethod(
-							SAVE_DATA_METHOD,
-							SAVE_PARAMS,
-							new Object[] {
-									AccountProvider.getInstance().currentAccount.name,
-									table, savedObject });
+					if (savedObject.getPropertyCount() != 0) {
+						// Upload data to server.
+						invokeServerMethod(
+								SAVE_DATA_METHOD,
+								SAVE_PARAMS,
+								new Object[] {
+										AccountProvider.getInstance().currentAccount.name,
+										table, savedObject });
+					}
 				}
 			}
 		} else {
@@ -242,8 +243,12 @@ public class SyncHelper {
 	}
 
 	private void markAsSynchronized() {
-		invokeServerMethod("MarkSynchronized", new String[]{"userName"}, new Object[] {AccountProvider.getInstance().currentAccount.name});
-		XmlParser.getInstance().setConfigContent("lastSync", Converter.toString(DateTimeHelper.now()));
+		invokeServerMethod(
+				"MarkSynchronized",
+				new String[] { "userName" },
+				new Object[] { AccountProvider.getInstance().currentAccount.name });
+		XmlParser.getInstance().setConfigContent("lastSync",
+				Converter.toString(DateTimeHelper.now()));
 	}
 
 	private SoapObject getModifiedRecords(String table, String lastTime) {

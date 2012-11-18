@@ -16,7 +16,7 @@ public class ReportDetailCategory extends LinearLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReportDetailCategory(Context context, String name, double value) {
+	public ReportDetailCategory(Context context, String name, long value) {
 		super(context);
 
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()

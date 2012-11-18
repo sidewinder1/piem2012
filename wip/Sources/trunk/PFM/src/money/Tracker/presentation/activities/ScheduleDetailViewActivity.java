@@ -55,7 +55,7 @@ public class ScheduleDetailViewActivity extends Activity {
 					.toString());
 
 			TextView budget_value = (TextView) findViewById(R.id.schedule_detail_budget_value);
-			budget_value.setText(Converter.toString(schedule.getDouble(1)));
+			budget_value.setText(Converter.toString(schedule.getLong(1)));
 
 			// bind data to list item
 			ListView list = (ListView) findViewById(R.id.schedule_detail_item_list);
@@ -68,7 +68,7 @@ public class ScheduleDetailViewActivity extends Activity {
 				do {
 					data.add(new DetailSchedule(detail_schedule.getLong(3),
 							detail_schedule.getLong(0), detail_schedule
-									.getDouble(1), detail_schedule.getLong(2)));
+									.getLong(1), detail_schedule.getLong(2)));
 				} while (detail_schedule.moveToNext());
 
 				detailAdapter = new ScheduleDetailViewAdapter(this,
@@ -80,7 +80,7 @@ public class ScheduleDetailViewActivity extends Activity {
 
 			Date end_date = Converter.toDate(schedule.getString(3));
 			average.setText(new StringBuilder(Converter.toString(schedule
-					.getDouble(1)
+					.getLong(1)
 					/ DateTimeHelper.getDayOfMonth(end_date.getYear(),
 							end_date.getMonth()))).append("/day"));
 		}

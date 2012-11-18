@@ -46,7 +46,7 @@ public class ScheduleRepository implements IDataRepository {
 												.getColumnIndex("Id")),
 										detailData.getLong(detailData
 												.getColumnIndex("Category_Id")),
-										detailData.getDouble(detailData
+										detailData.getLong(detailData
 												.getColumnIndex("Budget")),
 										detailData.getLong(detailData
 												.getColumnIndex("Schedule_Id"))));
@@ -56,7 +56,7 @@ public class ScheduleRepository implements IDataRepository {
 
 					returnValues.add(new Schedule(scheduleData
 							.getLong(scheduleData.getColumnIndex("Id")),
-							scheduleData.getFloat(scheduleData
+							scheduleData.getLong(scheduleData
 									.getColumnIndex("Budget")), Converter
 									.toDate(scheduleData.getString(scheduleData
 											.getColumnIndex("Start_date"))),

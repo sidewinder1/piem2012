@@ -27,7 +27,7 @@ public class DetailScheduleRepository {
 				detailSchedules.add(new DetailSchedule(detail.getLong(detail
 						.getColumnIndex("Id")), detail.getLong(detail
 						.getColumnIndex("Category_Id")), detail
-						.getDouble(detail.getColumnIndex("Budget")), detail
+						.getLong(detail.getColumnIndex("Budget")), detail
 						.getLong(detail.getColumnIndex("Schedule_Id"))));
 			} while (detail.moveToNext());
 		}

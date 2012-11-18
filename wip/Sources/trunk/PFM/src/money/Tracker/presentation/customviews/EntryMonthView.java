@@ -56,9 +56,9 @@ public class EntryMonthView extends LinearLayout {
 
 		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository
 				.getInstance().orderedEntries.get(keyMonth);
-		HashMap<Long, Double> valueOnCategory = new HashMap<Long, Double>();
+		HashMap<Long, Long> valueOnCategory = new HashMap<Long, Long>();
 		if (entrySet != null) {
-			double total = 0;
+			long total = 0;
 			// Set count.
 			count_text.setText(new StringBuilder("(").append(entrySet.size())
 					.append(")"));
@@ -70,7 +70,7 @@ public class EntryMonthView extends LinearLayout {
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 
 				for (EntryDetail entryDetail : entry.getEntryDetails()) {
-					double currentValue =  entryDetail.getMoney();
+					long currentValue =  entryDetail.getMoney();
 					if (valueOnCategory.containsKey(entryDetail
 							.getCategory_id())) {
 						currentValue = valueOnCategory.get(entryDetail
