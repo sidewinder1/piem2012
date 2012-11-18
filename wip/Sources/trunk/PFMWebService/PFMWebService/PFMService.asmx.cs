@@ -131,6 +131,22 @@ namespace PFMWebService
         [WebMethod]
         public bool SaveData(String userName, String tableName, List<ArrayList> data)
         {
+            String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
+            String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, StartDate, EndDate", // Schedule
+                                 "Id, CreatedDate, ModifiedDate, Budget, IsDeleted, CategoryID, ScheduleID", // Schedule Detail
+                                 "Id, CreatedDate, ModifiedDate, CategoryID, Name, IsDeleted, Money, EntryID", // Entry Detail
+                                 "Id, CreatedDate, ModifiedDate, IsDeleted, Date, Type", // Entry
+                                 "Id, CreatedDate, ModifiedDate, IsDeleted, DebtType, Money, InterestType, InterestRate, StartDate, ExpiredDate, PersonName, PersonPhone, PersonAddress", //BorrowLend
+                                 "Id, CreatedDate, ModifiedDate, Name, IsDeleted, UserColor"}; //Category
+
+            int position = -1;
+
+            for (int i = 0; i < sTables.Length; i++)
+            {
+                if (tableName.Equals(sTables[i]))
+                    position = i;
+            }
+
             var userNameVar = from c in context.Users where c.UserName == userName select c.ID;
             int userId = -1;
             if (userNameVar != null)
@@ -149,268 +165,64 @@ namespace PFMWebService
 
             conn.Open();
 
-            if (tableName.Equals("Schedule"))
+            for (int i = 0; i < data.Count; i++)
             {
-                // List<PFMWebServiceModel.Schedule> scheduleList = new List<PFMWebServiceModel.Schedule>();
+                long id = 0;
+                DateTime modifiedDate = Convert.ToDateTime("1/1/1900");
+                String resultGetData = "";
+                int count = 0;
 
-                for (int i = 0; i < data.Count; i++)
+                foreach (String subData in data[i])
                 {
-                    foreach (ArrayList subData in data[i])
+                    if (count == 0)
                     {
-                        long id = Convert.ToInt64(subData[0].ToString());
-                        DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
-                        DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
-                        double budget = Convert.ToDouble(subData[3].ToString());
-                        int type = Convert.ToInt32(subData[4].ToString());
-                        int isDeleted = Convert.ToInt32(subData[5].ToString());
-                        DateTime startDate = Convert.ToDateTime(subData[6].ToString());
-                        DateTime endDate = Convert.ToDateTime(subData[7].ToString());
-
-                        var modifiedDateVar = from c in context.Schedules where c.UserID == userId && c.ID == id select c.ModifiedDate;
-
-                        if (modifiedDateVar == null)
-                        {
-                            String sqlCommand = "Insert into Schedule values (" + id + ", " + userId + ", " + budget + ", " + type + ", " + startDate + ", " + endDate + ", " + isDeleted + ", " + createdDate + ", " + modifiedDate + ", GETDATE())";
-
-                            var cmd = conn.CreateCommand();
-                            cmd.CommandText = sqlCommand;
-                            cmd.ExecuteNonQuery();
-                        }
-                        else 
-                        {
-                            if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
-                            {
-                                String sqlCommand = "Update Schedule set Budget = " + budget + ", Type = " + type + ", StartDate = " + startDate + ", EndDate = " + endDate + ", IsDeleted = " + isDeleted + ", CreatedDate = " + createdDate + ", ModifiedDate = " + modifiedDate + ", LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
-
-                                var cmd = conn.CreateCommand();
-                                cmd.CommandText = sqlCommand;
-                                cmd.ExecuteNonQuery();    
-                            }
-                        }
-
-                        // PFMWebServiceModel.Schedule scheduleData = new PFMWebServiceModel.Schedule(id, createdDate, modifiedDate, budget, type, isDeleted, startDate, endDate);
-
-                        // scheduleList.Add(scheduleData);
+                        id = Convert.ToInt64(subData.ToString());
+                        resultGetData += id + ", ";
                     }
+                    else if (count == 2)
+                    {
+                        modifiedDate = Convert.ToDateTime(subData.ToString());
+                        resultGetData += modifiedDate + ", ";
+                    }
+                    else
+                    {
+                        resultGetData += subData + ", ";
+                    }
+
+                    count++;
                 }
 
+                var modifiedDateVar = from c in context.Schedules where c.UserID == userId && c.ID == id select c.ModifiedDate;
 
-            }
-            else if (tableName.Equals("ScheduleDetail"))
-            {
-                for (int i = 0; i < data.Count; i++)
+                if (modifiedDateVar == null)
                 {
-                    foreach (ArrayList subData in data[i])
+                    String sqlCommand = "Insert into " + tableName + "(" + sColumns[position] + ", LastSync) values (" + resultGetData + ", GETDATE())";
+
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = sqlCommand;
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
                     {
-                        long id = Convert.ToInt64(subData[0].ToString());
-                        DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
-                        DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
-                        double budget = Convert.ToDouble(subData[3].ToString());
-                        int isDeleted = Convert.ToInt32(subData[5].ToString());
-                        int categoryID = Convert.ToInt32(subData[6].ToString());
-                        int scheduleID = Convert.ToInt32(subData[7].ToString());
+                        String[] subSColumns = sColumns[position].Split(',');
+                        String[] subResultGetData = resultGetData.Split(',');
 
-                        var modifiedDateVar = from c in context.ScheduleDetails where c.UserID == userId && c.ID == id select c.ModifiedDate;
+                        String sqlCommand = "Update " + tableName + " set";
 
-                        if (modifiedDateVar == null)
-                        {
-                            String sqlCommand = "Insert into ScheduleDetail values (" + id + ", " + userId + ", " + budget + ", " + categoryID + ", " + scheduleID + ", " + isDeleted + ", " + createdDate + ", " + modifiedDate + ", GETDATE())";
-
-                            var cmd = conn.CreateCommand();
-                            cmd.CommandText = sqlCommand;
-                            cmd.ExecuteNonQuery();
+                        for (int j = 1; j < subSColumns.Length; j++)
+                        { 
+                            sqlCommand += subSColumns[j] + " = " + subResultGetData[j] + ",";
                         }
-                        else
-                        {
-                            if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
-                            {
-                                String sqlCommand = "Update ScheduleDetail set Budget = " + budget + ", CategoryID = " + categoryID + ", ScheduleID = " + scheduleID + ", IsDeleted = " + isDeleted + ", CreatedDate = " + createdDate + ", ModifiedDate = " + modifiedDate + ", LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
 
-                                var cmd = conn.CreateCommand();
-                                cmd.CommandText = sqlCommand;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
+                        sqlCommand += " LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
+
+                        var cmd = conn.CreateCommand();
+                        cmd.CommandText = sqlCommand;
+                        cmd.ExecuteNonQuery();
                     }
                 }
-            }
-            else if (tableName.Equals("EntryDetail"))
-            {
-                for (int i = 0; i < data.Count; i++)
-                {
-                    foreach (ArrayList subData in data[i])
-                    {
-                        long id = Convert.ToInt64(subData[0].ToString());
-                        DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
-                        DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
-                        int categoryID = Convert.ToInt32(subData[3].ToString());
-                        String name = subData[4].ToString();
-                        int isDeleted = Convert.ToInt32(subData[5].ToString());
-                        double money = Convert.ToDouble(subData[6].ToString());
-                        int entryID = Convert.ToInt32(subData[7].ToString());
-
-                        var modifiedDateVar = from c in context.EntryDetails where c.UserID == userId && c.ID == id select c.ModifiedDate;
-
-                        if (modifiedDateVar == null)
-                        {
-                            String sqlCommand = "Insert into EntryDetail values (" + id + ", " + userId + ", " + categoryID + ", " + name + ", " + money + ", " + entryID + ", " + isDeleted + ", " + createdDate + ", " + modifiedDate + ", GETDATE())";
-
-                            var cmd = conn.CreateCommand();
-                            cmd.CommandText = sqlCommand;
-                            cmd.ExecuteNonQuery();
-                        }
-                        else
-                        {
-                            if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
-                            {
-                                String sqlCommand = "Update EntryDetail set CategoryID = " + categoryID + ", Name = " + name + ", [Money] = " + money + "EntryID = " + entryID + ", IsDeleted = " + isDeleted + ", CreatedDate = " + createdDate + ", ModifiedDate = " + modifiedDate + ", LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
-
-                                var cmd = conn.CreateCommand();
-                                cmd.CommandText = sqlCommand;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-            }
-            else if (tableName.Equals("Entry"))
-            {
-                for (int i = 0; i < data.Count; i++)
-                {
-                    foreach (ArrayList subData in data[i])
-                    {
-                        long id = Convert.ToInt64(subData[0].ToString());
-                        DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
-                        DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
-                        int isDeleted = Convert.ToInt32(subData[3].ToString());
-                        DateTime date = Convert.ToDateTime(subData[4].ToString());
-                        int type = Convert.ToInt32(subData[5].ToString());
-
-                        var modifiedDateVar = from c in context.EntryDetails where c.UserID == userId && c.ID == id select c.ModifiedDate;
-
-                        if (modifiedDateVar == null)
-                        {
-                            String sqlCommand = "Insert into Entry values (" + id + ", " + userId + ", " + date + ", " + isDeleted + ", " + type + "," + createdDate + ", " + modifiedDate + ", GETDATE())";
-
-                            var cmd = conn.CreateCommand();
-                            cmd.CommandText = sqlCommand;
-                            cmd.ExecuteNonQuery();
-                        }
-                        else
-                        {
-                            if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
-                            {
-                                String sqlCommand = "Update Entry set [Date] = " + date + ", IsDeleted = " + isDeleted + ", [Type] = " + type + ", CreatedDate = " + createdDate + ", ModifiedDate = " + modifiedDate + ", LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
-
-                                var cmd = conn.CreateCommand();
-                                cmd.CommandText = sqlCommand;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-            }
-            else if (tableName.Equals("BorrowLend"))
-            {
-                for (int i = 0; i < data.Count; i++)
-                {
-                    foreach (ArrayList subData in data[i])
-                    {
-                        long id = Convert.ToInt64(subData[0].ToString());
-                        DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
-                        DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
-                        int isDeleted = Convert.ToInt32(subData[3].ToString());
-                        String debtType = subData[4].ToString();
-                        double money = Convert.ToDouble(subData[5].ToString());
-                        String interestType = subData[6].ToString();
-                        int interestRate = Convert.ToInt32(subData[7].ToString());
-                        DateTime startDate = Convert.ToDateTime(subData[8].ToString());
-                        DateTime expiredDate = Convert.ToDateTime(subData[9].ToString());
-                        String personName = subData[10].ToString();
-                        String personPhone = subData[11].ToString();
-                        String personAddress = subData[12].ToString();
-
-                        var modifiedDateVar = from c in context.BorrowLends where c.UserID == userId && c.ID == id select c.ModifiedDate;
-
-                        if (modifiedDateVar == null)
-                        {
-                            String sqlCommand = "Insert into BorrowLend values (" + id + ", " + userId + ", " + debtType + money + ", " + interestType + ", " + interestRate + ", " + startDate + ", " + expiredDate + ", " + personName + ", " + personPhone + ", " + personAddress + ", " + isDeleted + createdDate + ", " + modifiedDate + ", GETDATE())";
-
-                            var cmd = conn.CreateCommand();
-                            cmd.CommandText = sqlCommand;
-                            cmd.ExecuteNonQuery();
-                        }
-                        else
-                        {
-                            if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
-                            {
-                                String sqlCommand = "Update BorrowLend set DebtType = " + debtType + 
-                                                    ", [Money] = " + money + 
-                                                    ", InterestType = " + interestType + 
-                                                    ", InterestRate = " + interestRate + 
-                                                    ", StartDate = " + startDate + 
-                                                    ", ExpiredDate = " + expiredDate + 
-                                                    ", PersonName = " + personName + 
-                                                    ", PersonPhone = " + personPhone + 
-                                                    ", PersonAddress = " + personAddress + 
-                                                    ", IsDeleted = " + isDeleted + 
-                                                    ", CreatedDate = " + createdDate + 
-                                                    ", ModifiedDate = " + modifiedDate + 
-                                                    ", LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
-
-                                var cmd = conn.CreateCommand();
-                                cmd.CommandText = sqlCommand;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-            }
-            else if (tableName.Equals("Category"))
-            {
-                for (int i = 0; i < data.Count; i++)
-                {
-                    foreach (ArrayList subData in data[i])
-                    {
-                        long id = Convert.ToInt64(subData[0].ToString());
-                        DateTime createdDate = Convert.ToDateTime(subData[1].ToString());
-                        DateTime modifiedDate = Convert.ToDateTime(subData[2].ToString());
-                        String name = subData[3].ToString();
-                        int isDeleted = Convert.ToInt32(subData[4].ToString());
-                        String userColor = subData[5].ToString();
-
-                        var modifiedDateVar = from c in context.Categories where c.UserID == userId && c.ID == id select c.ModifiedDate;
-
-                        if (modifiedDateVar == null)
-                        {
-                            String sqlCommand = "Insert into Category values (" + id + ", " + userId + ", " + name + ", " + userColor + ", " + isDeleted + createdDate + ", " + modifiedDate + ", GETDATE())";
-
-                            var cmd = conn.CreateCommand();
-                            cmd.CommandText = sqlCommand;
-                            cmd.ExecuteNonQuery();
-                        }
-                        else
-                        {
-                            if (modifiedDate.CompareTo((DateTime)modifiedDateVar.Single()) > 0)
-                            {
-                                String sqlCommand = "Update Category set Name = " + name +
-                                                    ", UserColor = " + userColor +
-                                                    ", IsDeleted = " + isDeleted +
-                                                    ", CreatedDate = " + createdDate +
-                                                    ", ModifiedDate = " + modifiedDate +
-                                                    ", LastSync = GETDATE()) where ID = " + id + "and UserID = " + userId;
-
-                                var cmd = conn.CreateCommand();
-                                cmd.CommandText = sqlCommand;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                return false;
             }
 
             conn.Close();
