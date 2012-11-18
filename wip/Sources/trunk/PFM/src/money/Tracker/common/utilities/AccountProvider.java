@@ -11,7 +11,7 @@ public class AccountProvider {
 	ArrayList<Account> mAccountList;
 	private Account[] mAccounts;
 	public Account currentAccount;
-	String CONFIG_FILE = "Fpm/FpmConfig.cnfg";
+	String CONFIG_FILE = "Pfm/PfmConfig.cfg";
 	
 	public AccountProvider() {
 		mAccManager = AccountManager.get(PfmApplication
@@ -24,12 +24,11 @@ public class AccountProvider {
 	}
 	
 	private void updateCurrentAccount(){
-		String content = IOHelper.getInstance().readFile(CONFIG_FILE);
+		String account = XmlParser.getInstance().getConfigContent("account");
 
-		if (content.length() != 0) {
+		if (account.length() != 0) {
 			// Parse xml to data.
-			String email = content;
-			currentAccount = findAccountByEmail(email);
+			currentAccount = findAccountByEmail(account);
 			return;
 		}
 		

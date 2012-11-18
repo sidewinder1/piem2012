@@ -21,9 +21,15 @@ public class IOHelper {
 		return _instance;
 	}
 	
+	public void createFile(String filePath, String content){
+		File file = new File(filePath);
+		if (!file.exists()){
+			writeFile(filePath, content, false);
+		}
+	}
+	
 	public String readFile(String path) {
 		String strContent = "";
-
 		// Check whether file is existing or not.
 		if (new File(path).exists()) {
 			InputStream fiStream;
@@ -35,20 +41,23 @@ public class IOHelper {
 					strContent = new Scanner(fiStream).useDelimiter("\\A").next();
 					fiStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					Logger.Log(e.getMessage(), "IOHelper");
 				}
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (FileNotFoundException e) {
+				Logger.Log(e.getMessage(), "IOHelper");
 			}
 		} else {
 			Logger.Log(new StringBuilder(path).append(" isn't existing.")
-					.toString(), "money.Tracker.common.utilities.IOHelper");
+					.toString(), "IOHelper");
 		}
 		return strContent;
 	}
 
-	public void writeFile(String path, String content) {
+	public void writeFile(String path, String content){
+		writeFile(path, content, true);
+	}
+	
+	public void writeFile(String path, String content, boolean append) {
 		File file = new File(path);
 		if (!file.exists()) {
 			file.mkdir();
@@ -56,18 +65,17 @@ public class IOHelper {
 		
 		if (file.exists()) {
 			try {
-				OutputStream fiStream = new FileOutputStream(path);
+				OutputStream fiStream = new FileOutputStream(path, append);
 				try {
 					fiStream.write(content.getBytes());
 
 					fiStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					Logger.Log(e.getMessage(), "IOHelper");
 				}
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				Logger.Log(e.getMessage(), "IOHelper");
 			}
-
 		}
 	}
 }

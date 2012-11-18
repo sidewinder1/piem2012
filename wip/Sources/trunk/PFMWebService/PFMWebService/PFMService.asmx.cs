@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web.Services;
 
 namespace PFMWebService
@@ -21,9 +22,12 @@ namespace PFMWebService
         readonly PFMDataClassesDataContext _context = new PFMDataClassesDataContext();
         readonly Dictionary<string, string> _tableMap = new Dictionary<string, string>();
         const string CONNECTION_STRING = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
-
+        readonly SqlConnection conn;
+        readonly SqlCommand command;
         public PfmService()
         {
+            conn = new SqlConnection(CONNECTION_STRING);
+            command = conn.CreateCommand();
             String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
             String[] sColumns = {"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, StartDate, EndDate", // Schedule
                                  "Id, CreatedDate, ModifiedDate, Budget, IsDeleted, CategoryID, ScheduleID", // Schedule Detail
@@ -39,12 +43,15 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public void MarkSynchronized()
+        public void MarkSynchronized(string userName)
         {
+            var updateLastSync = new StringBuilder("update [user] set LastSync = GetDate() where userName = '").Append(userName).Append("'").ToString();
+            command.CommandText = updateLastSync;
+            command.ExecuteNonQuery();
         }
 
         [WebMethod]
-        public bool Login(String userName, String password)
+        public bool Login(string userName, string password)
         {
             return !userName.Equals("") && !password.Equals("");
         }
@@ -77,7 +84,6 @@ namespace PFMWebService
             var userId = userNameVar.Single();
 
 
-            var conn = new SqlConnection(CONNECTION_STRING);
 
             conn.Open();
 
@@ -126,8 +132,7 @@ namespace PFMWebService
                 }
 
                 var userId = userNameVar.Single();
-                var conn = new SqlConnection(CONNECTION_STRING);
-
+              
                 conn.Open();
 
                 foreach (var recordRow in data)
@@ -138,7 +143,7 @@ namespace PFMWebService
 
                     var sqlCheckCount = "select ModifiedDate from " + tableName + " where UserID = '" + userId +
                                         "' and id= '" + recordRow[0] + "'";
-                    var command = conn.CreateCommand();
+                    
                     command.CommandText = sqlCheckCount;
                     var countRecord = command.ExecuteReader();
 
@@ -165,14 +170,14 @@ namespace PFMWebService
                             var subSColumns = _tableMap[tableName].Split(',');
                             var subResultGetData = resultGetData.Split(',');
 
-                            var sqlCommand = "Update " + tableName + " set (";
+                            var sqlCommand = "Update " + tableName + " set ";
 
                             for (var j = 1; j < subSColumns.Length; j++)
                             {
                                 sqlCommand += subSColumns[j] + " = " + subResultGetData[j] + ",";
                             }
 
-                            sqlCommand += " LastSync = GETDATE()) where ID = " + recordRow[0] + " and UserID = " + userId;
+                            sqlCommand += " LastSync = GETDATE() where ID = " + recordRow[0] + " and UserID = " + userId;
 
                             try
                             {
