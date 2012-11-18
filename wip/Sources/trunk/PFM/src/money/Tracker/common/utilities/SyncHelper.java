@@ -82,17 +82,14 @@ public class SyncHelper {
 				"lastSyncTime" };
 
 		// Check this account is existing on Server or not.
-		String results = String
-				.valueOf(invokeServerMethod(
-						LOGIN_METHOD,
-						new String[] { "userName", "password" },
-						new Object[] {
-								AccountProvider.getInstance().currentAccount.name,
-								AccountProvider
-										.getInstance()
-										.getPasswordByAccount(
-												AccountProvider.getInstance().currentAccount) })
-						.getProperty(0));
+		String results = invokeServerMethod(
+				LOGIN_METHOD,
+				new String[] { "userName", "password" },
+				new Object[] {
+						AccountProvider.getInstance().currentAccount.name,
+						AccountProvider.getInstance().getPasswordByAccount(
+								AccountProvider.getInstance().currentAccount) })
+				.getPropertyAsString(0);
 
 		// Get data if this account exists on server.
 		if (results != null && Boolean.parseBoolean(results)) {
@@ -102,6 +99,10 @@ public class SyncHelper {
 							LAST_SYNC_METHOD,
 							new String[] { "userName" },
 							new Object[] { AccountProvider.getInstance().currentAccount.name });
+			if (syncDate == null) {
+				return;
+			}
+
 			Date lastDateSync = Converter.toDate(
 					String.valueOf(syncDate.getProperty(0)),
 					"yyyy-MM-dd hh:mm:ss");
@@ -127,11 +128,11 @@ public class SyncHelper {
 							new Object[] {
 									AccountProvider.getInstance().currentAccount.name,
 									table, Converter.toString(mLocalLastSync) });
-					
-					if (updatedRecords == null){
+
+					if (updatedRecords == null) {
 						continue;
 					}
-					
+
 					// returnedValue is a Array of array of string.
 					SoapObject returnedValue = (SoapObject) updatedRecords
 							.getProperty(0);
