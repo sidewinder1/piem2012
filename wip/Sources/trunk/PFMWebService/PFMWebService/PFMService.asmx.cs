@@ -168,7 +168,7 @@ namespace PFMWebService
 
                         var modifiedDateVar = from c in context.Schedules where c.UserID == userId && c.ID == id select c.ModifiedDate;
 
-                        if (modifiedDate == null)
+                        if (modifiedDateVar == null)
                         {
                             String sqlCommand = "Insert into Schedule values (" + id + ", " + userId + ", " + budget + ", " + type + ", " + startDate + ", " + endDate + ", " + isDeleted + ", " + createdDate + ", " + modifiedDate + ", GETDATE())";
 
@@ -212,7 +212,7 @@ namespace PFMWebService
 
                         var modifiedDateVar = from c in context.ScheduleDetails where c.UserID == userId && c.ID == id select c.ModifiedDate;
 
-                        if (modifiedDate == null)
+                        if (modifiedDateVar == null)
                         {
                             String sqlCommand = "Insert into ScheduleDetail values (" + id + ", " + userId + ", " + budget + ", " + categoryID + ", " + scheduleID + ", " + isDeleted + ", " + createdDate + ", " + modifiedDate + ", GETDATE())";
 
@@ -251,7 +251,7 @@ namespace PFMWebService
 
                         var modifiedDateVar = from c in context.EntryDetails where c.UserID == userId && c.ID == id select c.ModifiedDate;
 
-                        if (modifiedDate == null)
+                        if (modifiedDateVar == null)
                         {
                             String sqlCommand = "Insert into EntryDetail values (" + id + ", " + userId + ", " + categoryID + ", " + name + ", " + money + ", " + entryID + ", " + isDeleted + ", " + createdDate + ", " + modifiedDate + ", GETDATE())";
 
@@ -288,7 +288,7 @@ namespace PFMWebService
 
                         var modifiedDateVar = from c in context.EntryDetails where c.UserID == userId && c.ID == id select c.ModifiedDate;
 
-                        if (modifiedDate == null)
+                        if (modifiedDateVar == null)
                         {
                             String sqlCommand = "Insert into Entry values (" + id + ", " + userId + ", " + date + ", " + isDeleted + ", " + type + "," + createdDate + ", " + modifiedDate + ", GETDATE())";
 
@@ -332,7 +332,7 @@ namespace PFMWebService
 
                         var modifiedDateVar = from c in context.BorrowLends where c.UserID == userId && c.ID == id select c.ModifiedDate;
 
-                        if (modifiedDate == null)
+                        if (modifiedDateVar == null)
                         {
                             String sqlCommand = "Insert into BorrowLend values (" + id + ", " + userId + ", " + debtType + money + ", " + interestType + ", " + interestRate + ", " + startDate + ", " + expiredDate + ", " + personName + ", " + personPhone + ", " + personAddress + ", " + isDeleted + createdDate + ", " + modifiedDate + ", GETDATE())";
 
@@ -381,7 +381,7 @@ namespace PFMWebService
 
                         var modifiedDateVar = from c in context.Categories where c.UserID == userId && c.ID == id select c.ModifiedDate;
 
-                        if (modifiedDate == null)
+                        if (modifiedDateVar == null)
                         {
                             String sqlCommand = "Insert into Category values (" + id + ", " + userId + ", " + name + ", " + userColor + ", " + isDeleted + createdDate + ", " + modifiedDate + ", GETDATE())";
 
