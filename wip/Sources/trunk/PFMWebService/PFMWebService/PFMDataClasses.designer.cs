@@ -33,6 +33,9 @@ namespace PFMWebService
     partial void InsertBorrowLend(BorrowLend instance);
     partial void UpdateBorrowLend(BorrowLend instance);
     partial void DeleteBorrowLend(BorrowLend instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
     partial void InsertCategory(Category instance);
     partial void UpdateCategory(Category instance);
     partial void DeleteCategory(Category instance);
@@ -48,13 +51,10 @@ namespace PFMWebService
     partial void InsertScheduleDetail(ScheduleDetail instance);
     partial void UpdateScheduleDetail(ScheduleDetail instance);
     partial void DeleteScheduleDetail(ScheduleDetail instance);
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
     #endregion
 		
 		public PFMDataClassesDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["PFMDatabaseConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["PFMDatabaseConnectionString1"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -88,6 +88,14 @@ namespace PFMWebService
 			get
 			{
 				return this.GetTable<BorrowLend>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
 			}
 		}
 		
@@ -130,14 +138,6 @@ namespace PFMWebService
 				return this.GetTable<ScheduleDetail>();
 			}
 		}
-		
-		public System.Data.Linq.Table<User> Users
-		{
-			get
-			{
-				return this.GetTable<User>();
-			}
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BorrowLend")]
@@ -146,7 +146,7 @@ namespace PFMWebService
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ID;
+		private long _ID;
 		
 		private int _UserID;
 		
@@ -182,7 +182,7 @@ namespace PFMWebService
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIDChanging(int value);
+    partial void OnIDChanging(long value);
     partial void OnIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
@@ -220,8 +220,8 @@ namespace PFMWebService
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long ID
 		{
 			get
 			{
@@ -579,13 +579,235 @@ namespace PFMWebService
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _UserName;
+		
+		private System.Nullable<System.DateTime> _LastSync;
+		
+		private EntitySet<BorrowLend> _BorrowLends;
+		
+		private EntitySet<Category> _Categories;
+		
+		private EntitySet<Entry> _Entries;
+		
+		private EntitySet<Schedule> _Schedules;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSyncChanged();
+    #endregion
+		
+		public User()
+		{
+			this._BorrowLends = new EntitySet<BorrowLend>(new Action<BorrowLend>(this.attach_BorrowLends), new Action<BorrowLend>(this.detach_BorrowLends));
+			this._Categories = new EntitySet<Category>(new Action<Category>(this.attach_Categories), new Action<Category>(this.detach_Categories));
+			this._Entries = new EntitySet<Entry>(new Action<Entry>(this.attach_Entries), new Action<Entry>(this.detach_Entries));
+			this._Schedules = new EntitySet<Schedule>(new Action<Schedule>(this.attach_Schedules), new Action<Schedule>(this.detach_Schedules));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="VarChar(100)")]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSync
+		{
+			get
+			{
+				return this._LastSync;
+			}
+			set
+			{
+				if ((this._LastSync != value))
+				{
+					this.OnLastSyncChanging(value);
+					this.SendPropertyChanging();
+					this._LastSync = value;
+					this.SendPropertyChanged("LastSync");
+					this.OnLastSyncChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_BorrowLend", Storage="_BorrowLends", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<BorrowLend> BorrowLends
+		{
+			get
+			{
+				return this._BorrowLends;
+			}
+			set
+			{
+				this._BorrowLends.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Category", Storage="_Categories", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<Category> Categories
+		{
+			get
+			{
+				return this._Categories;
+			}
+			set
+			{
+				this._Categories.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Entry", Storage="_Entries", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<Entry> Entries
+		{
+			get
+			{
+				return this._Entries;
+			}
+			set
+			{
+				this._Entries.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Schedule", Storage="_Schedules", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<Schedule> Schedules
+		{
+			get
+			{
+				return this._Schedules;
+			}
+			set
+			{
+				this._Schedules.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_BorrowLends(BorrowLend entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_BorrowLends(BorrowLend entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Categories(Category entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Categories(Category entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Entries(Entry entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Entries(Entry entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Schedules(Schedule entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Schedules(Schedule entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Category")]
 	public partial class Category : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ID;
+		private long _ID;
 		
 		private int _UserID;
 		
@@ -611,7 +833,7 @@ namespace PFMWebService
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIDChanging(int value);
+    partial void OnIDChanging(long value);
     partial void OnIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
@@ -637,8 +859,8 @@ namespace PFMWebService
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long ID
 		{
 			get
 			{
@@ -912,7 +1134,7 @@ namespace PFMWebService
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ID;
+		private long _ID;
 		
 		private int _UserID;
 		
@@ -936,7 +1158,7 @@ namespace PFMWebService
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIDChanging(int value);
+    partial void OnIDChanging(long value);
     partial void OnIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
@@ -961,8 +1183,8 @@ namespace PFMWebService
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long ID
 		{
 			get
 			{
@@ -1211,17 +1433,17 @@ namespace PFMWebService
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ID;
+		private long _ID;
 		
 		private int _UserID;
 		
-		private System.Nullable<int> _CategoryID;
+		private System.Nullable<long> _CategoryID;
 		
 		private string _Name;
 		
 		private System.Nullable<double> _Money;
 		
-		private System.Nullable<int> _EntryID;
+		private System.Nullable<long> _EntryID;
 		
 		private System.Nullable<int> _IsDeleted;
 		
@@ -1239,17 +1461,17 @@ namespace PFMWebService
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIDChanging(int value);
+    partial void OnIDChanging(long value);
     partial void OnIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
-    partial void OnCategoryIDChanging(System.Nullable<int> value);
+    partial void OnCategoryIDChanging(System.Nullable<long> value);
     partial void OnCategoryIDChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
     partial void OnMoneyChanging(System.Nullable<double> value);
     partial void OnMoneyChanged();
-    partial void OnEntryIDChanging(System.Nullable<int> value);
+    partial void OnEntryIDChanging(System.Nullable<long> value);
     partial void OnEntryIDChanged();
     partial void OnIsDeletedChanging(System.Nullable<int> value);
     partial void OnIsDeletedChanged();
@@ -1268,8 +1490,8 @@ namespace PFMWebService
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long ID
 		{
 			get
 			{
@@ -1312,8 +1534,8 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", DbType="Int")]
-		public System.Nullable<int> CategoryID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", DbType="BigInt")]
+		public System.Nullable<long> CategoryID
 		{
 			get
 			{
@@ -1376,8 +1598,8 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EntryID", DbType="Int")]
-		public System.Nullable<int> EntryID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EntryID", DbType="BigInt")]
+		public System.Nullable<long> EntryID
 		{
 			get
 			{
@@ -1508,7 +1730,7 @@ namespace PFMWebService
 					}
 					else
 					{
-						this._EntryID = default(Nullable<int>);
+						this._EntryID = default(Nullable<long>);
 						this._UserID = default(int);
 					}
 					this.SendPropertyChanged("Entry");
@@ -1544,7 +1766,7 @@ namespace PFMWebService
 					}
 					else
 					{
-						this._CategoryID = default(Nullable<int>);
+						this._CategoryID = default(Nullable<long>);
 						this._UserID = default(int);
 					}
 					this.SendPropertyChanged("Category");
@@ -1579,7 +1801,7 @@ namespace PFMWebService
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ID;
+		private long _ID;
 		
 		private int _UserID;
 		
@@ -1607,7 +1829,7 @@ namespace PFMWebService
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIDChanging(int value);
+    partial void OnIDChanging(long value);
     partial void OnIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
@@ -1636,8 +1858,8 @@ namespace PFMWebService
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long ID
 		{
 			get
 			{
@@ -1926,15 +2148,15 @@ namespace PFMWebService
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ID;
+		private long _ID;
 		
 		private int _UserID;
 		
 		private System.Nullable<double> _Budget;
 		
-		private System.Nullable<int> _CategoryID;
+		private System.Nullable<long> _CategoryID;
 		
-		private System.Nullable<int> _ScheduleID;
+		private System.Nullable<long> _ScheduleID;
 		
 		private System.Nullable<int> _IsDeleted;
 		
@@ -1952,15 +2174,15 @@ namespace PFMWebService
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIDChanging(int value);
+    partial void OnIDChanging(long value);
     partial void OnIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
     partial void OnBudgetChanging(System.Nullable<double> value);
     partial void OnBudgetChanged();
-    partial void OnCategoryIDChanging(System.Nullable<int> value);
+    partial void OnCategoryIDChanging(System.Nullable<long> value);
     partial void OnCategoryIDChanged();
-    partial void OnScheduleIDChanging(System.Nullable<int> value);
+    partial void OnScheduleIDChanging(System.Nullable<long> value);
     partial void OnScheduleIDChanged();
     partial void OnIsDeletedChanging(System.Nullable<int> value);
     partial void OnIsDeletedChanged();
@@ -1979,8 +2201,8 @@ namespace PFMWebService
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long ID
 		{
 			get
 			{
@@ -2043,8 +2265,8 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", DbType="Int")]
-		public System.Nullable<int> CategoryID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", DbType="BigInt")]
+		public System.Nullable<long> CategoryID
 		{
 			get
 			{
@@ -2067,8 +2289,8 @@ namespace PFMWebService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleID", DbType="Int")]
-		public System.Nullable<int> ScheduleID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleID", DbType="BigInt")]
+		public System.Nullable<long> ScheduleID
 		{
 			get
 			{
@@ -2199,7 +2421,7 @@ namespace PFMWebService
 					}
 					else
 					{
-						this._ScheduleID = default(Nullable<int>);
+						this._ScheduleID = default(Nullable<long>);
 						this._UserID = default(int);
 					}
 					this.SendPropertyChanged("Schedule");
@@ -2235,7 +2457,7 @@ namespace PFMWebService
 					}
 					else
 					{
-						this._CategoryID = default(Nullable<int>);
+						this._CategoryID = default(Nullable<long>);
 						this._UserID = default(int);
 					}
 					this.SendPropertyChanged("Category");
@@ -2261,228 +2483,6 @@ namespace PFMWebService
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _UserName;
-		
-		private System.Nullable<System.DateTime> _LastSync;
-		
-		private EntitySet<BorrowLend> _BorrowLends;
-		
-		private EntitySet<Category> _Categories;
-		
-		private EntitySet<Entry> _Entries;
-		
-		private EntitySet<Schedule> _Schedules;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnLastSyncChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastSyncChanged();
-    #endregion
-		
-		public User()
-		{
-			this._BorrowLends = new EntitySet<BorrowLend>(new Action<BorrowLend>(this.attach_BorrowLends), new Action<BorrowLend>(this.detach_BorrowLends));
-			this._Categories = new EntitySet<Category>(new Action<Category>(this.attach_Categories), new Action<Category>(this.detach_Categories));
-			this._Entries = new EntitySet<Entry>(new Action<Entry>(this.attach_Entries), new Action<Entry>(this.detach_Entries));
-			this._Schedules = new EntitySet<Schedule>(new Action<Schedule>(this.attach_Schedules), new Action<Schedule>(this.detach_Schedules));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="VarChar(100)")]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSync", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastSync
-		{
-			get
-			{
-				return this._LastSync;
-			}
-			set
-			{
-				if ((this._LastSync != value))
-				{
-					this.OnLastSyncChanging(value);
-					this.SendPropertyChanging();
-					this._LastSync = value;
-					this.SendPropertyChanged("LastSync");
-					this.OnLastSyncChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_BorrowLend", Storage="_BorrowLends", ThisKey="ID", OtherKey="UserID")]
-		public EntitySet<BorrowLend> BorrowLends
-		{
-			get
-			{
-				return this._BorrowLends;
-			}
-			set
-			{
-				this._BorrowLends.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Category", Storage="_Categories", ThisKey="ID", OtherKey="UserID")]
-		public EntitySet<Category> Categories
-		{
-			get
-			{
-				return this._Categories;
-			}
-			set
-			{
-				this._Categories.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Entry", Storage="_Entries", ThisKey="ID", OtherKey="UserID")]
-		public EntitySet<Entry> Entries
-		{
-			get
-			{
-				return this._Entries;
-			}
-			set
-			{
-				this._Entries.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Schedule", Storage="_Schedules", ThisKey="ID", OtherKey="UserID")]
-		public EntitySet<Schedule> Schedules
-		{
-			get
-			{
-				return this._Schedules;
-			}
-			set
-			{
-				this._Schedules.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_BorrowLends(BorrowLend entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_BorrowLends(BorrowLend entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Categories(Category entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Categories(Category entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Entries(Entry entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Entries(Entry entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Schedules(Schedule entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Schedules(Schedule entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
 		}
 	}
 }

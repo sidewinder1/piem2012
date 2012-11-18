@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PFMDatabase" Class="PFMDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PFMDatabaseConnectionString2" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=TUANNA01030-PC;Initial Catalog=PFMDatabase;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PFMDatabaseConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BorrowLend" Member="BorrowLends">
     <Type Name="BorrowLend">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="DebtType" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="Money" Type="System.Double" DbType="Float" CanBeNull="true" />
@@ -20,9 +20,20 @@
       <Association Name="User_BorrowLend" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="LastSync" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="User_BorrowLend" Member="BorrowLends" ThisKey="ID" OtherKey="UserID" Type="BorrowLend" />
+      <Association Name="User_Category" Member="Categories" ThisKey="ID" OtherKey="UserID" Type="Category" />
+      <Association Name="User_Entry" Member="Entries" ThisKey="ID" OtherKey="UserID" Type="Entry" />
+      <Association Name="User_Schedule" Member="Schedules" ThisKey="ID" OtherKey="UserID" Type="Schedule" />
+    </Type>
+  </Table>
   <Table Name="dbo.Category" Member="Categories">
     <Type Name="Category">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="UserColor" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
@@ -37,7 +48,7 @@
   </Table>
   <Table Name="dbo.Entry" Member="Entries">
     <Type Name="Entry">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="IsDeleted" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -51,12 +62,12 @@
   </Table>
   <Table Name="dbo.EntryDetail" Member="EntryDetails">
     <Type Name="EntryDetail">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="CategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CategoryID" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="Money" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Column Name="EntryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EntryID" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
       <Column Name="IsDeleted" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
@@ -67,7 +78,7 @@
   </Table>
   <Table Name="dbo.Schedule" Member="Schedules">
     <Type Name="Schedule">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Budget" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -83,28 +94,17 @@
   </Table>
   <Table Name="dbo.ScheduleDetail" Member="ScheduleDetails">
     <Type Name="ScheduleDetail">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Budget" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Column Name="CategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ScheduleID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CategoryID" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="ScheduleID" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
       <Column Name="IsDeleted" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="LastSync" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Schedule_ScheduleDetail" Member="Schedule" ThisKey="ScheduleID,UserID" OtherKey="ID,UserID" Type="Schedule" IsForeignKey="true" />
       <Association Name="Category_ScheduleDetail" Member="Category" ThisKey="CategoryID,UserID" OtherKey="ID,UserID" Type="Category" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.[User]" Member="Users">
-    <Type Name="User">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
-      <Column Name="LastSync" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="User_BorrowLend" Member="BorrowLends" ThisKey="ID" OtherKey="UserID" Type="BorrowLend" />
-      <Association Name="User_Category" Member="Categories" ThisKey="ID" OtherKey="UserID" Type="Category" />
-      <Association Name="User_Entry" Member="Entries" ThisKey="ID" OtherKey="UserID" Type="Entry" />
-      <Association Name="User_Schedule" Member="Schedules" ThisKey="ID" OtherKey="UserID" Type="Schedule" />
     </Type>
   </Table>
 </Database>
