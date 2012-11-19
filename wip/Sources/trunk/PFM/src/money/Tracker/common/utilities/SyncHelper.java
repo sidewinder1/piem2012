@@ -15,8 +15,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.database.Cursor;
 
 public class SyncHelper {
-	String NAMESPACE = "http://tempuri.org/";
-	String URL = "http://10.0.2.2:1242/PFMService.asmx";
+	String NAMESPACE = "http://pfm.org/";
+	String URL = "http://54.251.59.102:83/PFMService.asmx";
 	
 	private Date mLocalLastSync;
 

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <ImageView android:src="@drawable/google_account" 
+        android:layout_margin="5dp"
         android:contentDescription="@string/image_icon_description"
         android:layout_height="25dp"
         android:layout_width="25dp"/>
@@ -26,6 +27,7 @@
 <Button android:layout_width="22dp"
     android:id="@+id/sync_refresh_sync"
     android:layout_height="22dp"
-    android:background="@drawable/syn_icon"
+    android:layout_margin="5dp"
+    android:background="@drawable/unsyn_icon"
     android:layout_gravity="top"/>
 </LinearLayout>

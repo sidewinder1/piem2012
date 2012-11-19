@@ -21,20 +21,20 @@ import org.xml.sax.SAXException;
 import android.os.Environment;
 
 public class XmlParser {
-	private String CONFIG_FILE = "PFMData/PfmConfig.pxml";
+	private String CONFIG_FILE = "PfmConfig.pxml";
 	private static String mBaseDir = Environment.getExternalStorageDirectory()
-			.getAbsolutePath();
-	
+			.getAbsolutePath() + File.separator + "PFMData" + File.separator;
+
 	DocumentBuilderFactory builderFactory = DocumentBuilderFactory
 			.newInstance();
 	DocumentBuilder builder = null;
 
-    TransformerFactory factory = TransformerFactory.newInstance();
-    Transformer transformer;
+	TransformerFactory factory = TransformerFactory.newInstance();
+	Transformer transformer;
 
-    DOMSource source = null;
-    StreamResult result = new StreamResult(
-        new File(mBaseDir + File.separator + CONFIG_FILE));
+	DOMSource source = null;
+	StreamResult result = new StreamResult(new File(mBaseDir + File.separator + "PFMData" + File.separator
+			+ CONFIG_FILE));
 
 	private Document _configDocument;
 	private static XmlParser sInstance;
@@ -50,46 +50,49 @@ public class XmlParser {
 		}
 	}
 
-	public String getConfigContent(String attributeName){
-		if (_configDocument == null){
+	public String getConfigContent(String attributeName) {
+		if (_configDocument == null) {
 			_configDocument = getDocument(CONFIG_FILE);
-			source =new DOMSource(_configDocument);
+			source = new DOMSource(_configDocument);
 		}
-		if (_configDocument == null){
+		if (_configDocument == null) {
+			return "";
+		}
+
+		NodeList nodeList = _configDocument.getElementsByTagName(attributeName);
+		if (nodeList == null || nodeList.getLength() == 0) {
 			return "";
 		}
 		
-		NodeList nodeList = _configDocument.getElementsByTagName(attributeName);
-		if (nodeList == null || nodeList.getLength() == 0){
-			return "";
-		}
+		Logger.Log(attributeName + ": "
+				+ nodeList.item(0).getFirstChild().getNodeValue(), "XmlParser");
 		return nodeList.item(0).getFirstChild().getNodeValue();
 	}
 
-	public void setConfigContent(String attributeName, String value){
-		if (_configDocument == null){
+	public void setConfigContent(String attributeName, String value) {
+		if (_configDocument == null) {
 			_configDocument = getDocument(CONFIG_FILE);
-			source =new DOMSource(_configDocument);
+			source = new DOMSource(_configDocument);
 		}
-		
-		if (_configDocument == null){
+
+		if (_configDocument == null) {
 			return;
 		}
-		
+
 		NodeList nodeList = _configDocument.getElementsByTagName(attributeName);
-		if (nodeList == null || nodeList.getLength() == 0){
+		if (nodeList == null || nodeList.getLength() == 0) {
 			return;
 		}
-		
+
 		nodeList.item(0).getFirstChild().setNodeValue(value);
-		
-	    try {
+
+		try {
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
 			Logger.Log(e.getMessage(), "XmlParser");
 		}
 	}
-	
+
 	public static XmlParser getInstance() {
 		return (sInstance == null) ? (sInstance = new XmlParser()) : sInstance;
 	}
@@ -97,13 +100,14 @@ public class XmlParser {
 	public Document getDocument(String fileName) {
 		Document document = null;
 		try {
-			document = builder.parse(new FileInputStream(mBaseDir + File.separator + fileName));
+			document = builder.parse(new FileInputStream(mBaseDir
+					+ File.separator + fileName));
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return document;
 	}
 }
