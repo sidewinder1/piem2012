@@ -9,42 +9,40 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Scanner;
 
+import android.os.Environment;
+
 public class IOHelper {
 	private static IOHelper _instance;
-	
-	public static IOHelper getInstance()
-	{
-		if (_instance == null){
+	private static String sBaseDir = Environment.getExternalStorageDirectory()
+			.getAbsolutePath() + File.separator + "PFMData" + File.separator;
+
+	public static IOHelper getInstance() {
+		if (_instance == null) {
 			_instance = new IOHelper();
 		}
-		
+
 		return _instance;
 	}
-	
-	public void createFile(String filePath, String content){
-		File file = new File(filePath);
-		if (!file.exists()){
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			writeFile(filePath, content, false);
+
+	public void createFile(String fileName, String content) {
+		File file = new File(sBaseDir + fileName);
+		if (!file.exists()) {
+			writeFile(fileName, content, false);
 		}
 	}
-	
+
 	public String readFile(String path) {
 		String strContent = "";
 		// Check whether file is existing or not.
-		if (new File(path).exists()) {
+		if (new File(sBaseDir + path).exists()) {
 			InputStream fiStream;
 			try {
-				fiStream = new FileInputStream(path);
+				fiStream = new FileInputStream(sBaseDir + path);
 
 				try {
 					fiStream.read();
-					strContent = new Scanner(fiStream).useDelimiter("\\A").next();
+					strContent = new Scanner(fiStream).useDelimiter("\\A")
+							.next();
 					fiStream.close();
 				} catch (IOException e) {
 					Logger.Log(e.getMessage(), "IOHelper");
@@ -59,28 +57,28 @@ public class IOHelper {
 		return strContent;
 	}
 
-	public void writeFile(String path, String content){
+	public void writeFile(String path, String content) {
 		writeFile(path, content, true);
 	}
-	
-	public void writeFile(String path, String content, boolean append) {
-		File file = new File(path);
+
+	public void writeFile(String fileName, String content, boolean append) {
+		File file = new File(sBaseDir);
 		if (!file.exists()) {
-			file.mkdir();
+			file.mkdirs();
 		}
-		
+
 		if (file.exists()) {
 			try {
-				OutputStream fiStream = new FileOutputStream(path, append);
+				OutputStream fiStream = new FileOutputStream(sBaseDir + fileName,
+						append);
 				try {
 					fiStream.write(content.getBytes());
-
 					fiStream.close();
 				} catch (IOException e) {
-					Logger.Log(e.getMessage(), "IOHelper");
+					// Logger.Log(e.getMessage(), "IOHelper");
 				}
 			} catch (FileNotFoundException e) {
-				Logger.Log(e.getMessage(), "IOHelper");
+				// Logger.Log(e.getMessage(), "IOHelper");
 			}
 		}
 	}

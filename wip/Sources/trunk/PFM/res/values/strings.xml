@@ -8,24 +8,24 @@
     <string name="dummy_data">Dummy data</string>
     <string name="no_data">No data</string>
     <string name="image_icon_description">Image of tab</string>
-    <string name="delete_confirm">Delete it?</string>
+    <string name="delete_confirm">Xóa?</string>
 
     <!-- These are resources for Schedule function -->
-    <string name="schedule_start_day">From</string>
-    <string name="schedule_end_day">To</string>
-    <string name="schedule_budget">Total Budget</string>
-    <string name="schedule_living_cost">Living cost</string>
-    <string name="schedule_price">Price</string>
-    <string name="schedule_duration">Duration</string>
-    <string name="schedule_monthly">Monthly</string>
+    <string name="schedule_start_day">Từ</string>
+    <string name="schedule_end_day">Đến</string>
+    <string name="schedule_budget">Tổng</string>
+    <string name="schedule_living_cost">Chi phí</string>
+    <string name="schedule_price">Giá</string>
+    <string name="schedule_duration">Khoảng thời gian</string>
+    <string name="schedule_monthly">Hàng tháng</string>
     <string name="schedule_detail_budget_title">Budget</string>
-    <string name="schedule_weekly">Weekly</string>
-    <string name="schedule_title">Schedule</string>
-    <string name="schedule_edit_title">New Schedule</string>
-    <string name="schedule_new_category">New Category</string>
-    <string name="schedule_view_detail_title">View Schedule</string>
-    <string name="schedule_detail_average_title">Average</string>
-    <string name="schedule_menu_title">Menu</string>
+    <string name="schedule_weekly">Hàng tuần</string>
+    <string name="schedule_title">Kế hoạch</string>
+    <string name="schedule_edit_title">Kế hoạch mới</string>
+    <string name="schedule_new_category">Mục mới</string>
+    <string name="schedule_view_detail_title">Xem kế hoạch</string>
+    <string name="schedule_detail_average_title">Trung bình</string>
+    <string name="schedule_menu_title">Danh mục</string>
 
     <!-- These are resources for Synchronization function -->
     <string name="sync_view_title">Đồng bộ</string>
@@ -33,6 +33,8 @@
     <string name="sync_view_auto_sync">Tự động đồng bộ</string>
     <string name="sync_view_auto_sync_description">Dữ liệu của ứng dụng sẽ được tự động đồng bộ</string>
     <string name="sync_view_account_management">Quản lý tài khoản</string>
+    <string name="sync_view_account_active">Bật</string>
+    <string name="sync_view_account_deactive">Tắt</string>
     <string name="sync_view_new_account">Tạo tài khoản</string>
 
     <!-- These are resources for Warning function -->
@@ -48,6 +50,15 @@
         <item>Không có</item>
         <item>Mặc định</item>
         <item>Thư mục</item>
+    </string-array>
+    <string-array name="warning_remain_array">
+        <item>Không bao giờ</item>
+        <item>5 phút</item>
+        <item>10 phút</item>
+        <item>15 phút</item>
+        <item>20 phút</item>
+        <item>25 phút</item>
+        <item>30 phút</item>
     </string-array>
 
     <!-- These are resources for Entry function -->

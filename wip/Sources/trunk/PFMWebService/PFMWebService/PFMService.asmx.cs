@@ -53,9 +53,10 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public bool Login(string userName, string password)
+        public bool Login(string userName)
         {
-            return !userName.Equals("") && !password.Equals("");
+            var userCount = from c in _context.Users where c.UserName == userName select c.ID;
+            return userCount.Count() == 1;
         }
 
         [WebMethod]
@@ -89,11 +90,11 @@ namespace PFMWebService
 
             conn.Open();
 
-            var cmd = "select " + _tableMap[tableName] + " " +
-                      "from dbo.[" + tableName + "]t " +
-                      "where t.UserID = " + userId + " " +
-                      "and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "') " +
-                      "or t.LastSync > CONVERT(datetime, '" + lastSyncTime + "')";
+            var cmd = "select " + _tableMap[tableName] +
+                      " from dbo.[" + tableName + "]t" +
+                      " where t.UserID = " + userId + 
+                      " and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "') " +
+                      " or t.LastSync > CONVERT(datetime, '" + lastSyncTime + "')";
 
             var dataAdapter = new SqlDataAdapter(cmd, conn);
 
@@ -109,7 +110,7 @@ namespace PFMWebService
 
                 foreach (DataColumn col in dataTable.Columns)
                 {
-                    subResult.Add(col.DataType == typeof (DateTime)
+                    subResult.Add(col.DataType == typeof(DateTime)
                                       ? Convert.ToDateTime(row[col]).ToString("yyyy-MM-dd HH:mm:ss")
                                       : row[col].ToString());
                 }
@@ -134,7 +135,7 @@ namespace PFMWebService
                 }
 
                 var userId = userNameVar.Single();
-              
+
                 conn.Open();
 
                 foreach (var recordRow in data)
@@ -145,7 +146,7 @@ namespace PFMWebService
 
                     var sqlCheckCount = "select ModifiedDate from " + tableName + " where UserID = '" + userId +
                                         "' and id= '" + recordRow[0] + "'";
-                    
+
                     command.CommandText = sqlCheckCount;
                     var countRecord = command.ExecuteReader();
 

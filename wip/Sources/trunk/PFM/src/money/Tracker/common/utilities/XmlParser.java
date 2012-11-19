@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 import android.os.Environment;
 
 public class XmlParser {
-	private String CONFIG_FILE = "Pfm/PfmConfig.xml";
+	private String CONFIG_FILE = "PFMData/PfmConfig.pxml";
 	private static String mBaseDir = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
 	
@@ -52,8 +52,8 @@ public class XmlParser {
 
 	public String getConfigContent(String attributeName){
 		if (_configDocument == null){
-			_configDocument = getDocument(mBaseDir + File.separator + CONFIG_FILE);
-			new DOMSource(_configDocument);
+			_configDocument = getDocument(CONFIG_FILE);
+			source =new DOMSource(_configDocument);
 		}
 		if (_configDocument == null){
 			return "";
@@ -68,7 +68,12 @@ public class XmlParser {
 
 	public void setConfigContent(String attributeName, String value){
 		if (_configDocument == null){
-			_configDocument = getDocument(mBaseDir + File.separator + CONFIG_FILE);
+			_configDocument = getDocument(CONFIG_FILE);
+			source =new DOMSource(_configDocument);
+		}
+		
+		if (_configDocument == null){
+			return;
 		}
 		
 		NodeList nodeList = _configDocument.getElementsByTagName(attributeName);
@@ -89,10 +94,10 @@ public class XmlParser {
 		return (sInstance == null) ? (sInstance = new XmlParser()) : sInstance;
 	}
 
-	public Document getDocument(String path) {
+	public Document getDocument(String fileName) {
 		Document document = null;
 		try {
-			document = builder.parse(new FileInputStream(path));
+			document = builder.parse(new FileInputStream(mBaseDir + File.separator + fileName));
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
