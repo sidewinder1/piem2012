@@ -11,12 +11,14 @@ import money.Tracker.presentation.activities.R;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.AbstractChart;
 import org.achartengine.chart.BarChart.Type;
+import org.achartengine.chart.PointStyle;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer.Orientation;
+import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +27,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -60,7 +63,9 @@ public class Chart extends AbstractChart {
 			CategorySeries series = new CategorySeries(titles[i]);
 			double[] v = values.get(i);
 			int seriesLength = v.length;
+			Log.d("Check chart", "" + seriesLength + " " + titles[i]);
 			for (int k = 0; k < seriesLength; k++) {
+				Log.d("Check chart", "" + v[k]);
 				series.add(v[k]);
 			}
 			dataset.addSeries(series.toXYSeries());
@@ -100,36 +105,44 @@ public class Chart extends AbstractChart {
 		renderer.setLabelsColor(labelsColor);
 	}
 
+	@SuppressWarnings("deprecation")
 	public Intent getBarIntent(Context context) {
-		String[] titles = new String[] { "2007", "2008" };
-		List<double[]> values = new ArrayList<double[]>();
-		values.add(new double[] { 5230, 7300, 9240, 10540, 7900, 9200, 12030,
-				11200, 9500, 10500, 11600, 13500 });
-		values.add(new double[] { 14230, 12300, 14240, 15244, 15900, 19200,
-				22030, 21200, 19500, 15500, 12600, 14000 });
-		int[] colors = new int[] { Color.CYAN, Color.BLUE };
-		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		renderer.setOrientation(Orientation.VERTICAL);
-		setChartSettings(renderer, "Monthly sales in the last 2 years",
-				"Month", "Units sold", 0.5, 12.5, 0, 24000, Color.GRAY,
-				Color.LTGRAY);
-		renderer.setXLabels(1);
-		renderer.setYLabels(10);
-		renderer.addXTextLabel(1, "Jan");
-		renderer.addXTextLabel(3, "Mar");
-		renderer.addXTextLabel(5, "May");
-		renderer.addXTextLabel(7, "Jul");
-		renderer.addXTextLabel(10, "Oct");
-		renderer.addXTextLabel(12, "Dec");
-		int length = renderer.getSeriesRendererCount();
-		for (int i = 0; i < length; i++) {
-			SimpleSeriesRenderer seriesRenderer = renderer
-					.getSeriesRendererAt(i);
-			seriesRenderer.setDisplayChartValues(true);
-		}
-		return ChartFactory.getBarChartIntent(context,
-				buildBarDataset(titles, values), renderer, Type.DEFAULT);
-	}
+		String[] titles = new String[] { "Sales for 2008", "Sales for 2007",
+        "Difference between 2008 and 2007 sales" };
+    List<double[]> values = new ArrayList<double[]>();
+    values.add(new double[] { 14230, 12300, 14240, 15244, 14900, 12200, 11030, 12000, 12500, 15500,
+        14600, 15000 });
+    values.add(new double[] { 10230, 10900, 11240, 12540, 13500, 14200, 12530, 11200, 10500, 12500,
+        11600, 13500 });
+    int length = values.get(0).length;
+    double[] diff = new double[length];
+    for (int i = 0; i < length; i++) {
+      diff[i] = values.get(0)[i] - values.get(1)[i];
+    }
+    values.add(diff);
+    int[] colors = new int[] { Color.BLUE, Color.CYAN, Color.GREEN };
+    PointStyle[] styles = new PointStyle[] { PointStyle.POINT, PointStyle.POINT, PointStyle.POINT };
+    XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
+    setChartSettings(renderer, "Monthly sales in the last 2 years", "Month", "Units sold", 0.75,
+        12.25, -5000, 19000, Color.GRAY, Color.LTGRAY);
+    renderer.setXLabels(12);
+    renderer.setYLabels(10);
+    renderer.setChartTitleTextSize(20);
+    renderer.setTextTypeface("sans_serif", Typeface.BOLD);
+    renderer.setLabelsTextSize(14f);
+    renderer.setAxisTitleTextSize(15);
+    renderer.setLegendTextSize(15);
+    length = renderer.getSeriesRendererCount();
+    for (int i = 0; i < length; i++) {
+      XYSeriesRenderer seriesRenderer = (XYSeriesRenderer) renderer.getSeriesRendererAt(i);
+      seriesRenderer.setFillBelowLine(i == length - 1);
+      seriesRenderer.setFillBelowLineColor(colors[i]);
+      seriesRenderer.setLineWidth(2.5f);
+      seriesRenderer.setDisplayChartValues(true);
+      seriesRenderer.setChartValuesTextSize(10f);
+    }
+    return ChartFactory.getLineChartIntent(context, buildBarDataset(titles, values), renderer);
+	  }
 
 	public Intent getPieIntent(Context context) {
 		Log.d("Chart", "Check 1");
