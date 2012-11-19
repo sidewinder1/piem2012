@@ -61,10 +61,10 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		Chart pie = new Chart(Converter.toDate(startDate),
 				Converter.toDate(endDate));
 		// Log.d("Chart", String.valueOf(scheduleID));
-		Intent pieIntent = pie.getPieIntent(this);
-		// Intent barIntent = pie.getBarIntent(this);
+		//Intent pieIntent = pie.getPieIntent(this);
+		Intent barIntent = pie.getBarIntent(this);
 		Log.d("Chart", "Check 11");
-		setupTab(pieIntent, "Biểu đồ", mTabHost);
+		setupTab(barIntent, "Biểu đồ", mTabHost);
 		// setupTab(barIntent, "Biểu đồ", mTabHost);
 		// startActivity(pieIntent);
 		Log.d("Chart", "Check 12");

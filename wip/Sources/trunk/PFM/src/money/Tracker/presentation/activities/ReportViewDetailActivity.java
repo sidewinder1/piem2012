@@ -58,12 +58,16 @@ public class ReportViewDetailActivity extends Activity {
 										.getColumnIndex("Start_date")));
 						String scheduleMonth = Converter.toString(
 								scheduleStartDate, "MM");
+						String scheduleYear = Converter.toString(
+								scheduleStartDate, "YYYY");
 						Log.d("Check get Month", scheduleMonth);
 						String startDateMonth = Converter.toString(startDate,
 								"MM");
+						String startDateYear = Converter.toString(startDate,
+								"YYYY");
 						Log.d("Check get Month", startDateMonth);
 
-						if (scheduleMonth.equals(startDateMonth))
+						if (scheduleMonth.equals(startDateMonth) && scheduleYear.equals(startDateYear))
 							budget = scheduleCursor.getLong(scheduleCursor
 									.getColumnIndex("Budget"));
 					} else {
@@ -117,6 +121,32 @@ public class ReportViewDetailActivity extends Activity {
 							.toDate(entryIncomeCursor
 									.getString(entryIncomeCursor
 											.getColumnIndex("Date")));
+					if (checkMonthly)
+					{
+						String entryDateMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate,
+								"MM");
+						String entryDateYear = Converter.toString(entryDate, "YYYY");
+						String startDateYear = Converter.toString(startDate,
+								"YYYY");
+						Log.d("Report - Entry Date Year", entryDateYear);
+						Log.d("Report - Start Date Year", startDateYear);
+						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
+						{
+							Cursor entryDetailCursor = SqlHelper.instance.select(
+									"EntryDetail", "*", "Entry_Id=" + id);
+							if (entryDetailCursor != null) {
+								if (entryDetailCursor.moveToFirst()) {
+									do {
+										totalIncome += entryDetailCursor
+												.getLong(entryDetailCursor
+														.getColumnIndex("Money"));
+									} while (entryDetailCursor.moveToNext());
+								}
+							}
+						}
+					} else
+					{
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -132,6 +162,7 @@ public class ReportViewDetailActivity extends Activity {
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
+					}
 					}
 				} while (entryIncomeCursor.moveToNext());
 			}
@@ -235,6 +266,32 @@ public class ReportViewDetailActivity extends Activity {
 							"Check 55 - "
 									+ Converter.toString(entryDate,
 											"dd/MM/yyyy"));
+					if(checkMonthly)
+					{
+						String entryDateMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate,
+								"MM");
+						String entryDateYear = Converter.toString(entryDate, "YYYY");
+						String startDateYear = Converter.toString(startDate,
+								"YYYY");
+						Log.d("Report - Entry Date Year", entryDateYear);
+						Log.d("Report - Start Date Year", startDateYear);
+						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
+						{
+							Cursor entryDetailCursor = SqlHelper.instance.select(
+									"EntryDetail", "*", "Entry_Id=" + id);
+							if (entryDetailCursor != null) {
+								if (entryDetailCursor.moveToFirst()) {
+									do {
+										totalExpense += entryDetailCursor
+												.getLong(entryDetailCursor
+														.getColumnIndex("Money"));
+									} while (entryDetailCursor.moveToNext());
+								}
+							}
+						}
+					}else
+					{
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -251,6 +308,7 @@ public class ReportViewDetailActivity extends Activity {
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
+					}
 					}
 				} while (entryExpenseCursor.moveToNext());
 			}
@@ -347,8 +405,28 @@ public class ReportViewDetailActivity extends Activity {
 					Date startDate1 = Converter
 							.toDate(_startDate, "dd/MM/yyyy");
 					Date endDate1 = Converter.toDate(_endDate, "dd/MM/yyyy");
-					Log.d("Check date", startDate1.toString());
-					Log.d("Check date", endDate1.toString());
+					Log.d("Check entry date string", borrowingCursor
+							.getString(borrowingCursor
+									.getColumnIndex("Start_date")));
+					Log.d("Check entry date", entryDate.toString());
+					Log.d("Check start date", startDate.toString());
+					Log.d("Check end date", endDate.toString());
+					if (checkMonthly)
+					{
+						String entryDateMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate,
+								"MM");
+						String entryDateYear = Converter.toString(entryDate, "YYYY");
+						String startDateYear = Converter.toString(startDate,
+								"YYYY");
+						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
+						{
+							totalBorrowing += borrowingCursor
+									.getLong(borrowingCursor
+											.getColumnIndex("Money"));
+						}
+					} else
+					{
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -357,6 +435,7 @@ public class ReportViewDetailActivity extends Activity {
 						totalBorrowing += borrowingCursor
 								.getLong(borrowingCursor
 										.getColumnIndex("Money"));
+					}
 					}
 				} while (borrowingCursor.moveToNext());
 			}
@@ -408,6 +487,21 @@ public class ReportViewDetailActivity extends Activity {
 					Date entryDate = Converter.toDate(lendingCursor
 							.getString(lendingCursor
 									.getColumnIndex("Start_date")));
+					if (checkMonthly)
+					{
+						String entryDateMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate,
+								"MM");
+						String entryDateYear = Converter.toString(entryDate, "YYYY");
+						String startDateYear = Converter.toString(startDate,
+								"YYYY");
+						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
+						{
+							totalLending += lendingCursor.getLong(lendingCursor
+									.getColumnIndex("Money"));
+						}
+					}else
+					{
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -415,6 +509,7 @@ public class ReportViewDetailActivity extends Activity {
 						Log.d("report detail", "Check 56");
 						totalLending += lendingCursor.getLong(lendingCursor
 								.getColumnIndex("Money"));
+					}
 					}
 				} while (lendingCursor.moveToNext());
 			}
