@@ -14,23 +14,18 @@ public class AccountProvider {
 
 	public AccountProvider() {
 		mAccManager = AccountManager.get(PfmApplication.getAppContext());
-		Logger.Log(mAccManager.getAccounts().length + "", "Account");
 		mAccounts = mAccManager.getAccounts();
-
 		mAccountList = getAccounts();
-		Logger.Log(mAccountList.size() + "", "Account");
 		updateCurrentAccount();
-		Logger.Log(currentAccount.name + "", "Account");
 	}
 
 	private void updateCurrentAccount() {
 		String account = XmlParser.getInstance().getConfigContent("account");
-
-		if (account.length() == 0) {
-			currentAccount = new Account("testAccount", "pfm.com");
+		if ("".equals(account)) {
+			currentAccount = null;
 			return;
 		}
-
+		
 		// Parse xml to data.
 		currentAccount = findAccountByEmail(account);
 	}
@@ -60,20 +55,27 @@ public class AccountProvider {
 	}
 
 	public Account findAccountByEmail(String email) {
-		if (mAccountList == null) {
-			mAccountList = getAccounts();
+		if (mAccounts == null) {
+			mAccounts = mAccManager.getAccounts();
 		}
 
-		for (Account account : mAccountList) {
+		Logger.Log("Level1 ", "AccountProvider");
+
+		for (Account account : mAccounts) {
+			Logger.Log("Level1.1 ", "AccountProvider");
 			if (email.equals(account.name)) {
+				Logger.Log("Level1.2 " + account, "AccountProvider");
 				return account;
 			}
 		}
-
+		
+		Logger.Log("money2", "AccountProvider");
+		
 		if (mAccountList.size() != 0) {
 			return mAccountList.get(0);
 		}
-
+		
+Logger.Log("return null", "AccountProvider");
 		return null;
 	}
 }

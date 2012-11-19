@@ -15,6 +15,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -53,20 +54,26 @@ public class XmlParser {
 	public String getConfigContent(String attributeName) {
 		if (_configDocument == null) {
 			_configDocument = getDocument(CONFIG_FILE);
+			
 			source = new DOMSource(_configDocument);
 		}
 		if (_configDocument == null) {
 			return "";
 		}
-
+		
 		NodeList nodeList = _configDocument.getElementsByTagName(attributeName);
+
 		if (nodeList == null || nodeList.getLength() == 0) {
 			return "";
 		}
 		
-		Logger.Log(attributeName + ": "
-				+ nodeList.item(0).getFirstChild().getNodeValue(), "XmlParser");
-		return nodeList.item(0).getFirstChild().getNodeValue();
+		Node child = nodeList.item(0).getFirstChild();
+		if (child == null){
+			return "";
+		}
+		
+		String value = child.getNodeValue();	
+		return value;
 	}
 
 	public void setConfigContent(String attributeName, String value) {

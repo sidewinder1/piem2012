@@ -29,12 +29,12 @@ public class EmailAccountCustomView extends LinearLayout {
 		sync_data.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				try {
-					sync_data.setBackgroundResource(R.drawable.syn_icon);
-					SyncHelper.getInstance().synchronize();
-					sync_data.setBackgroundResource(R.drawable.unsyn_icon);
 					AccountProvider.getInstance().currentAccount = AccountProvider
 							.getInstance().findAccountByEmail(
 									mEmailAcount.getText().toString());
+					sync_data.setBackgroundResource(R.drawable.syn_icon);
+					SyncHelper.getInstance().synchronize();
+					sync_data.setBackgroundResource(R.drawable.unsyn_icon);				
 				} catch (Exception e) {
 					Logger.Log(e.getMessage(), getClass().toString());
 				}
