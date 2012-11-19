@@ -17,7 +17,7 @@ import android.database.Cursor;
 public class SyncHelper {
 	String NAMESPACE = "http://pfm.org/";
 	String URL = "http://54.251.59.102:83/PFMService.asmx";
-	
+
 	private Date mLocalLastSync;
 
 	private final static String[] sTables = { "Category", "Schedule",
@@ -53,16 +53,17 @@ public class SyncHelper {
 	}
 
 	private void getServerAddress() {
-		String nameSpace = XmlParser.getInstance().getConfigContent("namespace");
+		String nameSpace = XmlParser.getInstance()
+				.getConfigContent("namespace");
 		String url = XmlParser.getInstance().getConfigContent("url");
-		if (nameSpace.length() != 0){
+		if (nameSpace.length() != 0) {
 			NAMESPACE = nameSpace;
 		}
-		
-		if (url.length() != 0){
+
+		if (url.length() != 0) {
 			URL = url;
 		}
-		
+
 	}
 
 	private void getLocalLastSync() {
@@ -86,17 +87,21 @@ public class SyncHelper {
 		String[] UPDATE_PARAMS = new String[] { "userName", "tableName",
 				"lastSyncTime" };
 
+		Logger.Log("Login", "SyncHelper");
+		Logger.Log(AccountProvider.getInstance().currentAccount + "",
+				"SyncHelper");
 		// Check this account is existing on Server or not.
 		SoapObject loginRequest = invokeServerMethod(
 				LOGIN_METHOD,
-				new String[] { "userName"},
-				new Object[] {
-						AccountProvider.getInstance().currentAccount.name });
+				new String[] { "userName" },
+				new Object[] { AccountProvider.getInstance().currentAccount.name });
 		if (loginRequest == null) {
 			return;
 		}
-		String results = loginRequest.getPropertyAsString(0);
 
+		Logger.Log("Login success", "SyncHelper");
+		String results = loginRequest.getPropertyAsString(0);
+		
 		// Get data if this account exists on server.
 		if (results != null && Boolean.parseBoolean(results)) {
 			SoapObject syncDate = SyncHelper
@@ -109,12 +114,14 @@ public class SyncHelper {
 				return;
 			}
 
+			Logger.Log("Login: CHeck bool", "SyncHelper");
 			Date lastDateSync = Converter.toDate(
 					String.valueOf(syncDate.getProperty(0)),
 					"yyyy-MM-dd hh:mm:ss");
 
 			// Find records are modified after last date sync.
 			for (String table : sTables) {
+				Logger.Log("Save data to server: " + table, "SyncHelper");
 				invokeServerMethod(
 						SAVE_DATA_METHOD,
 						SAVE_PARAMS,
@@ -134,7 +141,8 @@ public class SyncHelper {
 							new Object[] {
 									AccountProvider.getInstance().currentAccount.name,
 									table, Converter.toString(mLocalLastSync) });
-
+					Logger.Log("Update data from server: " + table,
+							"SyncHelper");
 					if (updatedRecords == null) {
 						continue;
 					}
@@ -246,6 +254,7 @@ public class SyncHelper {
 		}
 
 		markAsSynchronized();
+		Logger.Log("Mark as Synchronize", "SyncHelper");
 	}
 
 	private void markAsSynchronized() {
