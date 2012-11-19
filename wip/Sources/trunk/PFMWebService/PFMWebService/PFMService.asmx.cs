@@ -12,7 +12,7 @@ namespace PFMWebService
     /// <summary>
     /// Summary description for PFMService
     /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
+    [WebService(Namespace = "http://pfm.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
@@ -21,11 +21,11 @@ namespace PFMWebService
     {
         readonly PFMDataClassesDataContext _context = new PFMDataClassesDataContext();
         readonly Dictionary<string, string> _tableMap = new Dictionary<string, string>();
-        const string CONNECTION_STRING = "Data Source=localhost;Initial Catalog=PFMDatabase;Integrated Security=True";
         readonly SqlConnection conn;
         readonly SqlCommand command;
         public PfmService()
         {
+            var CONNECTION_STRING = System.Configuration.ConfigurationManager.ConnectionStrings["PFMDatabaseConnectionString"].ConnectionString;
             conn = new SqlConnection(CONNECTION_STRING);
             command = conn.CreateCommand();
             String[] sTables = { "Schedule", "ScheduleDetail", "EntryDetail", "Entry", "BorrowLend", "Category" };
@@ -56,6 +56,16 @@ namespace PFMWebService
         public bool Login(string userName)
         {
             var userCount = from c in _context.Users where c.UserName == userName select c.ID;
+
+            if (!userCount.Any())
+            {
+                conn.Open();
+                var inserUserSql = "INSERT INTO dbo.[User](UserName, LastSync) VALUES ('" + userName + "', GETDATE())";
+                command.CommandText = inserUserSql;
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+
             return userCount.Count() == 1;
         }
 

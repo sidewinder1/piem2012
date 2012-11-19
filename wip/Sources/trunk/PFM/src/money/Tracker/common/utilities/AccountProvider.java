@@ -13,28 +13,27 @@ public class AccountProvider {
 	public Account currentAccount;
 
 	public AccountProvider() {
-		mAccManager = AccountManager.get(PfmApplication
-				.getAppContext());
-		
+		mAccManager = AccountManager.get(PfmApplication.getAppContext());
+		Logger.Log(mAccManager.getAccounts().length + "", "Account");
 		mAccounts = mAccManager.getAccounts();
-		
+
 		mAccountList = getAccounts();
+		Logger.Log(mAccountList.size() + "", "Account");
 		updateCurrentAccount();
+		Logger.Log(currentAccount.name + "", "Account");
 	}
-	
-	private void updateCurrentAccount(){
+
+	private void updateCurrentAccount() {
 		String account = XmlParser.getInstance().getConfigContent("account");
 
-		if (account.length() != 0) {
-			// Parse xml to data.
-			currentAccount = findAccountByEmail(account);
+		if (account.length() == 0) {
+			currentAccount = new Account("testAccount", "pfm.com");
 			return;
 		}
-		
-		if (mAccountList.size() != 0){
-			currentAccount = mAccountList.get(0);
-		}
-	} 
+
+		// Parse xml to data.
+		currentAccount = findAccountByEmail(account);
+	}
 
 	public static AccountProvider getInstance() {
 		return sInstance == null ? sInstance = new AccountProvider()
@@ -45,7 +44,7 @@ public class AccountProvider {
 		if (mAccountList != null) {
 			return mAccountList;
 		}
-		
+
 		mAccountList = new ArrayList<Account>();
 		if (mAccounts != null) {
 			for (Account account : mAccounts) {
@@ -53,11 +52,10 @@ public class AccountProvider {
 			}
 		}
 
-		if (mAccountList.size() == 0)
-		{
+		if (mAccountList.size() == 0) {
 			mAccountList.add(new Account("testAccount", "pfm.com"));
 		}
-		
+
 		return mAccountList;
 	}
 
@@ -72,22 +70,10 @@ public class AccountProvider {
 			}
 		}
 
+		if (mAccountList.size() != 0) {
+			return mAccountList.get(0);
+		}
+
 		return null;
-	}
-
-	public String getPasswordByEmail(String email) {
-		if (mAccounts.length == 0){
-			return "test1234";
-		}
-		
-		return mAccManager.getPassword(findAccountByEmail(email));
-	}
-
-	public String getPasswordByAccount(Account account) {
-		if (mAccounts.length == 0){
-			return "test1234";
-		}
-		
-		return mAccManager.getPassword(account);
 	}
 }

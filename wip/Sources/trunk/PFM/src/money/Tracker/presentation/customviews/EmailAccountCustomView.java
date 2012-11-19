@@ -1,7 +1,10 @@
 package money.Tracker.presentation.customviews;
 
+import money.Tracker.common.utilities.AccountProvider;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SyncHelper;
 import money.Tracker.presentation.activities.R;
+import android.accounts.Account;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +28,16 @@ public class EmailAccountCustomView extends LinearLayout {
 
 		sync_data.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				SyncHelper.getInstance().synchronize();
+				try {
+					sync_data.setBackgroundResource(R.drawable.syn_icon);
+					SyncHelper.getInstance().synchronize();
+					sync_data.setBackgroundResource(R.drawable.unsyn_icon);
+					AccountProvider.getInstance().currentAccount = AccountProvider
+							.getInstance().findAccountByEmail(
+									mEmailAcount.getText().toString());
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), getClass().toString());
+				}
 			}
 		});
 	}

@@ -1,11 +1,7 @@
 package jim.h.common.android.lib.zxing.integrator;
 
-/**
- * @author Jim.H
- */
-public final class IntentResult {
-
-    private final String contents;
+public class IntentResult {
+	private final String contents;
     private final String formatName;
 
     IntentResult(String contents, String formatName) {
