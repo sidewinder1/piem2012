@@ -17,7 +17,7 @@ import android.database.Cursor;
 public class SyncHelper {
 	String NAMESPACE = "http://tempuri.org/";
 	String URL = "http://10.0.2.2:1242/PFMService.asmx";
-	String CONFIG_FILE = "Pfm/PfmConfig.xml";
+	
 	private Date mLocalLastSync;
 
 	private final static String[] sTables = { "Category", "Schedule",
@@ -53,8 +53,16 @@ public class SyncHelper {
 	}
 
 	private void getServerAddress() {
-		NAMESPACE = XmlParser.getInstance().getConfigContent("namespace");
-		URL = XmlParser.getInstance().getConfigContent("url");
+		String nameSpace = XmlParser.getInstance().getConfigContent("namespace");
+		String url = XmlParser.getInstance().getConfigContent("url");
+		if (nameSpace.length() != 0){
+			NAMESPACE = nameSpace;
+		}
+		
+		if (url.length() != 0){
+			URL = url;
+		}
+		
 	}
 
 	private void getLocalLastSync() {
@@ -81,11 +89,9 @@ public class SyncHelper {
 		// Check this account is existing on Server or not.
 		SoapObject loginRequest = invokeServerMethod(
 				LOGIN_METHOD,
-				new String[] { "userName", "password" },
+				new String[] { "userName"},
 				new Object[] {
-						AccountProvider.getInstance().currentAccount.name,
-						AccountProvider.getInstance().getPasswordByAccount(
-								AccountProvider.getInstance().currentAccount) });
+						AccountProvider.getInstance().currentAccount.name });
 		if (loginRequest == null) {
 			return;
 		}

@@ -11,8 +11,7 @@ public class AccountProvider {
 	ArrayList<Account> mAccountList;
 	private Account[] mAccounts;
 	public Account currentAccount;
-	String CONFIG_FILE = "Pfm/PfmConfig.xml";
-	
+
 	public AccountProvider() {
 		mAccManager = AccountManager.get(PfmApplication
 				.getAppContext());

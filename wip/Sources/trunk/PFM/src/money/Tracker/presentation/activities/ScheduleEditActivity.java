@@ -400,7 +400,7 @@ public class ScheduleEditActivity extends Activity {
 		String Time_id = (periodic.isChecked() ? "1" : "0");
 
 		if (passed_schedule_id != -1) {
-			String budget_value = String.valueOf(total_budget.getText());
+			String budget_value = String.valueOf(Converter.toLong(total_budget.getText().toString()));
 			if ("".equals(budget_value)) {
 				budget_value = String
 						.valueOf(total_budget.getHint().toString());
