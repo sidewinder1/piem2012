@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.presentation.PfmApplication;
-import money.Tracker.presentation.activities.R;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
