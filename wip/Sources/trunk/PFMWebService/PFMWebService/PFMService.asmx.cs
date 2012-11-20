@@ -43,10 +43,11 @@ namespace PFMWebService
         }
 
         [WebMethod]
-        public void MarkSynchronized(string userName)
+        public void MarkSynchronized(string userName, string syncTime)
         {
             conn.Open();
-            var updateLastSync = new StringBuilder("update [user] set LastSync = GetDate() where userName = '").Append(userName).Append("'").ToString();
+            var updateLastSync = new StringBuilder("update [user] set LastSync = Convert(datetime, '").
+                Append(syncTime).Append("') where userName = '").Append(userName).Append("'").ToString();
             command.CommandText = updateLastSync;
             command.ExecuteNonQuery();
             conn.Close();
@@ -102,7 +103,7 @@ namespace PFMWebService
 
             var cmd = "select " + _tableMap[tableName] +
                       " from dbo.[" + tableName + "]t" +
-                      " where t.UserID = " + userId + 
+                      " where t.UserID = " + userId +
                       " and t.ModifiedDate > CONVERT(datetime, '" + lastSyncTime + "') " +
                       " or t.LastSync > CONVERT(datetime, '" + lastSyncTime + "')";
 

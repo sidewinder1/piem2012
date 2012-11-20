@@ -40,7 +40,12 @@ public class SqlHelper {
 		}
 		
 		long id = DateTimeHelper.nowInMillis();
-		contentValues.put("Id", id);
+		
+		if (!contentValues.containsKey("Id"))
+		{
+			contentValues.put("Id", id);
+		}
+		
 		contentValues.put("CreatedDate",
 				Converter.toString(DateTimeHelper.now(true)));
 		contentValues.put("IsDeleted", "0");
@@ -238,8 +243,8 @@ public class SqlHelper {
 
 		if (categoryCheck != null && !categoryCheck.moveToFirst()) {
 			for (int index = 0; index < names.length; index++) {
-				SqlHelper.instance.insert("Category", new String[] { "Name",
-						"User_Color" }, new String[] { names[index],
+				SqlHelper.instance.insert("Category", new String[] {"Id", "Name",
+						"User_Color" }, new String[] { String.valueOf(index), names[index],
 						colors[index] });
 			}
 		}
