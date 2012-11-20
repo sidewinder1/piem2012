@@ -71,6 +71,7 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:id="@+id/sync_auto_checkbox"
                 android:button="@drawable/checkbox_selector" />
         </LinearLayout>
 

@@ -11,6 +11,10 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 		sButton = refreshButton;
 	}
 
+	public SynchronizeTask() {
+		super();
+	}
+
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		SyncHelper.getInstance().synchronize();
@@ -19,7 +23,10 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		sButton.setBackgroundResource(R.drawable.unsyn_icon);
+		if (sButton != null) {
+			sButton.setBackgroundResource(R.drawable.unsyn_icon);
+		}
+		
 		super.onPostExecute(result);
 	}
 
