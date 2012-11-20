@@ -2,13 +2,14 @@
 
     <!-- These are common resources for app -->
     <string name="app_name">Money Tracker</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_settings">Thiết lập</string>
     <string name="title_activity_home">Money Tracker</string>
     <string name="dummy_data">Dummy data</string>
-    <string name="no_data">No data</string>
+    <string name="no_data">Không có dữ liệu</string>
     <string name="image_icon_description">Image of tab</string>
     <string name="delete_confirm">Xóa?</string>
+    <string name="others">Khác…</string>
+    <string name="input_dialog_title">Nhập giá trị</string>
 
     <!-- These are resources for Schedule function -->
     <string name="schedule_start_day">Từ</string>
@@ -55,12 +56,24 @@
     </string-array>
     <string-array name="warning_remain_array">
         <item>Không bao giờ</item>
-        <item>5 phút</item>
         <item>10 phút</item>
-        <item>15 phút</item>
-        <item>20 phút</item>
-        <item>25 phút</item>
         <item>30 phút</item>
+        <item>1 tiếng</item>
+        <item>Khác…</item>
+    </string-array>
+    <string-array name="warning_schedule_warn_array">
+        <item>25 %</item>
+        <item>50 %</item>
+        <item>70 %</item>
+        <item>100 %</item>
+        <item>Khác…</item>
+    </string-array>
+    <string-array name="warning_borrow_warn_array">
+        <item>1 tiếng</item>
+        <item>10 tiếng</item>
+        <item>1 ngày</item>
+        <item>1 tuần</item>
+        <item>Khác…</item>
     </string-array>
 
     <!-- These are resources for Entry function -->
