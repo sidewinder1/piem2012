@@ -7,7 +7,7 @@ import java.util.Date;
 import android.graphics.Color;
 
 public class Converter {
-	private static final String dateFormatString = "yyyy-MM-dd hh:mm:ss";
+	private static final String dateFormatString = "yyyy-MM-dd kk:mm:ss";
 
 	public static String toString(Date date, String format) {
 		return String.valueOf(android.text.format.DateFormat.format(format,

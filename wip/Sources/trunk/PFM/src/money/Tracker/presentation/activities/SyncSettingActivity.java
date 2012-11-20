@@ -140,7 +140,7 @@ public class SyncSettingActivity extends Activity {
 		}
 	}
 
-	protected void addNewAccount() {
+	public void addNewAccount(View view) {
 
 	}
 

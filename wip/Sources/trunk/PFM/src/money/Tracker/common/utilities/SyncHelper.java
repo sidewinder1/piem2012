@@ -285,7 +285,7 @@ public class SyncHelper {
 				new String[] { "userName" },
 				new Object[] { AccountProvider.getInstance().currentAccount.name });
 		XmlParser.getInstance().setConfigContent("lastSync",
-				Converter.toString(DateTimeHelper.now()));
+				Converter.toString(DateTimeHelper.now(true)));
 	}
 
 	private SoapObject getModifiedRecords(String table, String lastTime) {
