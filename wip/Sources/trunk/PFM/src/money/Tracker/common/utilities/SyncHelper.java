@@ -119,15 +119,19 @@ public class SyncHelper {
 				return;
 			}
 
-			Logger.Log("Login: CHeck bool", "SyncHelper");
+			Logger.Log(
+					"Server last sync: "
+							+ String.valueOf(syncDate.getProperty(0)),
+					"SyncHelper");
+
 			Date lastDateSync = Converter.toDate(
 					String.valueOf(syncDate.getProperty(0)),
 					"yyyy-MM-dd hh:mm:ss");
 
 			// Find records are modified after last date sync.
 			for (String table : sTables) {
-				Logger.Log("Save data to server: " + table, "SyncHelper");
-				invokeServerMethod(
+				Logger.Log("Saving data to server: " + table, "SyncHelper");
+				SoapObject saveDataResult = invokeServerMethod(
 						SAVE_DATA_METHOD,
 						SAVE_PARAMS,
 						new Object[] {
@@ -135,8 +139,14 @@ public class SyncHelper {
 								table,
 								getModifiedRecords(table,
 										Converter.toString(mLocalLastSync)) });
+				Logger.Log("Saved data to server " + table
+						+ (saveDataResult == null ? " un" : "")
+						+ "successfully", "SyncHelper");
 			}
 
+			Logger.Log(
+					"mLocalLastSync.before(lastDateSync): "
+							+ mLocalLastSync.before(lastDateSync), "SyncHelper");
 			if (mLocalLastSync.before(lastDateSync)) {
 				// Update data from server.
 				for (String table : sTables) {
@@ -224,7 +234,10 @@ public class SyncHelper {
 								columnValues[i] = updatedValue.getProperty(i)
 										.toString();
 							}
-
+							Logger.Log(
+									"Insert to local DB: "
+											+ columnValues.toString(),
+									"SyncHelper");
 							SqlHelper.instance.insert(table, tableMap
 									.get(table).split(","), columnValues);
 						}
@@ -259,10 +272,10 @@ public class SyncHelper {
 		}
 
 		markAsSynchronized();
-//		Alert.getInstance().show(
-//				PfmApplication.getAppContext(),
-//				PfmApplication.getAppResources().getString(
-//						R.string.sync_success));
+		// Alert.getInstance().show(
+		// PfmApplication.getAppContext(),
+		// PfmApplication.getAppResources().getString(
+		// R.string.sync_success));
 		Logger.Log("Mark as Synchronize", "SyncHelper");
 	}
 
@@ -357,9 +370,10 @@ public class SyncHelper {
 		} catch (ClassCastException e) {
 			Logger.Log("ClassCastException", "SyncHelper");
 		}
-		
-//		Alert.getInstance().show(PfmApplication.getAppContext(),
-//				PfmApplication.getAppResources().getString(R.string.sync_fail) + ": " + methodName);
+
+		// Alert.getInstance().show(PfmApplication.getAppContext(),
+		// PfmApplication.getAppResources().getString(R.string.sync_fail) + ": "
+		// + methodName);
 		return null;
 	}
 }

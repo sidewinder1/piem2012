@@ -34,8 +34,7 @@ public class XmlParser {
 	Transformer transformer;
 
 	DOMSource source = null;
-	StreamResult result = new StreamResult(new File(mBaseDir + File.separator + "PFMData" + File.separator
-			+ CONFIG_FILE));
+	StreamResult result = new StreamResult(new File(mBaseDir + CONFIG_FILE));
 
 	private Document _configDocument;
 	private static XmlParser sInstance;
