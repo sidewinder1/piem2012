@@ -280,12 +280,13 @@ public class SyncHelper {
 	}
 
 	private void markAsSynchronized() {
-		invokeServerMethod(
-				"MarkSynchronized",
-				new String[] { "userName" },
-				new Object[] { AccountProvider.getInstance().currentAccount.name });
-		XmlParser.getInstance().setConfigContent("lastSync",
-				Converter.toString(DateTimeHelper.now(true)));
+		String lastSyncTime = Converter.toString(DateTimeHelper.now(true));
+		invokeServerMethod("MarkSynchronized", new String[] { "userName",
+				"syncTime" },
+				new Object[] {
+						AccountProvider.getInstance().currentAccount.name,
+						lastSyncTime });
+		XmlParser.getInstance().setConfigContent("lastSync", lastSyncTime);
 	}
 
 	private SoapObject getModifiedRecords(String table, String lastTime) {

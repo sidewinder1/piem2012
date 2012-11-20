@@ -23,24 +23,11 @@ public class DateTimeHelper {
 	public static Date now(boolean checkTimeZone) {
 		calendar = Calendar.getInstance(TimeZone.getDefault(),
 				Locale.getDefault());
+		
 		if (checkTimeZone) {
-			TimeZone timeZone = TimeZone.getDefault();
-			String gmt = TimeZone.getTimeZone(timeZone.getID()).getDisplayName(
-					false, TimeZone.SHORT);
-			try {
-				Logger.Log(gmt, "DateTimeHelper");
-				int hour = Integer.parseInt(gmt.substring(4, 6));
-				int minute = Integer.parseInt(gmt.substring(7));
-				if (gmt.contains("+")) {
-					calendar.add(Calendar.MINUTE, minute * -1);
-					calendar.add(Calendar.HOUR, hour * -1);
-				} else {
-					calendar.add(Calendar.MINUTE, minute);
-					calendar.add(Calendar.HOUR, hour);
-				}
-			} catch (Exception e) {
-				Logger.Log("Convert time error: " + e.getMessage(), "DateTimeHelper");
-			}
+			System.currentTimeMillis();
+			calendar.set(1970, 0, 1,0,0,0);
+			calendar.add(Calendar.SECOND, (int) (System.currentTimeMillis()/1000));
 		}
 		return calendar.getTime();
 	}
