@@ -42,10 +42,10 @@ public class SqlHelper {
 		long id = DateTimeHelper.nowInMillis();
 		contentValues.put("Id", id);
 		contentValues.put("CreatedDate",
-				Converter.toString(DateTimeHelper.now()));
+				Converter.toString(DateTimeHelper.now(true)));
 		contentValues.put("IsDeleted", "0");
 		contentValues.put("ModifiedDate",
-				Converter.toString(DateTimeHelper.now()));
+				Converter.toString(DateTimeHelper.now(true)));
 
 		try {
 			currentDb.insert(tableName, null, contentValues);
@@ -66,7 +66,7 @@ public class SqlHelper {
 		}
 
 		newValueContent.put("ModifiedDate",
-				Converter.toString(DateTimeHelper.now()));
+				Converter.toString(DateTimeHelper.now(true)));
 
 		try {
 			return currentDb.update(tableName, newValueContent, whereCondition,
@@ -81,7 +81,7 @@ public class SqlHelper {
 		ContentValues newValueContent = new ContentValues();
 
 		newValueContent.put("ModifiedDate",
-				Converter.toString(DateTimeHelper.now()));
+				Converter.toString(DateTimeHelper.now(true)));
 		newValueContent.put("IsDeleted", "1");
 
 		try {
