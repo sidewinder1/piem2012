@@ -25,7 +25,7 @@ public class AccountProvider {
 			currentAccount = null;
 			return;
 		}
-		
+
 		// Parse xml to data.
 		currentAccount = findAccountByEmail(account);
 	}
@@ -59,23 +59,19 @@ public class AccountProvider {
 			mAccounts = mAccManager.getAccounts();
 		}
 
-		Logger.Log("Level1 ", "AccountProvider");
-
 		for (Account account : mAccounts) {
-			Logger.Log("Level1.1 ", "AccountProvider");
 			if (email.equals(account.name)) {
 				Logger.Log("Level1.2 " + account, "AccountProvider");
 				return account;
 			}
 		}
-		
-		Logger.Log("money2", "AccountProvider");
-		
+
 		if (mAccountList.size() != 0) {
 			return mAccountList.get(0);
 		}
-		
-Logger.Log("return null", "AccountProvider");
+
+		Logger.Log(email + " has not been found, return null",
+				"AccountProvider");
 		return null;
 	}
 }

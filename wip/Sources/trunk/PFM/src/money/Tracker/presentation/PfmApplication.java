@@ -6,14 +6,17 @@ import money.Tracker.common.utilities.IOHelper;
 import money.Tracker.common.utilities.Logger;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 
 public class PfmApplication extends Application{
-	 private static Context context;
+	 private static Context sContext;
      private String CONFIG_FILE = "PfmConfig.pxml";
-
+     private static Resources sResources;
+     
 	    public void onCreate(){
 	        super.onCreate();
-	        PfmApplication.context = getApplicationContext();
+	        PfmApplication.sContext = getApplicationContext();
+	        PfmApplication.sResources = getResources();
 
 	        // Create config file.
 	        IOHelper.getInstance().createFile(CONFIG_FILE, "<config><account></account><lastSync>2012-11-17 17:32:00</lastSync><serverConfig><namespace>http://pfm.org/</namespace><url>http://54.251.59.102:83/PFMService.asmx</url></serverConfig></config>");
@@ -25,6 +28,10 @@ public class PfmApplication extends Application{
 	    }
 
 	    public static Context getAppContext() {
-	        return PfmApplication.context;
+	        return PfmApplication.sContext;
+	    }
+	    
+	    public static Resources getAppResources(){
+	    	return PfmApplication.sResources;
 	    }
 }
