@@ -36,6 +36,8 @@
     <string name="sync_view_account_active">Bật</string>
     <string name="sync_view_account_deactive">Tắt</string>
     <string name="sync_view_new_account">Tạo tài khoản</string>
+    <string name="sync_success">Đồng bộ thành công</string>
+    <string name="sync_fail">Đồng bộ thất bại</string>
 
     <!-- These are resources for Warning function -->
     <string name="warning_title">Thiết lập cảnh báo chung</string>

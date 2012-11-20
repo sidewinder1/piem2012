@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.presentation.PfmApplication;
+import money.Tracker.presentation.activities.R;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -87,21 +90,23 @@ public class SyncHelper {
 		String[] UPDATE_PARAMS = new String[] { "userName", "tableName",
 				"lastSyncTime" };
 
-		Logger.Log("Login", "SyncHelper");
-		Logger.Log(AccountProvider.getInstance().currentAccount + "",
-				"SyncHelper");
+		Logger.Log("Login: "
+				+ AccountProvider.getInstance().currentAccount.name
+				+ ", \r\nUrl: " + URL, "SyncHelper");
+
 		// Check this account is existing on Server or not.
 		SoapObject loginRequest = invokeServerMethod(
 				LOGIN_METHOD,
 				new String[] { "userName" },
 				new Object[] { AccountProvider.getInstance().currentAccount.name });
+		Logger.Log("Login success but cannot get result.", "SyncHelper");
 		if (loginRequest == null) {
 			return;
 		}
 
 		Logger.Log("Login success", "SyncHelper");
 		String results = loginRequest.getPropertyAsString(0);
-		
+
 		// Get data if this account exists on server.
 		if (results != null && Boolean.parseBoolean(results)) {
 			SoapObject syncDate = SyncHelper
@@ -254,6 +259,10 @@ public class SyncHelper {
 		}
 
 		markAsSynchronized();
+//		Alert.getInstance().show(
+//				PfmApplication.getAppContext(),
+//				PfmApplication.getAppResources().getString(
+//						R.string.sync_success));
 		Logger.Log("Mark as Synchronize", "SyncHelper");
 	}
 
@@ -328,22 +337,29 @@ public class SyncHelper {
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 				SoapEnvelope.VER11);
 		envelope.dotNet = true;
-
 		envelope.setOutputSoapObject(request);
+		Logger.Log("envelope.setOutputSoapObject(request);", "SyncHelper");
 		HttpTransportSE androidhttpTranport = new HttpTransportSE(URL);
+		Logger.Log(
+				"HttpTransportSE androidhttpTranport = new HttpTransportSE(URL);",
+				"SyncHelper");
 		try {
+			Logger.Log("SOAP: " + SOAP_ACTIONS, "SyncHelper");
 			androidhttpTranport.call(SOAP_ACTIONS, envelope);
+			Logger.Log(envelope + "," + envelope.bodyIn, "SyncHelper");
 			SoapObject reponse = (SoapObject) envelope.bodyIn;
-
+			Logger.Log("return success", "SyncHelper");
 			return reponse;
 		} catch (IOException e) {
-			Logger.Log(e.getMessage(), "SyncHelper");
+			Logger.Log("IOException", "SyncHelper");
 		} catch (XmlPullParserException e) {
-			Logger.Log(e.getMessage(), "SyncHelper");
+			Logger.Log("XmlPullParserException", "SyncHelper");
 		} catch (ClassCastException e) {
-			Logger.Log(e.getMessage(), "SyncHelper");
+			Logger.Log("ClassCastException", "SyncHelper");
 		}
-
+		
+//		Alert.getInstance().show(PfmApplication.getAppContext(),
+//				PfmApplication.getAppResources().getString(R.string.sync_fail) + ": " + methodName);
 		return null;
 	}
 }
