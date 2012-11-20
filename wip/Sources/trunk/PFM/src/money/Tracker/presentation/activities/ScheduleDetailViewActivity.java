@@ -27,8 +27,10 @@ public class ScheduleDetailViewActivity extends Activity {
 		setContentView(R.layout.schedule_view_detail);
 
 		Bundle extras = getIntent().getExtras();
-		schedule_id = extras.getLong("schedule_id");
-
+		if (extras != null && extras.containsKey("schedule_id")) {
+			schedule_id = extras.getLong("schedule_id");
+		}
+		
 		bindData();
 	}
 

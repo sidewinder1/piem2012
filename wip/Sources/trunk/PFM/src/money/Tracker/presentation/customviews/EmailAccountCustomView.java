@@ -37,11 +37,8 @@ public class EmailAccountCustomView extends LinearLayout {
 					mAnimationDrawable.start();
 					SynchronizeTask syncTask = new SynchronizeTask(sync_data);
 					syncTask.execute();
-//					sync_data.setBackgroundResource(R.drawable.unsyn_icon);	
-					
 				} catch (Exception e) {
 					Logger.Log(e.getMessage(), getClass().toString());
-//					sync_data.setBackgroundResource(R.drawable.unsyn_icon);
 				}
 			}
 		});

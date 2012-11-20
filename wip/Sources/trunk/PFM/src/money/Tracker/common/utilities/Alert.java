@@ -1,5 +1,6 @@
 package money.Tracker.common.utilities;
 
+import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.R;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
@@ -25,33 +26,50 @@ public class Alert {
 		return instance;
 	}
 
-	public void notify(Context context, Class<?> activity, String title,
-			String message) {
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				context).setSmallIcon(R.drawable.report_icon)
-				.setContentTitle(title).setContentText(message);
-		// Creates an explicit intent for an Activity in your app
-		Intent resultIntent = new Intent(context, activity);
+	public void notify(final Class<?> activity, final String title,
+			final String message, final long delayInSeconds) {
+		new Thread(new Runnable() {
+			public void run() {
+				Context context = PfmApplication.getAppContext();
+				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+						context).setSmallIcon(R.drawable.report_icon)
+						.setContentTitle(title).setContentText(message);
+				// Creates an explicit intent for an Activity in your app
+				Intent resultIntent = new Intent(context, activity);
 
-		// The stack builder object will contain an artificial back stack for
-		// the
-		// started Activity.
-		// This ensures that navigating backward from the Activity leads out of
-		// your application to the Home screen.
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-		// Adds the back stack for the Intent (but not the Intent itself)
-		stackBuilder.addParentStack(activity);
-		// Adds the Intent that starts the Activity to the top of the stack
-		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
-				PendingIntent.FLAG_UPDATE_CURRENT);
+				// The stack builder object will contain an artificial back
+				// stack for
+				// the
+				// started Activity.
+				// This ensures that navigating backward from the Activity leads
+				// out of
+				// your application to the Home screen.
+				TaskStackBuilder stackBuilder = TaskStackBuilder
+						.create(context);
+				// Adds the back stack for the Intent (but not the Intent
+				// itself)
+//				stackBuilder.addParentStack(activity);
+				// Adds the Intent that starts the Activity to the top of the
+				// stack
+				stackBuilder.addNextIntent(resultIntent);
+				PendingIntent resultPendingIntent = stackBuilder
+						.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		int mId = 0;
-		mBuilder.setContentIntent(resultPendingIntent);
-		NotificationManager mNotificationManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
-		mNotificationManager.notify(mId, mBuilder.build());
+				int mId = 0;
+				mBuilder.setContentIntent(resultPendingIntent);
+				NotificationManager mNotificationManager = (NotificationManager) context
+						.getSystemService(Context.NOTIFICATION_SERVICE);
+
+				try {
+					Thread.sleep(delayInSeconds * 1000);
+				} catch (InterruptedException e) {
+					Logger.Log(e.getMessage(), "Alert");
+				}
+
+				// mId allows you to update the notification later on.
+				mNotificationManager.notify(mId, mBuilder.build());
+			};
+		}).start();
 	}
 
 	public void showDialog(Context context, String message,
