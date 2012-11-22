@@ -90,8 +90,8 @@ public class Alert {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage(message).setCancelable(false)
-				.setPositiveButton("Yes", okAction)
-				.setNegativeButton("No", cancelAction);
+				.setPositiveButton(PfmApplication.getAppResources().getString(R.string.yes), okAction)
+				.setNegativeButton(PfmApplication.getAppResources().getString(R.string.no), cancelAction);
 		alertDialog = builder.create();
 		alertDialog.show();
 	}

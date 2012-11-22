@@ -9,7 +9,13 @@
     <string name="image_icon_description">Image of tab</string>
     <string name="delete_confirm">Xóa?</string>
     <string name="others">Khác…</string>
+    <string name="hours">tiếng</string>
+    <string name="minutes">phút</string>
     <string name="input_dialog_title">Nhập giá trị</string>
+    <string name="ok">Đồng ý</string>
+    <string name="cancel">Hủy</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
 
     <!-- These are resources for Schedule function -->
     <string name="schedule_start_day">Từ</string>
@@ -39,6 +45,7 @@
     <string name="sync_view_new_account">Tạo tài khoản</string>
     <string name="sync_success">Đồng bộ thành công</string>
     <string name="sync_fail">Đồng bộ thất bại</string>
+    <string name="sync_no_account_message">Bạn cần tài khoản để đồng bộ.\r\nThêm mới?</string>
 
     <!-- These are resources for Warning function -->
     <string name="warning_title">Thiết lập cảnh báo chung</string>
