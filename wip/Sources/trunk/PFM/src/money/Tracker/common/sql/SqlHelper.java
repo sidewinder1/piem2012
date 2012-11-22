@@ -1,8 +1,10 @@
 package money.Tracker.common.sql;
 
+import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
+import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -38,14 +40,18 @@ public class SqlHelper {
 		for (int index = 0; index < columnNames.length; index++) {
 			contentValues.put(columnNames[index], columnValues[index]);
 		}
-		
+
 		long id = DateTimeHelper.nowInMillis();
-		
-		if (!contentValues.containsKey("Id"))
-		{
+
+		if (!contentValues.containsKey("Id") && !"AppInfo".equals(tableName)) {
 			contentValues.put("Id", id);
 		}
 		
+		if (!contentValues.containsKey("UserName")) {
+			contentValues.put("UserName",
+					AccountProvider.getInstance().getCurrentAccount().name);
+		}
+
 		contentValues.put("CreatedDate",
 				Converter.toString(DateTimeHelper.now(true)));
 		contentValues.put("IsDeleted", "0");
@@ -63,6 +69,21 @@ public class SqlHelper {
 
 	public int update(String tableName, String[] columns, String[] newValues,
 			String whereCondition) {
+		String whereForAppInfo = "";
+		if (!"AppInfo".equals(tableName) && !whereCondition.contains("UserName")) {
+			whereForAppInfo = new StringBuilder(" AND UserName ='")
+					.append(AccountProvider.getInstance().getCurrentAccount().name)
+					.append("'").toString();
+		}
+
+		if (whereCondition != null && !"".equals(whereCondition)) {
+			whereCondition = new StringBuilder("IsDeleted = 0 ")
+					.append(whereForAppInfo).append(" AND ")
+					.append(whereCondition).toString();
+		} else {
+			whereCondition = new StringBuilder("IsDeleted = 0 ").append(
+					whereForAppInfo).toString();
+		}
 
 		ContentValues newValueContent = new ContentValues();
 
@@ -70,8 +91,10 @@ public class SqlHelper {
 			newValueContent.put(columns[i], newValues[i]);
 		}
 
-		newValueContent.put("ModifiedDate",
-				Converter.toString(DateTimeHelper.now(true)));
+		if (!newValueContent.containsKey("UserName")){
+			newValueContent.put("ModifiedDate",
+					Converter.toString(DateTimeHelper.now(true)));	
+		}
 
 		try {
 			return currentDb.update(tableName, newValueContent, whereCondition,
@@ -84,6 +107,21 @@ public class SqlHelper {
 
 	public boolean delete(String tableName, String whereCondition) {
 		ContentValues newValueContent = new ContentValues();
+		String whereForAppInfo = "";
+		if (!"AppInfo".equals(tableName)) {
+			whereForAppInfo = new StringBuilder(" AND UserName ='")
+					.append(AccountProvider.getInstance().getCurrentAccount().name)
+					.append("'").toString();
+		}
+
+		if (whereCondition != null && !"".equals(whereCondition)) {
+			whereCondition = new StringBuilder("IsDeleted = 0 ")
+					.append(whereForAppInfo).append(" AND ")
+					.append(whereCondition).toString();
+		} else {
+			whereCondition = new StringBuilder("IsDeleted = 0 ").append(
+					whereForAppInfo).toString();
+		}
 
 		newValueContent.put("ModifiedDate",
 				Converter.toString(DateTimeHelper.now(true)));
@@ -123,24 +161,29 @@ public class SqlHelper {
 	public Cursor query(String sqlStatement) {
 		Cursor cursor = null;
 		int whereIndex = sqlStatement.toLowerCase().indexOf(" where ") + 6;
-		
+
 		int fromIndex = sqlStatement.toLowerCase().indexOf(" from ") + 5;
-		String tableName = sqlStatement.substring(fromIndex).trim()
-				.split(" ")[0];
-		
+		String tableName = sqlStatement.substring(fromIndex).trim().split(" ")[0];
+
 		if (whereIndex >= 6) {
-			String addedWhere = new StringBuilder(" ").append(tableName).append(".IsDeleted=0 AND ").toString();
-			sqlStatement = new StringBuilder(sqlStatement).insert(whereIndex, addedWhere
-					).toString();
+			String addedWhere = new StringBuilder(" ").append(tableName)
+					.append(".IsDeleted=0 AND (").append(tableName).append(".UserName='LocalAccount' OR ").append(tableName)
+					.append(".UserName='")
+					.append(AccountProvider.getInstance().getCurrentAccount().name)
+					.append("') AND ").toString();
+			sqlStatement = new StringBuilder(sqlStatement).insert(whereIndex,
+					addedWhere).toString();
 		} else {
-			
+
 			int tableNameIndex = sqlStatement.substring(fromIndex).indexOf(
 					tableName)
 					+ tableName.length() + 1;
 
 			sqlStatement = new StringBuilder(sqlStatement).insert(
-					fromIndex + tableNameIndex, " WHERE IsDeleted=0 ")
-					.toString();
+					fromIndex + tableNameIndex,
+					" WHERE IsDeleted=0 AND (UserName='LocalAccount' OR UserName='"
+							+ AccountProvider.getInstance().getCurrentAccount().name
+							+ "') ").toString();
 		}
 		try {
 			cursor = currentDb.rawQuery(sqlStatement, null);
@@ -153,14 +196,22 @@ public class SqlHelper {
 
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
+		String whereForAppInfo = "";
+		if (!"AppInfo".equals(tableName)) {
+			whereForAppInfo = new StringBuilder(" AND (UserName='LocalAccount' OR UserName ='")
+					.append(AccountProvider.getInstance().getCurrentAccount().name)
+					.append("')").toString();
+		}
+
 		if (whereCondition != null && !"".equals(whereCondition)) {
-			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 AND ")
+			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 ")
+					.append(whereForAppInfo).append(" AND ")
 					.append(whereCondition).toString();
+		} else {
+			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 ").append(
+					whereForAppInfo).toString();
 		}
-		else{
-			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 ").toString();
-		}
-		
+
 		Cursor cursor = null;
 		try {
 			cursor = currentDb.rawQuery(
@@ -175,6 +226,7 @@ public class SqlHelper {
 	}
 
 	public void dropAllTables() {
+		drop("AppInfo");
 		drop("Schedule");
 		drop("ScheduleDetail");
 		drop("EntryDetail");
@@ -185,17 +237,32 @@ public class SqlHelper {
 	}
 
 	public void initializeTable() {
+		// Create table for application configuration.
+		createTable(
+				"AppInfo",
+				"Id LONG PRIMARY KEY, UserName TEXT, LastSync DATE, Status INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER");
+		for (Account account : AccountProvider.getInstance().getAccounts()) {
+			Cursor accountCheck = select("AppInfo", "UserName", "UserName = '"
+					+ account.name + "'");
+			if (accountCheck == null || !accountCheck.moveToFirst()) {
+				insert("AppInfo", new String[] { "UserName",
+						"LastSync", "Status" },
+						new String[] { account.name,
+								"1990-01-20 00:00:00", "0" });
+			}
+		}
+
 		// Create table for Schedule.
 		createTable(
 				"Schedule",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY, Budget LONG, Type INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Budget LONG, Type INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER, UserName TEXT,")
 						.append("Start_date DATE, End_date DATE").toString());
 		// Create table for Schedule Detail.
 		createTable(
 				"ScheduleDetail",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY, Budget LONG, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Budget LONG, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,")
 						.append("Category_Id INTEGER, Schedule_Id INTEGER")
 						.toString());
 
@@ -203,20 +270,20 @@ public class SqlHelper {
 		createTable(
 				"EntryDetail",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY, Category_Id INTEGER, Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, Category_Id INTEGER, Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,")
 						.append("Money LONG, Entry_Id INTEGER").toString());
 
 		// Create table for Entry Detail.
 		createTable(
 				"Entry",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER, UserName TEXT,")
 						.append("Date DATE, Type INTEGER").toString());
 
 		// Create table for Borrow and Lending.
 		createTable(
 				"BorrowLend",
-				"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,"
+				"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,"
 						+ "Debt_type TEXT,"
 						+ "Money LONG,"
 						+ "Interest_type TEXT,"
@@ -231,7 +298,7 @@ public class SqlHelper {
 		createTable(
 				"Category",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,")
 						.append("User_Color TEXT").toString());
 		String[] names = { "Birthday", "Food", "Entertainment", "Shopping",
 				"Others" };
@@ -243,9 +310,10 @@ public class SqlHelper {
 
 		if (categoryCheck != null && !categoryCheck.moveToFirst()) {
 			for (int index = 0; index < names.length; index++) {
-				SqlHelper.instance.insert("Category", new String[] {"Id", "Name",
-						"User_Color" }, new String[] { String.valueOf(index), names[index],
-						colors[index] });
+				SqlHelper.instance.insert("Category", new String[] { "Id",
+						"Name", "User_Color" },
+						new String[] { String.valueOf(index), names[index],
+								colors[index] });
 			}
 		}
 
@@ -253,7 +321,7 @@ public class SqlHelper {
 		createTable(
 				"UserColor",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,")
+						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER, UserName TEXT,")
 						.append("User_Color TEXT").toString());
 
 		String[] color_codes = { "#9900FFFF", "#99ADD8E6", "#99FFA500",

@@ -17,7 +17,7 @@ import android.database.Cursor;
 public class SyncHelper {
 	String NAMESPACE = "http://pfm.org/";
 	String URL = "http://54.251.59.102:83/PFMService.asmx";
-
+	private boolean mIsSchronizing;
 	private Date mLocalLastSync;
 
 	private final static String[] sTables = { "Category", "Schedule",
@@ -67,18 +67,23 @@ public class SyncHelper {
 	}
 
 	private void getLocalLastSync() {
-		String lastSync = XmlParser.getInstance().getConfigContent("lastSync");
-
-		if (lastSync.length() != 0) {
-			// Parse xml to data.
-			mLocalLastSync = Converter.toDate(lastSync);
+		// String lastSync =
+		// XmlParser.getInstance().getConfigContent("lastSync");
+		Cursor lastSyncCursor = SqlHelper.instance
+				.select("AppInfo", "LastSync",
+						"UserName ='"
+								+ AccountProvider.getInstance()
+										.getCurrentAccount().name + "'");
+		if (lastSyncCursor != null && lastSyncCursor.moveToFirst()) {
+			mLocalLastSync = Converter.toDate(lastSyncCursor.getString(0));
 			return;
 		}
 
-		mLocalLastSync = DateTimeHelper.getDate(2012, 10, 11);
+		mLocalLastSync = DateTimeHelper.getDate(1990, 0, 20);
 	}
 
 	public void synchronize() {
+		mIsSchronizing = true;
 		String LAST_SYNC_METHOD = "CheckLastSync";
 		String UPDATE_FROM_SERVER = "GetData";
 		String SAVE_DATA_METHOD = "SaveData";
@@ -88,14 +93,13 @@ public class SyncHelper {
 				"lastSyncTime" };
 
 		Logger.Log("Login: "
-				+ AccountProvider.getInstance().currentAccount.name
+				+ AccountProvider.getInstance().getCurrentAccount().name
 				+ ", \r\nUrl: " + URL, "SyncHelper");
 
 		// Check this account is existing on Server or not.
-		SoapObject loginRequest = invokeServerMethod(
-				LOGIN_METHOD,
-				new String[] { "userName" },
-				new Object[] { AccountProvider.getInstance().currentAccount.name });
+		SoapObject loginRequest = invokeServerMethod(LOGIN_METHOD,
+				new String[] { "userName" }, new Object[] { AccountProvider
+						.getInstance().getCurrentAccount().name });
 		Logger.Log("Login success but cannot get result.", "SyncHelper");
 		if (loginRequest == null) {
 			return;
@@ -106,12 +110,11 @@ public class SyncHelper {
 
 		// Get data if this account exists on server.
 		if (results != null && Boolean.parseBoolean(results)) {
-			SoapObject syncDate = SyncHelper
-					.getInstance()
-					.invokeServerMethod(
-							LAST_SYNC_METHOD,
-							new String[] { "userName" },
-							new Object[] { AccountProvider.getInstance().currentAccount.name });
+			SoapObject syncDate = SyncHelper.getInstance().invokeServerMethod(
+					LAST_SYNC_METHOD,
+					new String[] { "userName" },
+					new Object[] { AccountProvider.getInstance()
+							.getCurrentAccount().name });
 			if (syncDate == null) {
 				return;
 			}
@@ -127,12 +130,23 @@ public class SyncHelper {
 
 			// Find records are modified after last date sync.
 			for (String table : sTables) {
+				if (!"pfm.com".equals(AccountProvider.getInstance()
+						.getCurrentAccount().type)) {
+					// Replace all local data to synchronized data.
+					SqlHelper.instance.update(table,
+							new String[] { "UserName" },
+							new String[] { AccountProvider.getInstance()
+									.getCurrentAccount().name },
+							"UserName='LocalAccount'");
+				}
+
 				Logger.Log("Saving data to server: " + table, "SyncHelper");
 				SoapObject saveDataResult = invokeServerMethod(
 						SAVE_DATA_METHOD,
 						SAVE_PARAMS,
 						new Object[] {
-								AccountProvider.getInstance().currentAccount.name,
+								AccountProvider.getInstance()
+										.getCurrentAccount().name,
 								table,
 								getModifiedRecords(table,
 										Converter.toString(mLocalLastSync)) });
@@ -148,11 +162,10 @@ public class SyncHelper {
 				// Update data from server.
 				for (String table : sTables) {
 					SoapObject updatedRecords = invokeServerMethod(
-							UPDATE_FROM_SERVER,
-							UPDATE_PARAMS,
-							new Object[] {
-									AccountProvider.getInstance().currentAccount.name,
-									table, Converter.toString(mLocalLastSync) });
+							UPDATE_FROM_SERVER, UPDATE_PARAMS, new Object[] {
+									AccountProvider.getInstance()
+											.getCurrentAccount().name, table,
+									Converter.toString(mLocalLastSync) });
 					Logger.Log("Update data from server: " + table,
 							"SyncHelper");
 					if (updatedRecords == null) {
@@ -242,11 +255,10 @@ public class SyncHelper {
 
 					if (savedObject.getPropertyCount() != 0) {
 						// Upload data to server.
-						invokeServerMethod(
-								SAVE_DATA_METHOD,
-								SAVE_PARAMS,
+						invokeServerMethod(SAVE_DATA_METHOD, SAVE_PARAMS,
 								new Object[] {
-										AccountProvider.getInstance().currentAccount.name,
+										AccountProvider.getInstance()
+												.getCurrentAccount().name,
 										table, savedObject });
 					}
 				}
@@ -261,7 +273,8 @@ public class SyncHelper {
 						SAVE_DATA_METHOD,
 						SAVE_PARAMS,
 						new Object[] {
-								AccountProvider.getInstance().currentAccount.name,
+								AccountProvider.getInstance()
+										.getCurrentAccount().name,
 								table,
 								getModifiedRecords(table,
 										Converter.toString(mLocalLastSync)) });
@@ -274,16 +287,23 @@ public class SyncHelper {
 		// PfmApplication.getAppResources().getString(
 		// R.string.sync_success));
 		Logger.Log("Mark as Synchronize", "SyncHelper");
+		
+		mIsSchronizing = false;
 	}
 
+	public boolean isSchronizing(){
+		return mIsSchronizing;
+	}
+	
 	private void markAsSynchronized() {
 		String lastSyncTime = Converter.toString(DateTimeHelper.now(true));
 		invokeServerMethod("MarkSynchronized", new String[] { "userName",
-				"syncTime" },
-				new Object[] {
-						AccountProvider.getInstance().currentAccount.name,
-						lastSyncTime });
-		XmlParser.getInstance().setConfigContent("lastSync", lastSyncTime);
+				"syncTime" }, new Object[] {
+				AccountProvider.getInstance().getCurrentAccount().name,
+				lastSyncTime });
+		SqlHelper.instance.update("AppInfo", new String[] { "LastSync" },
+				new String[] { lastSyncTime }, "");
+		// XmlParser.getInstance().setConfigContent("lastSync", lastSyncTime);
 	}
 
 	private SoapObject getModifiedRecords(String table, String lastTime) {
