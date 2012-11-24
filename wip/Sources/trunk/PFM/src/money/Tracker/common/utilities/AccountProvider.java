@@ -25,6 +25,7 @@ public class AccountProvider {
 	public void refreshAccount() {
 		mAccManager = AccountManager.get(PfmApplication.getAppContext());
 		mAccounts = mAccManager.getAccounts();
+		mAccountList = null;
 		mAccountList = getAccounts();
 	}
 

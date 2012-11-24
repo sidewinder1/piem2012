@@ -114,20 +114,7 @@ public class SyncSettingActivity extends Activity {
 
 		mAutoSync.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-				for (int index = 0; index < sAccountList.getChildCount(); index++) {
-					EmailAccountCustomView email = (EmailAccountCustomView) sAccountList
-							.getChildAt(index);
-					if (email != null) {
-						email.setAutoSync(arg1);
-						if (arg1
-								&& email.getText().equals(
-										AccountProvider.getInstance()
-												.getCurrentAccount().name)) {
-							SynchronizeTask.sButton = email.getButton();
-							email.setActive(true);
-						}
-					}
-				}
+				initializeStatusOfAccountList(arg1);
 
 				if (arg1) {
 					if (AccountProvider.getInstance().getAccounts().size() != 0) {
@@ -223,6 +210,26 @@ public class SyncSettingActivity extends Activity {
 		});
 	}
 
+	/**
+	 * @param isAutoSync
+	 */
+	private void initializeStatusOfAccountList(boolean isAutoSync) {
+		for (int index = 0; index < sAccountList.getChildCount(); index++) {
+			EmailAccountCustomView email = (EmailAccountCustomView) sAccountList
+					.getChildAt(index);
+			if (email != null) {
+				email.setAutoSync(isAutoSync);
+				if (isAutoSync
+						&& email.getText().equals(
+								AccountProvider.getInstance()
+										.getCurrentAccount().name)) {
+					SynchronizeTask.sButton = email.getButton();
+					email.setActive(true);
+				}
+			}
+		}
+	}
+	
 	private OnItemSelectedListener itemSelected = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long resourceId) {
@@ -326,6 +333,7 @@ public class SyncSettingActivity extends Activity {
 			if (Boolean.parseBoolean(XmlParser.getInstance().getConfigContent(
 					"autoSync"))) {
 				mAutoSync.setChecked(true);
+				initializeStatusOfAccountList(true);
 			}
 
 			super.onResume();

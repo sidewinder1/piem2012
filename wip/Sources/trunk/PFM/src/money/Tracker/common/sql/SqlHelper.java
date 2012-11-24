@@ -167,7 +167,7 @@ public class SqlHelper {
 
 		if (whereIndex >= 6) {
 			String addedWhere = new StringBuilder(" ").append(tableName)
-					.append(".IsDeleted=0 AND (").append(tableName).append(".UserName='LocalAccount' OR ").append(tableName)
+					.append(".IsDeleted=0 AND (").append(tableName).append(".UserName='GlobalAccount' OR ").append(tableName)
 					.append(".UserName='")
 					.append(AccountProvider.getInstance().getCurrentAccount().name)
 					.append("') AND ").toString();
@@ -181,7 +181,7 @@ public class SqlHelper {
 
 			sqlStatement = new StringBuilder(sqlStatement).insert(
 					fromIndex + tableNameIndex,
-					" WHERE IsDeleted=0 AND (UserName='LocalAccount' OR UserName='"
+					" WHERE IsDeleted=0 AND (UserName='GlobalAccount' OR UserName='"
 							+ AccountProvider.getInstance().getCurrentAccount().name
 							+ "') ").toString();
 		}
@@ -195,20 +195,26 @@ public class SqlHelper {
 	}
 
 	public Cursor select(String tableName, String selectedColumns,
-			String whereCondition) {
+			String whereCondition){
+		return select(tableName, selectedColumns, whereCondition, false);
+	}
+	
+	public Cursor select(String tableName, String selectedColumns,
+			String whereCondition, boolean includeDeletedRecords) {
 		String whereForAppInfo = "";
 		if (!"AppInfo".equals(tableName)) {
-			whereForAppInfo = new StringBuilder(" AND (UserName='LocalAccount' OR UserName ='")
+			whereForAppInfo = new StringBuilder(" AND (UserName='GlobalAccount' OR UserName ='")
 					.append(AccountProvider.getInstance().getCurrentAccount().name)
 					.append("')").toString();
 		}
-
+		
+		String isDeleted = includeDeletedRecords ? "0" : "IsDeleted";
 		if (whereCondition != null && !"".equals(whereCondition)) {
-			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 ")
+			whereCondition = new StringBuilder(" WHERE ").append(isDeleted).append(" = 0 ")
 					.append(whereForAppInfo).append(" AND ")
 					.append(whereCondition).toString();
 		} else {
-			whereCondition = new StringBuilder(" WHERE IsDeleted = 0 ").append(
+			whereCondition = new StringBuilder(" WHERE ").append(isDeleted).append(" = 0 ").append(
 					whereForAppInfo).toString();
 		}
 
@@ -311,9 +317,9 @@ public class SqlHelper {
 		if (categoryCheck != null && !categoryCheck.moveToFirst()) {
 			for (int index = 0; index < names.length; index++) {
 				SqlHelper.instance.insert("Category", new String[] { "Id",
-						"Name", "User_Color" },
+						"Name", "User_Color", "UserName" },
 						new String[] { String.valueOf(index), names[index],
-								colors[index] });
+								colors[index], "GlobalAccount" });
 			}
 		}
 
@@ -338,8 +344,8 @@ public class SqlHelper {
 		if (colorCheck != null && !colorCheck.moveToFirst()) {
 			for (int index = 0; index < color_codes.length; index++) {
 				SqlHelper.instance.insert("UserColor",
-						new String[] { "User_Color" },
-						new String[] { color_codes[index] });
+						new String[] { "User_Color", "UserName" },
+						new String[] { color_codes[index], "GlobalAccount" });
 			}
 		}
 
