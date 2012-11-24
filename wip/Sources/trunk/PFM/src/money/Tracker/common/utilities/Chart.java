@@ -37,6 +37,9 @@ public class Chart extends AbstractChart {
 	private Date startDate = null;
 	private Date endDate = null;
 	private boolean checkMonthly = true;
+	private List<String> entryCategoryName;
+	private List<Double> entryCategoryValue;
+	private List<Integer> entryCategoryColor;
 
 	public Chart(boolean checkMonthly, Date sDate, Date eDate) {
 		// TODO Auto-generated constructor stub
@@ -44,101 +47,12 @@ public class Chart extends AbstractChart {
 		this.endDate = eDate;
 		this.checkMonthly = checkMonthly;
 	}
-
-	public String getName() {
-		return "Sales horizontal bar chart";
-	}
-
-	/**
-	 * Returns the chart description.
-	 * 
-	 * @return the chart description
-	 */
-	public String getDesc() {
-		return "The monthly sales for the last 2 years (horizontal bar chart)";
-	}
-
-	protected XYMultipleSeriesDataset buildBarDataset(String[] titles,
-			List<double[]> values) {
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		int length = titles.length;
-		for (int i = 0; i < length; i++) {
-			CategorySeries series = new CategorySeries(titles[i]);
-			double[] v = values.get(i);
-			int seriesLength = v.length;
-			Log.d("Check chart", "" + seriesLength + " " + titles[i]);
-			for (int k = 0; k < seriesLength; k++) {
-				Log.d("Check chart", "" + v[k]);
-				series.add(v[k]);
-			}
-			dataset.addSeries(series.toXYSeries());
-		}
-		return dataset;
-	}
-
-	protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) {
-		Log.v("abstract", "bbb");
-		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-		renderer.setAxisTitleTextSize(16);
-		renderer.setChartTitleTextSize(20);
-		renderer.setLabelsTextSize(15);
-		renderer.setLegendTextSize(15);
-		int length = colors.length;
-		for (int i = 0; i < length; i++) {
-			SimpleSeriesRenderer r = new SimpleSeriesRenderer();
-			r.setColor(colors[i]);
-			renderer.addSeriesRenderer(r);
-		}
-		return renderer;
-	}
-
-	protected void setChartSettings(XYMultipleSeriesRenderer renderer,
-			String title, String xTitle, String yTitle, double xMin,
-			double xMax, double yMin, double yMax, int axesColor,
-			int labelsColor) {
-		Log.v("abstract", "555" + title + xMin + yMin);
-		renderer.setChartTitle(title);
-		renderer.setXTitle(xTitle);
-		renderer.setYTitle(yTitle);
-		renderer.setXAxisMin(xMin);
-		renderer.setXAxisMax(xMax);
-		renderer.setYAxisMin(yMin);
-		renderer.setYAxisMax(yMax);
-		renderer.setAxesColor(axesColor);
-		renderer.setLabelsColor(labelsColor);
-	}
-
-	@SuppressWarnings("deprecation")
-	public Intent getBarIntent(Context context) {
-		    String[] titles = new String[] { "a", "b", "c", "d", "e" };
-		    List<double[]> values = new ArrayList<double[]>();
-		    values.add(new double[] { 10, 5, 0, 0, 0, 0, 0, 0, 0, 0 });
-		    values.add(new double[] { 0, 0, 20, 15, 0, 0, 0, 0, 0, 0 });
-		    values.add(new double[] { 0, 0, 0, 0, 30, 25, 0, 0, 0, 0 });
-		    values.add(new double[] { 0, 0, 0, 0, 0, 0, 40, 30, 0, 0 });
-		    values.add(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 50, 60 });
-		    int[] colors = new int[] { Color.BLUE, Color.CYAN, Color.GREEN, Color.RED, Color.GRAY };
-		    XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		    setChartSettings(renderer, "Monthly sales in the last 2 years", "Month", "Units sold", 0.5,
-		        12.5, 0, 70, Color.GRAY, Color.LTGRAY);
-		    renderer.setXLabels(12);
-		    renderer.setYLabels(10);
-		    renderer.setDisplayChartValues(false);
-		    renderer.setXLabelsAlign(Align.LEFT);
-		    renderer.setYLabelsAlign(Align.LEFT);
-		    // renderer.setPanEnabled(false);
-		    // renderer.setZoomEnabled(false);
-		    renderer.setZoomRate(1.1f);
-		    renderer.setBarSpacing(0.5f);
-		    return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer,
-		        Type.STACKED);
-	  }
 	
 	private void getEntryData()
 	{
-		List<String> entryCategoryName = new ArrayList<String>();
-		List<Double> entryCategoryValue = new ArrayList<Double>();
-		List<Integer> entryCategoryColor = new ArrayList<Integer>();
+		entryCategoryName = new ArrayList<String>();
+		entryCategoryValue = new ArrayList<Double>();
+		entryCategoryColor = new ArrayList<Integer>();
 		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*", "Type=1");
 		if (entryExpenseCursor != null)
 		{
@@ -224,157 +138,101 @@ public class Chart extends AbstractChart {
 		}
 	}
 
+	protected XYMultipleSeriesDataset buildBarDataset(String[] titles,
+			List<double[]> values) {
+		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+		int length = titles.length;
+		for (int i = 0; i < length; i++) {
+			CategorySeries series = new CategorySeries(titles[i]);
+			double[] v = values.get(i);
+			int seriesLength = v.length;
+			Log.d("Check chart", "" + seriesLength + " " + titles[i]);
+			for (int k = 0; k < seriesLength; k++) {
+				Log.d("Check chart", "" + v[k]);
+				series.add(v[k]);
+			}
+			dataset.addSeries(series.toXYSeries());
+		}
+		return dataset;
+	}
+
+	protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) {
+		Log.v("abstract", "bbb");
+		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+		renderer.setAxisTitleTextSize(16);
+		renderer.setChartTitleTextSize(20);
+		renderer.setLabelsTextSize(15);
+		renderer.setLegendTextSize(15);
+		int length = colors.length;
+		for (int i = 0; i < length; i++) {
+			SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+			r.setColor(colors[i]);
+			renderer.addSeriesRenderer(r);
+		}
+		return renderer;
+	}
+
+	protected void setChartSettings(XYMultipleSeriesRenderer renderer,
+			String title, String xTitle, String yTitle, double xMin,
+			double xMax, double yMin, double yMax, int axesColor,
+			int labelsColor) {
+		Log.v("abstract", "555" + title + xMin + yMin);
+		renderer.setChartTitle(title);
+		renderer.setXTitle(xTitle);
+		renderer.setYTitle(yTitle);
+		renderer.setXAxisMin(xMin);
+		renderer.setXAxisMax(xMax);
+		renderer.setYAxisMin(yMin);
+		renderer.setYAxisMax(yMax);
+		renderer.setAxesColor(axesColor);
+		renderer.setLabelsColor(labelsColor);
+	}
+
+	@SuppressWarnings("deprecation")
+	public Intent getBarIntent(Context context) {
+		    String[] titles = new String[] { "a", "b", "c", "d", "e" };
+		    List<double[]> values = new ArrayList<double[]>();
+		    values.add(new double[] { 10, 5, 0, 0, 0, 0, 0, 0, 0, 0 });
+		    values.add(new double[] { 0, 0, 20, 15, 0, 0, 0, 0, 0, 0 });
+		    values.add(new double[] { 0, 0, 0, 0, 30, 25, 0, 0, 0, 0 });
+		    values.add(new double[] { 0, 0, 0, 0, 0, 0, 40, 30, 0, 0 });
+		    values.add(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 50, 60 });
+		    int[] colors = new int[] { Color.BLUE, Color.CYAN, Color.GREEN, Color.RED, Color.GRAY };
+		    XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
+		    setChartSettings(renderer, "Monthly sales in the last 2 years", "Month", "Units sold", 0.5,
+		        12.5, 0, 70, Color.GRAY, Color.LTGRAY);
+		    renderer.setXLabels(12);
+		    renderer.setYLabels(10);
+		    renderer.setDisplayChartValues(false);
+		    renderer.setXLabelsAlign(Align.LEFT);
+		    renderer.setYLabelsAlign(Align.LEFT);
+		    // renderer.setPanEnabled(false);
+		    // renderer.setZoomEnabled(false);
+		    renderer.setZoomRate(1.1f);
+		    renderer.setBarSpacing(0.5f);
+		    return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer,
+		        Type.STACKED);
+	  }
+
 	public Intent getPieIntent(Context context) {
-		Log.d("Pie Chart", "Check 1");
 		CategorySeries series = new CategorySeries("Pie Graph");
 		DefaultRenderer renderer = new DefaultRenderer();
-
-		Log.d("Pie Chart", "Check 3");
-		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
-				"Type=1");
-		Log.d("Pie Chart", "Check 4");
-		if (entryExpenseCursor != null) {
-			Log.d("Pie Chart", "Check 5");
-			if (entryExpenseCursor.moveToFirst()) {
-				Log.d("Pie Chart", "Check 6");
-				do {
-					Log.d("Pie Chart", "Check 7");
-					long id = entryExpenseCursor.getLong(entryExpenseCursor
-							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryExpenseCursor
-							.getString(entryExpenseCursor
-									.getColumnIndex("Date")));
-					Log.d("Pie Chart", "Check 8 - " + id + " - " + entryDate.toString());
-					if (checkMonthly)
-					{
-						Log.d("Pie Chart", "Check 9");
-						String entryDateMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate,
-								"MM");
-						String entryDateYear = Converter.toString(entryDate, "yyyy");
-						String startDateYear = Converter.toString(startDate,
-								"yyyy");
-						
-						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
-						{
-							Log.d("Pie Chart", "Check 11");
-							Cursor entryDetailCursor = SqlHelper.instance.select(
-									"EntryDetail",
-									"Category_Id, sum(Money) as Total", "Entry_Id="
-											+ id + " group by Category_Id");
-							Log.d("Pie Chart", "Check 12 - " + id);
-							if (entryDetailCursor != null) {
-								Log.d("Pie Chart", "Check 13");
-								if (entryDetailCursor.moveToFirst()) {
-									Log.d("Pie Chart", "Check 14");
-									do {
-										String name = "";
-										double value = 0;
-										String color = "";
-
-										int categoryID = entryDetailCursor
-												.getInt(entryDetailCursor
-														.getColumnIndex("Category_Id"));
-										Cursor categoryCursor = SqlHelper.instance
-												.select("Category", "*", "Id="
-														+ categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor
-															.getString(categoryCursor
-																	.getColumnIndex("Name"));
-													color = categoryCursor
-															.getString(categoryCursor
-																	.getColumnIndex("User_Color"));
-												} while (categoryCursor
-														.moveToNext());
-											}
-										}
-										value = entryDetailCursor
-												.getDouble(entryDetailCursor
-														.getColumnIndex("Total"));
-
-										Log.d("Pie Chart month", "Check 4 - " + name);
-										Log.d("Pie Chart",
-												"Check 4 - "
-														+ String.valueOf(value));
-										Log.d("Pie Chart", "Check 4 - " + color);
-										series.add(name, value);
-										Log.d("Pie Chart", "Check 5");
-										SimpleSeriesRenderer r = new SimpleSeriesRenderer();
-										Log.d("Pie Chart", "Check 6");
-										r.setColor(Color.parseColor(color));
-										Log.d("Pie Chart", "Check 7");
-										renderer.addSeriesRenderer(r);
-										Log.d("Pie Chart", "Check 8");
-									} while (entryDetailCursor.moveToNext());
-								}
-								}
-						}
-					} else
-					{
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						Cursor entryDetailCursor = SqlHelper.instance.select(
-								"EntryDetail",
-								"Category_Id, sum(Money) as Total", "Entry_Id="
-										+ id + " group by Category_Id");
-						if (entryDetailCursor != null) {
-							if (entryDetailCursor.moveToFirst()) {
-								do {
-									String name = "";
-									double value = 0;
-									String color = "";
-
-									int categoryID = entryDetailCursor
-											.getInt(entryDetailCursor
-													.getColumnIndex("Category_Id"));
-									Cursor categoryCursor = SqlHelper.instance
-											.select("Category", "*", "Id="
-													+ categoryID);
-									if (categoryCursor != null) {
-										if (categoryCursor.moveToFirst()) {
-											do {
-												name = categoryCursor
-														.getString(categoryCursor
-																.getColumnIndex("Name"));
-												color = categoryCursor
-														.getString(categoryCursor
-																.getColumnIndex("User_Color"));
-											} while (categoryCursor
-													.moveToNext());
-										}
-									}
-									value = entryDetailCursor
-											.getDouble(entryDetailCursor
-													.getColumnIndex("Total"));
-
-									Log.d("Pie Chart", "Check 4 - " + name);
-									Log.d("Pie Chart",
-											"Check 4 - "
-													+ String.valueOf(value));
-									Log.d("Pie Chart", "Check 4 - " + color);
-									series.add(name, value);
-									Log.d("Pie Chart", "Check 5");
-									SimpleSeriesRenderer r = new SimpleSeriesRenderer();
-									Log.d("Pie Chart", "Check 6");
-									r.setColor(Color.parseColor(color));
-									Log.d("Pie Chart", "Check 7");
-									renderer.addSeriesRenderer(r);
-									Log.d("Pie Chart", "Check 8");
-								} while (entryDetailCursor.moveToNext());
-							}
-							}
-						}
-					}
-				} while (entryExpenseCursor.moveToNext());
-			}
-		}
 		
-		Log.d("Pie Chart", "Finish");
+		String [] entryCategoryNameArray = new String[entryCategoryName.size()];
+		entryCategoryNameArray = entryCategoryName.toArray(entryCategoryNameArray);
+		Double [] entryCategoryValueArray = new Double[entryCategoryValue.size()];
+		entryCategoryValueArray = entryCategoryValue.toArray(entryCategoryValueArray);
+		Integer [] entryCategoryColorArray = new Integer[entryCategoryColor.size()];
+		entryCategoryColorArray = entryCategoryColor.toArray(entryCategoryColorArray);
+				
+		for (int i = 0; i < entryCategoryNameArray.length; i++)
+		{
+			series.add(entryCategoryNameArray[i], entryCategoryValueArray[i]);
+			SimpleSeriesRenderer r = new SimpleSeriesRenderer();										
+			r.setColor(entryCategoryColorArray[i]);										
+			renderer.addSeriesRenderer(r);
+		}
+													
 		
 		return ChartFactory.getPieChartIntent(context, series,
 				renderer, "Pie");
