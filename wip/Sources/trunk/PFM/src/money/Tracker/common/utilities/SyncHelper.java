@@ -73,7 +73,7 @@ public class SyncHelper {
 				.select("AppInfo", "LastSync",
 						"UserName ='"
 								+ AccountProvider.getInstance()
-										.getCurrentAccount().name + "'");
+										.getCurrentAccount().name + "'", true);
 		if (lastSyncCursor != null && lastSyncCursor.moveToFirst()) {
 			mLocalLastSync = Converter.toDate(lastSyncCursor.getString(0));
 			return;
@@ -192,7 +192,7 @@ public class SyncHelper {
 						Cursor checkGlobalId = SqlHelper.instance.select(table,
 								tableMap.get(table), new StringBuilder("Id = ")
 										.append(updatedValue.getProperty(0))
-										.toString());
+										.toString(), true);
 
 						if (checkGlobalId != null
 								&& checkGlobalId.moveToFirst()) {
@@ -310,7 +310,7 @@ public class SyncHelper {
 		SoapObject records = new SoapObject();
 		Cursor modifiedRecords = SqlHelper.instance.select(table,
 				tableMap.get(table), new StringBuilder("ModifiedDate > '")
-						.append(lastTime).append("'").toString());
+						.append(lastTime).append("'").toString(), true);
 
 		if (modifiedRecords != null && modifiedRecords.moveToFirst()) {
 			do {

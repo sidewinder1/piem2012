@@ -43,7 +43,7 @@ public class EmailAccountCustomView extends LinearLayout {
 					}
 
 					AccountProvider.getInstance().setCurrentAccount(
-									mEmailAcount.getText().toString());
+							mEmailAcount.getText().toString());
 
 					LinearLayout parentList = (LinearLayout) getParent();
 					if (parentList != null) {
@@ -106,15 +106,21 @@ public class EmailAccountCustomView extends LinearLayout {
 	}
 
 	public void setActive(boolean isActive) {
+		sync_data
+		.setBackgroundResource(isActive ? R.drawable.refresh_animation
+				: R.drawable.refresh_animation2);
+		if (sync_data.getVisibility()== View.VISIBLE && SyncHelper.getInstance().isSchronizing()){
+			((AnimationDrawable)sync_data.getBackground()).start();
+		}
+		else{
+			sync_data.setVisibility(isActive ? View.VISIBLE : View.GONE);
+		}
+		
 		mIsActive = isActive && mAutoSync;
-		sync_data.setVisibility(mIsActive ? View.VISIBLE : View.GONE);
 		sync_data.setTag(mIsActive);
 		mStatus.setText(getResources().getString(
 				mIsActive ? R.string.sync_view_account_active
 						: R.string.sync_view_account_deactive));
-		sync_data
-				.setBackgroundResource(mIsActive ? R.drawable.refresh_animation
-						: R.drawable.refresh_animation2);
 	}
 
 	public void setAutoSync(boolean isAuto) {

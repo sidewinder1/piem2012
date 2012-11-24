@@ -3,6 +3,7 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
+import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.customviews.CategoryLegendItemView;
 import money.Tracker.presentation.customviews.EntryDayView;
@@ -60,8 +61,6 @@ public class TabViewActivity extends Activity {
 		list.setOnItemClickListener(onListClick);
 
 		registerForContextMenu(list);
-
-		bindData();
 	}
 
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
@@ -85,8 +84,9 @@ public class TabViewActivity extends Activity {
 	};
 
 	@Override
-	protected void onRestart() {
-		super.onRestart();
+	protected void onResume() {
+		super.onResume();
+		PfmApplication.sCurrentContext = this;
 		bindData();
 	}
 
@@ -95,7 +95,13 @@ public class TabViewActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		selectedEntryItem = (EntryDayView) v;
+		if (v.getClass() == EntryDayView.class){
+			selectedEntryItem = (EntryDayView) v;
+		}
+		else{
+			selectedEntryItem = null;
+		}
+		
 		if (v.getId() == R.id.tab_content_view_list
 				|| selectedEntryItem != null) {
 			menu.setHeaderTitle(getResources().getString(

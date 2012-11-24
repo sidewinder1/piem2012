@@ -20,6 +20,7 @@ import android.view.View;
 
 public class PfmApplication extends Application {
 	private static Context sContext;
+	public static Context sCurrentContext;
 	private String CONFIG_FILE = "PfmConfig.pxml";
 	private static Resources sResources;
 	private static SynchronizeTask syncTask = new SynchronizeTask(null);
