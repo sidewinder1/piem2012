@@ -1,6 +1,7 @@
 package money.Tracker.common.utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -35,11 +36,13 @@ public class Chart extends AbstractChart {
 
 	private Date startDate = null;
 	private Date endDate = null;
+	private boolean checkMonthly = true;
 
-	public Chart(Date sDate, Date eDate) {
+	public Chart(boolean checkMonthly, Date sDate, Date eDate) {
 		// TODO Auto-generated constructor stub
 		this.startDate = sDate;
 		this.endDate = eDate;
+		this.checkMonthly = checkMonthly;
 	}
 
 	public String getName() {
@@ -107,59 +110,210 @@ public class Chart extends AbstractChart {
 
 	@SuppressWarnings("deprecation")
 	public Intent getBarIntent(Context context) {
-		String[] titles = new String[] { "Sales for 2008", "Sales for 2007",
-        "Difference between 2008 and 2007 sales" };
-    List<double[]> values = new ArrayList<double[]>();
-    values.add(new double[] { 14230, 12300, 14240, 15244, 14900, 12200, 11030, 12000, 12500, 15500,
-        14600, 15000 });
-    values.add(new double[] { 10230, 10900, 11240, 12540, 13500, 14200, 12530, 11200, 10500, 12500,
-        11600, 13500 });
-    int length = values.get(0).length;
-    double[] diff = new double[length];
-    for (int i = 0; i < length; i++) {
-      diff[i] = values.get(0)[i] - values.get(1)[i];
-    }
-    values.add(diff);
-    int[] colors = new int[] { Color.BLUE, Color.CYAN, Color.GREEN };
-    PointStyle[] styles = new PointStyle[] { PointStyle.POINT, PointStyle.POINT, PointStyle.POINT };
-    XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
-    setChartSettings(renderer, "Monthly sales in the last 2 years", "Month", "Units sold", 0.75,
-        12.25, -5000, 19000, Color.GRAY, Color.LTGRAY);
-    renderer.setXLabels(12);
-    renderer.setYLabels(10);
-    renderer.setChartTitleTextSize(20);
-    renderer.setTextTypeface("sans_serif", Typeface.BOLD);
-    renderer.setLabelsTextSize(14f);
-    renderer.setAxisTitleTextSize(15);
-    renderer.setLegendTextSize(15);
-    length = renderer.getSeriesRendererCount();
-    for (int i = 0; i < length; i++) {
-      XYSeriesRenderer seriesRenderer = (XYSeriesRenderer) renderer.getSeriesRendererAt(i);
-      seriesRenderer.setFillBelowLine(i == length - 1);
-      seriesRenderer.setFillBelowLineColor(colors[i]);
-      seriesRenderer.setLineWidth(2.5f);
-      seriesRenderer.setDisplayChartValues(true);
-      seriesRenderer.setChartValuesTextSize(10f);
-    }
-    return ChartFactory.getLineChartIntent(context, buildBarDataset(titles, values), renderer);
+		    String[] titles = new String[] { "a", "b", "c", "d", "e" };
+		    List<double[]> values = new ArrayList<double[]>();
+		    values.add(new double[] { 10, 5, 0, 0, 0, 0, 0, 0, 0, 0 });
+		    values.add(new double[] { 0, 0, 20, 15, 0, 0, 0, 0, 0, 0 });
+		    values.add(new double[] { 0, 0, 0, 0, 30, 25, 0, 0, 0, 0 });
+		    values.add(new double[] { 0, 0, 0, 0, 0, 0, 40, 30, 0, 0 });
+		    values.add(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 50, 60 });
+		    int[] colors = new int[] { Color.BLUE, Color.CYAN, Color.GREEN, Color.RED, Color.GRAY };
+		    XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
+		    setChartSettings(renderer, "Monthly sales in the last 2 years", "Month", "Units sold", 0.5,
+		        12.5, 0, 70, Color.GRAY, Color.LTGRAY);
+		    renderer.setXLabels(12);
+		    renderer.setYLabels(10);
+		    renderer.setDisplayChartValues(false);
+		    renderer.setXLabelsAlign(Align.LEFT);
+		    renderer.setYLabelsAlign(Align.LEFT);
+		    // renderer.setPanEnabled(false);
+		    // renderer.setZoomEnabled(false);
+		    renderer.setZoomRate(1.1f);
+		    renderer.setBarSpacing(0.5f);
+		    return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer,
+		        Type.STACKED);
 	  }
+	
+	private void getEntryData()
+	{
+		List<String> entryCategoryName = new ArrayList<String>();
+		List<Double> entryCategoryValue = new ArrayList<Double>();
+		List<Integer> entryCategoryColor = new ArrayList<Integer>();
+		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*", "Type=1");
+		if (entryExpenseCursor != null)
+		{
+			if (entryExpenseCursor.moveToFirst())
+			{
+				do{
+					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
+					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
+					if(checkMonthly)
+					{
+						String entryDateMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate,"MM");
+						String entryDateYear = Converter.toString(entryDate, "yyyy");
+						String startDateYear = Converter.toString(startDate,"yyyy");
+						
+						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
+						{
+							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id="	+ id + " group by Category_Id");							
+							if (entryDetailCursor != null) {
+								if (entryDetailCursor.moveToFirst()) {
+									do {
+										String name = "";
+										double value = 0;
+										int color = 0;
+
+										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+										if (categoryCursor != null) {
+											if (categoryCursor.moveToFirst()) {
+												do {
+													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+													color = Color.parseColor(categoryCursor.getString(categoryCursor.getColumnIndex("User_Color")));
+												} while (categoryCursor.moveToNext());
+											}
+										}
+										
+										value = entryDetailCursor.getDouble(entryDetailCursor.getColumnIndex("Total"));
+										
+										if (entryCategoryName.isEmpty())
+										{
+										
+											boolean check = false;
+											
+										String[] caName = entryCategoryName.toArray(new String[entryCategoryName.size()]);
+										Double[] caValue = entryCategoryValue.toArray(new Double[entryCategoryValue.size()]);
+										
+										for (int i=0; i<caName.length; i++)
+										{
+											if (caName[i].equals(name))
+											{
+												caValue[i] = caValue[i] + value;
+												check = true;
+											}
+										}
+										
+										if (check == true)
+										{
+										entryCategoryName = Arrays.asList(caName);
+										entryCategoryValue = Arrays.asList(caValue);
+										}else
+										{
+											entryCategoryName.add(name);
+											entryCategoryValue.add(value);
+											entryCategoryColor.add(color);	
+										}
+										
+										}
+										else
+										{
+										entryCategoryName.add(name);
+										entryCategoryValue.add(value);
+										entryCategoryColor.add(color);
+										}
+									} while(entryDetailCursor.moveToNext());
+						}
+					}else{
+						
+					}
+				}
+			}
+		}while(entryExpenseCursor.moveToNext());
+			}
+		}
+	}
 
 	public Intent getPieIntent(Context context) {
-		Log.d("Chart", "Check 1");
+		Log.d("Pie Chart", "Check 1");
 		CategorySeries series = new CategorySeries("Pie Graph");
 		DefaultRenderer renderer = new DefaultRenderer();
 
-		Log.d("Chart", "Check 3");
+		Log.d("Pie Chart", "Check 3");
 		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
 				"Type=1");
+		Log.d("Pie Chart", "Check 4");
 		if (entryExpenseCursor != null) {
+			Log.d("Pie Chart", "Check 5");
 			if (entryExpenseCursor.moveToFirst()) {
+				Log.d("Pie Chart", "Check 6");
 				do {
-					int id = entryExpenseCursor.getInt(entryExpenseCursor
+					Log.d("Pie Chart", "Check 7");
+					long id = entryExpenseCursor.getLong(entryExpenseCursor
 							.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor
 							.getString(entryExpenseCursor
 									.getColumnIndex("Date")));
+					Log.d("Pie Chart", "Check 8 - " + id + " - " + entryDate.toString());
+					if (checkMonthly)
+					{
+						Log.d("Pie Chart", "Check 9");
+						String entryDateMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate,
+								"MM");
+						String entryDateYear = Converter.toString(entryDate, "yyyy");
+						String startDateYear = Converter.toString(startDate,
+								"yyyy");
+						
+						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
+						{
+							Log.d("Pie Chart", "Check 11");
+							Cursor entryDetailCursor = SqlHelper.instance.select(
+									"EntryDetail",
+									"Category_Id, sum(Money) as Total", "Entry_Id="
+											+ id + " group by Category_Id");
+							Log.d("Pie Chart", "Check 12 - " + id);
+							if (entryDetailCursor != null) {
+								Log.d("Pie Chart", "Check 13");
+								if (entryDetailCursor.moveToFirst()) {
+									Log.d("Pie Chart", "Check 14");
+									do {
+										String name = "";
+										double value = 0;
+										String color = "";
+
+										int categoryID = entryDetailCursor
+												.getInt(entryDetailCursor
+														.getColumnIndex("Category_Id"));
+										Cursor categoryCursor = SqlHelper.instance
+												.select("Category", "*", "Id="
+														+ categoryID);
+										if (categoryCursor != null) {
+											if (categoryCursor.moveToFirst()) {
+												do {
+													name = categoryCursor
+															.getString(categoryCursor
+																	.getColumnIndex("Name"));
+													color = categoryCursor
+															.getString(categoryCursor
+																	.getColumnIndex("User_Color"));
+												} while (categoryCursor
+														.moveToNext());
+											}
+										}
+										value = entryDetailCursor
+												.getDouble(entryDetailCursor
+														.getColumnIndex("Total"));
+
+										Log.d("Pie Chart month", "Check 4 - " + name);
+										Log.d("Pie Chart",
+												"Check 4 - "
+														+ String.valueOf(value));
+										Log.d("Pie Chart", "Check 4 - " + color);
+										series.add(name, value);
+										Log.d("Pie Chart", "Check 5");
+										SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+										Log.d("Pie Chart", "Check 6");
+										r.setColor(Color.parseColor(color));
+										Log.d("Pie Chart", "Check 7");
+										renderer.addSeriesRenderer(r);
+										Log.d("Pie Chart", "Check 8");
+									} while (entryDetailCursor.moveToNext());
+								}
+								}
+						}
+					} else
+					{
 					if (entryDate.compareTo(startDate) > 0
 							&& entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
@@ -198,36 +352,32 @@ public class Chart extends AbstractChart {
 											.getDouble(entryDetailCursor
 													.getColumnIndex("Total"));
 
-									Log.d("Chart", "Check 4 - " + name);
-									Log.d("Chart",
+									Log.d("Pie Chart", "Check 4 - " + name);
+									Log.d("Pie Chart",
 											"Check 4 - "
 													+ String.valueOf(value));
-									Log.d("Chart", "Check 4 - " + color);
+									Log.d("Pie Chart", "Check 4 - " + color);
 									series.add(name, value);
-									Log.d("Chart", "Check 5");
+									Log.d("Pie Chart", "Check 5");
 									SimpleSeriesRenderer r = new SimpleSeriesRenderer();
-									Log.d("Chart", "Check 6");
+									Log.d("Pie Chart", "Check 6");
 									r.setColor(Color.parseColor(color));
-									// Random random = new Random();
-									// r.setColor(Color.argb(255,
-									// random.nextInt(255), random.nextInt(255),
-									// random.nextInt(255)));
-									Log.d("Chart", "Check 7");
+									Log.d("Pie Chart", "Check 7");
 									renderer.addSeriesRenderer(r);
-									Log.d("Chart", "Check 8");
+									Log.d("Pie Chart", "Check 8");
 								} while (entryDetailCursor.moveToNext());
+							}
 							}
 						}
 					}
 				} while (entryExpenseCursor.moveToNext());
 			}
 		}
-
-		Log.d("Chart", "Check 9");
-		Intent intent = ChartFactory.getPieChartIntent(context, series,
+		
+		Log.d("Pie Chart", "Finish");
+		
+		return ChartFactory.getPieChartIntent(context, series,
 				renderer, "Pie");
-		Log.d("Chart", "Check 10");
-		return intent;
 	}
 
 	@Override

@@ -58,16 +58,17 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		setupTab(reportViewDetailIntent, "Chi tiết", mTabHost);
 
 		// Create tab and intent for chart
-		Chart pie = new Chart(Converter.toDate(startDate),
-				Converter.toDate(endDate));
-		// Log.d("Chart", String.valueOf(scheduleID));
-		//Intent pieIntent = pie.getPieIntent(this);
-		Intent barIntent = pie.getBarIntent(this);
-		Log.d("Chart", "Check 11");
-		setupTab(barIntent, "Biểu đồ", mTabHost);
-		// setupTab(barIntent, "Biểu đồ", mTabHost);
-		// startActivity(pieIntent);
-		Log.d("Chart", "Check 12");
+		Intent reportViewChartIntent = new Intent(this,
+				ReportViewChartActivity.class);
+		Log.d("Main View Detail", "Check 3_1");
+		reportViewChartIntent.putExtra("checkMonthly", checkMonthly);
+		Log.d("Main View Detail", "Check 3_1" + checkMonthly);
+		reportViewChartIntent.putExtra("start_date", startDate);
+		Log.d("Main View Detail", "Check 3_1" + startDate);
+		reportViewChartIntent.putExtra("end_date", endDate);
+		Log.d("Main View Detail", "Check 3_1" + endDate);
+		Log.d("Main View Detail", "Check 4_1");
+		setupTab(reportViewChartIntent, "Biểu đồ", mTabHost);
 	}
 
 	// This method is used to setup a tab with Name tab and content of tab.

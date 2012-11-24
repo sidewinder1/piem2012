@@ -271,9 +271,10 @@ public class ReportViewDetailActivity extends Activity {
 						String entryDateMonth = Converter.toString(entryDate, "MM");
 						String startDateMonth = Converter.toString(startDate,
 								"MM");
-						String entryDateYear = Converter.toString(entryDate, "YYYY");
+						String entryDateYear = Converter.toString(entryDate, "yyyy");
 						String startDateYear = Converter.toString(startDate,
-								"YYYY");
+								"yyyy");
+						Log.d("Report - Start Date", startDate.toString());
 						Log.d("Report - Entry Date Year", entryDateYear);
 						Log.d("Report - Start Date Year", startDateYear);
 						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
