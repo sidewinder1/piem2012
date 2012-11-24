@@ -141,5 +141,8 @@
     <color name="light_gray_background">#33F8F8F8</color>
 
     <string name="title_activity_report_chart">ReportChartActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_report_view_chart">ReportViewChartActivity</string>
+    <string name="title_activity_report_main_view_chart">ReportMainViewChartActivity</string>
 
 </resources>

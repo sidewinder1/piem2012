@@ -1,5 +1,9 @@
 package money.Tracker.presentation.activities;
 
+import java.util.Date;
+
+import money.Tracker.common.utilities.Chart;
+import money.Tracker.common.utilities.Converter;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.TabActivity;
@@ -29,6 +33,8 @@ public class ReportMainViewActivity extends TabActivity {
 		// Create tab and intent for Borrowing and Lending.
 		Intent lendViewIntent = new Intent(this, ReportViewActivity.class);
 		lendViewIntent.putExtra("Monthly", false);
+		//Chart pie = new Chart(new Date(), new Date());
+		//Intent lendViewIntent = pie.getBarIntent(this);
 		setupTab(lendViewIntent, "Tuần", mTabHost);
 	}
 
