@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.InputType;
@@ -267,9 +268,12 @@ public class SyncSettingActivity extends Activity {
 											int whichButton) {
 									}
 								}).show();
-			} else if (position == parent.getCount()) {
+			} else if (position == parent.getCount() - 1) {
 				// TODO: Show folder to user select a music file.
-
+				Intent i = new Intent();           
+				i.setAction(Intent.ACTION_GET_CONTENT);
+				i.setType("audio/*");
+				startActivityForResult(Intent.createChooser(i, "Select audio file"), 106);
 			}
 		}
 
@@ -277,6 +281,16 @@ public class SyncSettingActivity extends Activity {
 		}
 	};
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+	       if (resultCode == RESULT_OK && requestCode == 106)
+	       {
+	    	  Uri uri = data.getData();
+	          Alert.getInstance().notify(this.getClass(), "Test", "Test notify after 20s", 20, false, uri);
+	       }
+	}
+	
 	private DialogInterface.OnClickListener itemClicked = new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int whichButton) {
 			String value = input.getText().toString();

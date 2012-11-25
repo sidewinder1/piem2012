@@ -4,7 +4,6 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.IOHelper;
 import money.Tracker.common.utilities.Logger;
-import money.Tracker.common.utilities.SyncHelper;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.activities.SyncSettingActivity;
@@ -13,9 +12,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
-import android.os.Looper;
 import android.view.View;
 
 public class PfmApplication extends Application {
@@ -51,10 +48,10 @@ public class PfmApplication extends Application {
 
 					syncTask = new SynchronizeTask();			
 					syncTask.execute();
-					Thread.sleep(5 * 3600000);
+					Thread.sleep(1 * 3600000);
 				}
 			} catch (Exception e) {
-				Logger.Log(e.getMessage(), "SyncSettingActivity");
+				Logger.Log(e.getMessage(), "PfmApplication");
 			}
 			// Looper.loop();
 		}
