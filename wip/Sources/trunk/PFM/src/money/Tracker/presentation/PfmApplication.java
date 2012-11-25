@@ -34,7 +34,7 @@ public class PfmApplication extends Application {
 							.getCurrentAccount().type)
 							|| syncTask.getStatus() == Status.RUNNING
 							|| !runThread
-							|| SyncHelper.getInstance().isSchronizing()) {
+							|| SynchronizeTask.isSynchronizing()) {
 						continue;
 					}
 

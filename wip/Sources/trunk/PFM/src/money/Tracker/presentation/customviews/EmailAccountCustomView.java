@@ -2,7 +2,6 @@ package money.Tracker.presentation.customviews;
 
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Logger;
-import money.Tracker.common.utilities.SyncHelper;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.activities.SyncSettingActivity;
@@ -38,7 +37,7 @@ public class EmailAccountCustomView extends LinearLayout {
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				try {
-					if (SyncHelper.getInstance().isSchronizing()) {
+					if (SynchronizeTask.isSynchronizing()) {
 						return;
 					}
 
@@ -85,6 +84,10 @@ public class EmailAccountCustomView extends LinearLayout {
 		});
 	}
 
+	public EmailAccountCustomView(Context context) {
+		super(context);
+	}
+
 	protected void setIconVisibility(int iconVisibility) {
 		sync_data.setVisibility(iconVisibility);
 	}
@@ -109,7 +112,7 @@ public class EmailAccountCustomView extends LinearLayout {
 		sync_data
 		.setBackgroundResource(isActive ? R.drawable.refresh_animation
 				: R.drawable.refresh_animation2);
-		if (sync_data.getVisibility()== View.VISIBLE && SyncHelper.getInstance().isSchronizing()){
+		if (sync_data.getVisibility()== View.VISIBLE && SynchronizeTask.isSynchronizing()){
 			((AnimationDrawable)sync_data.getBackground()).start();
 		}
 		else{
