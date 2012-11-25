@@ -163,7 +163,7 @@ public class TabViewActivity extends Activity {
 		return true;
 	}
 
-	private void bindData() {
+	public void bindData() {
 		String whereCondition;
 		if (isTabOne) {
 			whereCondition = "Type = 1";

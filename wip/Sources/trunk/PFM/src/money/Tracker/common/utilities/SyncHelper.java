@@ -17,7 +17,6 @@ import android.database.Cursor;
 public class SyncHelper {
 	String NAMESPACE = "http://pfm.org/";
 	String URL = "http://54.251.59.102:83/PFMService.asmx";
-	private boolean mIsSchronizing;
 	private Date mLocalLastSync;
 
 	private final static String[] sTables = { "Category", "Schedule",
@@ -83,7 +82,6 @@ public class SyncHelper {
 	}
 
 	public void synchronize() {
-		mIsSchronizing = true;
 		String LAST_SYNC_METHOD = "CheckLastSync";
 		String UPDATE_FROM_SERVER = "GetData";
 		String SAVE_DATA_METHOD = "SaveData";
@@ -287,12 +285,6 @@ public class SyncHelper {
 		// PfmApplication.getAppResources().getString(
 		// R.string.sync_success));
 		Logger.Log("Mark as Synchronize", "SyncHelper");
-		
-		mIsSchronizing = false;
-	}
-
-	public boolean isSchronizing(){
-		return mIsSchronizing;
 	}
 	
 	private void markAsSynchronized() {
