@@ -20,6 +20,14 @@ public class DateTimeHelper {
 		return new Date(year - 1900, month, day);
 	}
 
+	public static Date addHours(Date currentDate, int hour){
+		calendar = Calendar.getInstance(TimeZone.getDefault(),
+				Locale.getDefault());
+		calendar.setTime(currentDate);
+		calendar.add(Calendar.HOUR, hour);
+		return calendar.getTime();
+	}
+	
 	public static Date now(boolean checkTimeZone) {
 		calendar = Calendar.getInstance(TimeZone.getDefault(),
 				Locale.getDefault());

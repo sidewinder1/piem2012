@@ -51,7 +51,6 @@ public class EmailAccountCustomView extends LinearLayout {
 									.getChildAt(index);
 							if (email != null) {
 								email.setActive(false);
-
 							}
 						}
 					}
@@ -109,17 +108,23 @@ public class EmailAccountCustomView extends LinearLayout {
 	}
 
 	public void setActive(boolean isActive) {
+		boolean animating = ((AnimationDrawable)sync_data.getBackground()).isRunning();
 		sync_data
-		.setBackgroundResource(isActive ? R.drawable.refresh_animation
+		.setBackgroundResource(isActive && mAutoSync ? R.drawable.refresh_animation
 				: R.drawable.refresh_animation2);
-		if (sync_data.getVisibility()== View.VISIBLE && SynchronizeTask.isSynchronizing()){
+		if (sync_data.getVisibility()!= View.VISIBLE || !isActive){
+			sync_data.setVisibility(isActive || animating ? View.VISIBLE : View.GONE);
+		}
+		
+		if (animating && SynchronizeTask.isSynchronizing()){
 			((AnimationDrawable)sync_data.getBackground()).start();
 		}
 		else{
-			sync_data.setVisibility(isActive ? View.VISIBLE : View.GONE);
+			((AnimationDrawable)sync_data.getBackground()).stop();
 		}
 		
 		mIsActive = isActive && mAutoSync;
+		
 		sync_data.setTag(mIsActive);
 		mStatus.setText(getResources().getString(
 				mIsActive ? R.string.sync_view_account_active

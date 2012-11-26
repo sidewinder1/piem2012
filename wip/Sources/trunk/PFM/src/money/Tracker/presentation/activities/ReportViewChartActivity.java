@@ -38,7 +38,7 @@ public class ReportViewChartActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_report_view_chart, menu);
+         getMenuInflater().inflate(R.menu.activity_report_view_chart, menu);
         return true;
     }
 }

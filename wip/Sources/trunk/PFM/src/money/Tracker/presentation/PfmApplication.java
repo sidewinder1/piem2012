@@ -2,16 +2,22 @@ package money.Tracker.presentation;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
+import money.Tracker.common.utilities.Alert;
+import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.IOHelper;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
+import money.Tracker.presentation.activities.BorrowLendMainViewActivity;
 import money.Tracker.presentation.activities.SyncSettingActivity;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.view.View;
 
@@ -30,8 +36,7 @@ public class PfmApplication extends Application {
 					if ("pfm.com".equals(AccountProvider.getInstance()
 							.getCurrentAccount().type)
 							|| syncTask.getStatus() == Status.RUNNING
-							|| !runThread
-							|| SynchronizeTask.isSynchronizing()) {
+							|| !runThread || SynchronizeTask.isSynchronizing()) {
 						continue;
 					}
 
@@ -46,9 +51,60 @@ public class PfmApplication extends Application {
 						}
 					}
 
-					syncTask = new SynchronizeTask();			
+					syncTask = new SynchronizeTask();
 					syncTask.execute();
 					Thread.sleep(1 * 3600000);
+				}
+			} catch (Exception e) {
+				Logger.Log(e.getMessage(), "PfmApplication");
+			}
+			// Looper.loop();
+		}
+	});
+
+	private static Thread warningTimer = new Thread(new Runnable() {
+		public void run() {
+			// Looper.prepare();
+			try {
+				while (true) {
+					if ("pfm.com".equals(AccountProvider.getInstance()
+							.getCurrentAccount().type)
+							|| syncTask.getStatus() == Status.RUNNING
+							|| !runThread || SynchronizeTask.isSynchronizing()) {
+						continue;
+					}
+
+					Cursor time = SqlHelper.instance.select(
+							"AppInfo",
+							"BorrowWarn, BorrowRing",
+							new StringBuilder("UserName='")
+									.append(AccountProvider.getInstance()
+											.getCurrentAccount().name)
+									.append("'").toString());
+					if (time != null && time.moveToFirst()) {
+						int longTime = Integer.parseInt(time.getString(0));
+
+						Cursor checkBorrow = SqlHelper.instance
+								.select("BorrowLend",
+										"Expired_date, Person_name",
+										"Expired_date='"
+												+ Converter
+														.toString(DateTimeHelper.addHours(
+																DateTimeHelper
+																		.now(false),
+																longTime)));
+						if (checkBorrow != null && checkBorrow.moveToFirst()) {
+							Alert.getInstance().notify(
+									BorrowLendMainViewActivity.class,
+									"Expired date",
+									checkBorrow.getString(1),
+									0,
+									"#DEFAULT".equals(time.getString(1)),
+									time.getString(1).startsWith("#") ? null
+											: Uri.parse(time.getString(1)));
+						}
+					}
+					Thread.sleep(1 * 1000);
 				}
 			} catch (Exception e) {
 				Logger.Log(e.getMessage(), "PfmApplication");

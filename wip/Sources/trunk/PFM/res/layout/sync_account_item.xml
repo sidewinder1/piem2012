@@ -28,6 +28,7 @@
     android:id="@+id/sync_refresh_sync"
     android:layout_height="22dp"
     android:layout_margin="5dp"
+    android:background="@drawable/refresh_animation"
     android:visibility="gone"
     android:layout_gravity="top"/>
 </LinearLayout>
