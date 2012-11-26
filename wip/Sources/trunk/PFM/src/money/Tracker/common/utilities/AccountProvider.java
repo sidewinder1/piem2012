@@ -62,10 +62,27 @@ public class AccountProvider {
 			return mAccountList;
 		}
 
+		ArrayList<String> checkDuplicatedAccount = new ArrayList<String>();
 		mAccountList = new ArrayList<Account>();
 		if (mAccounts != null) {
 			for (Account account : mAccounts) {
+				if (checkDuplicatedAccount.contains(account.name)) {
+					continue;
+				}
+
+				checkDuplicatedAccount.add(account.name);
 				mAccountList.add(account);
+				Cursor accountCheck = SqlHelper.instance.select("AppInfo",
+						"UserName", "UserName = '" + account.name + "'");
+				if (accountCheck == null || !accountCheck.moveToFirst()) {
+					SqlHelper.instance.insert("AppInfo", new String[] {
+							"UserName", "LastSync", "Status", "ScheduleWarn",
+							"ScheduleRing", "ScheduleRemind", "BorrowWarn",
+							"BorrowRing", "BorrowRemind" }, new String[] {
+							account.name, "1990-01-20 00:00:00", "0",
+							"50", "#DEFAULT", "10",
+							"168", "#DEFAULT", "10" });
+				}
 			}
 		}
 
@@ -80,10 +97,10 @@ public class AccountProvider {
 
 	public Account findAccountByEmail(String email) {
 		if (mAccounts == null) {
-			mAccounts = mAccManager.getAccounts();
+			refreshAccount();
 		}
 
-		for (Account account : mAccounts) {
+		for (Account account : mAccountList) {
 			if (email.equals(account.name)) {
 				Logger.Log("Level1.2 " + account, "AccountProvider");
 				return account;

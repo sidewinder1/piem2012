@@ -16,7 +16,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.InputType;
@@ -36,11 +36,11 @@ import android.widget.TextView;
 
 public class SyncSettingActivity extends Activity {
 	public static LinearLayout sAccountList;
-	private Spinner mScheduleWarn, mScheduleRing, mScheduleRemain, mBorrowWarn,
-			mBorrowRing, mBorrowRemain;
+	private Spinner mScheduleWarn, mScheduleRing, mScheduleRemind, mBorrowWarn,
+			mBorrowRing, mBorrowRemind;
 	private CheckBox mAutoSync;
-	private ArrayList<String> mScheduleWarnArr, mScheduleRemainArr,
-			mBorrowWarnArr, mBorrowRemainArr;
+	private ArrayList<String> mScheduleWarnArr, mScheduleRemindArr,
+			mBorrowWarnArr, mBorrowRemindArr, mScheduleRingArr, mBorrowRingArr;
 	private int currentAdapterIndex;
 	private EditText input;
 
@@ -52,54 +52,61 @@ public class SyncSettingActivity extends Activity {
 		mAutoSync = (CheckBox) findViewById(R.id.sync_auto_checkbox);
 		mScheduleWarn = (Spinner) findViewById(R.id.warning_schedule_warn_before);
 		mScheduleRing = (Spinner) findViewById(R.id.warning_schedule_ring);
-		mScheduleRemain = (Spinner) findViewById(R.id.warning_schedule_remain);
+		mScheduleRemind = (Spinner) findViewById(R.id.warning_schedule_remain);
 		mBorrowWarn = (Spinner) findViewById(R.id.warning_borrow_warn_before);
 		mBorrowRing = (Spinner) findViewById(R.id.warning_borrow_ring);
-		mBorrowRemain = (Spinner) findViewById(R.id.warning_borrow_remain);
+		mBorrowRemind = (Spinner) findViewById(R.id.warning_borrow_remain);
 
 		mScheduleWarn.setOnItemSelectedListener(itemSelected);
 		mScheduleRing.setOnItemSelectedListener(itemSelected);
-		mScheduleRemain.setOnItemSelectedListener(itemSelected);
+		mScheduleRemind.setOnItemSelectedListener(itemSelected);
 		mBorrowWarn.setOnItemSelectedListener(itemSelected);
 		mBorrowRing.setOnItemSelectedListener(itemSelected);
-		mBorrowRemain.setOnItemSelectedListener(itemSelected);
+		mBorrowRemind.setOnItemSelectedListener(itemSelected);
 
 		mScheduleWarn.setTag(1);
 		mScheduleRing.setTag(2);
-		mScheduleRemain.setTag(3);
+		mScheduleRemind.setTag(3);
 		mBorrowWarn.setTag(4);
 		mBorrowRing.setTag(5);
-		mBorrowRemain.setTag(6);
+		mBorrowRemind.setTag(6);
 
 		mScheduleWarnArr = new ArrayList<String>(Arrays.asList(getResources()
 				.getStringArray(R.array.warning_schedule_warn_array)));
-		mScheduleRemainArr = new ArrayList<String>(Arrays.asList(getResources()
+		mScheduleRemindArr = new ArrayList<String>(Arrays.asList(getResources()
 				.getStringArray(R.array.warning_remain_array)));
 		mBorrowWarnArr = new ArrayList<String>(Arrays.asList(getResources()
 				.getStringArray(R.array.warning_borrow_warn_array)));
-		mBorrowRemainArr = new ArrayList<String>(Arrays.asList(getResources()
+		mBorrowRemindArr = new ArrayList<String>(Arrays.asList(getResources()
 				.getStringArray(R.array.warning_remain_array)));
+		mBorrowRingArr = new ArrayList<String>(Arrays.asList(getResources()
+				.getStringArray(R.array.warning_ring_array)));
+		mScheduleRingArr = new ArrayList<String>(Arrays.asList(getResources()
+				.getStringArray(R.array.warning_ring_array)));
 
-		ArrayAdapter<String> ringAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, getResources()
-						.getStringArray(R.array.warning_ring_array));
-		ringAdapter
+		ArrayAdapter<String> scheduleRingAdapter = new ArrayAdapter<String>(
+				this, android.R.layout.simple_spinner_item, mScheduleRingArr);
+		scheduleRingAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mScheduleRing.setAdapter(ringAdapter);
-
-		mBorrowRing.setAdapter(ringAdapter);
-
-		ArrayAdapter<String> scheduleRemainAdapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, mScheduleRemainArr);
-		scheduleRemainAdapter
+		ArrayAdapter<String> borrowRingAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, mBorrowRingArr);
+		borrowRingAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mScheduleRemain.setAdapter(scheduleRemainAdapter);
+		mScheduleRing.setAdapter(scheduleRingAdapter);
 
-		ArrayAdapter<String> borrowRemainAdapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, mBorrowRemainArr);
-		borrowRemainAdapter
+		mBorrowRing.setAdapter(borrowRingAdapter);
+
+		ArrayAdapter<String> scheduleRemindAdapter = new ArrayAdapter<String>(
+				this, android.R.layout.simple_spinner_item, mScheduleRemindArr);
+		scheduleRemindAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mBorrowRemain.setAdapter(borrowRemainAdapter);
+		mScheduleRemind.setAdapter(scheduleRemindAdapter);
+
+		ArrayAdapter<String> borrowRemindAdapter = new ArrayAdapter<String>(
+				this, android.R.layout.simple_spinner_item, mBorrowRemindArr);
+		borrowRemindAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mBorrowRemind.setAdapter(borrowRemindAdapter);
 
 		ArrayAdapter<String> scheduleWarnAdapter = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, mScheduleWarnArr);
@@ -166,7 +173,8 @@ public class SyncSettingActivity extends Activity {
 													DialogInterface arg0,
 													int arg1) {
 												try {
-													PfmApplication.startSynchronize();
+													PfmApplication
+															.startSynchronize();
 												} catch (Exception e) {
 													Logger.Log(e.getMessage(),
 															"SyncSettingActivity");
@@ -230,22 +238,53 @@ public class SyncSettingActivity extends Activity {
 			}
 		}
 	}
-	
+
 	private OnItemSelectedListener itemSelected = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long resourceId) {
+			currentAdapterIndex = Integer.parseInt(String.valueOf(parent
+					.getTag()));
+			// Select ring of application.
+			if (currentAdapterIndex == 2 || currentAdapterIndex == 5) {
+				if (position == parent.getCount() - 1) {
+					Intent i = new Intent();
+					i.setAction(Intent.ACTION_GET_CONTENT);
+					i.setType("audio/*");
+					startActivityForResult(
+							Intent.createChooser(i, "Select audio file"),
+							106 + currentAdapterIndex);
+					return;
+				}
+
+				switch (position) {
+				case 0:
+					// None.
+					updateConfig(currentAdapterIndex == 2 ? "ScheduleRing"
+							: "BorrowRing", "#NONE");
+					break;
+				case 1:
+					// default ring.
+					updateConfig(currentAdapterIndex == 2 ? "ScheduleRing"
+							: "BorrowRing", "#DEFAULT");
+					break;
+				}
+
+				return;
+			}
+
+			// Select time that before warning or reminding.
 			if (getResources().getString(R.string.others).equals(
 					((TextView) view).getText().toString())) {
-				currentAdapterIndex = Integer.parseInt(String.valueOf(parent
-						.getTag()));
 				LayoutParams inputParams = new LayoutParams(0,
 						LayoutParams.WRAP_CONTENT, 1);
 				LayoutParams textParams = new LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0);
+
 				String unit = currentAdapterIndex == 1 ? " %" : getResources()
 						.getString(
 								currentAdapterIndex == 4 ? R.string.hours
 										: R.string.minutes);
+
 				TextView unitText = new TextView(getBaseContext());
 				unitText.setText(unit);
 				input = new EditText(getBaseContext());
@@ -268,12 +307,25 @@ public class SyncSettingActivity extends Activity {
 											int whichButton) {
 									}
 								}).show();
-			} else if (position == parent.getCount() - 1) {
-				// TODO: Show folder to user select a music file.
-				Intent i = new Intent();           
-				i.setAction(Intent.ACTION_GET_CONTENT);
-				i.setType("audio/*");
-				startActivityForResult(Intent.createChooser(i, "Select audio file"), 106);
+			} else {
+				switch (currentAdapterIndex) {
+				case 1:
+					updateConfig("ScheduleWarn", mScheduleWarnArr.get(position)
+							.split(" ")[0]);
+					break;
+				case 3:
+					updateConfig("ScheduleRemind",
+							mScheduleRemindArr.get(position).split(" ")[0]);
+					break;
+				case 4:
+					updateConfig("BorrowWarn", mBorrowWarnArr.get(position)
+							.split(" ")[0]);
+					break;
+				case 6:
+					updateConfig("BorrowRemind", mBorrowRemindArr.get(position)
+							.split(" ")[0]);
+					break;
+				}
 			}
 		}
 
@@ -282,58 +334,94 @@ public class SyncSettingActivity extends Activity {
 	};
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-	       if (resultCode == RESULT_OK && requestCode == 106)
-	       {
-	    	  Uri uri = data.getData();
-	          Alert.getInstance().notify(this.getClass(), "Test", "Test notify after 20s", 20, false, uri);
-	       }
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			// User choose a music file to set default notification's ring.
+			switch (requestCode) {
+			case 108:
+				// Ring of Schedule function.
+				updateConfig("ScheduleRing", data.getData().getPath());
+				createSpinnerItem(data.getData().getPath(), "", mScheduleRing,
+						mScheduleRingArr);
+				break;
+			case 111:
+				// Ring of Borrow function.
+				updateConfig("BorrowRing", data.getData().getPath());
+				createSpinnerItem(data.getData().getPath(), "", mBorrowRing,
+						mBorrowRingArr);
+				break;
+			}
+		} else {
+			// User cancel choosing.
+			switch (requestCode) {
+			case 108:
+				// Ring of Schedule function.
+				updateConfig("ScheduleRing", "#NONE");
+				break;
+			case 111:
+				// Ring of Borrow function.
+				updateConfig("BorrowRing", "#NONE");
+				break;
+			}
+		}
 	}
-	
+
+	private void createSpinnerItem(String path, String unit,
+			Spinner parentSpinner, ArrayList<String> parentArray) {
+		parentArray.add(parentArray.size() - 1,
+				new StringBuilder(path).append(unit).toString());
+		parentSpinner.setSelection(parentArray.size() - 2);
+		((ArrayAdapter<?>) parentSpinner.getAdapter()).notifyDataSetChanged();
+	}
+
+	private void updateConfig(String column, String value) {
+		Cursor checkExist = SqlHelper.instance.select("AppInfo", "UserName", new StringBuilder("UserName='")
+		.append(AccountProvider.getInstance()
+				.getCurrentAccount().name).append("'")
+		.toString());
+		
+		if (checkExist == null || !checkExist.moveToFirst()){
+			SqlHelper.instance.insert("AppInfo", new String[] {
+					"UserName", "LastSync", "Status", "ScheduleWarn",
+					"ScheduleRing", "ScheduleRemind", "BorrowWarn",
+					"BorrowRing", "BorrowRemind" }, new String[] {
+					AccountProvider.getInstance()
+					.getCurrentAccount().name, "1990-01-20 00:00:00", "0",
+					"50", "#DEFAULT", "10",
+					"168", "#DEFAULT", "10" });
+		}
+		
+		SqlHelper.instance.update(
+				"AppInfo",
+				new String[] { column },
+				new String[] { value },
+				new StringBuilder("UserName='")
+						.append(AccountProvider.getInstance()
+								.getCurrentAccount().name).append("'")
+						.toString());
+	}
+
 	private DialogInterface.OnClickListener itemClicked = new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int whichButton) {
 			String value = input.getText().toString();
 			switch (currentAdapterIndex) {
 			case 1:
-				mScheduleWarnArr.add(mScheduleWarnArr.size() - 1,
-						new StringBuilder(value).append(" %").toString());
-				mScheduleWarn.setSelection(mScheduleWarnArr.size() - 2);
-				((ArrayAdapter<?>) mScheduleWarn.getAdapter())
-						.notifyDataSetChanged();
+				createSpinnerItem(value, " %", mScheduleWarn, mScheduleWarnArr);
 				break;
 			case 3:
-				mScheduleRemainArr.add(
-						mScheduleRemainArr.size() - 1,
-						new StringBuilder(value)
-								.append(" ")
-								.append(getResources().getString(
-										R.string.minutes)).toString());
-				mScheduleRemain.setSelection(mScheduleRemainArr.size() - 2);
-				((ArrayAdapter<?>) mScheduleRemain.getAdapter())
-						.notifyDataSetChanged();
+				createSpinnerItem(value,
+						" " + getResources().getString(R.string.minutes),
+						mScheduleRemind, mScheduleRemindArr);
 				break;
 			case 4:
-				mBorrowWarnArr.add(
-						mBorrowWarnArr.size() - 1,
-						new StringBuilder(value)
-								.append(" ")
-								.append(getResources()
-										.getString(R.string.hours)).toString());
-				mBorrowWarn.setSelection(mBorrowWarnArr.size() - 2);
-				((ArrayAdapter<?>) mBorrowWarn.getAdapter())
-						.notifyDataSetChanged();
+				createSpinnerItem(value,
+						" " + getResources().getString(R.string.hours),
+						mBorrowWarn, mBorrowWarnArr);
 				break;
 			case 6:
-				mBorrowRemainArr.add(
-						mBorrowRemainArr.size() - 1,
-						new StringBuilder(value)
-								.append(" ")
-								.append(getResources().getString(
-										R.string.minutes)).toString());
-				mBorrowRemain.setSelection(mBorrowRemainArr.size() - 2);
-				((ArrayAdapter<?>) mBorrowRemain.getAdapter())
-						.notifyDataSetChanged();
+				createSpinnerItem(value,
+						" " + getResources().getString(R.string.minutes),
+						mBorrowRemind, mBorrowRemindArr);
 				break;
 			}
 		}
@@ -341,6 +429,7 @@ public class SyncSettingActivity extends Activity {
 
 	@Override
 	protected void onResume() {
+		super.onResume();
 		try {
 			bindAccount(sAccountList, false);
 
@@ -349,8 +438,6 @@ public class SyncSettingActivity extends Activity {
 				mAutoSync.setChecked(true);
 				initializeStatusOfAccountList(true);
 			}
-
-			super.onResume();
 		} catch (Exception e) {
 			Logger.Log(e.getMessage(), "SyncSetting.onResume()");
 		}

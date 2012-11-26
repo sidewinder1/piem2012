@@ -43,11 +43,11 @@ public class Converter {
 			String testComma = toString(1000, "#,##0");
 			if (testComma.contains(","))
 			{
-				value = value.replace(",", "");
+				value = value.replace(",", "").split("[.]")[0];
 			}
 			else
 			{
-				value = value.replace(".", "").replace(",", ".");
+				value = value.replace(".", "").split("[,]")[0];
 			}
 			
 			return Long.parseLong(value);

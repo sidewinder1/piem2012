@@ -46,10 +46,10 @@ public class SqlHelper {
 		if (!contentValues.containsKey("Id") && !"AppInfo".equals(tableName)) {
 			contentValues.put("Id", id);
 		}
-		
+
 		if (!contentValues.containsKey("UserName")) {
-			contentValues.put("UserName",
-					AccountProvider.getInstance().getCurrentAccount().name);
+			contentValues.put("UserName", AccountProvider.getInstance()
+					.getCurrentAccount().name);
 		}
 
 		contentValues.put("CreatedDate",
@@ -70,7 +70,8 @@ public class SqlHelper {
 	public int update(String tableName, String[] columns, String[] newValues,
 			String whereCondition) {
 		String whereForAppInfo = "";
-		if (!"AppInfo".equals(tableName) && !whereCondition.contains("UserName")) {
+		if (!"AppInfo".equals(tableName)
+				&& !whereCondition.contains("UserName")) {
 			whereForAppInfo = new StringBuilder(" AND UserName ='")
 					.append(AccountProvider.getInstance().getCurrentAccount().name)
 					.append("'").toString();
@@ -91,9 +92,9 @@ public class SqlHelper {
 			newValueContent.put(columns[i], newValues[i]);
 		}
 
-		if (!newValueContent.containsKey("UserName")){
+		if (!newValueContent.containsKey("UserName")) {
 			newValueContent.put("ModifiedDate",
-					Converter.toString(DateTimeHelper.now(true)));	
+					Converter.toString(DateTimeHelper.now(true)));
 		}
 
 		try {
@@ -166,8 +167,12 @@ public class SqlHelper {
 		String tableName = sqlStatement.substring(fromIndex).trim().split(" ")[0];
 
 		if (whereIndex >= 6) {
-			String addedWhere = new StringBuilder(" ").append(tableName)
-					.append(".IsDeleted=0 AND (").append(tableName).append(".UserName='GlobalAccount' OR ").append(tableName)
+			String addedWhere = new StringBuilder(" ")
+					.append(tableName)
+					.append(".IsDeleted=0 AND (")
+					.append(tableName)
+					.append(".UserName='GlobalAccount' OR ")
+					.append(tableName)
 					.append(".UserName='")
 					.append(AccountProvider.getInstance().getCurrentAccount().name)
 					.append("') AND ").toString();
@@ -179,11 +184,12 @@ public class SqlHelper {
 					tableName)
 					+ tableName.length() + 1;
 
-			sqlStatement = new StringBuilder(sqlStatement).insert(
-					fromIndex + tableNameIndex,
-					" WHERE IsDeleted=0 AND (UserName='GlobalAccount' OR UserName='"
-							+ AccountProvider.getInstance().getCurrentAccount().name
-							+ "') ").toString();
+			sqlStatement = new StringBuilder(sqlStatement)
+					.insert(fromIndex + tableNameIndex,
+							" WHERE IsDeleted=0 AND (UserName='GlobalAccount' OR UserName='"
+									+ AccountProvider.getInstance()
+											.getCurrentAccount().name + "') ")
+					.toString();
 		}
 		try {
 			cursor = currentDb.rawQuery(sqlStatement, null);
@@ -195,27 +201,28 @@ public class SqlHelper {
 	}
 
 	public Cursor select(String tableName, String selectedColumns,
-			String whereCondition){
+			String whereCondition) {
 		return select(tableName, selectedColumns, whereCondition, false);
 	}
-	
+
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition, boolean includeDeletedRecords) {
 		String whereForAppInfo = "";
 		if (!"AppInfo".equals(tableName)) {
-			whereForAppInfo = new StringBuilder(" AND (UserName='GlobalAccount' OR UserName ='")
+			whereForAppInfo = new StringBuilder(
+					" AND (UserName='GlobalAccount' OR UserName ='")
 					.append(AccountProvider.getInstance().getCurrentAccount().name)
 					.append("')").toString();
 		}
-		
+
 		String isDeleted = includeDeletedRecords ? "0" : "IsDeleted";
 		if (whereCondition != null && !"".equals(whereCondition)) {
-			whereCondition = new StringBuilder(" WHERE ").append(isDeleted).append(" = 0 ")
-					.append(whereForAppInfo).append(" AND ")
+			whereCondition = new StringBuilder(" WHERE ").append(isDeleted)
+					.append(" = 0 ").append(whereForAppInfo).append(" AND ")
 					.append(whereCondition).toString();
 		} else {
-			whereCondition = new StringBuilder(" WHERE ").append(isDeleted).append(" = 0 ").append(
-					whereForAppInfo).toString();
+			whereCondition = new StringBuilder(" WHERE ").append(isDeleted)
+					.append(" = 0 ").append(whereForAppInfo).toString();
 		}
 
 		Cursor cursor = null;
@@ -246,17 +253,12 @@ public class SqlHelper {
 		// Create table for application configuration.
 		createTable(
 				"AppInfo",
-				"Id LONG PRIMARY KEY, UserName TEXT, LastSync DATE, Status INTEGER, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER");
-		for (Account account : AccountProvider.getInstance().getAccounts()) {
-			Cursor accountCheck = select("AppInfo", "UserName", "UserName = '"
-					+ account.name + "'");
-			if (accountCheck == null || !accountCheck.moveToFirst()) {
-				insert("AppInfo", new String[] { "UserName",
-						"LastSync", "Status" },
-						new String[] { account.name,
-								"1990-01-20 00:00:00", "0" });
-			}
-		}
+				new StringBuilder("Id LONG PRIMARY KEY, UserName TEXT, ")
+						.append("ScheduleWarn INTEGER, ScheduleRing TEXT, ScheduleRemind LONG, ")
+						.append("BorrowWarn LONG, BorrowRing TEXT, BorrowRemind LONG, ")
+						.append("LastSync DATE, Status INTEGER, CreatedDate DATE, ")
+						.append("ModifiedDate DATE, IsDeleted INTEGER")
+						.toString());
 
 		// Create table for Schedule.
 		createTable(
@@ -317,9 +319,9 @@ public class SqlHelper {
 		if (categoryCheck != null && !categoryCheck.moveToFirst()) {
 			for (int index = 0; index < names.length; index++) {
 				SqlHelper.instance.insert("Category", new String[] { "Id",
-						"Name", "User_Color", "UserName" },
-						new String[] { String.valueOf(index), names[index],
-								colors[index], "GlobalAccount" });
+						"Name", "User_Color", "UserName" }, new String[] {
+						String.valueOf(index), names[index], colors[index],
+						"GlobalAccount" });
 			}
 		}
 
@@ -343,9 +345,9 @@ public class SqlHelper {
 
 		if (colorCheck != null && !colorCheck.moveToFirst()) {
 			for (int index = 0; index < color_codes.length; index++) {
-				SqlHelper.instance.insert("UserColor",
-						new String[] { "User_Color", "UserName" },
-						new String[] { color_codes[index], "GlobalAccount" });
+				SqlHelper.instance.insert("UserColor", new String[] {
+						"User_Color", "UserName" }, new String[] {
+						color_codes[index], "GlobalAccount" });
 			}
 		}
 

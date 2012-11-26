@@ -120,6 +120,8 @@ public class EntryEditProductView extends LinearLayout {
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 				parent.addView(item, addedIndex, params);
+				item.product.setFocusable(true);
+				item.product.requestFocus();
 			}
 		});
 
