@@ -61,7 +61,7 @@ public class SyncHelper {
 
 		if (url.length() != 0) {
 			URL = url;
-//			URL = "http://10.0.2.2:1242/PFMService.asmx";
+			URL = "http://10.0.2.2:1242/PFMService.asmx";
 		}
 
 	}

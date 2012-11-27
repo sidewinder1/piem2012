@@ -111,7 +111,8 @@ public class SqlHelper {
 		String whereForAppInfo = "";
 		if (!"AppInfo".equals(tableName)) {
 			whereForAppInfo = new StringBuilder(" AND UserName ='")
-					.append(AccountProvider.getInstance().getCurrentAccount().name)
+					.append("UserColor".equals(tableName) ? "GlobalAccount"
+							: AccountProvider.getInstance().getCurrentAccount().name)
 					.append("'").toString();
 		}
 

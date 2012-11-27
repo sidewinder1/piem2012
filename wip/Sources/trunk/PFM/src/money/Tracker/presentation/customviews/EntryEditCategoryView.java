@@ -23,12 +23,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class EntryEditCategoryView extends LinearLayout {
-	private Spinner category;
-	private TextView total_money;
-	private Button addBtn, removeBtn;
-	private LinearLayout category_list;
-	private CategoryAdapter categoryAdapter;
-	public EditText category_edit;
+	private Spinner mCategory;
+	private TextView mTotal_money;
+	private Button mAddBtn, mRemoveBtn;
+	private LinearLayout mCategoryList;
+	private CategoryAdapter mCategoryAdapter;
+	public EditText mCategoryEdit;
 
 	public EntryEditCategoryView(Context context) {
 		super(context);
@@ -41,84 +41,85 @@ public class EntryEditCategoryView extends LinearLayout {
 		layoutInflater.inflate(R.layout.entry_edit_category_item, this, true);
 
 		// Get control from .xml file.
-		category = (Spinner) findViewById(R.id.entry_item_category);
-		category_edit = (EditText) findViewById(R.id.entry_item_category_edit);
-		total_money = (TextView) findViewById(R.id.entry_item_price);
-		addBtn = (Button) findViewById(R.id.entry_item_add);
-		removeBtn = (Button) findViewById(R.id.entry_item_remove);
-		category_list = (LinearLayout) findViewById(R.id.entry_edit_category_list);
+		mCategory = (Spinner) findViewById(R.id.entry_item_category);
+		mCategoryEdit = (EditText) findViewById(R.id.entry_item_category_edit);
+		mTotal_money = (TextView) findViewById(R.id.entry_item_price);
+		mAddBtn = (Button) findViewById(R.id.entry_item_add);
+		mRemoveBtn = (Button) findViewById(R.id.entry_item_remove);
+		mCategoryList = (LinearLayout) findViewById(R.id.entry_edit_category_list);
 
 		// Initialize a CategoryAdapter.
-		categoryAdapter = new CategoryAdapter(getContext(),
+		mCategoryAdapter = new CategoryAdapter(getContext(),
 				R.layout.dropdown_list_item, new ArrayList<Category>(
 						CategoryRepository.getInstance().categories));
 
-		categoryAdapter.notifyDataSetChanged();
+		mCategoryAdapter.notifyDataSetChanged();
 
 		// Set value to category.
-		category.setAdapter(categoryAdapter);
-		category.setTag(category_edit);
+		mCategory.setAdapter(mCategoryAdapter);
+		mCategory.setTag(mCategoryEdit);
 
 		// Initialize data for entry.
 		if (data == null) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 			EntryEditProductView item = new EntryEditProductView(context,
-					total_money);
-			category_list.addView(item, params);
-			total_money.setText(Converter.toString(0D));
+					mTotal_money, -1);
+			mCategoryList.addView(item, params);
+			mTotal_money.setText(Converter.toString(0D));
 		} else {
 			long total = 0;
 
 			for (EntryDetail entryDetail : data) {
 				EntryEditProductView item = new EntryEditProductView(context,
-						total_money);
+						mTotal_money, entryDetail.getId());
 				item.setName(entryDetail.getName());
 				item.setCost(Converter.toString(entryDetail.getMoney()));
-				category.setSelection(CategoryRepository.getInstance()
+				mCategory.setSelection(CategoryRepository.getInstance()
 						.getIndex(entryDetail.getCategory_id()));
 				total += entryDetail.getMoney();
 
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-				category_list.addView(item, params);
+				mCategoryList.addView(item, params);
 			}
 
-			total_money.setText(Converter.toString(total));
+			mTotal_money.setText(Converter.toString(total));
 		}
 
-		category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int pos, long id) {
-				Category item = (Category) parent.getItemAtPosition(pos);
-				if (item != null && "Others".equals(item.getName())) {
-					parent.setVisibility(View.GONE);
-					View text = (View) parent.getTag();
-					text.setVisibility(View.VISIBLE);
-					text.requestFocus();
+		mCategory
+				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int pos, long id) {
+						Category item = (Category) parent
+								.getItemAtPosition(pos);
+						if (item != null && "Others".equals(item.getName())) {
+							parent.setVisibility(View.GONE);
+							View text = (View) parent.getTag();
+							text.setVisibility(View.VISIBLE);
+							text.requestFocus();
 
-					// Change color for new category.
-					Cursor color = SqlHelper.instance.select("UserColor",
-							"User_Color", null);
-					if (color != null && color.moveToFirst()) {
-						text.setBackgroundColor(Color.parseColor(color
-								.getString(0)));
-						text.setTag(color.getString(0));
-						SqlHelper.instance.delete(
-								"UserColor",
-								new StringBuilder("User_Color = '")
-										.append(color.getString(0)).append("'")
-										.toString());
+							// Change color for new category.
+							Cursor color = SqlHelper.instance.select(
+									"UserColor", "User_Color", null);
+							if (color != null && color.moveToFirst()) {
+								text.setBackgroundColor(Color.parseColor(color
+										.getString(0)));
+								text.setTag(color.getString(0));
+								SqlHelper.instance.delete("UserColor",
+										new StringBuilder("User_Color = '")
+												.append(color.getString(0))
+												.append("'").toString());
+							}
+						}
 					}
-				}
-			}
 
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				});
 
 		// Add event to add button.
-		addBtn.setOnClickListener(new OnClickListener() {
+		mAddBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				LinearLayout parent = (LinearLayout) v.getParent().getParent()
 						.getParent().getParent();
@@ -132,12 +133,12 @@ public class EntryEditCategoryView extends LinearLayout {
 					EntryEditCategoryView entryEdit = (EntryEditCategoryView) parent
 							.getChildAt(index);
 					if (entryEdit != null
-							&& entryEdit.category_edit.getVisibility() == View.VISIBLE
-							&& "".equals(entryEdit.category_edit.getText()
+							&& entryEdit.mCategoryEdit.getVisibility() == View.VISIBLE
+							&& "".equals(entryEdit.mCategoryEdit.getText()
 									.toString())) {
 						Alert.getInstance().show(getContext(),
 								"New category is empty");
-						entryEdit.category_edit.requestFocus();
+						entryEdit.mCategoryEdit.requestFocus();
 						return;
 					}
 				}
@@ -151,7 +152,7 @@ public class EntryEditCategoryView extends LinearLayout {
 		});
 
 		// Add event to handle clicking remove button.
-		removeBtn.setOnClickListener(new View.OnClickListener() {
+		mRemoveBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				LinearLayout list = (LinearLayout) v.getParent().getParent()
 						.getParent().getParent();
@@ -163,10 +164,20 @@ public class EntryEditCategoryView extends LinearLayout {
 						return;
 					}
 
+					for (int index = 0; index < item.mCategoryList
+							.getChildCount(); index++) {
+						EntryEditProductView itemOfCategoryEdit = (EntryEditProductView) item.mCategoryList
+								.getChildAt(index);
+
+						if (itemOfCategoryEdit != null) {
+							itemOfCategoryEdit.removeItem();
+						}
+					}
+
 					// Insert userColor to db again.
 					SqlHelper.instance.insert("UserColor",
 							new String[] { "User_Color" },
-							new String[] { String.valueOf(item.category_edit
+							new String[] { String.valueOf(item.mCategoryEdit
 									.getTag()) });
 
 					list.removeView(item);
@@ -175,40 +186,37 @@ public class EntryEditCategoryView extends LinearLayout {
 		});
 	}
 
-	public boolean removeEmptyEntry(){
-		for(int index = 0; index < category_list.getChildCount(); index++)
-		{
-			EntryEditProductView item = (EntryEditProductView)category_list.getChildAt(index);
+	public boolean removeEmptyEntry() {
+		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
+			EntryEditProductView item = (EntryEditProductView) mCategoryList
+					.getChildAt(index);
 
-			if (item != null && "".equals(item.getName()))
-			{
-				category_list.removeView(item);
+			if (item != null && "".equals(item.getName())) {
+				mCategoryList.removeView(item);
 			}
 		}
-		
-		return category_list.getChildCount() == 0;
+
+		return mCategoryList.getChildCount() == 0;
 	}
-	
-	public boolean removeEmptyCatagory()
-	{
+
+	public boolean removeEmptyCatagory() {
 		boolean check = false;
-		
-		for(int index = 0; index < category_list.getChildCount(); index++)
-		{
-			EntryEditProductView item = (EntryEditProductView)category_list.getChildAt(index);
-			
-			if (item != null && "".equals(item.getName()))
-			{
+
+		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
+			EntryEditProductView item = (EntryEditProductView) mCategoryList
+					.getChildAt(index);
+
+			if (item != null && "".equals(item.getName())) {
 				check = true;
 			}
 		}
-		
+
 		return check;
 	}
-	
+
 	public String checkBeforeSave() {
-		if (category_edit.getVisibility() == View.VISIBLE) {
-			if ("".equals(category_edit.getText().toString())) {
+		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
+			if ("".equals(mCategoryEdit.getText().toString())) {
 				return "Category is empty!";
 			} else {
 				// Check duplicate.
@@ -216,7 +224,7 @@ public class EntryEditCategoryView extends LinearLayout {
 						"Category",
 						"Name",
 						new StringBuilder("Name = '")
-								.append(category_edit.getText().toString())
+								.append(mCategoryEdit.getText().toString())
 								.append("'").toString());
 				if (oldCategory != null && oldCategory.moveToFirst()) {
 					return "Duplicate category";
@@ -224,8 +232,8 @@ public class EntryEditCategoryView extends LinearLayout {
 			}
 		}
 
-		for (int index = 0; index < category_list.getChildCount(); index++) {
-			EntryEditProductView item = (EntryEditProductView) category_list
+		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
+			EntryEditProductView item = (EntryEditProductView) mCategoryList
 					.getChildAt(index);
 			String temp = item.checkBeforeSave();
 			if (item != null && temp != null) {
@@ -239,15 +247,15 @@ public class EntryEditCategoryView extends LinearLayout {
 	public ArrayList<EntryDetail> getDetails() {
 		ArrayList<EntryDetail> data = new ArrayList<EntryDetail>();
 		long category_id_str = CategoryRepository.getInstance().getId(
-				category.getSelectedItemPosition());
-		if (category_edit.getVisibility() == View.VISIBLE) {
+				mCategory.getSelectedItemPosition());
+		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
 
 			category_id_str = CategoryRepository.getInstance().getId(
-					category_edit.getText().toString());
+					mCategoryEdit.getText().toString());
 		}
 
-		for (int index = 0; index < category_list.getChildCount(); index++) {
-			EntryEditProductView item = (EntryEditProductView) category_list
+		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
+			EntryEditProductView item = (EntryEditProductView) mCategoryList
 					.getChildAt(index);
 			if (item != null && !"".equals(item.getName())) {
 				EntryDetail entryDetail = new EntryDetail(category_id_str,
@@ -266,30 +274,36 @@ public class EntryEditCategoryView extends LinearLayout {
 		String subTable = "EntryDetail";
 
 		String category_id_str = String.valueOf(CategoryRepository
-				.getInstance().getId(category.getSelectedItemPosition()));
-		if (category_edit.getVisibility() == View.VISIBLE) {
+				.getInstance().getId(mCategory.getSelectedItemPosition()));
+		// Save custom category
+		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
 			category_id_str = String.valueOf(SqlHelper.instance.insert(
 					"Category",
 					new String[] { "Name", "User_Color" },
-					new String[] { category_edit.getText().toString(),
-							String.valueOf(category_edit.getTag()) }));
+					new String[] { mCategoryEdit.getText().toString(),
+							String.valueOf(mCategoryEdit.getTag()) }));
 
 			CategoryRepository.getInstance().updateData();
 		}
 
-		for (int index = 0; index < category_list.getChildCount(); index++) {
-			EntryEditProductView product = (EntryEditProductView) category_list
+		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
+			EntryEditProductView product = (EntryEditProductView) mCategoryList
 					.getChildAt(index);
 
 			if (product == null || product.getMoney() == 0) {
 				continue;
 			}
-
+			
 			values = new String[] { product.getName(),
 					Converter.toString(product.getMoney(), "###0.00"),
 					category_id_str, String.valueOf(entry_id) };
 
-			SqlHelper.instance.insert(subTable, columns, values);
+			if (product.Id == -1) {
+				SqlHelper.instance.insert(subTable, columns, values);
+			}
+			else{
+				SqlHelper.instance.update(subTable, columns, values, "Id=" + product.Id);
+			}
 		}
 	}
 }
