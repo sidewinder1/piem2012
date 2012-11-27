@@ -465,6 +465,8 @@ public class Chart extends AbstractChart {
 			r.setColor(entryCategoryColorArray[i]);
 			renderer.addSeriesRenderer(r);
 		}
+		
+		renderer.setLegendTextSize(25);
 
 		//return ChartFactory.getPieChartView(context, series, renderer);
 		return ChartFactory.getPieChartIntent(context, series, renderer, "Pie");

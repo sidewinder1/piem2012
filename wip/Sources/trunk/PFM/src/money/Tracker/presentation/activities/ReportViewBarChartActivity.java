@@ -21,7 +21,7 @@ public class ReportViewBarChartActivity extends Activity {
         setContentView(R.layout.activity_report_view_bar_chart);
         
         Bundle extras = getIntent().getExtras();
-        boolean checkMonthly = extras.getBoolean("checkMonthly");
+        final boolean checkMonthly = extras.getBoolean("checkMonthly");
 		String startDate = extras.getString("start_date");
 		String endDate = extras.getString("end_date");
 		
@@ -47,7 +47,15 @@ public class ReportViewBarChartActivity extends Activity {
 				// TODO Auto-generated method stub
 				final Dialog dialog = new Dialog(getApplicationContext());
 				
-				//dialog.setContentView(R.layout.)
+				dialog.setContentView(R.layout.report_view_chart_custom_dialog);
+				if(checkMonthly)
+					dialog.setTitle("Chọn tháng so sánh");
+				else
+					dialog.setTitle("Chọn tuần so sánh");
+				
+				
+				
+				dialog.show();
 			}
 		});
     }
