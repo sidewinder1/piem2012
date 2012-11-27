@@ -1,10 +1,13 @@
 package money.Tracker.presentation.customviews;
 
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
+import android.database.Cursor;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -63,9 +66,25 @@ public class EntryEditProductView extends LinearLayout {
 
 				long currentValue = Converter.toLong(String
 						.valueOf(total_text_view.getText()));
-				total_text_view.setText(Converter.toString(currentValue
-						+ Converter.toLong(cValue.toString()) - sValue));
+				long total = currentValue + Converter.toLong(cValue.toString())
+						- sValue;
+				total_text_view.setText(Converter.toString(total));
 
+				Cursor checkOverBudget = SqlHelper.instance.select(
+						"AppInfo",
+						"ScheduleWarn",
+						new StringBuilder("UserName='")
+								.append(AccountProvider.getInstance()
+										.getCurrentAccount().name).append("'")
+								.toString());
+				if (checkOverBudget != null && checkOverBudget.moveToFirst()) {
+					double percent = checkOverBudget.getLong(0) / 100d;
+
+					if (PfmApplication.getTotalBudget() * percent <= PfmApplication
+							.getTotalEntry()+ total) {
+						Alert.getInstance().show(getContext(), "Over over over... budget.");
+					}
+				}
 			}
 		});
 
@@ -139,7 +158,7 @@ public class EntryEditProductView extends LinearLayout {
 					if (item == null) {
 						return;
 					}
-					
+
 					item.removeItem();
 					list.removeView(item);
 				}
@@ -147,12 +166,12 @@ public class EntryEditProductView extends LinearLayout {
 		});
 	}
 
-	public void removeItem(){
-		if (Id != -1){
+	public void removeItem() {
+		if (Id != -1) {
 			SqlHelper.instance.delete("EntryDetail", "Id = " + Id);
 		}
 	}
-	
+
 	public String checkBeforeSave() {
 		if ("".equals(getCost())) {
 			return "A price is empty!";
