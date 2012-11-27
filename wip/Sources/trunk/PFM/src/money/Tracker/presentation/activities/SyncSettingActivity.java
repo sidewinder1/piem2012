@@ -232,7 +232,7 @@ public class SyncSettingActivity extends Activity {
 						&& email.getText().equals(
 								AccountProvider.getInstance()
 										.getCurrentAccount().name)) {
-					SynchronizeTask.sButton = email.getButton();
+//					SynchronizeTask.sButton = email.getButton();
 					email.setActive(true);
 				}
 			}
