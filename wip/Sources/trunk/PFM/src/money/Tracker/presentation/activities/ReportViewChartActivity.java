@@ -26,13 +26,9 @@ public class ReportViewChartActivity extends Activity {
 		Log.d("Check main chart", "Check 4");
 		
         Intent reportMainViewChart = new Intent(this, ReportMainViewChartActivity.class);
-        Log.d("Check main chart", "Check 5");
         reportMainViewChart.putExtra("checkMonthly", checkMonthly);
-        Log.d("Check main chart", "Check 6 " + checkMonthly);
-        reportMainViewChart.putExtra("start_date", startDate);
-        Log.d("Check main chart", "Check 7 " + startDate);
+        reportMainViewChart.putExtra("start_date", startDate);        
         reportMainViewChart.putExtra("end_date", endDate);
-        Log.d("Check main chart", "Check 8 " + endDate);
         startActivity(reportMainViewChart);
     }
 
