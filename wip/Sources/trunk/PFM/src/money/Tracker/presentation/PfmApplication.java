@@ -1,5 +1,8 @@
 package money.Tracker.presentation;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
@@ -12,6 +15,8 @@ import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.activities.BorrowLendMainViewActivity;
 import money.Tracker.presentation.activities.SyncSettingActivity;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
+import money.Tracker.presentation.model.Entry;
+import money.Tracker.repository.EntryRepository;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
@@ -46,16 +51,17 @@ public class PfmApplication extends Application {
 							.getChildCount(); index++) {
 						EmailAccountCustomView email = (EmailAccountCustomView) SyncSettingActivity.sAccountList
 								.getChildAt(index);
-						if (email != null && email.getActive()) {							
+						if (email != null && email.getActive()) {
 							sync_data = email.getButton();
 						}
 					}
 
-					if (((AnimationDrawable)sync_data.getBackground()).isRunning()){
+					if (((AnimationDrawable) sync_data.getBackground())
+							.isRunning()) {
 						continue;
 					}
-					
-					((AnimationDrawable)sync_data.getBackground()).start();
+
+					((AnimationDrawable) sync_data.getBackground()).start();
 					sync_data.setVisibility(View.VISIBLE);
 					syncTask = new SynchronizeTask(sync_data);
 					syncTask.execute();
@@ -68,17 +74,50 @@ public class PfmApplication extends Application {
 		}
 	});
 
+	public static long getTotalEntry() {
+		EntryRepository.getInstance().updateData(
+				new StringBuilder("Type = 1").toString());
+		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
+				.get(Converter.toString(DateTimeHelper.now(false), "MMMM, yyyy"));
+		long total_entry = 0;
+		for (Entry entryItem : entries) {
+			total_entry += entryItem.getTotal();
+		}
+
+		return total_entry;
+	}
+
+	public static long getTotalBudget(){
+		Date currentDate = DateTimeHelper.now(false);
+		Cursor totalBudgetCursor = SqlHelper.instance.select(
+				"Schedule",
+				"Budget, Type",
+				new StringBuilder("Type = 1 AND (End_date = '")
+						.append(Converter.toString(DateTimeHelper
+								.getLastDayOfWeek(currentDate)))
+						.append("' OR End_date = '")
+						.append(Converter.toString(DateTimeHelper
+								.getLastDateOfMonth(
+										currentDate.getYear() + 1900, currentDate.getMonth())))
+						.append("')").toString());
+		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()){
+			return totalBudgetCursor.getLong(0);
+		}
+		
+		return 0;
+	}
+
 	private static Thread warningTimer = new Thread(new Runnable() {
 		public void run() {
 			// Looper.prepare();
 			try {
 				while (true) {
-//					if ("pfm.com".equals(AccountProvider.getInstance()
-//							.getCurrentAccount().type)
-//							|| syncTask.getStatus() == Status.RUNNING
-//							|| !runThread || SynchronizeTask.isSynchronizing()) {
-//						continue;
-//					}
+					// if ("pfm.com".equals(AccountProvider.getInstance()
+					// .getCurrentAccount().type)
+					// || syncTask.getStatus() == Status.RUNNING
+					// || !runThread || SynchronizeTask.isSynchronizing()) {
+					// continue;
+					// }
 
 					Cursor time = SqlHelper.instance.select(
 							"AppInfo",
@@ -90,15 +129,14 @@ public class PfmApplication extends Application {
 					if (time != null && time.moveToFirst()) {
 						int longTime = Integer.parseInt(time.getString(0));
 
-						Cursor checkBorrow = SqlHelper.instance
-								.select("BorrowLend",
-										"Expired_date, Person_name",
-										"Expired_date='"
-												+ Converter
-														.toString(DateTimeHelper.addHours(
-																DateTimeHelper
-																		.now(false),
-																longTime)) + "'");
+						Cursor checkBorrow = SqlHelper.instance.select(
+								"BorrowLend",
+								"Expired_date, Person_name",
+								"Expired_date='"
+										+ Converter.toString(DateTimeHelper
+												.addHours(DateTimeHelper
+														.now(false), longTime))
+										+ "'");
 						if (checkBorrow != null && checkBorrow.moveToFirst()) {
 							Alert.getInstance().notify(
 									BorrowLendMainViewActivity.class,
