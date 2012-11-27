@@ -24,7 +24,7 @@ public class HomeActivity extends TabActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
 		
-		SqlHelper.instance.dropAllTables();
+		//SqlHelper.instance.dropAllTables();
 
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
