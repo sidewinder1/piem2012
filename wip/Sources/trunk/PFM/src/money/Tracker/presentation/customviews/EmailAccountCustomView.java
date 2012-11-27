@@ -7,6 +7,7 @@ import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.activities.SyncSettingActivity;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -71,7 +72,12 @@ public class EmailAccountCustomView extends LinearLayout {
 							}
 						}
 					} else {
-						((AnimationDrawable) sync_data.getBackground()).start();
+						RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
+								true);
+						spinner.execute((AnimationDrawable) sync_data
+								.getBackground());
+						// ((AnimationDrawable)
+						// sync_data.getBackground()).start();
 						SynchronizeTask syncTask = new SynchronizeTask(
 								sync_data);
 						syncTask.execute();
@@ -108,23 +114,38 @@ public class EmailAccountCustomView extends LinearLayout {
 	}
 
 	public void setActive(boolean isActive) {
-		boolean animating = ((AnimationDrawable)sync_data.getBackground()).isRunning();
+		boolean animating = !mIsSublist
+				&& ((AnimationDrawable) sync_data.getBackground()).isRunning();
+
+		if (animating) {
+			((AnimationDrawable) sync_data.getBackground()).stop();
+		}
+
+		sync_data.setBackgroundResource(mIsSublist ? R.drawable.syn_icon_1
+				: (isActive && mAutoSync ? R.drawable.refresh_animation
+						: R.drawable.refresh_animation2));
+		// if (sync_data.getVisibility() != View.VISIBLE) {
 		sync_data
-		.setBackgroundResource(isActive && mAutoSync ? R.drawable.refresh_animation
-				: R.drawable.refresh_animation2);
-		if (sync_data.getVisibility()!= View.VISIBLE || !isActive){
-			sync_data.setVisibility(isActive || animating ? View.VISIBLE : View.GONE);
+				.setVisibility(isActive || (animating && !mIsSublist) ? View.VISIBLE
+						: View.GONE);
+		// }
+
+		if (!mIsSublist) {
+			if ((animating && SynchronizeTask.isSynchronizing())) {
+				RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
+						true);
+				spinner.execute((AnimationDrawable) sync_data.getBackground());
+				// ((AnimationDrawable) sync_data.getBackground()).start();
+			} else {
+				RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
+						false);
+				spinner.execute((AnimationDrawable) sync_data.getBackground());
+				// ((AnimationDrawable) sync_data.getBackground()).stop();
+			}
 		}
-		
-		if (animating && SynchronizeTask.isSynchronizing()){
-			((AnimationDrawable)sync_data.getBackground()).start();
-		}
-		else{
-			((AnimationDrawable)sync_data.getBackground()).stop();
-		}
-		
+
 		mIsActive = isActive && mAutoSync;
-		
+
 		sync_data.setTag(mIsActive);
 		mStatus.setText(getResources().getString(
 				mIsActive ? R.string.sync_view_account_active
@@ -132,9 +153,25 @@ public class EmailAccountCustomView extends LinearLayout {
 	}
 
 	public void setAutoSync(boolean isAuto) {
+		if (mIsSublist) {
+			return;
+		}
+
 		mAutoSync = isAuto;
+		boolean isAnimating = ((AnimationDrawable) sync_data.getBackground())
+				.isRunning() && sync_data.getVisibility() == View.VISIBLE;
+		
+		((AnimationDrawable)sync_data.getBackground()).stop();
+		sync_data.setBackgroundResource(isAuto ? R.drawable.refresh_animation
+				: R.drawable.refresh_animation2);
 		if (!mAutoSync) {
 			setActive(false);
+		}
+		
+//		RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(isAnimating);
+//		spinner.execute((AnimationDrawable) sync_data.getBackground());
+		if (isAnimating) {
+			sync_data.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -148,5 +185,31 @@ public class EmailAccountCustomView extends LinearLayout {
 
 	public Button getButton() {
 		return sync_data;
+	}
+
+	class RefreshIconSpinAsyncTask extends
+			AsyncTask<AnimationDrawable, Void, Void> {
+		private boolean mIsStart;
+
+		public RefreshIconSpinAsyncTask(boolean isStart) {
+			super();
+			mIsStart = isStart;
+		}
+
+		@Override
+		protected Void doInBackground(AnimationDrawable... arg0) {
+			if (mIsStart) {
+				arg0[0].start();
+			} else {
+				arg0[0].stop();
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+		}
 	}
 }

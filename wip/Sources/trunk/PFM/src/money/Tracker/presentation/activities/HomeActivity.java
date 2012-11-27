@@ -1,9 +1,5 @@
 package money.Tracker.presentation.activities;
 
-import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.Alert;
-import money.Tracker.common.utilities.IOHelper;
-import money.Tracker.common.utilities.SyncHelper;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
@@ -18,13 +14,11 @@ import android.widget.TabHost.TabSpec;
 
 public class HomeActivity extends TabActivity {
 	private final String typeTabPathId = "type.tab.path.id";
-	private String CONFIG_FILE = "Fpm/FpmConfig.cnfg";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
-		
-		//SqlHelper.instance.dropAllTables();
 
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();

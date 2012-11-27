@@ -20,6 +20,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.view.View;
+import android.widget.Button;
 
 public class PfmApplication extends Application {
 	private static Context sContext;
@@ -40,18 +41,23 @@ public class PfmApplication extends Application {
 						continue;
 					}
 
+					Button sync_data = null;
 					for (int index = 0; index < SyncSettingActivity.sAccountList
 							.getChildCount(); index++) {
 						EmailAccountCustomView email = (EmailAccountCustomView) SyncSettingActivity.sAccountList
 								.getChildAt(index);
-						if (email != null && email.getActive()) {
-							((AnimationDrawable) email.getButton()
-									.getBackground()).start();
-							email.getButton().setVisibility(View.VISIBLE);
+						if (email != null && email.getActive()) {							
+							sync_data = email.getButton();
 						}
 					}
 
-					syncTask = new SynchronizeTask();
+					if (((AnimationDrawable)sync_data.getBackground()).isRunning()){
+						continue;
+					}
+					
+					((AnimationDrawable)sync_data.getBackground()).start();
+					sync_data.setVisibility(View.VISIBLE);
+					syncTask = new SynchronizeTask(sync_data);
 					syncTask.execute();
 					Thread.sleep(1 * 3600000);
 				}
@@ -131,6 +137,7 @@ public class PfmApplication extends Application {
 				+ AccountProvider.getInstance().getAccounts().size(),
 				"money.tracker.presentation");
 		runBackground.start();
+		warningTimer.start();
 		if (!Boolean.parseBoolean(XmlParser.getInstance().getConfigContent(
 				"autoSync"))) {
 			runThread = false;
