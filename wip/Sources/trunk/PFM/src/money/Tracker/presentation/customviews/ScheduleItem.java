@@ -16,13 +16,15 @@ public class ScheduleItem extends LinearLayout {
 	public EditText budget;
 	public Button addBtn, removeBtn;
 	public EditText category_edit;
+	public long Id;
 
-	public ScheduleItem(Context context, CategoryAdapter categoryAdapter) {
+	public ScheduleItem(Context context, CategoryAdapter categoryAdapter,
+			long id) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.schedule_edit_item, this, true);
-
+		Id = id;
 		category = (Spinner) findViewById(R.id.schedule_item_category);
 		budget = (EditText) findViewById(R.id.schedule_item_price);
 		addBtn = (Button) findViewById(R.id.schedule_item_add);
@@ -31,6 +33,10 @@ public class ScheduleItem extends LinearLayout {
 
 		// Apply the adapter to the spinner.
 		category.setAdapter(categoryAdapter);
+	}
+
+	public ScheduleItem(Context context) {
+		super(context);
 	}
 
 	public long getCategory() {

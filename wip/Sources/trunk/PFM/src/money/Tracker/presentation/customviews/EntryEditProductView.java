@@ -1,5 +1,6 @@
 package money.Tracker.presentation.customviews;
 
+import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
@@ -19,8 +20,9 @@ public class EntryEditProductView extends LinearLayout {
 	private Button addBtn, removeBtn;
 	final TextView total_text_view;
 	private LinearLayout.LayoutParams mLastParams;
+	public long Id;
 
-	public EntryEditProductView(Context context, TextView total_view) {
+	public EntryEditProductView(Context context, TextView total_view, long id) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -30,9 +32,9 @@ public class EntryEditProductView extends LinearLayout {
 		price = (EditText) findViewById(R.id.entry_edit_product_price);
 		addBtn = (Button) findViewById(R.id.entry_edit_product_item_add);
 		removeBtn = (Button) findViewById(R.id.entry_edit_product_remove);
-
+		Id = id;
 		mLastParams = (LayoutParams) product.getLayoutParams();
-		
+
 		price.addTextChangedListener(new TextWatcher() {
 			long sValue = 0;
 
@@ -75,12 +77,12 @@ public class EntryEditProductView extends LinearLayout {
 							0, LayoutParams.WRAP_CONTENT, 5);
 					params.setMargins(5, 0, 0, 0);
 					view.setLayoutParams(params);
-					((EditText)view).setEllipsize(null);
-					((EditText)view).setSingleLine(false);
+					((EditText) view).setEllipsize(null);
+					((EditText) view).setSingleLine(false);
 				} else {
 					view.setLayoutParams(mLastParams);
-					((EditText)view).setEllipsize(TextUtils.TruncateAt.END);
-					((EditText)view).setSingleLine();
+					((EditText) view).setEllipsize(TextUtils.TruncateAt.END);
+					((EditText) view).setSingleLine();
 				}
 			}
 		});
@@ -115,7 +117,7 @@ public class EntryEditProductView extends LinearLayout {
 				}
 
 				EntryEditProductView item = new EntryEditProductView(
-						getContext(), total_text_view);
+						getContext(), total_text_view, -1);
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -137,13 +139,20 @@ public class EntryEditProductView extends LinearLayout {
 					if (item == null) {
 						return;
 					}
-
+					
+					item.removeItem();
 					list.removeView(item);
 				}
 			}
 		});
 	}
 
+	public void removeItem(){
+		if (Id != -1){
+			SqlHelper.instance.delete("EntryDetail", "Id = " + Id);
+		}
+	}
+	
 	public String checkBeforeSave() {
 		if ("".equals(getCost())) {
 			return "A price is empty!";

@@ -48,6 +48,7 @@ public class ScheduleEditActivity extends Activity {
 	private long passed_schedule_id = -1;
 	LinearLayout list;
 	private CategoryAdapter categoryAdapter;
+	private String removedScheduleDetails = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,8 @@ public class ScheduleEditActivity extends Activity {
 				if (!hasFocus) {
 					String str = total_budget.getText().toString();
 					if (!"".equals(str) && str.endsWith(".")) {
-						total_budget.setText(Converter.toString(Converter.toLong(str)));
+						total_budget.setText(Converter.toString(Converter
+								.toLong(str)));
 					}
 				}
 			}
@@ -127,7 +129,7 @@ public class ScheduleEditActivity extends Activity {
 		if (passed_schedule_id == -1) {
 			updateDisplay();
 			addToList(
-					new DetailSchedule(0, 0, Converter.toLong(initialValue)),
+					new DetailSchedule(-1, 0, Converter.toLong(initialValue)),
 					-1, false);
 
 		} else { // Edit mode
@@ -150,7 +152,7 @@ public class ScheduleEditActivity extends Activity {
 							"Schedule_Id = " + passed_schedule_id);
 			if (values.size() == 0) {
 				addToList(
-						new DetailSchedule(0, 0,
+						new DetailSchedule(-1, 0,
 								Converter.toLong(initialValue)), -1, false);
 			} else {
 				for (DetailSchedule value : values) {
@@ -163,7 +165,8 @@ public class ScheduleEditActivity extends Activity {
 	int lastAddedItem;
 
 	private void addToList(DetailSchedule detail, int index, boolean init) {
-		ScheduleItem itemView = new ScheduleItem(this, categoryAdapter);
+		ScheduleItem itemView = new ScheduleItem(this, categoryAdapter,
+				detail.getId());
 		itemView.category.setTag(itemView.category_edit);
 
 		if (init) {
@@ -234,7 +237,10 @@ public class ScheduleEditActivity extends Activity {
 		} else {
 			list.addView(itemView, index);
 		}
-
+		
+		itemView.setFocusable(true);
+		itemView.requestFocus();
+		
 		itemView.addBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				int lastItem = 0;
@@ -261,7 +267,7 @@ public class ScheduleEditActivity extends Activity {
 				}
 
 				lastAddedItem = lastItem;
-				addToList(new DetailSchedule(0, 0, getNextHint()),
+				addToList(new DetailSchedule(-1, 0, getNextHint()),
 						lastAddedItem, false);
 			}
 		});
@@ -275,6 +281,10 @@ public class ScheduleEditActivity extends Activity {
 						return;
 					}
 
+					if (item.Id != -1) {
+						removedScheduleDetails += item.Id + ",";
+					}
+
 					// Insert userColor to db again.
 					SqlHelper.instance.insert("UserColor",
 							new String[] { "User_Color" },
@@ -284,7 +294,6 @@ public class ScheduleEditActivity extends Activity {
 					list.removeView(item);
 					updateTotalBudget(true);
 				}
-
 			}
 		});
 	}
@@ -298,7 +307,8 @@ public class ScheduleEditActivity extends Activity {
 			if (!hasFocus) {
 				String str = ((EditText) v).getText().toString();
 				if (!"".equals(str)) {
-					((EditText) v).setText(Converter.toString(Converter.toLong(str)));
+					((EditText) v).setText(Converter.toString(Converter
+							.toLong(str)));
 				}
 			}
 		}
@@ -400,7 +410,8 @@ public class ScheduleEditActivity extends Activity {
 		String Time_id = (periodic.isChecked() ? "1" : "0");
 
 		if (passed_schedule_id != -1) {
-			String budget_value = String.valueOf(Converter.toLong(total_budget.getText().toString()));
+			String budget_value = String.valueOf(Converter.toLong(total_budget
+					.getText().toString()));
 			if ("".equals(budget_value)) {
 				budget_value = String
 						.valueOf(total_budget.getHint().toString());
@@ -428,7 +439,16 @@ public class ScheduleEditActivity extends Activity {
 			// Add new schedule.
 			addSchedule(Time_id);
 		}
-
+		
+		if (removedScheduleDetails.length() > 1) {
+			// Delete items that removed before.
+			SqlHelper.instance.delete(
+					"ScheduleDetail",
+					"Id IN ("
+							+ removedScheduleDetails.substring(0,
+									removedScheduleDetails.length() - 1) + ")");
+		}
+		
 		CategoryRepository.getInstance().updateData();
 		setResult(100);
 		this.finish();
@@ -450,8 +470,8 @@ public class ScheduleEditActivity extends Activity {
 
 		// Delete all records that have schedule id equals
 		// passed_schedule_id
-		SqlHelper.instance.delete("ScheduleDetail", new StringBuilder(
-				"Schedule_Id = ").append(passed_schedule_id).toString());
+		// SqlHelper.instance.delete("ScheduleDetail", new StringBuilder(
+		// "Schedule_Id = ").append(passed_schedule_id).toString());
 		// Insert new.
 		saveDetailSchedule(passed_schedule_id);
 		Alert.getInstance().show(this, "Updated 1 record sucessfully");
@@ -508,12 +528,18 @@ public class ScheduleEditActivity extends Activity {
 								String.valueOf(detailItem.category_edit
 										.getTag()) });
 			}
-			SqlHelper.instance.insert(
-					"ScheduleDetail",
-					new String[] { "Budget", "Category_id", "Schedule_id" },
-					new String[] { String.valueOf(detailItem.getBudget()),
-							String.valueOf(category_id),
-							String.valueOf(newScheduleId) });
+
+			String[] columns = new String[] { "Budget", "Category_id",
+					"Schedule_id" };
+			String[] values = new String[] {
+					String.valueOf(detailItem.getBudget()),
+					String.valueOf(category_id), String.valueOf(newScheduleId) };
+			if (detailItem.Id == -1) {
+				SqlHelper.instance.insert("ScheduleDetail", columns, values);
+			} else {
+				SqlHelper.instance.update("ScheduleDetail", columns, values,
+						"Id=" + detailItem.Id);
+			}
 		}
 	}
 
