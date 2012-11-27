@@ -153,14 +153,11 @@ public class BorrowLendViewActivity extends Activity {
 		}
 
 		BorrowLendRepository bolere = new BorrowLendRepository();
-		values = bolere.getData("Debt_type like '" + debtType
-				+ "' order by expired_date DESC");
+		values = bolere.getData("Debt_type like '" + debtType + "' order by expired_date DESC");
 
 		if (values.size() == 0) {
-			Log.d("Check display", "Check 1");
 			displayText.setVisibility(View.VISIBLE);
 		} else {
-			Log.d("Check display", "Check 2");
 			displayText.setVisibility(View.GONE);
 		}
 

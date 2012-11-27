@@ -144,5 +144,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_report_view_chart">ReportViewChartActivity</string>
     <string name="title_activity_report_main_view_chart">ReportMainViewChartActivity</string>
+    <string name="title_activity_report_view_bar_chart">ReportViewBarChartActivity</string>
 
 </resources>

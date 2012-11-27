@@ -2,6 +2,7 @@ package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
@@ -11,6 +12,7 @@ import money.Tracker.presentation.customviews.ReportDetailProduct;
 import android.os.Bundle;
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.util.Log;
 import android.view.Menu;
@@ -93,11 +95,6 @@ public class ReportViewDetailActivity extends Activity {
 			}
 		}
 
-		Log.d("report detail",
-				"Check 5 - " + Converter.toString(startDate, "dd/MM/yyyy"));
-		Log.d("report detail",
-				"Check 5 - " + Converter.toString(endDate, "dd/MM/yyyy"));
-
 		if (budget != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -110,288 +107,269 @@ public class ReportViewDetailActivity extends Activity {
 	private void getIncome() {
 		long totalIncome = 0;
 
-		Cursor entryIncomeCursor = SqlHelper.instance.select("Entry", "*",
-				"Type=0");
-		if (entryIncomeCursor != null) {
-			if (entryIncomeCursor.moveToFirst()) {
+		List<String> entryCategoryName = new ArrayList<String>();
+		List<Long> entryCategoryValue = new ArrayList<Long>();
+
+		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*","Type=0");
+		if (entryExpenseCursor != null) {
+			if (entryExpenseCursor.moveToFirst()) {
 				do {
-					long id = entryIncomeCursor.getLong(entryIncomeCursor
-							.getColumnIndex("Id"));
-					Date entryDate = Converter
-							.toDate(entryIncomeCursor
-									.getString(entryIncomeCursor
-											.getColumnIndex("Date")));
-					if (checkMonthly)
-					{
-						String entryDateMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate,
-								"MM");
-						String entryDateYear = Converter.toString(entryDate, "YYYY");
-						String startDateYear = Converter.toString(startDate,
-								"YYYY");
-						Log.d("Report - Entry Date Year", entryDateYear);
-						Log.d("Report - Start Date Year", startDateYear);
-						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
-						{
-							Cursor entryDetailCursor = SqlHelper.instance.select(
-									"EntryDetail", "*", "Entry_Id=" + id);
+					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
+					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
+					if (checkMonthly) {
+						String entryDateMonth = Converter.toString(entryDate,"MM");
+						String startDateMonth = Converter.toString(startDate,"MM");
+						String entryDateYear = Converter.toString(entryDate,"yyyy");
+						String startDateYear = Converter.toString(startDate,"yyyy");
+
+						if (entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear)) {
+							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail","Category_Id, sum(Money) as Total","Entry_Id=" + id+ " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
 									do {
-										totalIncome += entryDetailCursor
-												.getLong(entryDetailCursor
-														.getColumnIndex("Money"));
+										String name = "";
+										long value = 0;
+
+										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+										if (categoryCursor != null) {
+											if (categoryCursor.moveToFirst()) {
+												do {
+													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+												} while (categoryCursor.moveToNext());
+											}
+										}
+
+										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
+
+										if (!entryCategoryName.isEmpty()) {
+
+											boolean check = false;
+
+											for (int i = 0; i < entryCategoryName.size(); i++) {
+												if (entryCategoryName.get(i).equals(name)) {
+													entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
+													check = true;
+												}
+											}
+
+											if (check == false) {
+												entryCategoryName.add(name);
+												entryCategoryValue.add(value);
+											}
+
+										} else {
+											entryCategoryName.add(name);
+											entryCategoryValue.add(value);
+										}
+										
+										totalIncome += value;
+										
 									} while (entryDetailCursor.moveToNext());
 								}
 							}
 						}
-					} else
-					{
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						Cursor entryDetailCursor = SqlHelper.instance.select(
-								"EntryDetail", "*", "Entry_Id=" + id);
-						if (entryDetailCursor != null) {
-							if (entryDetailCursor.moveToFirst()) {
-								do {
-									totalIncome += entryDetailCursor
-											.getLong(entryDetailCursor
-													.getColumnIndex("Money"));
-								} while (entryDetailCursor.moveToNext());
-							}
-						}
-					}
-					}
-				} while (entryIncomeCursor.moveToNext());
-			}
+					} else {
+						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
+								|| entryDate.compareTo(startDate) == 0
+								|| entryDate.compareTo(endDate) == 0) {
+							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
+							if (entryDetailCursor != null) {
+								if (entryDetailCursor.moveToFirst()) {
+									do {
+										String name = "";
+										long value = 0;
 
-			if (totalIncome != 0) {
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-
-				reportDetail.addView(new ReportDetailCategory(this, "Income",
-						totalIncome), params);
-			}
-
-			if (entryIncomeCursor.moveToFirst()) {
-				Log.d("report detail", "Check 57");
-				do {
-					Log.d("report detail", "Check 58");
-					long id = entryIncomeCursor.getLong(entryIncomeCursor
-							.getColumnIndex("Id"));
-					Date entryDate = Converter
-							.toDate(entryIncomeCursor
-									.getString(entryIncomeCursor
-											.getColumnIndex("Date")));
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						Log.d("report detail", "Check 59");
-						Cursor entryDetailCursor = SqlHelper.instance.select(
-								"EntryDetail",
-								"Category_Id, sum(Money) as Total", "Entry_Id="
-										+ id + " group by Category_Id");
-						Log.d("report detail", "Check 60");
-						if (entryDetailCursor != null) {
-							Log.d("report detail", "Check 61");
-							if (entryDetailCursor.moveToFirst()) {
-								Log.d("report detail", "Check 62");
-								do {
-									Log.d("report detail", "Check 63");
-									long categoryID = entryDetailCursor
-											.getLong(entryDetailCursor
-													.getColumnIndex("Category_Id"));
-									String name = "";
-									Cursor categoryCursor = SqlHelper.instance
-											.select("Category", "*", "Id="
-													+ categoryID);
-									Log.d("report detail", "Check 64");
-									if (categoryCursor != null) {
-										Log.d("report detail", "Check 65");
-										if (categoryCursor.moveToFirst()) {
-											Log.d("report detail", "Check 66");
-											do {
-												Log.d("report detail",
-														"Check 67");
-												name = categoryCursor
-														.getString(categoryCursor
-																.getColumnIndex("Name"));
-											} while (categoryCursor
-													.moveToNext());
+										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+										if (categoryCursor != null) {
+											if (categoryCursor.moveToFirst()) {
+												do {
+													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+												} while (categoryCursor.moveToNext());
+											}
 										}
-									}
-									long value = entryDetailCursor
-											.getLong(entryDetailCursor
-													.getColumnIndex("Total"));
-									Log.d("report detail", "Check 68");
-									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-											LayoutParams.FILL_PARENT,
-											LayoutParams.WRAP_CONTENT);
-									Log.d("report detail", "Check 69");
-									reportDetail.addView(
-											new ReportDetailProduct(this, name,
-													value), params);
-									Log.d("report detail", "Check 70");
 
-								} while (entryDetailCursor.moveToNext());
+										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
+
+										if (!entryCategoryName.isEmpty()) {
+
+											boolean check = false;
+
+											for (int i = 0; i < entryCategoryName.size(); i++) {
+												if (entryCategoryName.get(i).equals(name)) {
+													entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
+													check = true;
+												}
+											}
+
+											if (check == false) {
+												entryCategoryName.add(name);
+												entryCategoryValue.add(value);
+											}
+
+										} else {
+											entryCategoryName.add(name);
+											entryCategoryValue.add(value);
+										}
+										
+										totalIncome += value;
+										
+									} while (entryDetailCursor.moveToNext());
+								}
 							}
 						}
 					}
-				} while (entryIncomeCursor.moveToNext());
+				} while (entryExpenseCursor.moveToNext());
 			}
 		}
+		
+		if (totalIncome != 0) {
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+			reportDetail.addView(new ReportDetailCategory(this, "Income", totalIncome), params);
+			
+			for (int i = 0; i < entryCategoryName.size(); i++)
+			{
+				reportDetail.addView(new ReportDetailProduct(this, entryCategoryName.get(i), Converter.toLong(entryCategoryValue.get(i).toString())), params);
+			}
+		}
+		
 	}
 
 	private void getExpense() {
 		long totalExpense = 0;
 
-		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
-				"Type=1");
-		Log.d("report detail", "Check 51");
+		List<String> entryCategoryName = new ArrayList<String>();
+		List<Long> entryCategoryValue = new ArrayList<Long>();
+
+		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*","Type=1");
 		if (entryExpenseCursor != null) {
-			Log.d("report detail", "Check 52");
 			if (entryExpenseCursor.moveToFirst()) {
-				Log.d("report detail", "Check 53");
 				do {
-					Log.d("report detail", "Check 54");
-					long id = entryExpenseCursor.getLong(entryExpenseCursor
-							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryExpenseCursor
-							.getString(entryExpenseCursor
-									.getColumnIndex("Date")));
-					Log.d("report detail",
-							"Check 55 - "
-									+ Converter.toString(entryDate,
-											"dd/MM/yyyy"));
-					if(checkMonthly)
-					{
-						String entryDateMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate,
-								"MM");
-						String entryDateYear = Converter.toString(entryDate, "yyyy");
-						String startDateYear = Converter.toString(startDate,
-								"yyyy");
-						Log.d("Report - Start Date", startDate.toString());
-						Log.d("Report - Entry Date Year", entryDateYear);
-						Log.d("Report - Start Date Year", startDateYear);
-						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
-						{
-							Cursor entryDetailCursor = SqlHelper.instance.select(
-									"EntryDetail", "*", "Entry_Id=" + id);
+					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
+					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
+					if (checkMonthly) {
+						String entryDateMonth = Converter.toString(entryDate,"MM");
+						String startDateMonth = Converter.toString(startDate,"MM");
+						String entryDateYear = Converter.toString(entryDate,"yyyy");
+						String startDateYear = Converter.toString(startDate,"yyyy");
+
+						if (entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear)) {
+							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail","Category_Id, sum(Money) as Total","Entry_Id=" + id+ " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
 									do {
-										totalExpense += entryDetailCursor
-												.getLong(entryDetailCursor
-														.getColumnIndex("Money"));
+										String name = "";
+										long value = 0;
+
+										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+										if (categoryCursor != null) {
+											if (categoryCursor.moveToFirst()) {
+												do {
+													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+												} while (categoryCursor.moveToNext());
+											}
+										}
+
+										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
+
+										if (!entryCategoryName.isEmpty()) {
+
+											boolean check = false;
+
+											for (int i = 0; i < entryCategoryName.size(); i++) {
+												if (entryCategoryName.get(i).equals(name)) {
+													entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
+													check = true;
+												}
+											}
+
+											if (check == false) {
+												entryCategoryName.add(name);
+												entryCategoryValue.add(value);
+											}
+
+										} else {
+											entryCategoryName.add(name);
+											entryCategoryValue.add(value);
+										}
+										
+										totalExpense += value;
+										
 									} while (entryDetailCursor.moveToNext());
 								}
 							}
 						}
-					}else
-					{
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						Log.d("report detail", "Check 56");
-						Cursor entryDetailCursor = SqlHelper.instance.select(
-								"EntryDetail", "*", "Entry_Id=" + id);
-						if (entryDetailCursor != null) {
-							if (entryDetailCursor.moveToFirst()) {
-								do {
-									totalExpense += entryDetailCursor
-											.getLong(entryDetailCursor
-													.getColumnIndex("Money"));
-								} while (entryDetailCursor.moveToNext());
-							}
-						}
-					}
-					}
-				} while (entryExpenseCursor.moveToNext());
-			}
+					} else {
+						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
+								|| entryDate.compareTo(startDate) == 0
+								|| entryDate.compareTo(endDate) == 0) {
+							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
+							if (entryDetailCursor != null) {
+								if (entryDetailCursor.moveToFirst()) {
+									do {
+										String name = "";
+										long value = 0;										
 
-			if (totalExpense != 0) {
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-
-				reportDetail.addView(new ReportDetailCategory(this, "Expense",
-						totalExpense), params);
-			}
-
-			if (entryExpenseCursor.moveToFirst()) {
-				Log.d("report detail", "Check 57");
-				do {
-					Log.d("report detail", "Check 58");
-					long id = entryExpenseCursor.getLong(entryExpenseCursor
-							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryExpenseCursor
-							.getString(entryExpenseCursor
-									.getColumnIndex("Date")));
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						Log.d("report detail", "Check 59");
-						Cursor entryDetailCursor = SqlHelper.instance.select(
-								"EntryDetail",
-								"Category_Id, sum(Money) as Total", "Entry_Id="
-										+ id + " group by Category_Id");
-						Log.d("report detail", "Check 60");
-						if (entryDetailCursor != null) {
-							Log.d("report detail", "Check 61");
-							if (entryDetailCursor.moveToFirst()) {
-								Log.d("report detail", "Check 62");
-								do {
-									Log.d("report detail", "Check 63");
-									long categoryID = entryDetailCursor
-											.getLong(entryDetailCursor
-													.getColumnIndex("Category_Id"));
-									String name = "";
-									Cursor categoryCursor = SqlHelper.instance
-											.select("Category", "*", "Id="
-													+ categoryID);
-									Log.d("report detail", "Check 64");
-									if (categoryCursor != null) {
-										Log.d("report detail", "Check 65");
-										if (categoryCursor.moveToFirst()) {
-											Log.d("report detail", "Check 66");
-											do {
-												Log.d("report detail",
-														"Check 67");
-												name = categoryCursor
-														.getString(categoryCursor
-																.getColumnIndex("Name"));
-											} while (categoryCursor
-													.moveToNext());
+										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+										if (categoryCursor != null) {
+											if (categoryCursor.moveToFirst()) {
+												do {
+													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+												} while (categoryCursor.moveToNext());
+											}
 										}
-									}
-									long value = entryDetailCursor
-											.getLong(entryDetailCursor
-													.getColumnIndex("Total"));
-									Log.d("report detail", "Check 68");
-									LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-											LayoutParams.FILL_PARENT,
-											LayoutParams.WRAP_CONTENT);
-									Log.d("report detail", "Check 69");
-									reportDetail.addView(
-											new ReportDetailProduct(this, name,
-													value), params);
-									Log.d("report detail", "Check 70");
 
-								} while (entryDetailCursor.moveToNext());
+										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
+
+										if (!entryCategoryName.isEmpty()) {
+
+											boolean check = false;
+
+											for (int i = 0; i < entryCategoryName.size(); i++) {
+												if (entryCategoryName.get(i).equals(name)) {
+													entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
+													check = true;
+												}
+											}
+
+											if (check == false) {
+												entryCategoryName.add(name);
+												entryCategoryValue.add(value);
+											}
+
+										} else {
+											entryCategoryName.add(name);
+											entryCategoryValue.add(value);
+										}
+										
+										totalExpense += value;
+										
+									} while (entryDetailCursor.moveToNext());
+								}
 							}
 						}
 					}
 				} while (entryExpenseCursor.moveToNext());
 			}
 		}
+		
+		if (totalExpense != 0) {
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+			reportDetail.addView(new ReportDetailCategory(this, "Expense", totalExpense), params);
+			
+			for (int i = 0; i < entryCategoryName.size(); i++)
+			{
+				reportDetail.addView(new ReportDetailProduct(this, entryCategoryName.get(i), entryCategoryValue.get(i)), params);
+			}
+		}
 	}
 
-	private void getBorrowing() {
+	private void getBorrowing() {		
 		long totalBorrowing = 0;
 
 		Cursor borrowingCursor = SqlHelper.instance.select("BorrowLend", "*",
@@ -399,19 +377,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (borrowingCursor != null) {
 			if (borrowingCursor.moveToFirst()) {
 				do {
-					Date entryDate = Converter.toDate(borrowingCursor
-							.getString(borrowingCursor
-									.getColumnIndex("Start_date")),
-							"dd/MM/yyyy");
-					Date startDate1 = Converter
-							.toDate(_startDate, "dd/MM/yyyy");
-					Date endDate1 = Converter.toDate(_endDate, "dd/MM/yyyy");
-					Log.d("Check entry date string", borrowingCursor
-							.getString(borrowingCursor
-									.getColumnIndex("Start_date")));
-					Log.d("Check entry date", entryDate.toString());
-					Log.d("Check start date", startDate.toString());
-					Log.d("Check end date", endDate.toString());
+					Date entryDate = Converter.toDate(borrowingCursor.getString(borrowingCursor.getColumnIndex("Start_date")),"dd/MM/yyyy");
 					if (checkMonthly)
 					{
 						String entryDateMonth = Converter.toString(entryDate, "MM");

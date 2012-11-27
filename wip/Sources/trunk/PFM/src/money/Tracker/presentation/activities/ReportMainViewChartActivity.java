@@ -25,18 +25,12 @@ public class ReportMainViewChartActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_main_view_chart);
         
-        Log.d("Check chart", "Check 0");
         TabHost mTabHost = getTabHost();
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
-		Log.d("Check chart", "Check 1");
 		Bundle extras = getIntent().getExtras();
-		Log.d("Check chart", "Check 2");
 		boolean checkMonthly = extras.getBoolean("checkMonthly");
-		Log.d("Check chart", "Check 3 " + checkMonthly);
 		String startDate = extras.getString("start_date");
-		Log.d("Check chart", "Check 4 " + startDate);
-		String endDate = extras.getString("end_date");
-		Log.d("Check chart", "Check 5 " + endDate);
+		String endDate = extras.getString("end_date");		
 
 		TextView reportViewDetailTitle = (TextView) findViewById(R.id.report_main_view_chart_title);
 		if (checkMonthly) {
@@ -62,10 +56,12 @@ public class ReportMainViewChartActivity extends TabActivity {
 		setupTab(pieChartViewIntent, "Biểu đồ hình tròn", mTabHost);
 
 		// Create tab and intent for chart
-		Intent barChartViewIntent = chart.getBarIntent(this);
-		Log.d("Chart", "Check 11");
+		//Intent barChartViewIntent = chart.getBarIntent(this);
+		Intent barChartViewIntent = new Intent(this, ReportViewBarChartActivity.class);
+		barChartViewIntent.putExtra("checkMonthly", checkMonthly);
+		barChartViewIntent.putExtra("start_date", startDate);
+		barChartViewIntent.putExtra("end_date", endDate);
 		setupTab(barChartViewIntent, "Biểu đồ hình cột", mTabHost);
-		Log.d("Chart", "Check 12");
     }
     
  // This method is used to setup a tab with Name tab and content of tab.
