@@ -61,6 +61,7 @@ public class SyncHelper {
 
 		if (url.length() != 0) {
 			URL = url;
+//			URL = "http://10.0.2.2:1242/PFMService.asmx";
 		}
 
 	}
@@ -123,7 +124,7 @@ public class SyncHelper {
 					"SyncHelper");
 
 			Date lastDateSync = Converter.toDate(
-					String.valueOf(syncDate.getProperty(0)),
+					String.valueOf(syncDate.getPropertyAsString(0).replace('T', ' ')),
 					"yyyy-MM-dd hh:mm:ss");
 
 			// Find records are modified after last date sync.
