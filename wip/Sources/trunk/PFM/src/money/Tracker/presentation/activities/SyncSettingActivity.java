@@ -232,10 +232,67 @@ public class SyncSettingActivity extends Activity {
 						&& email.getText().equals(
 								AccountProvider.getInstance()
 										.getCurrentAccount().name)) {
-//					SynchronizeTask.sButton = email.getButton();
+					// SynchronizeTask.sButton = email.getButton();
 					email.setActive(true);
 				}
 			}
+		}
+	}
+
+	private void initializeWarningSetting() {
+		Cursor warningSetting = SqlHelper.instance
+				.select("AppInfo",
+						new StringBuilder(
+								"ScheduleWarn, ScheduleRing, ScheduleRemind,")
+								.append("BorrowWarn, BorrowRing, BorrowRemind")
+								.toString(),
+						new StringBuilder("UserName='")
+								.append(AccountProvider.getInstance()
+										.getCurrentAccount().name).append("'")
+								.toString());
+
+		if (warningSetting != null && warningSetting.moveToFirst()) {
+			getIndexFromStringArray(warningSetting.getString(0), " %",
+					mScheduleWarnArr, mScheduleWarn);
+			getIndexFromStringArray(warningSetting.getString(1), "",
+					mScheduleRingArr, mScheduleRing);
+			getIndexFromStringArray(warningSetting.getString(2), " "
+					+ getResources().getString(R.string.minutes),
+					mScheduleRemindArr, mScheduleRemind);
+			getIndexFromStringArray(warningSetting.getString(3), " "
+					+ getResources().getString(R.string.hours), mBorrowWarnArr,
+					mBorrowWarn);
+			getIndexFromStringArray(warningSetting.getString(4), "",
+					mBorrowRingArr, mBorrowRing);
+			getIndexFromStringArray(warningSetting.getString(5), " "
+					+ getResources().getString(R.string.minutes),
+					mBorrowRemindArr, mBorrowRemind);
+		}
+	}
+
+	private void getIndexFromStringArray(String key, String unit,
+			ArrayList<String> list, Spinner parentSpinner) {
+
+		int valueIndex = -1;
+		if (key.startsWith("#")) {
+			if ("#NONE".equals(key)) {
+				valueIndex = 0;
+			} else {
+				valueIndex = 1;
+			}
+		} else {
+			for (int index = 0; index < list.size(); index++) {
+				if (key.equals(list.get(index).split(" ")[0])) {
+					valueIndex = index;
+				}
+			}
+		}
+		if (valueIndex == -1) {
+			createSpinnerItem(key, unit, parentSpinner, list);
+		} else {
+			parentSpinner.setSelection(valueIndex);
+			((ArrayAdapter<?>) parentSpinner.getAdapter())
+					.notifyDataSetChanged();
 		}
 	}
 
@@ -272,6 +329,10 @@ public class SyncSettingActivity extends Activity {
 				return;
 			}
 
+			if (view == null) {
+				return;
+			}
+
 			// Select time that before warning or reminding.
 			if (getResources().getString(R.string.others).equals(
 					((TextView) view).getText().toString())) {
@@ -305,6 +366,7 @@ public class SyncSettingActivity extends Activity {
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
+										initializeWarningSetting();
 									}
 								}).show();
 			} else {
@@ -353,16 +415,7 @@ public class SyncSettingActivity extends Activity {
 			}
 		} else {
 			// User cancel choosing.
-			switch (requestCode) {
-			case 108:
-				// Ring of Schedule function.
-				updateConfig("ScheduleRing", "#NONE");
-				break;
-			case 111:
-				// Ring of Borrow function.
-				updateConfig("BorrowRing", "#NONE");
-				break;
-			}
+			initializeWarningSetting();
 		}
 	}
 
@@ -375,22 +428,24 @@ public class SyncSettingActivity extends Activity {
 	}
 
 	private void updateConfig(String column, String value) {
-		Cursor checkExist = SqlHelper.instance.select("AppInfo", "UserName", new StringBuilder("UserName='")
-		.append(AccountProvider.getInstance()
-				.getCurrentAccount().name).append("'")
-		.toString());
-		
-		if (checkExist == null || !checkExist.moveToFirst()){
-			SqlHelper.instance.insert("AppInfo", new String[] {
-					"UserName", "LastSync", "Status", "ScheduleWarn",
-					"ScheduleRing", "ScheduleRemind", "BorrowWarn",
-					"BorrowRing", "BorrowRemind" }, new String[] {
-					AccountProvider.getInstance()
-					.getCurrentAccount().name, "1990-01-20 00:00:00", "0",
-					"50", "#DEFAULT", "10",
-					"168", "#DEFAULT", "10" });
+		Cursor checkExist = SqlHelper.instance.select(
+				"AppInfo",
+				"UserName",
+				new StringBuilder("UserName='")
+						.append(AccountProvider.getInstance()
+								.getCurrentAccount().name).append("'")
+						.toString());
+
+		if (checkExist == null || !checkExist.moveToFirst()) {
+			SqlHelper.instance.insert("AppInfo", new String[] { "UserName",
+					"LastSync", "Status", "ScheduleWarn", "ScheduleRing",
+					"ScheduleRemind", "BorrowWarn", "BorrowRing",
+					"BorrowRemind" }, new String[] {
+					AccountProvider.getInstance().getCurrentAccount().name,
+					"1990-01-20 00:00:00", "0", "50", "#DEFAULT", "10", "168",
+					"#DEFAULT", "10" });
 		}
-		
+
 		SqlHelper.instance.update(
 				"AppInfo",
 				new String[] { column },
@@ -407,21 +462,25 @@ public class SyncSettingActivity extends Activity {
 			switch (currentAdapterIndex) {
 			case 1:
 				createSpinnerItem(value, " %", mScheduleWarn, mScheduleWarnArr);
+				updateConfig("ScheduleWarn", value);
 				break;
 			case 3:
 				createSpinnerItem(value,
 						" " + getResources().getString(R.string.minutes),
 						mScheduleRemind, mScheduleRemindArr);
+				updateConfig("ScheduleRemind", value);
 				break;
 			case 4:
 				createSpinnerItem(value,
 						" " + getResources().getString(R.string.hours),
 						mBorrowWarn, mBorrowWarnArr);
+				updateConfig("BorrowWarn", value);
 				break;
 			case 6:
 				createSpinnerItem(value,
 						" " + getResources().getString(R.string.minutes),
 						mBorrowRemind, mBorrowRemindArr);
+				updateConfig("BorrowRemind", value);
 				break;
 			}
 		}
@@ -432,7 +491,7 @@ public class SyncSettingActivity extends Activity {
 		super.onResume();
 		try {
 			bindAccount(sAccountList, false);
-
+			initializeWarningSetting();
 			if (Boolean.parseBoolean(XmlParser.getInstance().getConfigContent(
 					"autoSync"))) {
 				mAutoSync.setChecked(true);
