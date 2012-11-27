@@ -1,5 +1,6 @@
 package money.Tracker.presentation.activities;
 
+import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.IOHelper;
 import money.Tracker.common.utilities.SyncHelper;
@@ -22,6 +23,8 @@ public class HomeActivity extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
+		
+		SqlHelper.instance.dropAllTables();
 
 		// All of code blocks for initialize view should be placed here.
 		TabHost mTabHost = getTabHost();
