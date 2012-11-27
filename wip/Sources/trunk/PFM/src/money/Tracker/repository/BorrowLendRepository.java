@@ -61,7 +61,7 @@ public class BorrowLendRepository {
 									.getString(
 											borrowLendData
 													.getColumnIndex("Start_date"))
-									.trim(), "dd/MM/yyyy"));
+									.trim()));
 					Log.d("Select", "Check 10");
 					if (!borrowLendData
 							.getString(
@@ -73,7 +73,7 @@ public class BorrowLendRepository {
 										.getString(
 												borrowLendData
 														.getColumnIndex("Expired_date"))
-										.trim(), "dd/MM/yyyy"));
+										.trim()));
 						Log.d("Select", "Check 11");
 					} else {
 						bole.setExpiredDate(null);

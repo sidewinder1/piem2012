@@ -253,7 +253,9 @@ public class BorrowLendInsertActivity extends Activity {
 				public void afterTextChanged(Editable s) {
 					// TODO Auto-generated method stub
 					column.add("Start_date");
-					valuesChanged.add(startDateEditText.getText().toString());
+					valuesChanged.add(Converter.toString(Converter.toDate(
+							startDateEditText.getText().toString(),
+							"dd/MM/yyyy")));
 				}
 			});
 
@@ -274,7 +276,9 @@ public class BorrowLendInsertActivity extends Activity {
 				public void afterTextChanged(Editable s) {
 					// TODO Auto-generated method stub
 					column.add("Expired_date");
-					valuesChanged.add(expiredDateEditText.getText().toString());
+					valuesChanged.add(Converter.toString(Converter.toDate(
+							expiredDateEditText.getText().toString(),
+							"dd/MM/yyyy")));
 				}
 			});
 		}
@@ -389,14 +393,14 @@ public class BorrowLendInsertActivity extends Activity {
 		Log.d("st", "Check 2");
 		startDateEditText.setText(new StringBuilder().append(startDate_Day)
 				.append("/").append(startDate_Month + 1).append("/")
-				.append(startDate_Year).append(" "));
+				.append(startDate_Year).toString());
 	}
 
 	// updates the date in the TextView
 	private void updateDisplayExpiredDate() {
 		expiredDateEditText.setText(new StringBuilder().append(expiredDate_Day)
 				.append("/").append(expiredDate_Month + 1).append("/")
-				.append(expiredDate_Year).append(" "));
+				.append(expiredDate_Year).toString());
 	}
 
 	// the callback received when the user "sets" the date in the dialog
@@ -543,19 +547,25 @@ public class BorrowLendInsertActivity extends Activity {
 					debtType = "Lending";
 				}
 				long check = SqlHelper.instance
-						.insert("BorrowLend", new String[] { "Debt_type",
-								"Money", "Interest_type", "Interest_rate",
-								"Start_date", "Expired_date", "Person_name",
-								"Person_phone", "Person_address" },
+						.insert("BorrowLend",
+								new String[] { "Debt_type", "Money",
+										"Interest_type", "Interest_rate",
+										"Start_date", "Expired_date",
+										"Person_name", "Person_phone",
+										"Person_address" },
 								new String[] {
 										debtType,
 										moneyEditText.getText().toString(),
 										interestTypeString,
 										interestRate.getText().toString(),
-										startDateEditText.getText().toString()
-												.trim(),
-										expiredDateEditText.getText()
-												.toString().trim(),
+										Converter.toString(Converter.toDate(
+												startDateEditText.getText()
+														.toString().trim(),
+												"dd/MM/yyyy")),
+										Converter.toString(Converter.toDate(
+												expiredDateEditText.getText()
+														.toString().trim(),
+												"dd/MM/yyyy")),
 										nameEditText.getText().toString(),
 										phoneEditText.getText().toString(),
 										addressEditText.getText().toString() });

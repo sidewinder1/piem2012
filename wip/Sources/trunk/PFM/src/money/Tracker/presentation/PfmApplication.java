@@ -73,12 +73,12 @@ public class PfmApplication extends Application {
 			// Looper.prepare();
 			try {
 				while (true) {
-					if ("pfm.com".equals(AccountProvider.getInstance()
-							.getCurrentAccount().type)
-							|| syncTask.getStatus() == Status.RUNNING
-							|| !runThread || SynchronizeTask.isSynchronizing()) {
-						continue;
-					}
+//					if ("pfm.com".equals(AccountProvider.getInstance()
+//							.getCurrentAccount().type)
+//							|| syncTask.getStatus() == Status.RUNNING
+//							|| !runThread || SynchronizeTask.isSynchronizing()) {
+//						continue;
+//					}
 
 					Cursor time = SqlHelper.instance.select(
 							"AppInfo",
@@ -98,7 +98,7 @@ public class PfmApplication extends Application {
 														.toString(DateTimeHelper.addHours(
 																DateTimeHelper
 																		.now(false),
-																longTime)));
+																longTime)) + "'");
 						if (checkBorrow != null && checkBorrow.moveToFirst()) {
 							Alert.getInstance().notify(
 									BorrowLendMainViewActivity.class,
