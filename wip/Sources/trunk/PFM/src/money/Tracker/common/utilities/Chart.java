@@ -28,6 +28,7 @@ import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.YuvImage;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -47,16 +48,9 @@ public class Chart extends AbstractChart {
 	private List<String> scheduleCategoryName;
 	private List<Double> scheduleCategoryValue;
 
-	public Chart(boolean checkMonthly, Date sDate, Date eDate) {
+	public Chart() {
 		// TODO Auto-generated constructor stub
-		this.startDate = sDate;
-		this.endDate = eDate;
-		this.checkMonthly = checkMonthly;
-
-		getScheduleData();
-		Log.d("Check chart", "Get schedule finished");
-		getEntryData();
-		Log.d("Check chart", "Get entry finished");
+		
 	}
 
 	private void getScheduleData() {
@@ -279,6 +273,71 @@ public class Chart extends AbstractChart {
 			}
 		}
 	}
+	
+	private void getData()
+	{
+		// get spent
+		long spent = 0;
+
+		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*", "Type=1");
+		if (entryExpenseCursor != null) {
+			if (entryExpenseCursor.moveToFirst()) {
+				do {
+					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
+					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
+					if (entryDate.compareTo(startDate) > 0
+							&& entryDate.compareTo(endDate) < 0
+							|| entryDate.compareTo(startDate) == 0
+							|| entryDate.compareTo(endDate) == 0) {
+						Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "*", "Entry_Id=" + id);
+						if (entryDetailCursor != null) {
+							if (entryDetailCursor.moveToFirst()) {
+								do {
+									spent += entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Money"));
+								} while (entryDetailCursor.moveToNext());
+							}
+						}
+					}
+				} while (entryExpenseCursor.moveToNext());
+			}
+		}
+
+		// get budget
+		long budget = 0;
+		String whereCondition = "";
+		if (checkMonthly)
+			whereCondition = "Type = 1";
+		else
+			whereCondition = "Type = 0";
+
+		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*",whereCondition);
+		if (scheduleCursor != null) {
+			if (scheduleCursor.moveToFirst()) {
+				do {
+					if (checkMonthly) {
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						String startDateMonth = Converter.toString(startDate,"MM");
+
+						if (scheduleMonth.equals(startDateMonth))
+							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
+					} else {
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						Date scheduleEndDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("End_date")));
+
+						if ((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) < 0)
+								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) == 0)
+								|| (scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) == 0)
+								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) < 0))
+							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
+					}
+				} while (scheduleCursor.moveToNext());
+			}
+		}
+		
+		entryCategoryValue.add((double) spent);
+		scheduleCategoryValue.add((double) budget);
+	}
 
 	protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List<double[]> values) {
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
@@ -328,9 +387,75 @@ public class Chart extends AbstractChart {
 		renderer.setAxesColor(axesColor);
 		renderer.setLabelsColor(labelsColor);
 	}
+	
+	public View getBarCompareIntent(Context context, boolean checkMonthly, List<Date[]> dateList)
+	{
+		entryCategoryValue = new ArrayList<Double>();
+		scheduleCategoryValue = new ArrayList<Double>();
+		this.checkMonthly = checkMonthly;
+		
+		for(int i = 0; i < dateList.size(); i++)
+		{
+			Date [] compareDate = dateList.get(i);
+			this.startDate = compareDate[0];
+			this.endDate = compareDate[1];
+			
+			getData();
+		}
+		
+		double yMax = 0;
+		double[] entryCategoryValueArray = new double[entryCategoryValue.size()];
+		double[] scheduleCategoryValueArray = new double[entryCategoryValue.size()];
+		
+		for (int i = 0; i < entryCategoryValue.size(); i++)
+		{
+			entryCategoryValueArray[i] = entryCategoryValue.get(i) / 1000;
+			scheduleCategoryValueArray[i] = scheduleCategoryValue.get(i) / 1000;
+			
+			if (entryCategoryValue.get(i) / 1000 > yMax)
+				yMax = entryCategoryValue.get(i) / 1000;
+			
+			if (scheduleCategoryValue.get(i) / 1000 > yMax)
+				yMax = scheduleCategoryValue.get(i) / 1000;
+		}
+		
+		List<double[]> values = new ArrayList<double[]>();
+		values.add(entryCategoryValueArray);
+		values.add(scheduleCategoryValueArray);
+		
+		String[] titles = new String[]{"Thực Chi", "Dự kiến"};
+		int[] colors = new int[]{Color.YELLOW, Color.GREEN}; //Color.parseColor("#FFD700"), Color.parseColor("#7CFC00")
+		
+		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
+		setChartSettings(renderer, "", "", "", 0.5, 12.5, 0, yMax, Color.GRAY, Color.LTGRAY);
+		renderer.setXLabels(12);
+		renderer.setYLabels(10);
+		renderer.setApplyBackgroundColor(true);
+		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		renderer.setDisplayChartValues(false);
+		renderer.setOrientation(Orientation.VERTICAL); 
+		renderer.setXLabelsAlign(Align.LEFT);
+		renderer.setYLabelsAlign(Align.LEFT);
+		//renderer.setChartTitleTextSize(25);
+		//renderer.setLabelsTextSize(25);
+		renderer.setLegendTextSize(25);
+		// renderer.setPanEnabled(false);
+		// renderer.setZoomEnabled(false);
+		renderer.setZoomRate(1.1f);
+		renderer.setBarSpacing(0.5f);
+		//return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer, Type.STACKED);
+		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
+	}
 
 	@SuppressWarnings("deprecation")
-	public View getBarIntent(Context context) {
+	public View getBarIntent(Context context, boolean checkMonthly, Date sDate, Date eDate) {
+		this.startDate = sDate;
+		this.endDate = eDate;
+		this.checkMonthly = checkMonthly;
+
+		getScheduleData();
+		getEntryData();
+		
 		String[] entryCategoryNameArray = new String[entryCategoryName.size()];
 		entryCategoryNameArray = entryCategoryName.toArray(entryCategoryNameArray);
 		Double[] entryCategoryValueArray = new Double[entryCategoryValue.size()];
@@ -448,7 +573,13 @@ public class Chart extends AbstractChart {
 		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 	}
 
-	public Intent getPieIntent(Context context) {
+	public Intent getPieIntent(Context context, boolean checkMonthly, Date sDate, Date eDate) {
+		this.startDate = sDate;
+		this.endDate = eDate;
+		this.checkMonthly = checkMonthly;
+
+		getEntryData();
+		
 		CategorySeries series = new CategorySeries("Pie Graph");
 		DefaultRenderer renderer = new DefaultRenderer();
 

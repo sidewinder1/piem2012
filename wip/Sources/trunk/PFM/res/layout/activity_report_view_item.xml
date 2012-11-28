@@ -38,7 +38,7 @@
             android:id="@+id/report_view_spent_buget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:paddingLeft="50dp"
             android:focusable="true"
             android:gravity="left"
             android:text="@string/dummy_data"

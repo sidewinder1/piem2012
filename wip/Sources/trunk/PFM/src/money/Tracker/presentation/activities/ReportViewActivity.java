@@ -143,10 +143,6 @@ public class ReportViewActivity extends Activity {
 							}
 						}
 
-						Log.d("Check report view",
-								"Start date - "
-										+ Converter.toString(startDate,
-												"dd/MM/yyyy"));
 						if (endDate != null)
 							Log.d("Check report view", "End date - "
 									+ Converter.toString(endDate, "dd/MM/yyyy"));

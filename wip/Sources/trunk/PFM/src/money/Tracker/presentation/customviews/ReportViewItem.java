@@ -135,25 +135,26 @@ public class ReportViewItem extends LinearLayout {
 			}
 		}
 
-		reportViewSpentBudget.setText("Spent/Budget:"
-				+ Converter.toString(spent) + "/" + Converter.toString(budget));
-
-		View stackItem = new View(getContext());
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
-				LayoutParams.FILL_PARENT, Float.parseFloat(budget + ""));
-		Log.d("Report Adapter", "Check 18");
-		stackItem.setBackgroundColor(Color.parseColor("#99FF0000"));
-		reportStackedBarChart.addView(stackItem, params);
-		Log.d("Report Adapter", "Check 19");
-
-		View stackItem1 = new View(getContext());
-		LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(0,
-				LayoutParams.FILL_PARENT, Float.parseFloat(spent + ""));
-		Log.d("Report Adapter", "Check 20");
-		stackItem1.setBackgroundColor(Color.parseColor("#9900FFFF"));
-		Log.d("Report Adapter", "Check 21");
-		reportStackedBarChart.addView(stackItem1, params1);
-		Log.d("Report Adapter", "Check 22");
+		reportViewSpentBudget.setText("Spent/Budget: "+ Converter.toString(spent) + "/" + Converter.toString(budget));
+		
+		if (budget - spent > 0)
+		{
+			View stackItem = new View(getContext());
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, Float.parseFloat(spent + ""));
+			stackItem.setBackgroundColor(Color.YELLOW); //Color.parseColor("#FFD700")
+			reportStackedBarChart.addView(stackItem, params);
+	
+			View stackItem1 = new View(getContext());
+			LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, Float.parseFloat((budget - spent) + ""));
+			stackItem1.setBackgroundColor(Color.GREEN); //Color.parseColor("#7CFC00")
+			reportStackedBarChart.addView(stackItem1, params1);
+		} else
+		{
+			View stackItem = new View(getContext());
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, Float.parseFloat(spent + ""));
+			stackItem.setBackgroundColor(Color.RED);//Color.parseColor("(#8B0000")
+			reportStackedBarChart.addView(stackItem, params);
+		}
 
 		final boolean checkMonth = checkMonthly;
 		final String sDate = Converter.toString(startDate);
