@@ -45,6 +45,18 @@ public class AccountProvider {
 			return;
 		}
 
+		Cursor accountCheck = SqlHelper.instance.select("AppInfo",
+				"UserName", "UserName = 'LocalAccount'");
+		if (accountCheck == null || !accountCheck.moveToFirst()) {
+			SqlHelper.instance.insert("AppInfo", new String[] {
+					"UserName", "LastSync", "Status", "ScheduleWarn",
+					"ScheduleRing", "ScheduleRemind", "BorrowWarn",
+					"BorrowRing", "BorrowRemind" }, new String[] {
+					"LocalAccount", "1990-01-20 00:00:00", "0",
+					"50", "#DEFAULT", "10",
+					"168", "#DEFAULT", "10" });
+		}
+		
 		setDefaultLocalAccount();
 	}
 

@@ -7,6 +7,7 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Logger;
+import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.PfmApplication;
@@ -274,6 +275,7 @@ public class SyncSettingActivity extends Activity {
 			ArrayList<String> list, Spinner parentSpinner) {
 
 		int valueIndex = -1;
+		int div = getResources().getString(R.string.hours).equals(unit.trim()) ? 60 : 1;
 		if (key.startsWith("#")) {
 			if ("#NONE".equals(key)) {
 				valueIndex = 0;
@@ -282,7 +284,7 @@ public class SyncSettingActivity extends Activity {
 			}
 		} else {
 			for (int index = 0; index < list.size(); index++) {
-				if (key.equals(list.get(index).split(" ")[0])) {
+				if (key.equals(getUnit(list.get(index), div))) {
 					valueIndex = index;
 				}
 			}
@@ -377,23 +379,44 @@ public class SyncSettingActivity extends Activity {
 					break;
 				case 3:
 					updateConfig("ScheduleRemind",
-							mScheduleRemindArr.get(position).split(" ")[0]);
+							getUnit(mScheduleRemindArr.get(position), 1));
 					break;
 				case 4:
-					updateConfig("BorrowWarn", mBorrowWarnArr.get(position)
-							.split(" ")[0]);
+					updateConfig("BorrowWarn",
+							getUnit(mBorrowWarnArr.get(position), 60));
 					break;
 				case 6:
-					updateConfig("BorrowRemind", mBorrowRemindArr.get(position)
-							.split(" ")[0]);
+					updateConfig("BorrowRemind",
+							getUnit(mBorrowRemindArr.get(position), 1));
 					break;
 				}
 			}
 		}
-
+		
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	};
+
+	private String getUnit(String valueOfItem, int div) {
+		int unit = 1;
+		String[] valuesOfItem = valueOfItem.split(" ");
+		long value = 0;
+		if (valuesOfItem.length == 2) {
+			value = Converter.toLong(valuesOfItem[0]);
+			if (getResources().getString(R.string.hours).equals(
+					valuesOfItem[1])) {
+				unit = 60 / div;
+			} else if (getResources().getString(R.string.days).equals(
+					valuesOfItem[1])) {
+				unit = 1440 / div;
+			} else if (getResources().getString(R.string.weeks).equals(
+					valuesOfItem[1])) {
+				unit = 10080 / div;
+			}
+		}
+
+		return Converter.toString(value * unit);
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
