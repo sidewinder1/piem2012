@@ -11,6 +11,8 @@
     <string name="others">Khác…</string>
     <string name="hours">tiếng</string>
     <string name="minutes">phút</string>
+     <string name="days">ngày</string>
+    <string name="weeks">tuần</string>
     <string name="input_dialog_title">Nhập giá trị</string>
     <string name="ok">Đồng ý</string>
     <string name="cancel">Hủy</string>
