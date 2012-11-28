@@ -48,11 +48,9 @@ public class ReportMainViewChartActivity extends TabActivity {
 		
 		Date sDate = Converter.toDate(startDate);
 		Date eDate = Converter.toDate(endDate);
-		Chart chart = new Chart(checkMonthly, sDate, eDate);		
-		Log.d("Chart", "Check 2 - " + startDate + " - " + sDate.toString());
-		Log.d("Chart", "Check 2 - " + endDate + " - " + eDate.toString());
+		Chart chart = new Chart();		
 		// Create tab and intent for view detail information
-		Intent pieChartViewIntent = chart.getPieIntent(this); 
+		Intent pieChartViewIntent = chart.getPieIntent(this, checkMonthly, sDate, eDate); 
 		setupTab(pieChartViewIntent, "Biểu đồ hình tròn", mTabHost);
 
 		// Create tab and intent for chart

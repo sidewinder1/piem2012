@@ -3,22 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-	
+	
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:clipChildren="false" >
+    
 	    <LinearLayout
-	        android:id="@+id/report_custom_dialog_list_view"
+	        android:id="@+id/report_custom_dialog_list_date_view"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical" />
-	</ScrollView>
     
+    </ScrollView>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp">
+        android:paddingLeft="50dp" >
 
         <CheckBox
             android:id="@+id/report_custom_dialog_check_all_checkbox"
@@ -33,12 +36,12 @@
             android:text="@string/report_management_custom_dialog_check_all"
             android:textSize="15dp" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp">
-        
+        android:paddingLeft="50dp" >
+
         <CheckBox
             android:id="@+id/report_custom_dialog_uncheck_all_checkbox"
             android:layout_width="20dp"
@@ -52,17 +55,21 @@
             android:text="@string/report_management_custom_dialog_uncheck_all"
             android:textSize="15dp" />
     </LinearLayout>
-    
-        <LinearLayout
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp">
-        
+        android:paddingLeft="30dp" >
+
         <Button
             android:id="@+id/report_custom_dialog_ok_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ok" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/report_custom_dialog_cancel_button"
@@ -70,5 +77,5 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel" />
     </LinearLayout>
-    
+
 </LinearLayout>
