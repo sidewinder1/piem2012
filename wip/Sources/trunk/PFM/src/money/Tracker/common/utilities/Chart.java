@@ -361,8 +361,13 @@ public class Chart extends AbstractChart {
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
 		renderer.setAxisTitleTextSize(16);
 		renderer.setChartTitleTextSize(20);
-		renderer.setLabelsTextSize(15);
+		renderer.setLabelsTextSize(15);		
 		renderer.setLegendTextSize(15);
+		
+		renderer.setInScroll(false);
+		renderer.setPanEnabled(false, false);
+		renderer.setInScroll(false);
+		
 		int length = colors.length;
 		for (int i = 0; i < length; i++) {
 			SimpleSeriesRenderer r = new SimpleSeriesRenderer();
