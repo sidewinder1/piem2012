@@ -78,12 +78,18 @@ public class EntryEditProductView extends LinearLayout {
 										.getCurrentAccount().name).append("'")
 								.toString());
 				long budget = PfmApplication.getTotalBudget();
-				if (checkOverBudget != null && checkOverBudget.moveToFirst() && budget != 0) {
+				if (checkOverBudget != null && checkOverBudget.moveToFirst()
+						&& budget != 0) {
 					double percent = checkOverBudget.getLong(0) / 100d;
 
-					if (budget * percent <= PfmApplication
-							.getTotalEntry()+ total) {
-						Alert.getInstance().show(getContext(), "Over over over... budget.");
+					if (budget * percent <= PfmApplication.getTotalEntry()
+							+ total) {
+						Alert.getInstance().show(
+								getContext(),
+								getResources().getString(
+										R.string.warning_borrow_overbudget)
+										.replace("{0}",
+												checkOverBudget.getString(0)));
 					}
 				}
 			}

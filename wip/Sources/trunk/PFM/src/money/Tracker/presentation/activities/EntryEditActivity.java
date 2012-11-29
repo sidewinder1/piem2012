@@ -8,10 +8,12 @@ import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
 import jim.h.common.android.lib.zxing.integrator.IntentResult;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.NfcHelper;
+import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
@@ -52,7 +54,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private LinearLayout mEntryList;
 	private NdefMessage[] msgs;
 	private boolean mBlocked;
-	
+
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -146,32 +148,33 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 					String nameProduct = "";
 					if (_result[0].length() > 14
-							&& (_result[0].contains("Tên sản phẩm: ") || _result[0].contains("Ten san pham: ") || _result[0].contains("Name: "))) {
-						if(_result[0].contains("Tên sản phẩm: ") || _result[0].contains("Ten san pham: "))
+							&& (_result[0].contains("Tên sản phẩm: ")
+									|| _result[0].contains("Ten san pham: ") || _result[0]
+										.contains("Name: "))) {
+						if (_result[0].contains("Tên sản phẩm: ")
+								|| _result[0].contains("Ten san pham: "))
 							nameProduct = _result[0].substring(14);
 						else
 							nameProduct = _result[0].substring(6);
 					}
 
 					String price = "";
-					if (_result[1].length() > 8 && (_result[1].contains("Giá: ") || _result[1].contains("Gia: ")  || _result[1].contains("Price: "))) {
-						if(_result[1].contains("Giá: ") || _result[1].contains("Gia: "))
-						{
+					if (_result[1].length() > 8
+							&& (_result[1].contains("Giá: ")
+									|| _result[1].contains("Gia: ") || _result[1]
+										.contains("Price: "))) {
+						if (_result[1].contains("Giá: ")
+								|| _result[1].contains("Gia: ")) {
 							if (_result[1].contains("VND"))
-							price = _result[1]
-									.substring(5, _result[1].length() - 3).replace(
-											".", "");
+								price = _result[1].substring(5,
+										_result[1].length() - 3).replace(".",
+										"");
 							else
-								price = _result[1]
-										.substring(5).replace(
-												".", "");
-							}
-							else
-							{
-								price = _result[1]
-										.substring(7).replace(
-												".", "");
-							}
+								price = _result[1].substring(5)
+										.replace(".", "");
+						} else {
+							price = _result[1].substring(7).replace(".", "");
+						}
 					}
 
 					if (!nameProduct.equals("") && !price.equals("")) {
@@ -180,8 +183,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 						try {
 							entryDetail.setEntry_id(1);
 							entryDetail.setName(nameProduct);
-							entryDetail.setMoney(Converter.toLong(price
-									.trim()));
+							entryDetail
+									.setMoney(Converter.toLong(price.trim()));
 						} catch (Exception e) {
 
 						}
@@ -197,8 +200,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 									.getChildAt(index);
 
 							if (item != null) {
-								if (item.removeEmptyCatagory())
-								{
+								if (item.removeEmptyCatagory()) {
 									mEntryList.removeView(item);
 								}
 							}
@@ -229,6 +231,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		if (save()) {
 			CategoryRepository.getInstance().updateData();
 			setResult(100);
+			if (!SynchronizeTask.isSynchronizing()
+					&& !"pfm.com".equals(AccountProvider.getInstance()
+							.getCurrentAccount().type)) {
+				SynchronizeTask task = new SynchronizeTask();
+				task.execute();
+			}
+
 			this.finish();
 		}
 	}
@@ -281,9 +290,9 @@ public class EntryEditActivity extends NfcDetectorActivity {
 					new String[] { date, String.valueOf(type) },
 					new StringBuilder("Id = ").append(mPassedEntryId)
 							.toString());
-			SqlHelper.instance.delete(subTable,
-					new StringBuilder("Entry_Id = ").append(mPassedEntryId)
-							.toString());
+			// SqlHelper.instance.delete(subTable,
+			// new StringBuilder("Entry_Id = ").append(mPassedEntryId)
+			// .toString());
 		}
 
 		for (int index = 0; index < mEntryList.getChildCount(); index++) {
@@ -407,14 +416,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	}
 
 	public void nfcIntentDetected(Intent intent, String action) {
-		if (mBlocked)
-		{
+		if (mBlocked) {
 			return;
 		}
-		
+
 		Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(
 				NfcAdapter.EXTRA_NDEF_MESSAGES);
-		
+
 		if (rawMsgs != null) {
 			msgs = new NdefMessage[rawMsgs.length];
 			int count = 0;

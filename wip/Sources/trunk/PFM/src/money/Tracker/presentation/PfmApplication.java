@@ -37,8 +37,8 @@ public class PfmApplication extends Application {
 	private static Thread runBackground = new Thread(new Runnable() {
 		public void run() {
 			// Looper.prepare();
-			try {
-				while (true) {
+			while (true) {
+				try {
 					if ("pfm.com".equals(AccountProvider.getInstance()
 							.getCurrentAccount().type)
 							|| syncTask.getStatus() == Status.RUNNING
@@ -47,28 +47,31 @@ public class PfmApplication extends Application {
 					}
 
 					Button sync_data = null;
-					for (int index = 0; index < SyncSettingActivity.sAccountList
-							.getChildCount(); index++) {
-						EmailAccountCustomView email = (EmailAccountCustomView) SyncSettingActivity.sAccountList
-								.getChildAt(index);
-						if (email != null && email.getActive()) {
-							sync_data = email.getButton();
+					if (SyncSettingActivity.sAccountList != null) {
+						for (int index = 0; index < SyncSettingActivity.sAccountList
+								.getChildCount(); index++) {
+							EmailAccountCustomView email = (EmailAccountCustomView) SyncSettingActivity.sAccountList
+									.getChildAt(index);
+							if (email != null) {
+								if (email.getActive())
+								{
+									sync_data = email.getButton();
+									((AnimationDrawable) sync_data.getBackground()).start();
+									sync_data.setVisibility(View.VISIBLE);
+								}	
+								else{
+									((AnimationDrawable)email.getButton().getBackground()).stop();
+								}
+							}
 						}
 					}
-
-					if (((AnimationDrawable) sync_data.getBackground())
-							.isRunning()) {
-						continue;
-					}
-
-					((AnimationDrawable) sync_data.getBackground()).start();
-					sync_data.setVisibility(View.VISIBLE);
+			
 					syncTask = new SynchronizeTask(sync_data);
 					syncTask.execute();
 					Thread.sleep(1 * 3600000);
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), "PfmApplication");
 				}
-			} catch (Exception e) {
-				Logger.Log(e.getMessage(), "PfmApplication");
 			}
 			// Looper.loop();
 		}
@@ -87,7 +90,7 @@ public class PfmApplication extends Application {
 		return total_entry;
 	}
 
-	public static long getTotalBudget(){
+	public static long getTotalBudget() {
 		Date currentDate = DateTimeHelper.now(false);
 		Cursor totalBudgetCursor = SqlHelper.instance.select(
 				"Schedule",
@@ -98,12 +101,13 @@ public class PfmApplication extends Application {
 						.append("' OR End_date = '")
 						.append(Converter.toString(DateTimeHelper
 								.getLastDateOfMonth(
-										currentDate.getYear() + 1900, currentDate.getMonth())))
-						.append("')").toString());
-		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()){
+										currentDate.getYear() + 1900,
+										currentDate.getMonth()))).append("')")
+						.toString());
+		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
 			return totalBudgetCursor.getLong(0);
 		}
-		
+
 		return 0;
 	}
 
@@ -174,11 +178,13 @@ public class PfmApplication extends Application {
 		Logger.Log("Start applicaton "
 				+ AccountProvider.getInstance().getAccounts().size(),
 				"money.tracker.presentation");
-		runBackground.start();
 		warningTimer.start();
 		if (!Boolean.parseBoolean(XmlParser.getInstance().getConfigContent(
 				"autoSync"))) {
 			runThread = false;
+		} else {
+			runBackground.start();
+			runThread = true;
 		}
 	}
 
