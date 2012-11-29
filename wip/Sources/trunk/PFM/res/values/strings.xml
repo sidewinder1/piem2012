@@ -121,6 +121,7 @@
     <string name="report_management_detail_lending">Lending</string>
     <string name="report_management_custom_dialog_check_all">Chọn tất cả</string>
     <string name="report_management_custom_dialog_uncheck_all">Bỏ chọn tất cả</string>
+    <string name="report_chart_tab_title">Biểu đồ</string>
     
     <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>

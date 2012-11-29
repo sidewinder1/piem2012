@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
@@ -30,9 +31,9 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
 		Bundle extras = getIntent().getExtras();
-		boolean checkMonthly = extras.getBoolean("checkMonthly");
-		String startDate = extras.getString("start_date");
-		String endDate = extras.getString("end_date");
+		final boolean checkMonthly = extras.getBoolean("checkMonthly");
+		final String startDate = extras.getString("start_date");
+		final String endDate = extras.getString("end_date");
 
 		TextView reportViewDetailTitle = (TextView) findViewById(R.id.report_main_view_detail_title);
 		if (checkMonthly) {
@@ -68,7 +69,20 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		reportViewChartIntent.putExtra("end_date", endDate);
 		Log.d("Main View Detail", "Check 3_1" + endDate);
 		Log.d("Main View Detail", "Check 4_1");
-		setupTab(reportViewChartIntent, "Biểu đồ", mTabHost);
+		
+		// Create chart tab.
+		// setupTab(reportViewChartIntent, "Biểu đồ", mTabHost);
+		TextView chartTitle = (TextView)findViewById(R.id.report_chart_title);
+		chartTitle.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				Intent reportMainViewChart = new Intent(getBaseContext(),
+						ReportMainViewChartActivity.class);
+				reportMainViewChart.putExtra("checkMonthly", checkMonthly);
+				reportMainViewChart.putExtra("start_date", startDate);
+				reportMainViewChart.putExtra("end_date", endDate);
+				startActivity(reportMainViewChart);
+			}
+		});
 	}
 
 	// This method is used to setup a tab with Name tab and content of tab.
