@@ -99,7 +99,7 @@ public class AccountProvider {
 		}
 
 		if (mAccountList.size() == 0) {
-			mAccountList.add(new Account("DebugAccount2", "debug.com"));
+			mAccountList.add(new Account("cinderella.hn90@gmail.com", "debug.com"));
 			mAccountList.add(new Account("DebugAccount1", "debug.com"));
 			mAccountList.add(new Account("DebugAccount3", "debug.com"));
 		}
