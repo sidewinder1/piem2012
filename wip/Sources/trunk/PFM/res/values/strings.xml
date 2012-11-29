@@ -47,6 +47,7 @@
     <string name="sync_view_new_account">Tạo tài khoản</string>
     <string name="sync_success">Đồng bộ thành công</string>
     <string name="sync_fail">Đồng bộ thất bại</string>
+    <string name="sync_waiting_synchronization">Đang đồng bộ…</string>
     <string name="sync_no_account_message">Bạn cần tài khoản để đồng bộ.\r\nThêm mới?</string>
 
     <!-- These are resources for Warning function -->
@@ -56,6 +57,7 @@
     <string name="warning_schedule_warn_before">Cảnh báo khi đến</string>
     <string name="warning_borrow_warn_before">Cảnh báo trước khi đáo hạn</string>
     <string name="warning_ring">Nhạc chuông</string>
+    <string name="warning_borrow_overbudget">Đã vượt quá {0}% so với kế hoạch!!!</string>
     <string name="warning_remain">Nhắc lại</string>
 
     <string-array name="warning_ring_array">

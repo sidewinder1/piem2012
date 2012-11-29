@@ -4,7 +4,6 @@ import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
-import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -52,11 +51,18 @@ public class SqlHelper {
 					.getCurrentAccount().name);
 		}
 
-		contentValues.put("CreatedDate",
-				Converter.toString(DateTimeHelper.now(true)));
-		contentValues.put("IsDeleted", "0");
-		contentValues.put("ModifiedDate",
-				Converter.toString(DateTimeHelper.now(true)));
+		if (!contentValues.containsKey("CreatedDate")) {
+			contentValues.put("CreatedDate",
+					Converter.toString(DateTimeHelper.now(true)));
+		}
+
+		if (!contentValues.containsKey("IsDeleted")) {
+			contentValues.put("IsDeleted", "0");
+		}
+		if (!contentValues.containsKey("ModifiedDate")) {
+			contentValues.put("ModifiedDate",
+					Converter.toString(DateTimeHelper.now(true)));
+		}
 
 		try {
 			currentDb.insert(tableName, null, contentValues);
@@ -69,21 +75,19 @@ public class SqlHelper {
 
 	public int update(String tableName, String[] columns, String[] newValues,
 			String whereCondition) {
-		String whereForAppInfo = "";
+		String whereForAppInfo = "1=1";
 		if (!"AppInfo".equals(tableName)
 				&& !whereCondition.contains("UserName")) {
-			whereForAppInfo = new StringBuilder(" AND UserName ='")
+			whereForAppInfo = new StringBuilder("UserName ='")
 					.append(AccountProvider.getInstance().getCurrentAccount().name)
 					.append("'").toString();
 		}
 
 		if (whereCondition != null && !"".equals(whereCondition)) {
-			whereCondition = new StringBuilder("IsDeleted = 0 ")
-					.append(whereForAppInfo).append(" AND ")
+			whereCondition = new StringBuilder(whereForAppInfo).append(" AND ")
 					.append(whereCondition).toString();
 		} else {
-			whereCondition = new StringBuilder("IsDeleted = 0 ").append(
-					whereForAppInfo).toString();
+			whereCondition = new StringBuilder(whereForAppInfo).toString();
 		}
 
 		ContentValues newValueContent = new ContentValues();
@@ -127,7 +131,9 @@ public class SqlHelper {
 
 		newValueContent.put("ModifiedDate",
 				Converter.toString(DateTimeHelper.now(true)));
-		newValueContent.put("IsDeleted", "1");
+		if (!newValueContent.containsKey("IsDeleted")) {
+			newValueContent.put("IsDeleted", "1");
+		}
 
 		try {
 			currentDb.update(tableName, newValueContent, whereCondition, null);

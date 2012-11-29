@@ -1,6 +1,7 @@
 package money.Tracker.presentation.customviews;
 
 import money.Tracker.common.utilities.AccountProvider;
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.presentation.activities.R;
@@ -39,6 +40,10 @@ public class EmailAccountCustomView extends LinearLayout {
 			public void onClick(View v) {
 				try {
 					if (SynchronizeTask.isSynchronizing()) {
+						Alert.getInstance().show(
+								getContext(),
+								getResources().getString(
+										R.string.sync_waiting_synchronization));
 						return;
 					}
 
@@ -52,6 +57,7 @@ public class EmailAccountCustomView extends LinearLayout {
 									.getChildAt(index);
 							if (email != null) {
 								email.setActive(false);
+								email.setIconVisibility(View.GONE);
 							}
 						}
 					}
@@ -115,32 +121,33 @@ public class EmailAccountCustomView extends LinearLayout {
 
 	public void setActive(boolean isActive) {
 		boolean animating = !mIsSublist
-				&& ((AnimationDrawable) sync_data.getBackground()).isRunning();
+				&& (sync_data.getVisibility() == View.VISIBLE && ((AnimationDrawable) sync_data
+						.getBackground()).isRunning());
 
-		if (animating) {
-			((AnimationDrawable) sync_data.getBackground()).stop();
-		}
+//		if (animating) {
+//			((AnimationDrawable) sync_data.getBackground()).stop();
+//		}
 
 		sync_data.setBackgroundResource(mIsSublist ? R.drawable.syn_icon_1
-				: (isActive && mAutoSync ? R.drawable.refresh_animation
+				: (mAutoSync ? R.drawable.refresh_animation
 						: R.drawable.refresh_animation2));
 		// if (sync_data.getVisibility() != View.VISIBLE) {
 		sync_data
-				.setVisibility(isActive || (animating && !mIsSublist) ? View.VISIBLE
+				.setVisibility(isActive || animating ? View.VISIBLE
 						: View.GONE);
 		// }
 
 		if (!mIsSublist) {
-			if ((animating && SynchronizeTask.isSynchronizing())) {
+			if (((isActive || animating) && SynchronizeTask.isSynchronizing())) {
 				RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
 						true);
 				spinner.execute((AnimationDrawable) sync_data.getBackground());
 				// ((AnimationDrawable) sync_data.getBackground()).start();
 			} else {
-				RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
-						false);
-				spinner.execute((AnimationDrawable) sync_data.getBackground());
-				// ((AnimationDrawable) sync_data.getBackground()).stop();
+//				RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
+//						false);
+//				spinner.execute((AnimationDrawable) sync_data.getBackground());
+				 ((AnimationDrawable) sync_data.getBackground()).stop();
 			}
 		}
 
@@ -158,20 +165,24 @@ public class EmailAccountCustomView extends LinearLayout {
 		}
 
 		mAutoSync = isAuto;
-		boolean isAnimating = ((AnimationDrawable) sync_data.getBackground())
-				.isRunning() && sync_data.getVisibility() == View.VISIBLE;
-		
-		((AnimationDrawable)sync_data.getBackground()).stop();
-		sync_data.setBackgroundResource(isAuto ? R.drawable.refresh_animation
-				: R.drawable.refresh_animation2);
-		if (!mAutoSync) {
-			setActive(false);
-		}
-		
-//		RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(isAnimating);
-//		spinner.execute((AnimationDrawable) sync_data.getBackground());
-		if (isAnimating) {
-			sync_data.setVisibility(View.VISIBLE);
+
+		// ((AnimationDrawable) sync_data.getBackground()).stop();
+		// sync_data.setBackgroundResource(isAuto ? R.drawable.refresh_animation
+		// : R.drawable.refresh_animation2);
+
+		setActive(mAutoSync && mIsActive);
+
+		// RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
+		// isAnimating);
+		// spinner.execute((AnimationDrawable) sync_data.getBackground());
+		//
+		if (sync_data.getVisibility() == View.VISIBLE
+				&& SynchronizeTask.isSynchronizing()) {
+			RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
+					true);
+			spinner.execute((AnimationDrawable) sync_data.getBackground());
+		} else {
+			((AnimationDrawable) sync_data.getBackground()).stop();
 		}
 	}
 

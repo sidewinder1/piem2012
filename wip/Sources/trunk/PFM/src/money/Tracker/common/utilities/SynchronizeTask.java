@@ -35,7 +35,6 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		isRunning = false;
 		if (sButton != null) {
 			((AnimationDrawable) sButton.getBackground()).stop();
 			sButton.setVisibility(Boolean.parseBoolean(String.valueOf(sButton
@@ -47,5 +46,6 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 		}
 		
 		super.onPostExecute(result);
+		isRunning = false;
 	}
 }

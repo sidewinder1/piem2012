@@ -24,9 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
+import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.customviews.ScheduleItem;
 import money.Tracker.presentation.model.Category;
@@ -237,10 +239,10 @@ public class ScheduleEditActivity extends Activity {
 		} else {
 			list.addView(itemView, index);
 		}
-		
+
 		itemView.setFocusable(true);
 		itemView.requestFocus();
-		
+
 		itemView.addBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				int lastItem = 0;
@@ -439,7 +441,7 @@ public class ScheduleEditActivity extends Activity {
 			// Add new schedule.
 			addSchedule(Time_id);
 		}
-		
+
 		if (removedScheduleDetails.length() > 1) {
 			// Delete items that removed before.
 			SqlHelper.instance.delete(
@@ -448,8 +450,16 @@ public class ScheduleEditActivity extends Activity {
 							+ removedScheduleDetails.substring(0,
 									removedScheduleDetails.length() - 1) + ")");
 		}
-		
+
 		CategoryRepository.getInstance().updateData();
+
+		if (!SynchronizeTask.isSynchronizing()
+				&& !"pfm.com".equals(AccountProvider.getInstance()
+						.getCurrentAccount().type)) {
+			SynchronizeTask task = new SynchronizeTask();
+			task.execute();
+		}
+
 		setResult(100);
 		this.finish();
 	}
