@@ -30,7 +30,7 @@ public class Alert {
 	}
 
 	public void notify(final Class<?> activity, final String title,
-			final String message, final long delayInSeconds,
+			final String message, final long timeRemind,
 			final boolean useDefaultRing, final Uri notifyRing) {
 		new Thread(new Runnable() {
 			public void run() {
@@ -38,6 +38,20 @@ public class Alert {
 				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 						context).setSmallIcon(R.drawable.report_icon)
 						.setContentTitle(title).setContentText(message);
+			
+				Notification notification = mBuilder.build();
+				if (useDefaultRing){
+					notification.defaults = Notification.DEFAULT_ALL;
+				}
+				else{
+					if (notifyRing != null){
+						notification.sound = notifyRing;
+					} 
+					else{
+						
+					}
+				}
+				
 				// Creates an explicit intent for an Activity in your app.
 				Intent resultIntent = new Intent(context, activity);
 				TaskStackBuilder stackBuilder = TaskStackBuilder
@@ -53,26 +67,13 @@ public class Alert {
 						.getSystemService(Context.NOTIFICATION_SERVICE);
 
 				try {
-					Thread.sleep(delayInSeconds * 1000);
+					Thread.sleep(timeRemind * 1000);
 				} catch (InterruptedException e) {
 					Logger.Log(e.getMessage(), "Alert");
 				}
 
-				Notification notification = mBuilder.build();
-				if (useDefaultRing){
-					notification.defaults = Notification.DEFAULT_SOUND;
-				}
-				else{
-					if (notifyRing != null){
-						notification.sound = notifyRing;
-					} 
-					else{
-						
-					}
-				}
-				
 				// mId allows you to update the notification later on.
-				mNotificationManager.notify(mId, mBuilder.build());
+				mNotificationManager.notify(mId, notification);
 			};
 		}).start();
 	}

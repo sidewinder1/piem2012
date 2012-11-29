@@ -1,7 +1,7 @@
 package money.Tracker.repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import android.database.Cursor;
 
@@ -11,19 +11,19 @@ import money.Tracker.presentation.model.EntryDetail;
 public class EntryDetailRepository {
 	private static EntryDetailRepository instance;
 	public ArrayList<EntryDetail> entryDetails;
-	public HashMap<String, ArrayList<EntryDetail>> entries;
+	public LinkedHashMap<String, ArrayList<EntryDetail>> entries;
 
 	public EntryDetailRepository() {
 		updateData();
 	}
 
-	public HashMap<String, ArrayList<EntryDetail>> updateData() {
+	public LinkedHashMap<String, ArrayList<EntryDetail>> updateData() {
 		return updateData("", "Category_Id");
 	}
 
-	public HashMap<String, ArrayList<EntryDetail>> updateData(String condition,
+	public LinkedHashMap<String, ArrayList<EntryDetail>> updateData(String condition,
 			String columnKey) {
-		entries = new HashMap<String, ArrayList<EntryDetail>>();
+		entries = new LinkedHashMap<String, ArrayList<EntryDetail>>();
 		entryDetails = new ArrayList<EntryDetail>();
 
 		Cursor entryCursor = SqlHelper.instance.select("EntryDetail", "*",
