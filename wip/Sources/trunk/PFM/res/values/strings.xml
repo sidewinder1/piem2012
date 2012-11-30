@@ -3,6 +3,8 @@
     <!-- These are common resources for app -->
     <string name="app_name">Money Tracker</string>
     <string name="menu_settings">Thiết lập</string>
+    <string name="menu_import">Nhập…</string>
+    <string name="menu_export">Xuất…</string>
     <string name="title_activity_home">Money Tracker</string>
     <string name="dummy_data">Dummy data</string>
     <string name="no_data">Không có dữ liệu</string>
@@ -11,7 +13,7 @@
     <string name="others">Khác…</string>
     <string name="hours">tiếng</string>
     <string name="minutes">phút</string>
-     <string name="days">ngày</string>
+    <string name="days">ngày</string>
     <string name="weeks">tuần</string>
     <string name="input_dialog_title">Nhập giá trị</string>
     <string name="ok">Đồng ý</string>
@@ -122,7 +124,7 @@
     <string name="report_management_custom_dialog_check_all">Chọn tất cả</string>
     <string name="report_management_custom_dialog_uncheck_all">Bỏ chọn tất cả</string>
     <string name="report_chart_tab_title">Biểu đồ</string>
-    
+
     <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
     <string name="title_activity_lend_view">LendViewActivity</string>
