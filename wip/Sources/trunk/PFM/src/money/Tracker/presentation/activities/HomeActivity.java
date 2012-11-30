@@ -1,5 +1,6 @@
 package money.Tracker.presentation.activities;
 
+import money.Tracker.common.utilities.ExcelHelper;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
@@ -80,9 +81,17 @@ public class HomeActivity extends TabActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_settings) {
+		switch (item.getItemId()) {
+		case R.id.menu_settings:
 			Intent sync = new Intent(this, SyncSettingActivity.class);
 			startActivity(sync);
+			break;
+		case R.id.menu_export:
+			ExcelHelper.getInstance().Export("data.xls");
+			break;
+		case R.id.menu_import:
+			
+			break;
 		}
 		
 		return true;
