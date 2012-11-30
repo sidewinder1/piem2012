@@ -179,6 +179,7 @@ namespace PFMWebService
                     {
                         countRecord.Read();
                         var serverModifiedDate = countRecord["ModifiedDate"];
+                        countRecord.Close();
                         if (clientModifiedDate.CompareTo(Convert.ToDateTime(serverModifiedDate.ToString())) > 0)
                         {
                             var subSColumns = _tableMap[tableName].Split(',');
@@ -204,8 +205,6 @@ namespace PFMWebService
                             }
                         }
                     }
-
-                    countRecord.Close();
                 }
 
                 conn.Close();
