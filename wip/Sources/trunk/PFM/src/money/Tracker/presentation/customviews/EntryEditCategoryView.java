@@ -295,7 +295,7 @@ public class EntryEditCategoryView extends LinearLayout {
 			}
 			
 			values = new String[] { product.getName(),
-					Converter.toString(product.getMoney(), "###0.00"),
+					Converter.toString(product.getMoney()),
 					category_id_str, String.valueOf(entry_id) };
 
 			if (product.Id == -1) {
