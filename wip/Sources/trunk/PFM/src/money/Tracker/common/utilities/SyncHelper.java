@@ -83,6 +83,8 @@ public class SyncHelper {
 	}
 
 	public void synchronize() {
+		getLocalLastSync();
+		
 		String LAST_SYNC_METHOD = "CheckLastSync";
 		String UPDATE_FROM_SERVER = "GetData";
 		String SAVE_DATA_METHOD = "SaveData";
