@@ -443,11 +443,14 @@ public class Chart extends AbstractChart {
 		renderer.setYLabelsAlign(Align.LEFT);
 		//renderer.setChartTitleTextSize(25);
 		//renderer.setLabelsTextSize(25);
-		renderer.setLegendTextSize(25);
+		renderer.setLegendTextSize(20);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
 		renderer.setZoomRate(1.1f);
 		renderer.setBarSpacing(0.5f);
+		renderer.setPanEnabled(false, false);
+		renderer.clearXTextLabels();
+		renderer.clearYTextLabels();
 		//return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 	}
@@ -559,8 +562,8 @@ public class Chart extends AbstractChart {
 		
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
 		setChartSettings(renderer, "", "", "", 0.5, 12.5, 0, yMax, Color.GRAY, Color.LTGRAY);
-		renderer.setXLabels(12);
-		renderer.setYLabels(10);
+		//renderer.setXLabels(12);
+		//renderer.setYLabels(10);
 		renderer.setApplyBackgroundColor(true);
 		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		renderer.setDisplayChartValues(false);
@@ -569,11 +572,14 @@ public class Chart extends AbstractChart {
 		renderer.setYLabelsAlign(Align.LEFT);
 		//renderer.setChartTitleTextSize(25);
 		//renderer.setLabelsTextSize(25);
-		renderer.setLegendTextSize(25);
+		renderer.setLegendTextSize(20);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
 		renderer.setZoomRate(1.1f);
 		renderer.setBarSpacing(0f);
+		renderer.setPanEnabled(false, false);
+		renderer.clearXTextLabels();
+		//renderer.clearYTextLabels();
 		//return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 	}
@@ -602,22 +608,23 @@ public class Chart extends AbstractChart {
 			renderer.addSeriesRenderer(r);
 		}
 		
-		renderer.setLegendTextSize(25);
+		renderer.setLabelsTextSize(20);
+		renderer.setChartTitleTextSize(20);
+		renderer.setLegendTextSize(20);
+		renderer.setPanEnabled(false);
 
 		//return ChartFactory.getPieChartView(context, series, renderer);
 		return ChartFactory.getPieChartIntent(context, series, renderer, "Pie");
 	}
 
 	@Override
-	public void draw(Canvas arg0, int arg1, int arg2, int arg3, int arg4,
-			Paint arg5) {
+	public void draw(Canvas arg0, int arg1, int arg2, int arg3, int arg4, Paint arg5) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void drawLegendShape(Canvas arg0, SimpleSeriesRenderer arg1,
-			float arg2, float arg3, int arg4, Paint arg5) {
+	public void drawLegendShape(Canvas arg0, SimpleSeriesRenderer arg1, float arg2, float arg3, int arg4, Paint arg5) {
 		// TODO Auto-generated method stub
 
 	}

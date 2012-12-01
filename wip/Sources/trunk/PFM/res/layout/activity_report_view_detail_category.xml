@@ -16,6 +16,14 @@
             android:text="@string/dummy_data"
             android:textColor="@color/white_text_color"
             android:textStyle="bold" />
+        
+        <Button
+            android:id="@+id/report_collapsed_button"
+        	android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/report_detail_category_item_name"
+            android:drawableBottom="@drawable/collapsed"/>
 
         <TextView
             android:id="@+id/report_detail_category_item_total"

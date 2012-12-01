@@ -34,9 +34,7 @@ public class ReportViewDetailActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_report_view_detail);
-		Log.d("report detail", "Check 1");
 		bindData();
-		Log.d("report detail", "Check 12");
 	}
 
 	// get schedule budget
@@ -49,29 +47,21 @@ public class ReportViewDetailActivity extends Activity {
 		else
 			whereCondition = "Type = 0";
 
-		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*",
-				whereCondition);
+		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*",whereCondition);
 		if (scheduleCursor != null) {
 			if (scheduleCursor.moveToFirst()) {
 				do {
 					if (checkMonthly) {
-						Date scheduleStartDate = Converter
-								.toDate(scheduleCursor.getString(scheduleCursor
-										.getColumnIndex("Start_date")));
-						String scheduleMonth = Converter.toString(
-								scheduleStartDate, "MM");
-						String scheduleYear = Converter.toString(
-								scheduleStartDate, "YYYY");
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						String scheduleYear = Converter.toString(scheduleStartDate, "YYYY");
 						Log.d("Check get Month", scheduleMonth);
-						String startDateMonth = Converter.toString(startDate,
-								"MM");
-						String startDateYear = Converter.toString(startDate,
-								"YYYY");
+						String startDateMonth = Converter.toString(startDate,"MM");
+						String startDateYear = Converter.toString(startDate,"YYYY");
 						Log.d("Check get Month", startDateMonth);
 
 						if (scheduleMonth.equals(startDateMonth) && scheduleYear.equals(startDateYear))
-							budget = scheduleCursor.getLong(scheduleCursor
-									.getColumnIndex("Budget"));
+							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
 					} else {
 						Date scheduleStartDate = Converter
 								.toDate(scheduleCursor.getString(scheduleCursor
@@ -96,11 +86,9 @@ public class ReportViewDetailActivity extends Activity {
 		}
 
 		if (budget != 0) {
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportDetailCategory(this, "Budget",
-					budget), params);
+			reportDetail.addView(new ReportDetailCategory(this, "Budget", budget, checkMonthly, startDate, endDate), params);
 		}
 	}
 
@@ -227,12 +215,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (totalIncome != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportDetailCategory(this, "Income", totalIncome), params);
-			
-			for (int i = 0; i < entryCategoryName.size(); i++)
-			{
-				reportDetail.addView(new ReportDetailProduct(this, entryCategoryName.get(i), Converter.toLong(entryCategoryValue.get(i).toString())), params);
-			}
+			reportDetail.addView(new ReportDetailCategory(this, "Income", totalIncome, checkMonthly, startDate, endDate), params);
 		}
 		
 	}
@@ -360,12 +343,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (totalExpense != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportDetailCategory(this, "Expense", totalExpense), params);
-			
-			for (int i = 0; i < entryCategoryName.size(); i++)
-			{
-				reportDetail.addView(new ReportDetailProduct(this, entryCategoryName.get(i), entryCategoryValue.get(i)), params);
-			}
+			reportDetail.addView(new ReportDetailCategory(this, "Expense", totalExpense, checkMonthly, startDate, endDate), params);
 		}
 	}
 
@@ -408,37 +386,8 @@ public class ReportViewDetailActivity extends Activity {
 			}
 
 			if (totalBorrowing != 0) {
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-
-				reportDetail.addView(new ReportDetailCategory(this,
-						"Borrowing", totalBorrowing), params);
-			}
-
-			if (borrowingCursor.moveToFirst()) {
-				Log.d("report detail", "Check 57");
-				do {
-					Log.d("report detail", "Check 58");
-					Date entryDate = Converter.toDate(borrowingCursor
-							.getString(borrowingCursor
-									.getColumnIndex("Start_date")));
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						String name = borrowingCursor.getString(borrowingCursor
-								.getColumnIndex("Person_name"));
-						long value = Long.parseLong(borrowingCursor
-								.getString(borrowingCursor
-										.getColumnIndex("Money")));
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT,
-								LayoutParams.WRAP_CONTENT);
-
-						reportDetail.addView(new ReportDetailProduct(this,
-								name, value), params);
-					}
-				} while (borrowingCursor.moveToNext());
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+				reportDetail.addView(new ReportDetailCategory(this, "Borrowing", totalBorrowing, checkMonthly, startDate, endDate), params);
 			}
 		}
 	}
@@ -485,35 +434,7 @@ public class ReportViewDetailActivity extends Activity {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-				reportDetail.addView(new ReportDetailCategory(this, "Lending",
-						totalLending), params);
-			}
-
-			if (lendingCursor.moveToFirst()) {
-				Log.d("report detail", "Check 57");
-				do {
-					Log.d("report detail", "Check 58");
-					Date entryDate = Converter.toDate(lendingCursor
-							.getString(lendingCursor
-									.getColumnIndex("Start_date")));
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						String name = lendingCursor.getString(lendingCursor
-								.getColumnIndex("Person_name"));
-						long value = Long.parseLong(lendingCursor
-								.getString(lendingCursor
-										.getColumnIndex("Money")));
-
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT,
-								LayoutParams.WRAP_CONTENT);
-
-						reportDetail.addView(new ReportDetailProduct(this,
-								name, value), params);
-					}
-				} while (lendingCursor.moveToNext());
+				reportDetail.addView(new ReportDetailCategory(this, "Lending", totalLending, checkMonthly, startDate, endDate), params);
 			}
 		}
 
