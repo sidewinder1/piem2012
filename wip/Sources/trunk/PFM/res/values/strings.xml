@@ -8,8 +8,10 @@
     <string name="title_activity_home">Money Tracker</string>
     <string name="dummy_data">Dummy data</string>
     <string name="no_data">Không có dữ liệu</string>
+    <string name="file_not_exist">Tệp tin không tồn tại</string>
     <string name="image_icon_description">Image of tab</string>
     <string name="delete_confirm">Xóa?</string>
+    <string name="success">Thành công</string>
     <string name="others">Khác…</string>
     <string name="hours">tiếng</string>
     <string name="minutes">phút</string>
@@ -113,6 +115,9 @@
     <string name="entry_edit_menu_title">Menu</string>
     <string name="entry_edit_qr_code">QR Code</string>
     <string name="entry_edit_nfc">NFC</string>
+
+    <!-- These are resources for Export/Import function -->
+    <string name="import_wrong_format">Lỗi định dạng.\r\nKhông thể nhập…</string>
 
     <!-- These are resources for Report function -->
     <string name="report_management_title">Báo cáo</string>

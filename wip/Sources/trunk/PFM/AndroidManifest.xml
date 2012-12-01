@@ -59,6 +59,7 @@
         <activity android:name=".BorrowLendViewDetailActivity" />
         <activity android:name=".ReportMainViewActivity" />
         <activity android:name=".ReportViewActivity" />
+        <activity android:name=".FileExplorerActivity" />
         <activity android:name=".ReportViewDetailActivity" />
         <activity android:name=".ReportMainViewDetailActivity" />
         <activity android:name="org.achartengine.GraphicalActivity" />

@@ -1,6 +1,7 @@
 package money.Tracker.presentation.activities;
 
 import money.Tracker.common.utilities.ExcelHelper;
+import money.Tracker.presentation.PfmApplication;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
@@ -71,11 +72,11 @@ public class HomeActivity extends TabActivity {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onStop() {
 		super.onStop();
-		// String content = 
+		// String content =
 		// IOHelper.getInstance().writeFile(CONFIG_FILE, content);
 	}
 
@@ -87,13 +88,20 @@ public class HomeActivity extends TabActivity {
 			startActivity(sync);
 			break;
 		case R.id.menu_export:
-			ExcelHelper.getInstance().Export("data.xls");
+			ExcelHelper.getInstance().exportData("data.xls");
 			break;
 		case R.id.menu_import:
-			
+			Intent explorerIntent = new Intent(PfmApplication.getAppContext(),
+					FileExplorerActivity.class);
+			explorerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			explorerIntent.putExtra("FileExplorerActivity.allowedExtension",
+					new String[] { ".xls" });
+			explorerIntent.putExtra("FileExplorerActivity.file_icon",
+					R.drawable.xls_file_icon);
+			PfmApplication.getAppContext().startActivity(explorerIntent);
 			break;
 		}
-		
+
 		return true;
 	}
 }

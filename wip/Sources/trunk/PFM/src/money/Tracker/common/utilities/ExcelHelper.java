@@ -2,13 +2,17 @@ package money.Tracker.common.utilities;
 
 import java.io.File;
 import java.io.IOException;
-
 import money.Tracker.common.sql.SqlHelper;
-
+import money.Tracker.presentation.PfmApplication;
+import money.Tracker.presentation.activities.R;
+import money.Tracker.presentation.activities.TabViewActivity;
+import jxl.Cell;
+import jxl.Sheet;
 import jxl.Workbook;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
+import jxl.read.biff.BiffException;
 import jxl.write.DateFormat;
 import jxl.write.DateTime;
 import jxl.write.Label;
@@ -19,7 +23,6 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
-
 import android.database.Cursor;
 import android.os.Environment;
 
@@ -27,6 +30,7 @@ public class ExcelHelper {
 	private static ExcelHelper sInstance;
 	private String mDefaultPath = Environment.getExternalStorageDirectory()
 			.getAbsolutePath() + File.separator + "PFMData" + File.separator;
+
 	private String[][] mTableInfos = {
 			{
 					"Category",
@@ -59,30 +63,111 @@ public class ExcelHelper {
 		return sInstance == null ? (sInstance = new ExcelHelper()) : sInstance;
 	}
 
-	public boolean Import(String fileName) {
+	public boolean importData(String filePath) {
+		Workbook workbook = null;
+
+		try {
+			workbook = Workbook.getWorkbook(new File(filePath));
+		} catch (BiffException e) {
+			Logger.Log(e.getMessage(), "ExcelHelper");
+		} catch (IOException e) {
+			Logger.Log(e.getMessage(), "ExcelHelper");
+		}
+
+		for (Sheet sheet : workbook.getSheets()) {
+			importToLocalDB(sheet);
+		}
+
+		workbook.close();
+	
+		Alert.getInstance().show(PfmApplication.getAppContext(),
+				PfmApplication.getAppResources().getString(R.string.success));
 		return true;
 	}
 
-	public boolean Export(String fileName) {
+	private void importToLocalDB(Sheet sheet) {
+		String[] columnInfo = getColumnInfo(sheet);
+		if (columnInfo == null) {
+			return;
+		}
+
+		int idIndex = Integer.parseInt(columnInfo[1].split(",")[0]);
+		int modifiedDateIndex = Integer.parseInt(columnInfo[1].split(",")[1]);
+
+		for (int row = 1; row < sheet.getRows(); row++) {
+			String condition = new StringBuilder("Id=").append(
+					sheet.getCell(idIndex, row).getContents()).toString();
+			Cursor checkExistedId = SqlHelper.instance.select(sheet.getName(),
+					"ModifiedDate", condition);
+			if (checkExistedId != null && checkExistedId.moveToFirst()) {
+				// This record exists.
+				// Check modifiedDate.
+				if (checkExistedId.getString(0).compareTo(
+						sheet.getCell(modifiedDateIndex, row).getContents()) < 0) {
+					SqlHelper.instance.update(sheet.getName(),
+							columnInfo[0].split(","), getRowData(sheet, row),
+							condition);
+				}
+			} else {
+				// If this record doesn't exist, then insert it into database.
+				SqlHelper.instance.insert(sheet.getName(),
+						columnInfo[0].split(","), getRowData(sheet, row));
+			}
+		}
+
+	}
+
+	private String[] getRowData(Sheet sheet, int rowIndex) {
+		String[] rowData = new String[sheet.getColumns()];
+		int col = 0;
+		for (Cell row : sheet.getRow(rowIndex)) {
+			rowData[col++] = row.getContents();
+		}
+
+		return rowData;
+	}
+
+	// / Get header of table.
+	// / Return: columnName and columnInfo (index of Id and ModifiedDate column)
+	private String[] getColumnInfo(Sheet sheet) {
+		Cell cell = sheet.getCell(0, 0);
+		if ("".equals(cell.getContents())) {
+			Alert.getInstance().show(
+					PfmApplication.getAppContext(),
+					PfmApplication.getAppResources().getString(
+							R.string.import_wrong_format));
+			return null;
+		}
+
+		String columnName = "";
+		String columnInfo = "";
+		Cell[] columns = sheet.getRow(0);
+		for (int col = 0; col < columns.length; col++) {
+			columnName += new StringBuilder(col == 0 ? "" : ",").append(
+					columns[col].getContents()).toString();
+			if ("ID".equals(columns[col].getContents().toUpperCase())) {
+				columnInfo = new StringBuilder().append(col).append(columnInfo)
+						.toString();
+			} else if ("MODIFIEDDATE".equals(columns[col].getContents()
+					.toUpperCase())) {
+				columnInfo = new StringBuilder(columnInfo).append(",")
+						.append(col).toString();
+			}
+		}
+
+		return new String[] { columnName, columnInfo };
+	}
+
+	public boolean exportData(String fileName) {
 		// Check file exists.
 		if (new File(mDefaultPath + fileName).exists()) {
 			fileName = new StringBuilder(fileName.split("[.]")[0])
 					.append("_")
 					.append(Converter.toString(DateTimeHelper.now(false),
-							"yyyyMMdd")).append(".")
+							"yyyyMMddHHmmss")).append(".")
 					.append(fileName.split("[.]")[1]).toString();
 		}
 
-		int numberOfFile = 0;
-		while (new File(mDefaultPath
-				+ new StringBuilder(fileName.split("[.]")[0]).append("(")
-						.append(++numberOfFile).append(").")
-						.append(fileName.split("[.]")[1]).toString()).exists()) {
-		}
-		
-		fileName = new StringBuilder(fileName.split("[.]")[0]).append("(")
-				.append(numberOfFile).append(").")
-				.append(fileName.split("[.]")[1]).toString();
 		WritableWorkbook workbook = null;
 		try {
 			workbook = Workbook
@@ -99,6 +184,7 @@ public class ExcelHelper {
 			workbook.write();
 		} catch (IOException e) {
 			Logger.Log(e.getMessage(), "ExcelHelper");
+			return false;
 		}
 		try {
 			workbook.close();
@@ -110,7 +196,8 @@ public class ExcelHelper {
 		return true;
 	}
 
-	private void createHeader(WritableSheet sheet, String[] headerInfo, int row) {
+	private void createHeader(WritableSheet sheet, String[] headerInfo,
+			int row, String[] headerType) {
 		WritableFont arial10font = new WritableFont(WritableFont.ARIAL, 13);
 		WritableCellFormat arial10format = new WritableCellFormat(arial10font);
 		try {
@@ -142,7 +229,8 @@ public class ExcelHelper {
 
 		// Create table header.
 		int row = 0;
-		createHeader(sheet, tableInfo[1].split(","), row);
+		createHeader(sheet, tableInfo[1].split(","), row,
+				tableInfo[2].split(","));
 
 		if (selector != null && selector.moveToFirst()) {
 			String[] columnInfos = tableInfo[2].split(",");
