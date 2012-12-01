@@ -247,8 +247,7 @@ public class ReportViewActivity extends Activity {
 								LayoutParams.FILL_PARENT,
 								LayoutParams.WRAP_CONTENT);
 
-						reportListView.addView(new ReportViewItem(this,
-								startDate, endDate, checkMonthly), params);
+						reportListView.addView(new ReportViewItem(this,startDate, endDate, checkMonthly), params);
 					} while (weekEntry.moveToNext());
 				}
 			}

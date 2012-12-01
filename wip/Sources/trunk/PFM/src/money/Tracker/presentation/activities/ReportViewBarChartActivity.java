@@ -33,8 +33,7 @@ public class ReportViewBarChartActivity extends Activity {
 	private boolean checkMonth;
 	private LinearLayout barChart;
 	private LinearLayout barChartListDate;
-	private List<Date[]> dateList;
-	private Chart chart;
+	private List<Date[]> dateList;	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class ReportViewBarChartActivity extends Activity {
 		}
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		chart = new Chart();
+		Chart chart = new Chart();
 		barChart.addView(chart.getBarIntent(this, checkMonthly, _startDate, _endDate), params);
 
 		dateList = new ArrayList<Date[]>();
@@ -68,8 +67,7 @@ public class ReportViewBarChartActivity extends Activity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				final Dialog dialog = new Dialog(
-						ReportViewBarChartActivity.this);
+				final Dialog dialog = new Dialog( ReportViewBarChartActivity.this);
 
 				dialog.setContentView(R.layout.report_view_chart_custom_dialog);
 
@@ -89,8 +87,10 @@ public class ReportViewBarChartActivity extends Activity {
 
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						for (int i = 1; i < dateList.size(); i++) {
-							dateList.remove(i);
+						int size =  dateList.size();
+						
+						for (int i = 1; i < size; i++) {
+							dateList.remove(1);
 						}
 
 						dialog.dismiss();
@@ -102,6 +102,11 @@ public class ReportViewBarChartActivity extends Activity {
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						bindCompareChart();
+						int size =  dateList.size();
+						for (int i = 1; i < size; i++) {
+							dateList.remove(1);
+							Log.d("Check remove dateList", (dateList.size() + " - " + i));
+						}
 						dialog.dismiss();
 					}
 				});
@@ -110,12 +115,13 @@ public class ReportViewBarChartActivity extends Activity {
 				final CheckBox uncheckAllCheckBox = (CheckBox) dialog.findViewById(R.id.report_custom_dialog_uncheck_all_checkbox);
 
 				checkAllCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-							public void onCheckedChanged(
-									CompoundButton buttonView, boolean isChecked) {
+							public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 								// TODO Auto-generated method stub
 								if (isChecked) {
-									for (int i = 1; i < dateList.size(); i++) {
-										dateList.remove(i);
+									int size =  dateList.size();
+									for (int i = 1; i < size; i++) {
+										dateList.remove(1);
+										Log.d("Check remove dateList", (dateList.size() + " - " + i));
 									}
 
 									barChartListDate.removeAllViews();
@@ -130,8 +136,9 @@ public class ReportViewBarChartActivity extends Activity {
 							public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 								// TODO Auto-generated method stub
 								if (isChecked) {
-									for (int i = 1; i < dateList.size(); i++) {
-										dateList.remove(i);
+									int size =  dateList.size();
+									for (int i = 1; i < size; i++) {
+										dateList.remove(1);
 									}
 
 									barChartListDate.removeAllViews();
@@ -150,6 +157,7 @@ public class ReportViewBarChartActivity extends Activity {
 	private void bindCompareChart() {
 		if (dateList.size() > 1)
 		{
+			Chart chart = new Chart();
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 			barChart.removeAllViews();
 			barChart.addView(chart.getBarCompareIntent(this, checkMonth, dateList), params);

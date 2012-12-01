@@ -40,11 +40,7 @@ public class ReportMainViewDetailActivity extends TabActivity {
 			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy",
 					Converter.toDate(startDate)));
 		} else {
-			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format(
-					"dd/MM", Converter.toDate(startDate)))
-					.append("-")
-					.append(DateFormat.format("dd/MM/yyyy",
-							Converter.toDate(endDate))).toString());
+			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy",Converter.toDate(endDate))).toString());
 		}
 
 		// Create tab and intent for view detail information
