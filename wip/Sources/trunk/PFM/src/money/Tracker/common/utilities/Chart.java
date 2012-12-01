@@ -393,6 +393,7 @@ public class Chart extends AbstractChart {
 		renderer.setLabelsColor(labelsColor);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public View getBarCompareIntent(Context context, boolean checkMonthly, List<Date[]> dateList)
 	{
 		entryCategoryValue = new ArrayList<Double>();
@@ -408,7 +409,9 @@ public class Chart extends AbstractChart {
 			getData();
 		}
 		
+		double xMax = 0;
 		double yMax = 0;
+		
 		double[] entryCategoryValueArray = new double[entryCategoryValue.size()];
 		double[] scheduleCategoryValueArray = new double[entryCategoryValue.size()];
 		
@@ -431,10 +434,12 @@ public class Chart extends AbstractChart {
 		String[] titles = new String[]{"Thực Chi", "Dự kiến"};
 		int[] colors = new int[]{Color.YELLOW, Color.GREEN}; //Color.parseColor("#FFD700"), Color.parseColor("#7CFC00")
 		
+		xMax = entryCategoryValueArray.length + 1;
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "", "", 0.5, 12.5, 0, yMax, Color.GRAY, Color.LTGRAY);
-		renderer.setXLabels(12);
-		renderer.setYLabels(10);
+		setChartSettings(renderer, "", "", "", 0.5, xMax, 0, yMax, Color.GRAY, Color.LTGRAY);
+		//renderer.setXLabels(12);
+		//renderer.setYLabels(10);
+		renderer.clearTextLabels();
 		renderer.setApplyBackgroundColor(true);
 		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		renderer.setDisplayChartValues(false);
@@ -446,11 +451,14 @@ public class Chart extends AbstractChart {
 		renderer.setLegendTextSize(20);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
-		renderer.setZoomRate(1.1f);
+		//renderer.setZoomRate(1.1f);
 		renderer.setBarSpacing(0.5f);
+		renderer.setShowLabels(false);
 		renderer.setPanEnabled(false, false);
-		renderer.clearXTextLabels();
-		renderer.clearYTextLabels();
+		renderer.setLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		renderer.setXLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		//renderer.clearXTextLabels();
+		//renderer.clearYTextLabels();
 		//return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 	}
@@ -486,7 +494,7 @@ public class Chart extends AbstractChart {
 			colorList.add(entryCategoryColorArray[i]);
 			
 			double[] value = new double[entryCategoryNameArray.length * 2 + (entryCategoryNameArray.length - 1)];
-			xMax += value.length;
+			xMax = value.length;
 			Log.d("Check bar chart value", "" + value.length);
 			
 			for (int j = 0; j < value.length; j++)
@@ -561,9 +569,10 @@ public class Chart extends AbstractChart {
 		}
 		
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "", "", 0.5, 12.5, 0, yMax, Color.GRAY, Color.LTGRAY);
+		setChartSettings(renderer, "", "", "", 0, xMax + 1, 0, yMax, Color.GRAY, Color.LTGRAY);
 		//renderer.setXLabels(12);
 		//renderer.setYLabels(10);
+		//renderer.clearTextLabels();
 		renderer.setApplyBackgroundColor(true);
 		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		renderer.setDisplayChartValues(false);
@@ -575,10 +584,14 @@ public class Chart extends AbstractChart {
 		renderer.setLegendTextSize(20);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
-		renderer.setZoomRate(1.1f);
+		//renderer.setZoomRate(1.1f);
 		renderer.setBarSpacing(0f);
+		renderer.setShowLabels(false);
 		renderer.setPanEnabled(false, false);
-		renderer.clearXTextLabels();
+		renderer.setLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		renderer.setXLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		//renderer.setYLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		//renderer.clearXTextLabels();
 		//renderer.clearYTextLabels();
 		//return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
@@ -608,7 +621,7 @@ public class Chart extends AbstractChart {
 			renderer.addSeriesRenderer(r);
 		}
 		
-		renderer.setLabelsTextSize(20);
+		renderer.setLabelsTextSize(15);
 		renderer.setChartTitleTextSize(20);
 		renderer.setLegendTextSize(20);
 		renderer.setPanEnabled(false);

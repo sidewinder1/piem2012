@@ -359,16 +359,12 @@ public class ReportViewDetailActivity extends Activity {
 					if (checkMonthly)
 					{
 						String entryDateMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate,
-								"MM");
+						String startDateMonth = Converter.toString(startDate,"MM");
 						String entryDateYear = Converter.toString(entryDate, "YYYY");
-						String startDateYear = Converter.toString(startDate,
-								"YYYY");
+						String startDateYear = Converter.toString(startDate,"YYYY");
 						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
 						{
-							totalBorrowing += borrowingCursor
-									.getLong(borrowingCursor
-											.getColumnIndex("Money"));
+							totalBorrowing += borrowingCursor.getLong(borrowingCursor.getColumnIndex("Money"));
 						}
 					} else
 					{
