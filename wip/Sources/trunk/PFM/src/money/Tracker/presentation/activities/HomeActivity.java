@@ -29,8 +29,7 @@ public class HomeActivity extends TabActivity {
 		// Create Expense & income tab.
 		Intent managementIntent = new Intent(this, MainViewActivity.class);
 		managementIntent.putExtra(typeTabPathId, 0);
-		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost,
-				R.drawable.management_icon);
+		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost, R.drawable.management_icon);
 
 		// Create tab and intent for schedule.
 		Intent scheduleIntent = new Intent(this, MainViewActivity.class);

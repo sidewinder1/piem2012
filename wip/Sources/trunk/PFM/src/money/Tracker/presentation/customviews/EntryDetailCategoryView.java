@@ -24,8 +24,7 @@ public class EntryDetailCategoryView extends LinearLayout {
 
 	public EntryDetailCategoryView(Context context, ArrayList<EntryDetail> data) {
 		super(context);
-		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.entry_detail_category_item, this, true);
 
 		// Get control from .xml file.

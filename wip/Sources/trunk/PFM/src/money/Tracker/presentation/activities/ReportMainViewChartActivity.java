@@ -34,14 +34,9 @@ public class ReportMainViewChartActivity extends TabActivity {
 
 		TextView reportViewDetailTitle = (TextView) findViewById(R.id.report_main_view_chart_title);
 		if (checkMonthly) {
-			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy",
-					Converter.toDate(startDate)));
+			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy", Converter.toDate(startDate)));
 		} else {
-			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format(
-					"dd/MM", Converter.toDate(startDate)))
-					.append("-")
-					.append(DateFormat.format("dd/MM/yyyy",
-							Converter.toDate(endDate))).toString());
+			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy",Converter.toDate(endDate))).toString());
 		}
 		
 		Log.d("Check chart", "Check 1");
@@ -50,7 +45,11 @@ public class ReportMainViewChartActivity extends TabActivity {
 		Date eDate = Converter.toDate(endDate);
 		Chart chart = new Chart();		
 		// Create tab and intent for view detail information
-		Intent pieChartViewIntent = chart.getPieIntent(this, checkMonthly, sDate, eDate); 
+		// Intent pieChartViewIntent = chart.getPieIntent(this, checkMonthly, sDate, eDate);
+		Intent pieChartViewIntent = new Intent(this, ReportViewPieChartActivity.class);
+		pieChartViewIntent.putExtra("checkMonthly", checkMonthly);
+		pieChartViewIntent.putExtra("start_date", startDate);
+		pieChartViewIntent.putExtra("end_date", endDate);
 		setupTab(pieChartViewIntent, "Biểu đồ hình tròn", mTabHost);
 
 		// Create tab and intent for chart

@@ -147,8 +147,7 @@ public class Chart extends AbstractChart {
 		entryCategoryName = new ArrayList<String>();
 		entryCategoryValue = new ArrayList<Double>();
 		entryCategoryColor = new ArrayList<Integer>();
-		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
-				"Type=1");
+		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*","Type=1");
 		if (entryExpenseCursor != null) {
 			if (entryExpenseCursor.moveToFirst()) {
 				do {
@@ -453,7 +452,7 @@ public class Chart extends AbstractChart {
 		// renderer.setZoomEnabled(false);
 		//renderer.setZoomRate(1.1f);
 		renderer.setBarSpacing(0.5f);
-		renderer.setShowLabels(false);
+		//renderer.setShowLabels(false);
 		renderer.setPanEnabled(false, false);
 		renderer.setLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		renderer.setXLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
@@ -569,10 +568,11 @@ public class Chart extends AbstractChart {
 		}
 		
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "", "", 0, xMax + 1, 0, yMax, Color.GRAY, Color.LTGRAY);
+		setChartSettings(renderer, "", "Thực tế / Kế hoạch", "Giá trị bằng số tiền", 0, xMax + 1, 0, yMax, Color.GRAY, Color.LTGRAY);
 		//renderer.setXLabels(12);
 		//renderer.setYLabels(10);
 		//renderer.clearTextLabels();
+		renderer.setYTitle("(x1000) VND");
 		renderer.setApplyBackgroundColor(true);
 		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		renderer.setDisplayChartValues(false);
@@ -586,9 +586,9 @@ public class Chart extends AbstractChart {
 		// renderer.setZoomEnabled(false);
 		//renderer.setZoomRate(1.1f);
 		renderer.setBarSpacing(0f);
-		renderer.setShowLabels(false);
+		//renderer.setShowLabels(false);
 		renderer.setPanEnabled(false, false);
-		renderer.setLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		//renderer.setLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		renderer.setXLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		//renderer.setYLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		//renderer.clearXTextLabels();
@@ -597,7 +597,7 @@ public class Chart extends AbstractChart {
 		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
 	}
 
-	public Intent getPieIntent(Context context, boolean checkMonthly, Date sDate, Date eDate) {
+	public View getPieIntent(Context context, boolean checkMonthly, Date sDate, Date eDate) {
 		this.startDate = sDate;
 		this.endDate = eDate;
 		this.checkMonthly = checkMonthly;
@@ -621,13 +621,14 @@ public class Chart extends AbstractChart {
 			renderer.addSeriesRenderer(r);
 		}
 		
-		renderer.setLabelsTextSize(15);
-		renderer.setChartTitleTextSize(20);
-		renderer.setLegendTextSize(20);
 		renderer.setPanEnabled(false);
-
+		renderer.setShowLegend(false);
+		renderer.setShowLabels(false);
+		renderer.setScale((float) 1.1);
+		///renderer.setZoomRate(0);
+		
 		//return ChartFactory.getPieChartView(context, series, renderer);
-		return ChartFactory.getPieChartIntent(context, series, renderer, "Pie");
+		return ChartFactory.getPieChartView(context, series, renderer);
 	}
 
 	@Override
