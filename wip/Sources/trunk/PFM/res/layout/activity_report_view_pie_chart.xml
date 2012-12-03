@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/report_pie_chart"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp" >
+    </LinearLayout>
+
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:focusable="true"
+        android:gravity="right"
+        android:text="Tổng số tiền: "
+        android:textColor="@color/white_text_color"
+        android:textSize="15dp" />
+        
+    	
+        <TextView
+        android:id="@+id/report_pie_chart_total_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:focusable="true"
+        android:gravity="right"
+        android:text="@string/dummy_data"
+        android:textColor="@color/white_text_color"
+        android:textSize="15dp" />
+        
+    </LinearLayout>
+    
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0" >
+
+        <LinearLayout
+            android:id="@+id/report_pie_chart_legend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|fill_vertical"
+            android:layout_marginBottom="10dp"
+            android:background="@color/blue_background"
+            android:minHeight="80dp"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

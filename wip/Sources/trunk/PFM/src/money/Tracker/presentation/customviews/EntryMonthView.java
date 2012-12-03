@@ -54,8 +54,7 @@ public class EntryMonthView extends LinearLayout {
 		// Set content to item title:
 		setName(keyMonth);
 
-		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository
-				.getInstance().orderedEntries.get(keyMonth);
+		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository.getInstance().orderedEntries.get(keyMonth);
 		HashMap<Long, Long> valueOnCategory = new HashMap<Long, Long>();
 		if (entrySet != null) {
 			long total = 0;
@@ -92,8 +91,7 @@ public class EntryMonthView extends LinearLayout {
 			// Prepare and display stacked bar chart:
 			for (long value : valueOnCategory.keySet()) {
 				View stackItem = new View(getContext());
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						0, LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT,
 						Float.parseFloat(valueOnCategory.get(value) + ""));
 				Cursor categoryCursor = SqlHelper.instance.select(
 						"Category",

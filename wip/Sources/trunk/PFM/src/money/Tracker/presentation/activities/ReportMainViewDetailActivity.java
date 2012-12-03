@@ -37,21 +37,16 @@ public class ReportMainViewDetailActivity extends TabActivity {
 
 		TextView reportViewDetailTitle = (TextView) findViewById(R.id.report_main_view_detail_title);
 		if (checkMonthly) {
-			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy",
-					Converter.toDate(startDate)));
+			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy",Converter.toDate(startDate)));
 		} else {
 			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy",Converter.toDate(endDate))).toString());
 		}
 
 		// Create tab and intent for view detail information
-		Intent reportViewDetailIntent = new Intent(this,
-				ReportViewDetailActivity.class);
-		Log.d("Main View Detail", "Check 3");
+		Intent reportViewDetailIntent = new Intent(this, ReportViewDetailActivity.class);
 		reportViewDetailIntent.putExtra("checkMonthly", checkMonthly);
 		reportViewDetailIntent.putExtra("start_date", startDate);
-		reportViewDetailIntent.putExtra("end_date", endDate);
-		Log.d("Check date", startDate);
-		Log.d("Main View Detail", "Check 4");
+		reportViewDetailIntent.putExtra("end_date", endDate);		
 		setupTab(reportViewDetailIntent, "Chi tiết", mTabHost);
 
 		// Create tab and intent for chart

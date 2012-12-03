@@ -76,6 +76,7 @@
         <activity android:name=".ReportViewChartActivity" />
         <activity android:name=".ReportMainViewChartActivity" />
         <activity android:name=".ReportViewBarChartActivity" />
+        <activity android:name=".ReportViewPieChartActivity" />
     </application>
 
     <instrumentation

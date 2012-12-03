@@ -9,6 +9,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.customviews.EntryDetailCategoryView;
 import money.Tracker.presentation.customviews.ReportDetailCategory;
 import money.Tracker.presentation.customviews.ReportDetailProduct;
+import money.Tracker.presentation.customviews.ReportMainDetailCategory;
 import android.os.Bundle;
 import android.app.Activity;
 import android.database.Cursor;
@@ -88,7 +89,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (budget != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportDetailCategory(this, "Budget", budget, checkMonthly, startDate, endDate), params);
+			reportDetail.addView(new ReportMainDetailCategory(this, "Budget", budget, checkMonthly, startDate, endDate), params);
 		}
 	}
 
@@ -215,7 +216,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (totalIncome != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportDetailCategory(this, "Income", totalIncome, checkMonthly, startDate, endDate), params);
+			reportDetail.addView(new ReportMainDetailCategory(this, "Income", totalIncome, checkMonthly, startDate, endDate), params);
 		}
 		
 	}
@@ -343,7 +344,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (totalExpense != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportDetailCategory(this, "Expense", totalExpense, checkMonthly, startDate, endDate), params);
+			reportDetail.addView(new ReportMainDetailCategory(this, "Expense", totalExpense, checkMonthly, startDate, endDate), params);
 		}
 	}
 
@@ -383,7 +384,7 @@ public class ReportViewDetailActivity extends Activity {
 
 			if (totalBorrowing != 0) {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-				reportDetail.addView(new ReportDetailCategory(this, "Borrowing", totalBorrowing, checkMonthly, startDate, endDate), params);
+				reportDetail.addView(new ReportMainDetailCategory(this, "Borrowing", totalBorrowing, checkMonthly, startDate, endDate), params);
 			}
 		}
 	}
@@ -430,7 +431,7 @@ public class ReportViewDetailActivity extends Activity {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-				reportDetail.addView(new ReportDetailCategory(this, "Lending", totalLending, checkMonthly, startDate, endDate), params);
+				reportDetail.addView(new ReportMainDetailCategory(this, "Lending", totalLending, checkMonthly, startDate, endDate), params);
 			}
 		}
 
