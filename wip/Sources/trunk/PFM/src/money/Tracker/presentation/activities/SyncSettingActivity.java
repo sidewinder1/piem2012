@@ -425,13 +425,13 @@ public class SyncSettingActivity extends Activity {
 			case 108:
 				// Ring of Schedule function.
 				updateConfig("ScheduleRing", data.getData().getPath());
-				createSpinnerItem(data.getData().getPath(), "", mScheduleRing,
+				createSpinnerItem(data.getDataString(), "", mScheduleRing,
 						mScheduleRingArr);
 				break;
 			case 111:
 				// Ring of Borrow function.
 				updateConfig("BorrowRing", data.getData().getPath());
-				createSpinnerItem(data.getData().getPath(), "", mBorrowRing,
+				createSpinnerItem(data.getDataString(), "", mBorrowRing,
 						mBorrowRingArr);
 				break;
 			}
