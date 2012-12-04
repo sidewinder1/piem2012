@@ -26,6 +26,8 @@ public class ReportMainDetailCategory extends LinearLayout {
 	private Date endDate;
 	private boolean changedState = false;
 	private String checkName = "";
+	private List<String> scheduleCategoryName;
+	private List<Long> scheduleCategoryValue;
 	
 	public ReportMainDetailCategory(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -54,9 +56,102 @@ public class ReportMainDetailCategory extends LinearLayout {
 		product_name.setText(name);
 		product_total.setText(Converter.toString(value));
 		
+		scheduleCategoryName = new ArrayList<String>();
+		scheduleCategoryValue = new ArrayList<Long>();
+		
 		if (name.equals("Budget"))
 		{
-			collapsedButton.setVisibility(View.INVISIBLE);
+			String whereCondition = "";
+			if (checkMonthly)
+				whereCondition = "Type = 1";
+			else
+				whereCondition = "Type = 0";
+			
+			int count = 0;
+			
+			Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*", whereCondition);
+			if (scheduleCursor != null)
+			{
+				if (scheduleCursor.moveToFirst())
+				{
+					do{
+						if (checkMonthly) {
+							Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+							String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+							String scheduleYear = Converter.toString(scheduleStartDate, "yyy");
+							String startDateMonth = Converter.toString(startDate,"MM");
+							String startDateYear = Converter.toString(startDate,"yyyy");
+
+							if (scheduleMonth.equals(startDateMonth) && scheduleYear.equals(startDateYear)) {
+								long id = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Id"));
+
+								Cursor scheduleDetailCursor = SqlHelper.instance.select("ScheduleDetail", "*","Schedule_Id=" + id);
+
+								if (scheduleDetailCursor != null) {
+									if (scheduleDetailCursor.moveToFirst()) {
+										do {
+											String nameCategory = "";
+											int categoryID = scheduleDetailCursor.getInt(scheduleDetailCursor.getColumnIndex("Category_Id"));
+											long categoryValue = scheduleDetailCursor.getLong(scheduleDetailCursor.getColumnIndex("Budget"));
+
+											Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+											if (categoryCursor != null) {
+												if (categoryCursor.moveToFirst()) {
+													do {
+														nameCategory = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+													} while (categoryCursor.moveToNext());
+												}
+											}
+
+											scheduleCategoryName.add(nameCategory);
+											scheduleCategoryValue.add(categoryValue);
+											count++;
+										} while (scheduleDetailCursor.moveToNext());
+									}
+								}
+							}
+						} else {
+							Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+							Date scheduleEndDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("End_date")));
+
+							if ((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) < 0)
+									|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) == 0)
+									|| (scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) == 0)
+									|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) < 0)) {
+								long id = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Id"));
+
+								Cursor scheduleDetailCursor = SqlHelper.instance.select("ScheduleDetail", "*","Schedule_Id=" + id);
+
+								if (scheduleDetailCursor != null) {
+									if (scheduleDetailCursor.moveToFirst()) {
+										do {
+											String nameCategory = "";
+											int categoryID = scheduleDetailCursor.getInt(scheduleDetailCursor.getColumnIndex("Category_Id"));
+											long categoryValue = scheduleDetailCursor.getLong(scheduleDetailCursor.getColumnIndex("Budget"));
+
+											Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+											if (categoryCursor != null) {
+												if (categoryCursor.moveToFirst()) {
+													do {
+														nameCategory = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+													} while (categoryCursor.moveToNext());
+												}
+											}
+
+											scheduleCategoryName.add(nameCategory);
+											scheduleCategoryValue.add(categoryValue);
+											count++;
+										} while (scheduleDetailCursor.moveToNext());
+									}
+								}
+							}
+						}
+					} while (scheduleCursor.moveToNext());
+				} 
+			}
+			
+			if (count == 0)
+				collapsedButton.setVisibility(View.INVISIBLE);
 		}
 		
 		collapsedButton.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +167,9 @@ public class ReportMainDetailCategory extends LinearLayout {
 	{
 		if (changedState == false)
 		{
-			if (checkName.equals("Income"))
+			if(checkName.equals("Budget"))
+				getBudget();
+			else if (checkName.equals("Income"))
 				getIncome();
 			else if (checkName.equals("Expense"))
 				getExpense();
@@ -86,6 +183,15 @@ public class ReportMainDetailCategory extends LinearLayout {
 		{
 			category_list.removeAllViews();
 			changedState = false;
+		}
+	}
+	
+	private void getBudget()
+	{
+		for(int i = 0; i < scheduleCategoryName.size(); i++)
+		{
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT);
+			category_list.addView(new ReportDetailProduct(this.getContext(), scheduleCategoryName.get(i), scheduleCategoryValue.get(i)), params);
 		}
 	}
 	
@@ -196,11 +302,15 @@ public class ReportMainDetailCategory extends LinearLayout {
 											if (check == false) {
 												entryCategoryName.add(name);
 												entryCategoryValue.add(value);
+												entryIDList.add(id);
+												categoryIDList.add(categoryID);
 											}
 
 										} else {
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
+											entryIDList.add(id);
+											categoryIDList.add(categoryID);
 										}
 
 									} while (entryDetailCursor.moveToNext());
@@ -326,11 +436,15 @@ public class ReportMainDetailCategory extends LinearLayout {
 											if (check == false) {
 												entryCategoryName.add(name);
 												entryCategoryValue.add(value);
+												entryIDList.add(id);
+												categoryIDList.add(categoryID);
 											}
 
 										} else {
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
+											entryIDList.add(id);
+											categoryIDList.add(categoryID);
 										}
 
 									} while (entryDetailCursor.moveToNext());
