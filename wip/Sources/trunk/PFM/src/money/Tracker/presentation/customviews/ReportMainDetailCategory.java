@@ -108,8 +108,61 @@ public class ReportMainDetailCategory extends LinearLayout {
 						String startDateYear = Converter.toString(startDate, "yyyy");
 
 						if (entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear)) {
-							entryIDList.add(id);
 							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail","Category_Id, sum(Money) as Total","Entry_Id=" + id + " group by Category_Id");
+							if (entryDetailCursor != null) {
+								if (entryDetailCursor.moveToFirst()) {
+									do {
+										String name = "";
+										long value = 0;
+
+										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
+										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+										if (categoryCursor != null) {
+											if (categoryCursor.moveToFirst()) {
+												do {
+													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+													Log.d("Check add name Category",  name);
+												} while (categoryCursor.moveToNext());
+											}
+										}
+
+										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
+
+										if (!entryCategoryName.isEmpty()) {
+
+											boolean check = false;
+
+											for (int i = 0; i < entryCategoryName.size(); i++) {
+												if (entryCategoryName.get(i).equals(name)) {
+													entryCategoryValue.set(i,entryCategoryValue.get(i)+ value);
+													check = true;
+												}
+											}
+
+											if (check == false) {
+												entryCategoryName.add(name);
+												entryCategoryValue.add(value);
+												entryIDList.add(id);
+												categoryIDList.add(categoryID);
+											}
+
+										} else {
+											entryCategoryName.add(name);
+											entryCategoryValue.add(value);
+											entryIDList.add(id);
+											categoryIDList.add(categoryID);
+										}
+
+									} while (entryDetailCursor.moveToNext());
+								}
+							}
+						}
+					} else {
+						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
+								|| entryDate.compareTo(startDate) == 0
+								|| entryDate.compareTo(endDate) == 0) {
+							entryIDList.add(id);
+							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail","Category_Id, sum(Money) as Total","Entry_Id=" + id+ " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
 									do {
@@ -136,65 +189,6 @@ public class ReportMainDetailCategory extends LinearLayout {
 											for (int i = 0; i < entryCategoryName.size(); i++) {
 												if (entryCategoryName.get(i).equals(name)) {
 													entryCategoryValue.set(i,entryCategoryValue.get(i)+ value);
-													check = true;
-												}
-											}
-
-											if (check == false) {
-												entryCategoryName.add(name);
-												entryCategoryValue.add(value);
-											}
-
-										} else {
-											entryCategoryName.add(name);
-											entryCategoryValue.add(value);
-										}
-
-									} while (entryDetailCursor.moveToNext());
-								}
-							}
-						}
-					} else {
-						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
-								|| entryDate.compareTo(startDate) == 0
-								|| entryDate.compareTo(endDate) == 0) {
-							entryIDList.add(id);
-							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail","Category_Id, sum(Money) as Total","Entry_Id=" + id+ " group by Category_Id");
-							if (entryDetailCursor != null) {
-								if (entryDetailCursor.moveToFirst()) {
-									do {
-										String name = "";
-										long value = 0;
-
-										long categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
-										categoryIDList.add(categoryID);
-										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor
-															.getString(categoryCursor
-																	.getColumnIndex("Name"));
-												} while (categoryCursor
-														.moveToNext());
-											}
-										}
-
-										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
-
-										if (!entryCategoryName.isEmpty()) {
-
-											boolean check = false;
-
-											for (int i = 0; i < entryCategoryName
-													.size(); i++) {
-												if (entryCategoryName.get(i)
-														.equals(name)) {
-													entryCategoryValue.set(
-															i,
-															entryCategoryValue
-																	.get(i)
-																	+ value);
 													check = true;
 												}
 											}
