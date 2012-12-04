@@ -419,7 +419,7 @@ public class SyncSettingActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
+		if (resultCode == RESULT_OK && data != null) {
 			// User choose a music file to set default notification's ring.
 			switch (requestCode) {
 			case 108:
