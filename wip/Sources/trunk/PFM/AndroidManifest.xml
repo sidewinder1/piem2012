@@ -62,21 +62,20 @@
         <activity android:name=".FileExplorerActivity" />
         <activity android:name=".ReportViewDetailActivity" />
         <activity android:name=".ReportMainViewDetailActivity" />
-        <activity android:name="org.achartengine.GraphicalActivity" />
+        <activity android:name=".ReportViewPieChartActivity" />
         <activity android:name=".ReportChartActivity" />
+        <activity android:name=".ReportViewChartActivity" />
+        <activity android:name=".ReportMainViewChartActivity" />
+        <activity android:name=".ReportViewBarChartActivity" />
         <activity
             android:name="jim.h.common.android.lib.zxing.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name="org.achartengine.GraphicalActivity" />
 
         <uses-library android:name="android.test.runner" />
-
-        <activity android:name=".ReportViewChartActivity" />
-        <activity android:name=".ReportMainViewChartActivity" />
-        <activity android:name=".ReportViewBarChartActivity" />
-        <activity android:name=".ReportViewPieChartActivity" />
     </application>
 
     <instrumentation

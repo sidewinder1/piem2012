@@ -61,7 +61,7 @@ public class SyncHelper {
 
 		if (url.length() != 0) {
 			URL = url;
-//			URL = "http://10.0.2.2:1242/PFMService.asmx";
+			// URL = "http://10.0.2.2:1242/PFMService.asmx";
 		}
 
 	}
@@ -84,7 +84,7 @@ public class SyncHelper {
 
 	public void synchronize() {
 		getLocalLastSync();
-		
+
 		String LAST_SYNC_METHOD = "CheckLastSync";
 		String UPDATE_FROM_SERVER = "GetData";
 		String SAVE_DATA_METHOD = "SaveData";
@@ -92,7 +92,17 @@ public class SyncHelper {
 		String[] SAVE_PARAMS = new String[] { "userName", "tableName", "data" };
 		String[] UPDATE_PARAMS = new String[] { "userName", "tableName",
 				"lastSyncTime" };
-
+		for (String table : sTables) {
+			if (!"pfm.com".equals(AccountProvider.getInstance()
+					.getCurrentAccount().type)) {
+				// Replace all local data to synchronized data.
+				SqlHelper.instance.update(table, new String[] { "UserName" },
+						new String[] { AccountProvider.getInstance()
+								.getCurrentAccount().name },
+						"UserName='LocalAccount'");
+			}
+		}
+		
 		Logger.Log("Login: "
 				+ AccountProvider.getInstance().getCurrentAccount().name
 				+ ", \r\nUrl: " + URL, "SyncHelper");
@@ -126,21 +136,11 @@ public class SyncHelper {
 					"SyncHelper");
 
 			Date lastDateSync = Converter.toDate(
-					String.valueOf(syncDate.getPropertyAsString(0).replace('T', ' ')),
-					"yyyy-MM-dd hh:mm:ss");
+					String.valueOf(syncDate.getPropertyAsString(0).replace('T',
+							' ')), "yyyy-MM-dd hh:mm:ss");
 
 			// Find records are modified after last date sync.
 			for (String table : sTables) {
-				if (!"pfm.com".equals(AccountProvider.getInstance()
-						.getCurrentAccount().type)) {
-					// Replace all local data to synchronized data.
-					SqlHelper.instance.update(table,
-							new String[] { "UserName" },
-							new String[] { AccountProvider.getInstance()
-									.getCurrentAccount().name },
-							"UserName='LocalAccount'");
-				}
-
 				Logger.Log("Saving data to server: " + table, "SyncHelper");
 				SoapObject saveDataResult = invokeServerMethod(
 						SAVE_DATA_METHOD,
@@ -289,7 +289,7 @@ public class SyncHelper {
 		// R.string.sync_success));
 		Logger.Log("Mark as Synchronize", "SyncHelper");
 	}
-	
+
 	private void markAsSynchronized() {
 		String lastSyncTime = Converter.toString(DateTimeHelper.now(true));
 		invokeServerMethod("MarkSynchronized", new String[] { "userName",

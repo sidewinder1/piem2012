@@ -41,7 +41,8 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 					.getTag())) ? View.VISIBLE : View.GONE);
 		}
 
-		if (PfmApplication.sCurrentContext.getClass() == TabViewActivity.class){
+		if (PfmApplication.sCurrentContext != null &&
+				PfmApplication.sCurrentContext.getClass() == TabViewActivity.class){
 			((TabViewActivity)PfmApplication.sCurrentContext).bindData();
 		}
 		

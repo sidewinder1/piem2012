@@ -60,9 +60,8 @@ public class ContactInfoRepository {
 						.getString(cur
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-				if (name.equals(_name)) {
+				if (_name.equals(name)) {
 					// Get Postal Address....
-
 					String addrWhere = ContactsContract.Data.CONTACT_ID
 							+ " = ? AND " + ContactsContract.Data.MIMETYPE
 							+ " = ?";
