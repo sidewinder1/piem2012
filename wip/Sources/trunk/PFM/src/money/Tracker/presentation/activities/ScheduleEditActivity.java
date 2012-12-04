@@ -28,7 +28,9 @@ import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SynchronizeTask;
+import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.customviews.ScheduleItem;
 import money.Tracker.presentation.model.Category;
@@ -453,11 +455,17 @@ public class ScheduleEditActivity extends Activity {
 
 		CategoryRepository.getInstance().updateData();
 
-		if (!SynchronizeTask.isSynchronizing()
-				&& !"pfm.com".equals(AccountProvider.getInstance()
-						.getCurrentAccount().type)) {
-			SynchronizeTask task = new SynchronizeTask();
-			task.execute();
+		try {
+			if (!SynchronizeTask.isSynchronizing()
+					&& Boolean.parseBoolean(XmlParser.getInstance()
+							.getConfigContent("autoSync"))
+					&& !"pfm.com".equals(AccountProvider.getInstance()
+							.getCurrentAccount().type)) {
+				SynchronizeTask task = new SynchronizeTask();
+				task.execute();
+			}
+		} catch (Exception e) {
+			Logger.Log(e.getMessage(), "ScheduleEditActivity");
 		}
 
 		setResult(100);

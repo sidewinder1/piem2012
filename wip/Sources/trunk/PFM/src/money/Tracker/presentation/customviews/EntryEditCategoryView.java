@@ -1,10 +1,14 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import money.Tracker.common.sql.SqlHelper;
+import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.Logger;
+import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.model.Category;
@@ -13,6 +17,8 @@ import money.Tracker.repository.CategoryRepository;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +35,7 @@ public class EntryEditCategoryView extends LinearLayout {
 	private LinearLayout mCategoryList;
 	private CategoryAdapter mCategoryAdapter;
 	public EditText mCategoryEdit;
+	private Date mEntryDate;
 
 	public EntryEditCategoryView(Context context) {
 		super(context);
@@ -151,6 +158,47 @@ public class EntryEditCategoryView extends LinearLayout {
 			}
 		});
 
+		mTotal_money.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+			}
+
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+			}
+
+			public void afterTextChanged(Editable arg0) {
+				try {
+					Cursor checkOverBudget = SqlHelper.instance.select(
+							"AppInfo",
+							"ScheduleWarn",
+							new StringBuilder("UserName='")
+									.append(AccountProvider.getInstance()
+											.getCurrentAccount().name)
+									.append("'").toString());
+					long budget = PfmApplication.getTotalBudget();
+					if (checkOverBudget != null
+							&& checkOverBudget.moveToFirst() && budget != 0) {
+						double percent = checkOverBudget.getLong(0) / 100d;
+
+						if (budget * percent <= PfmApplication.getTotalEntry()
+								+ Long.parseLong(arg0.toString())) {
+							Alert.getInstance().show(
+									getContext(),
+									getResources().getString(
+											R.string.warning_borrow_overbudget)
+											.replace(
+													"{0}",
+													checkOverBudget
+															.getString(0)));
+						}
+					}
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), "EntryEditCategoryView");
+				}
+			}
+		});
+
 		// Add event to handle clicking remove button.
 		mRemoveBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -184,6 +232,10 @@ public class EntryEditCategoryView extends LinearLayout {
 				}
 			}
 		});
+	}
+
+	public void setEntryDate(Date date) {
+		mEntryDate = date;
 	}
 
 	public boolean removeEmptyEntry() {
@@ -293,16 +345,16 @@ public class EntryEditCategoryView extends LinearLayout {
 			if (product == null || product.getMoney() == 0) {
 				continue;
 			}
-			
+
 			values = new String[] { product.getName(),
-					String.valueOf(product.getMoney()),
-					category_id_str, String.valueOf(entry_id) };
+					String.valueOf(product.getMoney()), category_id_str,
+					String.valueOf(entry_id) };
 
 			if (product.Id == -1) {
 				SqlHelper.instance.insert(subTable, columns, values);
-			}
-			else{
-				SqlHelper.instance.update(subTable, columns, values, "Id=" + product.Id);
+			} else {
+				SqlHelper.instance.update(subTable, columns, values, "Id="
+						+ product.Id);
 			}
 		}
 	}

@@ -8,7 +8,9 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SynchronizeTask;
+import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.adapters.ContactsAutoCompleteCursorAdapter;
 import money.Tracker.presentation.model.BorrowLend;
 import money.Tracker.presentation.model.Contact;
@@ -520,9 +522,17 @@ public class BorrowLendInsertActivity extends Activity {
 						columnUpdate, valusChangedUpdate, "ID = "
 								+ borrow_lend_id);
 				setResult(100);
-				if (!SynchronizeTask.isSynchronizing()) {
-					SynchronizeTask task = new SynchronizeTask();
-					task.execute();
+				try {
+					if (!SynchronizeTask.isSynchronizing()
+							&& Boolean.parseBoolean(XmlParser.getInstance()
+									.getConfigContent("autoSync"))
+							&& !"pfm.com".equals(AccountProvider.getInstance()
+									.getCurrentAccount().type)) {
+						SynchronizeTask task = new SynchronizeTask();
+						task.execute();
+					}
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
 				}
 				BorrowLendInsertActivity.this.finish();
 			} else {
@@ -576,12 +586,20 @@ public class BorrowLendInsertActivity extends Activity {
 										phoneEditText.getText().toString(),
 										addressEditText.getText().toString() });
 				setResult(100);
-				if (!SynchronizeTask.isSynchronizing()
-						&& !"pfm.com".equals(AccountProvider.getInstance()
-								.getCurrentAccount().type)) {
-					SynchronizeTask task = new SynchronizeTask();
-					task.execute();
+				
+				try {
+					if (!SynchronizeTask.isSynchronizing()
+							&& Boolean.parseBoolean(XmlParser.getInstance()
+									.getConfigContent("autoSync"))
+							&& !"pfm.com".equals(AccountProvider.getInstance()
+									.getCurrentAccount().type)) {
+						SynchronizeTask task = new SynchronizeTask();
+						task.execute();
+					}
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
 				}
+
 				BorrowLendInsertActivity.this.finish();
 			} else {
 				alert.show(getApplicationContext(),
