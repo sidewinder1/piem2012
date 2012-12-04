@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.provider.MediaStore.Audio;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
@@ -38,19 +40,6 @@ public class Alert {
 				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 						context).setSmallIcon(R.drawable.report_icon)
 						.setContentTitle(title).setContentText(message);
-			
-				Notification notification = mBuilder.build();
-				if (useDefaultRing){
-					notification.defaults = Notification.DEFAULT_ALL;
-				}
-				else{
-					if (notifyRing != null){
-						notification.sound = notifyRing;
-					} 
-					else{
-						
-					}
-				}
 				
 				// Creates an explicit intent for an Activity in your app.
 				Intent resultIntent = new Intent(context, activity);
@@ -71,9 +60,24 @@ public class Alert {
 				} catch (InterruptedException e) {
 					Logger.Log(e.getMessage(), "Alert");
 				}
+				
+//				Notification notification = mBuilder.build();
+				if (useDefaultRing){
+//					notification.defaults = Notification.DEFAULT_ALL;
+				}
+				else{
+					if (notifyRing != null){
+						mBuilder.setSound(notifyRing, AudioManager.STREAM_MUSIC);
+//						mBuilder.setSound(Uri.withAppendedPath(Audio.Media.EXTERNAL_CONTENT_URI, "1"), AudioManager.STREAM_MUSIC);
+//						notification.sound = notifyRing;
+					} 
+					else{
+						mBuilder.setSound(null);
+					}
+				}
 
 				// mId allows you to update the notification later on.
-				mNotificationManager.notify(mId, notification);
+				mNotificationManager.notify(mId, mBuilder.build());// notification);
 			};
 		}).start();
 	}
