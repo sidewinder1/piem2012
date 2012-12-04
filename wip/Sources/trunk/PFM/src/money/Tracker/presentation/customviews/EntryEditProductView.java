@@ -1,13 +1,10 @@
 package money.Tracker.presentation.customviews;
 
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
-import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
-import android.database.Cursor;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -68,30 +65,7 @@ public class EntryEditProductView extends LinearLayout {
 						.valueOf(total_text_view.getText()));
 				long total = currentValue + Converter.toLong(cValue.toString())
 						- sValue;
-				total_text_view.setText(Converter.toString(total));
-
-				Cursor checkOverBudget = SqlHelper.instance.select(
-						"AppInfo",
-						"ScheduleWarn",
-						new StringBuilder("UserName='")
-								.append(AccountProvider.getInstance()
-										.getCurrentAccount().name).append("'")
-								.toString());
-				long budget = PfmApplication.getTotalBudget();
-				if (checkOverBudget != null && checkOverBudget.moveToFirst()
-						&& budget != 0) {
-					double percent = checkOverBudget.getLong(0) / 100d;
-
-					if (budget * percent <= PfmApplication.getTotalEntry()
-							+ total) {
-						Alert.getInstance().show(
-								getContext(),
-								getResources().getString(
-										R.string.warning_borrow_overbudget)
-										.replace("{0}",
-												checkOverBudget.getString(0)));
-					}
-				}
+				total_text_view.setText(Converter.toString(total));				
 			}
 		});
 

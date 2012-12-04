@@ -8,7 +8,6 @@ import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.Converter;
-import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;

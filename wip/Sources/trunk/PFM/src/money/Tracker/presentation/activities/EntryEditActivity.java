@@ -12,8 +12,10 @@ import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.NfcHelper;
 import money.Tracker.common.utilities.SynchronizeTask;
+import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
@@ -231,11 +233,17 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		if (save()) {
 			CategoryRepository.getInstance().updateData();
 			setResult(100);
-			if (!SynchronizeTask.isSynchronizing()
-					&& !"pfm.com".equals(AccountProvider.getInstance()
-							.getCurrentAccount().type)) {
-				SynchronizeTask task = new SynchronizeTask();
-				task.execute();
+			try {
+				if (!SynchronizeTask.isSynchronizing()
+						&& Boolean.parseBoolean(XmlParser.getInstance()
+								.getConfigContent("autoSync"))
+						&& !"pfm.com".equals(AccountProvider.getInstance()
+								.getCurrentAccount().type)) {
+					SynchronizeTask task = new SynchronizeTask();
+					task.execute();
+				}
+			} catch (Exception e) {
+				Logger.Log(e.getMessage(), "EntryEditActivity");
 			}
 
 			this.finish();
@@ -272,7 +280,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 		String date = Converter.toString(inputDate);
 		String table = "Entry";
-		String subTable = "EntryDetail";
 		long id = mPassedEntryId;
 
 		if (mPassedEntryId == -1) {
