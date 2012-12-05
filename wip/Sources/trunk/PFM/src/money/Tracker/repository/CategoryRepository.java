@@ -48,6 +48,16 @@ public class CategoryRepository {
 		return 1;
 	}
 
+	public boolean isExisted(String nameOfCategory){
+		for (Category category : categories) {
+			if (nameOfCategory.toLowerCase().equals(category.getName().toLowerCase())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public String getName(long id) {
 		for (Category category : categories) {
 			if (category.getId() == id) {
@@ -82,6 +92,16 @@ public class CategoryRepository {
 	public int getIndex(long id) {
 		for (int index = 0; index < categories.size(); index++) {
 			if (categories.get(index).getId() == id) {
+				return index;
+			}
+		}
+
+		return 0;
+	}
+	
+	public int getIndex(String name) {
+		for (int index = 0; index < categories.size(); index++) {
+			if (name.toLowerCase().equals(categories.get(index).getName().toLowerCase())) {
 				return index;
 			}
 		}

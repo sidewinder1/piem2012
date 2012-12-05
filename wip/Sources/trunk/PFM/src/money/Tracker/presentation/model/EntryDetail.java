@@ -8,6 +8,7 @@ public class EntryDetail implements IModelBase {
 	public EntryDetail() {
 		super();
 		name = "";
+		id = -1;
 	}
 	
 	public EntryDetail(long category_id, String name,

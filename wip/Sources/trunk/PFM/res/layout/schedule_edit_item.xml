@@ -19,6 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="36dp"
         android:visibility="gone"
+        android:maxLength="25"
         android:textColor="@color/white_text_color"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
@@ -37,6 +38,7 @@
         android:layout_marginRight="2dp"
         android:layout_weight="3"
         android:gravity="bottom"
+        android:maxLength="12"
         android:inputType="numberDecimal"
         android:textSize="16dp" />
 

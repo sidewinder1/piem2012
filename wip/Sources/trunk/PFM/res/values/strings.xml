@@ -17,6 +17,7 @@
     <string name="minutes">phút</string>
     <string name="days">ngày</string>
     <string name="weeks">tuần</string>
+    <string name="existed_category_message">Mục này đã tồn tại</string>
     <string name="input_dialog_title">Nhập giá trị</string>
     <string name="ok">Đồng ý</string>
     <string name="cancel">Hủy</string>
@@ -31,6 +32,7 @@
     <string name="schedule_price">Giá</string>
     <string name="schedule_duration">Khoảng thời gian</string>
     <string name="schedule_monthly">Hàng tháng</string>
+     <string name="schedule_exist_message">Kế hoạch này đã tồn tại</string>
     <string name="schedule_detail_budget_title">Budget</string>
     <string name="schedule_weekly">Hàng tuần</string>
     <string name="schedule_title">Kế hoạch</string>

@@ -115,6 +115,25 @@ public class ScheduleEditActivity extends Activity {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				updateDisplay();
+
+				Cursor checkExist = SqlHelper.instance.select(
+						"Schedule",
+						"Id",
+						new StringBuilder("Type=")
+								.append(isChecked ? 1 : 0)
+								.append(" AND End_date='")
+								.append(Converter.toString(Converter.toDate(
+										endDateEdit.getText().toString(),
+										"MMMM dd, yyyy"))).append("'")
+								.toString());
+				if (checkExist != null && checkExist.moveToFirst()
+						&& checkExist.getLong(0) != passed_schedule_id) {
+					Alert.getInstance().show(
+							getBaseContext(),
+							getResources().getString(
+									R.string.schedule_exist_message));
+					periodic.setChecked(!isChecked);
+				}
 			}
 		});
 
@@ -171,18 +190,18 @@ public class ScheduleEditActivity extends Activity {
 	private void addToList(DetailSchedule detail, int index, boolean init) {
 		ScheduleItem itemView = new ScheduleItem(this, categoryAdapter,
 				detail.getId());
-		itemView.category.setTag(itemView.category_edit);
+		itemView.mCategory.setTag(itemView.mCategoryEdit);
 
 		if (init) {
-			itemView.budget.setText(Converter.toString(detail.getBudget()));
+			itemView.mBudget.setText(Converter.toString(detail.getBudget()));
 		} else {
-			itemView.budget.setHint(Converter.toString(detail.getBudget()));
+			itemView.mBudget.setHint(Converter.toString(detail.getBudget()));
 		}
 
 		// Add events to to detail budget to handle business logic.
-		itemView.budget.setOnFocusChangeListener(completeAfterLostFocus);
+		itemView.mBudget.setOnFocusChangeListener(completeAfterLostFocus);
 
-		itemView.budget.addTextChangedListener(new TextWatcher() {
+		itemView.mBudget.addTextChangedListener(new TextWatcher() {
 			long sValue = 0;
 
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -203,7 +222,7 @@ public class ScheduleEditActivity extends Activity {
 			}
 		});
 
-		itemView.category
+		itemView.mCategory
 				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
@@ -234,7 +253,7 @@ public class ScheduleEditActivity extends Activity {
 					}
 				});
 
-		itemView.category.setSelection(CategoryRepository.getInstance()
+		itemView.mCategory.setSelection(CategoryRepository.getInstance()
 				.getIndex(detail.getCategory()));
 		if (index < 0) {
 			list.addView(itemView);
@@ -256,16 +275,16 @@ public class ScheduleEditActivity extends Activity {
 					if (item.getBudget() <= 0) {
 						Alert.getInstance().show(getBaseContext(),
 								"A slot is empty");
-						item.budget.requestFocus();
+						item.mBudget.requestFocus();
 						return;
 					}
 
-					if (item.category_edit.getVisibility() == View.VISIBLE
-							&& "".equals(item.category_edit.getText()
+					if (item.mCategoryEdit.getVisibility() == View.VISIBLE
+							&& "".equals(item.mCategoryEdit.getText()
 									.toString())) {
 						Alert.getInstance().show(getBaseContext(),
 								"New category is empty");
-						item.category_edit.requestFocus();
+						item.mCategoryEdit.requestFocus();
 						return;
 					}
 				}
@@ -292,7 +311,7 @@ public class ScheduleEditActivity extends Activity {
 					// Insert userColor to db again.
 					SqlHelper.instance.insert("UserColor",
 							new String[] { "User_Color" },
-							new String[] { String.valueOf(item.category_edit
+							new String[] { String.valueOf(item.mCategoryEdit
 									.getTag()) });
 
 					list.removeView(item);
@@ -330,7 +349,7 @@ public class ScheduleEditActivity extends Activity {
 			return;
 		}
 
-		EditText lastBudget = scheduleItem.budget;
+		EditText lastBudget = scheduleItem.mBudget;
 		if (lastBudget == null) {
 			return;
 		}
@@ -518,10 +537,10 @@ public class ScheduleEditActivity extends Activity {
 	public boolean hasNewCategory() {
 		for (int index = 0; index < list.getChildCount(); index++) {
 			ScheduleItem item = (ScheduleItem) list.getChildAt(index);
-			if (item.category_edit.getVisibility() == View.VISIBLE
-					&& "".equals(item.category_edit.getText().toString())) {
+			if (item.mCategoryEdit.getVisibility() == View.VISIBLE
+					&& "".equals(item.mCategoryEdit.getText().toString())) {
 				Alert.getInstance().show(this, "Category is empty");
-				item.category_edit.requestFocus();
+				item.mCategoryEdit.requestFocus();
 				return false;
 			}
 		}
@@ -537,20 +556,32 @@ public class ScheduleEditActivity extends Activity {
 			}
 
 			long category_id = detailItem.getCategory();
-			if (detailItem.category_edit.getVisibility() == View.VISIBLE) {
+			if (detailItem.mCategoryEdit.getVisibility() == View.VISIBLE) {
 				category_id = SqlHelper.instance.insert(
 						"Category",
 						new String[] { "Name", "User_Color" },
 						new String[] {
-								detailItem.category_edit.getText().toString(),
-								String.valueOf(detailItem.category_edit
+								detailItem.mCategoryEdit.getText().toString(),
+								String.valueOf(detailItem.mCategoryEdit
 										.getTag()) });
+			}
+
+			long budget = detailItem.getBudget();
+
+			// Check existed category.
+			Cursor categoryCheck = SqlHelper.instance.select("ScheduleDetail",
+					"Id, Budget",
+					new StringBuilder("Schedule_id=").append(newScheduleId)
+							.append(" AND Category_id=").append(category_id)
+							.toString());
+			if (categoryCheck != null && categoryCheck.moveToFirst()) {
+				detailItem.Id = categoryCheck.getLong(0);
+				budget += categoryCheck.getLong(1);
 			}
 
 			String[] columns = new String[] { "Budget", "Category_id",
 					"Schedule_id" };
-			String[] values = new String[] {
-					String.valueOf(detailItem.getBudget()),
+			String[] values = new String[] { String.valueOf(budget),
 					String.valueOf(category_id), String.valueOf(newScheduleId) };
 			if (detailItem.Id == -1) {
 				SqlHelper.instance.insert("ScheduleDetail", columns, values);

@@ -20,7 +20,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class EntryDetailViewActivity extends Activity {
-	long entry_id;
+	public static long sEntryId;
 	LinearLayout entry_list;
 	TextView entry_title;
 	TextView total_entry_title, total_entry_value, remain_budget_title,
@@ -33,7 +33,7 @@ public class EntryDetailViewActivity extends Activity {
 		setContentView(R.layout.entry_detail_view);
 
 		Bundle extras = getIntent().getExtras();
-		entry_id = extras.getLong("entry_id");
+		sEntryId = extras.getLong("entry_id");
 		entry_list = (LinearLayout) findViewById(R.id.entry_detail_list_item);
 		entry_title = (TextView) findViewById(R.id.entry_detail_view_title);
 		total_entry_title = (TextView) findViewById(R.id.entry_detail_day_total_entry_title);
@@ -51,14 +51,14 @@ public class EntryDetailViewActivity extends Activity {
 
 	private void bindData() {
 		Entry entry = (Entry) EntryRepository.getInstance()
-				.getData(new StringBuilder("Id=").append(entry_id).toString())
+				.getData(new StringBuilder("Id=").append(sEntryId).toString())
 				.get(0);
 		entry_title.setText(getResources().getString(
 				(entry.getType() == 1 ? R.string.entry_daily_expense_title
 						: R.string.entry_daily_income_title)).replace("{0}",
 				Converter.toString(entry.getDate(), "dd/MM/yyyy")));
 		EntryDetailRepository.getInstance().updateData(
-				new StringBuilder("Entry_Id = ").append(entry_id).toString(),
+				new StringBuilder("Entry_Id = ").append(sEntryId).toString(),
 				"Category_Id");
 		total_entry_title
 				.setText(getResources()
@@ -133,7 +133,7 @@ public class EntryDetailViewActivity extends Activity {
 
 	public void editBtnClicked(View v) {
 		Intent edit = new Intent(this, EntryEditActivity.class);
-		edit.putExtra("entry_id", entry_id);
+		edit.putExtra("entry_id", sEntryId);
 		startActivity(edit);
 	}
 }
