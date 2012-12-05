@@ -69,7 +69,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			if (extras.containsKey("entry_id")) {
 				mPassedEntryId = extras.getLong("entry_id");
 			}
-
 		}
 
 		mEntryList = (LinearLayout) findViewById(R.id.entry_edit_list);
@@ -280,26 +279,35 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 		String date = Converter.toString(inputDate);
 		String table = "Entry";
+
+		// Check existed entry.
+		Cursor oldEntry = SqlHelper.instance.select(
+				"Entry",
+				"Id",
+				new StringBuilder("Date = '").append(date).append("'")
+						.append(" AND Type = ").append(type).toString());
+		if (oldEntry != null && oldEntry.moveToFirst()) {
+			if (mPassedEntryId != -1) {
+				SqlHelper.instance.delete(table, new StringBuilder("Id = ")
+						.append(mPassedEntryId).toString());
+				EntryDetailViewActivity.sEntryId = oldEntry.getLong(0);
+			}
+
+			mPassedEntryId = oldEntry.getLong(0);
+		}
+
 		long id = mPassedEntryId;
 
+		Logger.Log("Entry Id: " + mPassedEntryId, "EntryEditActivity");
 		if (mPassedEntryId == -1) {
-			Cursor oldEntry = SqlHelper.instance.select("Entry", "Id",
-					new StringBuilder("Date = '").append(date).append("'")
-							.append(" AND Type = ").append(type).toString());
-			if (oldEntry != null && oldEntry.moveToFirst()) {
-				id = oldEntry.getLong(0);
-			} else {
-				id = SqlHelper.instance.insert(table, new String[] { "Date",
-						"Type" }, new String[] { date, String.valueOf(type) });
-			}
+			id = SqlHelper.instance.insert(table,
+					new String[] { "Date", "Type" }, new String[] { date,
+							String.valueOf(type) });
 		} else {
 			SqlHelper.instance.update(table, new String[] { "Date", "Type" },
 					new String[] { date, String.valueOf(type) },
 					new StringBuilder("Id = ").append(mPassedEntryId)
 							.toString());
-			// SqlHelper.instance.delete(subTable,
-			// new StringBuilder("Entry_Id = ").append(mPassedEntryId)
-			// .toString());
 		}
 
 		for (int index = 0; index < mEntryList.getChildCount(); index++) {
@@ -384,11 +392,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		try {
 			for (String str : strs) {
 				if (str.toLowerCase().contains("name")
-						|| str.toLowerCase().contains("ten")) {
+						|| str.toLowerCase().contains("ten")
+						|| str.toLowerCase().contains("tên")) {
 					value.setName(str.split(":")[1].trim());
 				} else {
 					if (str.toLowerCase().contains("price")
-							|| str.toLowerCase().contains("gia")) {
+							|| str.toLowerCase().contains("gia")
+							|| str.toLowerCase().contains("giá")) {
 						String money = str.split(":")[1];
 						money = money.replace(".", "").replace(",", ".").trim();
 						value.setMoney(Long.parseLong(money));
@@ -406,6 +416,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				}
 			}
 		} catch (Exception e) {
+			Logger.Log(e.getMessage(), "EntryEditActivity");
 			Alert.getInstance().show(this,
 					getResources().getString(R.string.entry_unformated_data));
 			return null;
@@ -438,9 +449,16 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 				for (NdefRecord record : msgs[i].getRecords()) {
 					String[] result = NfcHelper.parse(record).getTag()
-							.split("(v|V)(n|N)(d|D)");
+							.split("(t|T)(ê|e|E|Ê)(n|N)");
+
 					for (String string : result) {
-						EntryDetail entryDetail = getEntryDetail(string);
+						if ("".equals(string.trim())) {
+							continue;
+						}
+
+						EntryDetail entryDetail = getEntryDetail(new StringBuilder(
+								"Ten").append(string).toString());
+
 						if (mEntryList != null
 								&& entryDetail != null
 								&& !"".equals(String.valueOf(entryDetail

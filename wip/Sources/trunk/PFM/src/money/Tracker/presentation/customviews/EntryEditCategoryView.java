@@ -232,6 +232,23 @@ public class EntryEditCategoryView extends LinearLayout {
 				}
 			}
 		});
+
+		mCategoryEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (!arg1
+						&& CategoryRepository.getInstance().isExisted(
+								mCategoryEdit.getText().toString())) {
+					Alert.getInstance().show(
+							getContext(),
+							getResources().getString(
+									R.string.existed_category_message));
+					mCategory.setSelection(CategoryRepository.getInstance().getIndex(mCategoryEdit.getText().toString()));
+					mCategory.setVisibility(View.VISIBLE);
+					mCategoryEdit.setVisibility(View.GONE);
+					((CategoryAdapter)mCategory.getAdapter()).notifyDataSetChanged();
+				}
+			}
+		});
 	}
 
 	public void setEntryDate(Date date) {
@@ -342,6 +359,8 @@ public class EntryEditCategoryView extends LinearLayout {
 			EntryEditProductView product = (EntryEditProductView) mCategoryList
 					.getChildAt(index);
 
+			Logger.Log("Length of items: " + mCategory.getChildCount(),
+					"EntryEditCategoryView");
 			if (product == null || product.getMoney() == 0) {
 				continue;
 			}

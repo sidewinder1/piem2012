@@ -23,6 +23,7 @@
             android:id="@+id/entry_item_category_edit"
             android:layout_width="0dp"
             android:layout_height="36dp"
+            android:maxLength="25"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="2dp"

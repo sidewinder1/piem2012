@@ -1,21 +1,23 @@
 package money.Tracker.presentation.customviews;
 
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.repository.CategoryRepository;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.EditText;
 
 public class ScheduleItem extends LinearLayout {
-	public Spinner category;
-	public EditText budget;
+	public Spinner mCategory;
+	public EditText mBudget;
 	public Button addBtn, removeBtn;
-	public EditText category_edit;
+	public EditText mCategoryEdit;
 	public long Id;
 
 	public ScheduleItem(Context context, CategoryAdapter categoryAdapter,
@@ -25,14 +27,31 @@ public class ScheduleItem extends LinearLayout {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.schedule_edit_item, this, true);
 		Id = id;
-		category = (Spinner) findViewById(R.id.schedule_item_category);
-		budget = (EditText) findViewById(R.id.schedule_item_price);
+		mCategory = (Spinner) findViewById(R.id.schedule_item_category);
+		mBudget = (EditText) findViewById(R.id.schedule_item_price);
 		addBtn = (Button) findViewById(R.id.schedule_item_add);
 		removeBtn = (Button) findViewById(R.id.schedule_item_remove);
-		category_edit = (EditText) findViewById(R.id.schedule_item_category_edit);
+		mCategoryEdit = (EditText) findViewById(R.id.schedule_item_category_edit);
 
 		// Apply the adapter to the spinner.
-		category.setAdapter(categoryAdapter);
+		mCategory.setAdapter(categoryAdapter);
+		
+		mCategoryEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (!arg1
+						&& CategoryRepository.getInstance().isExisted(
+								mCategoryEdit.getText().toString())) {
+					Alert.getInstance().show(
+							getContext(),
+							getResources().getString(
+									R.string.existed_category_message));
+					mCategory.setSelection(CategoryRepository.getInstance().getIndex(mCategoryEdit.getText().toString()));
+					mCategory.setVisibility(View.VISIBLE);
+					mCategoryEdit.setVisibility(View.GONE);
+					((CategoryAdapter)mCategory.getAdapter()).notifyDataSetChanged();
+				}
+			}
+		});
 	}
 
 	public ScheduleItem(Context context) {
@@ -41,11 +60,11 @@ public class ScheduleItem extends LinearLayout {
 
 	public long getCategory() {
 		return CategoryRepository.getInstance().getId(
-				category.getSelectedItemPosition());
+				mCategory.getSelectedItemPosition());
 	}
 
 	public long getBudget() {
-		String budgetValue = String.valueOf(budget.getText());
+		String budgetValue = String.valueOf(mBudget.getText());
 		if ("".equals(budgetValue)) {
 			budgetValue = "0";
 		}
