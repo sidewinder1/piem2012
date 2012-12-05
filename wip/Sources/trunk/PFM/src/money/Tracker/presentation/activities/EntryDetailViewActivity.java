@@ -8,6 +8,7 @@ import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.presentation.customviews.EntryDetailCategoryView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
+import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.repository.EntryDetailRepository;
 import money.Tracker.repository.EntryRepository;
 import android.app.Activity;
@@ -50,9 +51,13 @@ public class EntryDetailViewActivity extends Activity {
 	}
 
 	private void bindData() {
-		Entry entry = (Entry) EntryRepository.getInstance()
-				.getData(new StringBuilder("Id=").append(sEntryId).toString())
-				.get(0);
+		ArrayList<IModelBase> allEntries = EntryRepository.getInstance()
+		.getData(new StringBuilder("Id=").append(sEntryId).toString());
+		if (allEntries == null || allEntries.size() == 0){
+			return;
+		}
+		
+		Entry entry = (Entry)allEntries.get(0);
 		entry_title.setText(getResources().getString(
 				(entry.getType() == 1 ? R.string.entry_daily_expense_title
 						: R.string.entry_daily_income_title)).replace("{0}",

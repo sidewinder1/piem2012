@@ -155,6 +155,9 @@ public class EntryEditCategoryView extends LinearLayout {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 				parent.addView(item, addedIndex, params);
+				
+				item.mTotal_money.setFocusable(true);
+				item.mTotal_money.requestFocus();
 			}
 		});
 

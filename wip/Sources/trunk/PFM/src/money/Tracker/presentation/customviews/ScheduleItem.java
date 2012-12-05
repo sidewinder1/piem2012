@@ -15,7 +15,7 @@ import android.widget.EditText;
 
 public class ScheduleItem extends LinearLayout {
 	public Spinner mCategory;
-	public EditText mBudget;
+	private EditText mBudget;
 	public Button addBtn, removeBtn;
 	public EditText mCategoryEdit;
 	public long Id;
@@ -63,6 +63,14 @@ public class ScheduleItem extends LinearLayout {
 				mCategory.getSelectedItemPosition());
 	}
 
+	public void setBudget(long money){
+		mBudget.setText(Converter.toString(money, "####"));
+	}
+	
+	public EditText getBudgetText(){
+		return mBudget;
+	}
+	
 	public long getBudget() {
 		String budgetValue = String.valueOf(mBudget.getText());
 		if ("".equals(budgetValue)) {

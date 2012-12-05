@@ -106,6 +106,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			Entry entry = (Entry) EntryRepository.getInstance()
 					.getData("Id = " + mPassedEntryId).get(0);
 			if (entry != null) {
+				mMonth = entry.getDate().getMonth();
+				mDay = entry.getDate().getDate();
+				mYear = entry.getDate().getYear() + 1900;
+				
 				mDateEdit.setText(Converter.toString(entry.getDate(),
 						"dd/MM/yyyy"));
 
@@ -287,13 +291,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				new StringBuilder("Date = '").append(date).append("'")
 						.append(" AND Type = ").append(type).toString());
 		if (oldEntry != null && oldEntry.moveToFirst()) {
-			if (mPassedEntryId != -1) {
+			if (mPassedEntryId != -1 && mPassedEntryId != oldEntry.getLong(0)) {
 				SqlHelper.instance.delete(table, new StringBuilder("Id = ")
 						.append(mPassedEntryId).toString());
 				EntryDetailViewActivity.sEntryId = oldEntry.getLong(0);
+				mPassedEntryId = oldEntry.getLong(0);
 			}
-
-			mPassedEntryId = oldEntry.getLong(0);
 		}
 
 		long id = mPassedEntryId;

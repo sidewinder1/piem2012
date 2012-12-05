@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class EntryEditProductView extends LinearLayout {
-	public EditText product, price;
+	private EditText product, price;
 	private Button addBtn, removeBtn;
 	final TextView total_text_view;
 	private LinearLayout.LayoutParams mLastParams;
@@ -168,7 +168,7 @@ public class EntryEditProductView extends LinearLayout {
 	}
 
 	public void setCost(String cost) {
-		price.setText(cost);
+		price.setText(cost.replace(",", "").replace("[.]", ""));
 	}
 
 	public String getName() {
