@@ -1,5 +1,8 @@
 package money.Tracker.presentation.model;
 
+import money.Tracker.presentation.PfmApplication;
+import money.Tracker.presentation.activities.R;
+
 public class Category {
 	private long id;
 	private String name, user_color;
@@ -39,11 +42,13 @@ public class Category {
 	}
 
 	public int compareTo(Category category) {
-		if ("Others".contains(name)) {
+		if (PfmApplication.getAppResources().getString(R.string.others)
+				.contains(name)) {
 			return 1;
 		}
 
-		if ("Others".contains(category.name)) {
+		if (PfmApplication.getAppResources().getString(R.string.others)
+				.contains(category.name)) {
 			return -1;
 		}
 

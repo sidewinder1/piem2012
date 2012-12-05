@@ -413,7 +413,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 											str.split(":")[1].trim()));
 						} else {
 							value.setCategory_id(CategoryRepository
-									.getInstance().getId("Others"));
+									.getInstance().getId(getResources().getString(R.string.others)));
 						}
 					}
 				}
