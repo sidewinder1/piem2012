@@ -29,19 +29,31 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScheduleDetailViewActivity" />
-        <activity android:name=".TabViewActivity" />
-        <activity android:name=".MainViewActivity" />
-        <activity android:name=".ScheduleEditActivity" />
-        <activity android:name=".SyncSettingActivity" />
-        <activity android:name=".EntryEditActivity" >
+        <activity
+            android:name=".ScheduleDetailViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TabViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ScheduleEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SyncSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EntryEditActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -50,30 +62,66 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".EntryDetailViewActivity" />
-        <activity android:name=".BorrowLendMainViewActivity" />
-        <activity android:name=".BorrowViewActivity" />
-        <activity android:name=".LendViewActivity" />
-        <activity android:name=".BorrowLendInsertActivity" />
-        <activity android:name=".BorrowLendViewActivity" />
-        <activity android:name=".BorrowLendViewDetailActivity" />
-        <activity android:name=".ReportMainViewActivity" />
-        <activity android:name=".ReportViewActivity" />
-        <activity android:name=".FileExplorerActivity" />
-        <activity android:name=".ReportViewDetailActivity" />
-        <activity android:name=".ReportMainViewDetailActivity" />
-        <activity android:name=".ReportViewPieChartActivity" />
-        <activity android:name=".ReportChartActivity" />
-        <activity android:name=".ReportViewChartActivity" />
-        <activity android:name=".ReportMainViewChartActivity" />
-        <activity android:name=".ReportViewBarChartActivity" />
+        <activity
+            android:name=".EntryDetailViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BorrowLendMainViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BorrowViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LendViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BorrowLendInsertActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BorrowLendViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BorrowLendViewDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportMainViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FileExplorerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportViewDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportMainViewDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportViewPieChartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportChartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportViewChartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportMainViewChartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReportViewBarChartActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="jim.h.common.android.lib.zxing.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name="org.achartengine.GraphicalActivity" />
+        <activity
+            android:name="org.achartengine.GraphicalActivity"
+            android:screenOrientation="portrait" />
 
         <uses-library android:name="android.test.runner" />
     </application>
