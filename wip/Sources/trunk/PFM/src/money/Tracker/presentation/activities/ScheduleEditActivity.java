@@ -159,7 +159,8 @@ public class ScheduleEditActivity extends Activity {
 						"MMMM dd, yyyy"));
 				endDateEdit.setText(Converter.toString(schedule.end_date,
 						"MMMM dd, yyyy"));
-				total_budget.setText(Converter.toString(schedule.budget, "####"));
+				total_budget.setText(Converter
+						.toString(schedule.budget, "####"));
 			}
 
 			ArrayList<DetailSchedule> values = DetailScheduleRepository
@@ -191,7 +192,8 @@ public class ScheduleEditActivity extends Activity {
 		}
 
 		// Add events to to detail budget to handle business logic.
-		itemView.getBudgetText().setOnFocusChangeListener(completeAfterLostFocus);
+		itemView.getBudgetText().setOnFocusChangeListener(
+				completeAfterLostFocus);
 
 		itemView.getBudgetText().addTextChangedListener(new TextWatcher() {
 			long sValue = 0;
@@ -220,7 +222,9 @@ public class ScheduleEditActivity extends Activity {
 							View view, int pos, long id) {
 						Category item = (Category) parent
 								.getItemAtPosition(pos);
-						if (item != null && "Others".equals(item.getName())) {
+						if (item != null
+								&& getResources().getString(R.string.others)
+										.equals(item.getName())) {
 							parent.setVisibility(View.GONE);
 							View text = (View) parent.getTag();
 							text.setVisibility(View.VISIBLE);
@@ -324,8 +328,8 @@ public class ScheduleEditActivity extends Activity {
 			if (!hasFocus) {
 				String str = ((EditText) v).getText().toString();
 				if (!"".equals(str)) {
-					((EditText) v).setText(Converter.toString(Converter
-							.toLong(str), "####"));
+					((EditText) v).setText(Converter.toString(
+							Converter.toLong(str), "####"));
 				}
 			}
 		}
@@ -390,8 +394,8 @@ public class ScheduleEditActivity extends Activity {
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-								total_budget.setText(Converter
-										.toString(getTotalDetailBudget(), "####"));
+								total_budget.setText(Converter.toString(
+										getTotalDetailBudget(), "####"));
 								total_budget.requestFocus();
 							}
 						}, new OnClickListener() {

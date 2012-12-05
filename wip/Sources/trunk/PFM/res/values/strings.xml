@@ -32,7 +32,7 @@
     <string name="schedule_price">Giá</string>
     <string name="schedule_duration">Khoảng thời gian</string>
     <string name="schedule_monthly">Hàng tháng</string>
-     <string name="schedule_exist_message">Kế hoạch này đã tồn tại</string>
+    <string name="schedule_exist_message">Kế hoạch này đã tồn tại</string>
     <string name="schedule_detail_budget_title">Budget</string>
     <string name="schedule_weekly">Hàng tuần</string>
     <string name="schedule_title">Kế hoạch</string>
@@ -142,9 +142,47 @@
         <item>VND</item>
         <item>USD</item>
     </string-array>
+    <string-array name="category_name">
+        <item>Sinh nhật</item>
+        <item>Thức ăn</item>
+        <item>Giải trí</item>
+        <item>Mua sắm</item>
+        <item>Khác…</item>
+    </string-array>
+    <string-array name="category_color">
+        <item>#99FF0000</item>
+        <item>#99F4A460</item>
+        <item>#99B8860B</item>
+        <item>#99F08080</item>
+        <item>#99C71585</item>
+    </string-array>
+    <string-array name="color_list">
+        <item>#99FFFF00</item>
+        <item>#99FF8C00</item>
+        <item>#99FF1493</item>
+        <item>#99A52A2A</item>
+        <item>#999ACD32</item>
+        <item>#999370D8</item>
+        <item>#998B4513</item>
+        <item>#998B008B</item>
+        <item>#998B0000</item>
+        <item>#99808000</item>
+        <item>#99800000</item>
+        <item>#997FFF00</item>
+        <item>#99708090</item>
+        <item>#994B0082</item>
+        <item>#994169E1</item>
+        <item>#9940E0D0</item>
+        <item>#9932CD32</item>
+        <item>#992E8B57</item>
+        <item>#99006400</item>
+        <item>#990000FF</item>
+        <item>#9900008B</item>
+        <item>#99000000</item>
+    </string-array>
     <string-array name="schedule_context_menu_item">
-        <item>Edit</item>
-        <item>Delete</item>
+        <item>Sửa</item>
+        <item>Xóa</item>
     </string-array>
     <string-array name="entry_edit_context_menu_item">
         <item>Get QR</item>

@@ -4,6 +4,8 @@ import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
+import money.Tracker.presentation.PfmApplication;
+import money.Tracker.presentation.activities.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -315,13 +317,11 @@ public class SqlHelper {
 				new StringBuilder(
 						"Id LONG PRIMARY KEY,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,")
 						.append("User_Color TEXT").toString());
-		String[] names = { "Birthday", "Food", "Entertainment", "Shopping",
-				"Others" };
-		String[] colors = { "#99FF0000", "#9900FFFF", "#990000FF", "#9900A0A0",
-				"#99ADD8E6" };
+		String[] names = PfmApplication.getAppResources().getStringArray(R.array.category_name);
+		String[] colors = PfmApplication.getAppResources().getStringArray(R.array.category_color);
 
 		Cursor categoryCheck = select("Category", "*",
-				"Name='Birthday' AND User_Color='#99FF0000'");
+				"Name='" + names[0] + "' AND User_Color='" + colors[0] + "'");
 
 		if (categoryCheck != null && !categoryCheck.moveToFirst()) {
 			for (int index = 0; index < names.length; index++) {
@@ -339,16 +339,9 @@ public class SqlHelper {
 						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER, UserName TEXT,")
 						.append("User_Color TEXT").toString());
 
-		String[] color_codes = { "#9900FFFF", "#99ADD8E6", "#99FFA500",
-				"#99800080", "#99A52A2A", "#99FFFF00", "#99800000",
-				"#9900FF00", "#99008000", "#99FF00FF", "#99808000",
-				"#99C0C0C0", "#9998AFC7", "#990000FF", "#99808080",
-				"#990000A0", "#99000000", "#99737CA1", "#99737CA1",
-				"#99F6358A", "#998BB381", "#9941A317", "#994AA02C",
-				"#9999C68E", "#994CC417", "#996CC417", "#9952D017",
-				"#99EAC117", "#99FDD017" };
+		String[] color_codes = PfmApplication.getAppResources().getStringArray(R.array.color_list);
 
-		Cursor colorCheck = select("UserColor", "*", "User_Color='#99FF0000'");
+		Cursor colorCheck = select("UserColor", "*", "User_Color='" + color_codes[0] + "'");
 
 		if (colorCheck != null && !colorCheck.moveToFirst()) {
 			for (int index = 0; index < color_codes.length; index++) {

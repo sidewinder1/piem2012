@@ -100,7 +100,9 @@ public class EntryEditCategoryView extends LinearLayout {
 							View view, int pos, long id) {
 						Category item = (Category) parent
 								.getItemAtPosition(pos);
-						if (item != null && "Others".equals(item.getName())) {
+						if (item != null
+								&& getResources().getString(R.string.others)
+										.equals(item.getName())) {
 							parent.setVisibility(View.GONE);
 							View text = (View) parent.getTag();
 							text.setVisibility(View.VISIBLE);
@@ -155,7 +157,7 @@ public class EntryEditCategoryView extends LinearLayout {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 				parent.addView(item, addedIndex, params);
-				
+
 				item.mTotal_money.setFocusable(true);
 				item.mTotal_money.requestFocus();
 			}
@@ -245,10 +247,12 @@ public class EntryEditCategoryView extends LinearLayout {
 							getContext(),
 							getResources().getString(
 									R.string.existed_category_message));
-					mCategory.setSelection(CategoryRepository.getInstance().getIndex(mCategoryEdit.getText().toString()));
+					mCategory.setSelection(CategoryRepository.getInstance()
+							.getIndex(mCategoryEdit.getText().toString()));
 					mCategory.setVisibility(View.VISIBLE);
 					mCategoryEdit.setVisibility(View.GONE);
-					((CategoryAdapter)mCategory.getAdapter()).notifyDataSetChanged();
+					((CategoryAdapter) mCategory.getAdapter())
+							.notifyDataSetChanged();
 				}
 			}
 		});
