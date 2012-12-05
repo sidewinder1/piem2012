@@ -154,7 +154,6 @@ public class ScheduleEditActivity extends Activity {
 			addToList(
 					new DetailSchedule(-1, 0, Converter.toLong(initialValue)),
 					-1, false);
-
 		} else { // Edit mode
 			TextView title = (TextView) findViewById(R.id.schedule_edit_tilte);
 			title.setText("Schedule");
