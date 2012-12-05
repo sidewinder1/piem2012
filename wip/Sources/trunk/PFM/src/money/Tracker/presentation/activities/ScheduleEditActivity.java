@@ -90,18 +90,6 @@ public class ScheduleEditActivity extends Activity {
 			}
 		});
 
-		total_budget.setOnFocusChangeListener(new OnFocusChangeListener() {
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus) {
-					String str = total_budget.getText().toString();
-					if (!"".equals(str) && str.endsWith(".")) {
-						total_budget.setText(Converter.toString(Converter
-								.toLong(str)));
-					}
-				}
-			}
-		});
-
 		startDateEdit = (EditText) findViewById(R.id.schedule_start_date);
 		startDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -114,6 +102,7 @@ public class ScheduleEditActivity extends Activity {
 		periodic.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
+				String lastDate = endDateEdit.getText().toString();
 				updateDisplay();
 
 				Cursor checkExist = SqlHelper.instance.select(
@@ -133,6 +122,7 @@ public class ScheduleEditActivity extends Activity {
 							getResources().getString(
 									R.string.schedule_exist_message));
 					periodic.setChecked(!isChecked);
+					endDateEdit.setText(lastDate);
 				}
 			}
 		});
@@ -162,11 +152,14 @@ public class ScheduleEditActivity extends Activity {
 					.getData("Id = " + passed_schedule_id).get(0);
 			if (schedule != null) {
 				periodic.setChecked(schedule.type == 1);
+				mMonth = schedule.start_date.getMonth();
+				mDay = schedule.start_date.getDate();
+				mYear = schedule.start_date.getYear() + 1900;
 				startDateEdit.setText(Converter.toString(schedule.start_date,
 						"MMMM dd, yyyy"));
 				endDateEdit.setText(Converter.toString(schedule.end_date,
 						"MMMM dd, yyyy"));
-				total_budget.setText(Converter.toString(schedule.budget));
+				total_budget.setText(Converter.toString(schedule.budget, "####"));
 			}
 
 			ArrayList<DetailSchedule> values = DetailScheduleRepository
@@ -192,15 +185,15 @@ public class ScheduleEditActivity extends Activity {
 		itemView.mCategory.setTag(itemView.mCategoryEdit);
 
 		if (init) {
-			itemView.mBudget.setText(Converter.toString(detail.getBudget()));
+			itemView.setBudget(detail.getBudget());
 		} else {
-			itemView.mBudget.setHint(Converter.toString(detail.getBudget()));
+			itemView.setBudget(detail.getBudget());
 		}
 
 		// Add events to to detail budget to handle business logic.
-		itemView.mBudget.setOnFocusChangeListener(completeAfterLostFocus);
+		itemView.getBudgetText().setOnFocusChangeListener(completeAfterLostFocus);
 
-		itemView.mBudget.addTextChangedListener(new TextWatcher() {
+		itemView.getBudgetText().addTextChangedListener(new TextWatcher() {
 			long sValue = 0;
 
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -274,7 +267,8 @@ public class ScheduleEditActivity extends Activity {
 					if (item.getBudget() <= 0) {
 						Alert.getInstance().show(getBaseContext(),
 								"A slot is empty");
-						item.mBudget.requestFocus();
+						item.getBudgetText().setFocusable(true);
+						item.getBudgetText().requestFocus();
 						return;
 					}
 
@@ -283,6 +277,7 @@ public class ScheduleEditActivity extends Activity {
 									.toString())) {
 						Alert.getInstance().show(getBaseContext(),
 								"New category is empty");
+						item.mCategoryEdit.setFocusable(true);
 						item.mCategoryEdit.requestFocus();
 						return;
 					}
@@ -330,7 +325,7 @@ public class ScheduleEditActivity extends Activity {
 				String str = ((EditText) v).getText().toString();
 				if (!"".equals(str)) {
 					((EditText) v).setText(Converter.toString(Converter
-							.toLong(str)));
+							.toLong(str), "####"));
 				}
 			}
 		}
@@ -348,7 +343,7 @@ public class ScheduleEditActivity extends Activity {
 			return;
 		}
 
-		EditText lastBudget = scheduleItem.mBudget;
+		EditText lastBudget = scheduleItem.getBudgetText();
 		if (lastBudget == null) {
 			return;
 		}
@@ -396,7 +391,7 @@ public class ScheduleEditActivity extends Activity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								total_budget.setText(Converter
-										.toString(getTotalDetailBudget()));
+										.toString(getTotalDetailBudget(), "####"));
 								total_budget.requestFocus();
 							}
 						}, new OnClickListener() {
@@ -573,7 +568,8 @@ public class ScheduleEditActivity extends Activity {
 					new StringBuilder("Schedule_id=").append(newScheduleId)
 							.append(" AND Category_id=").append(category_id)
 							.toString());
-			if (categoryCheck != null && categoryCheck.moveToFirst()) {
+			if (categoryCheck != null && categoryCheck.moveToFirst()
+					&& detailItem.Id != categoryCheck.getLong(0)) {
 				detailItem.Id = categoryCheck.getLong(0);
 				budget += categoryCheck.getLong(1);
 			}
