@@ -2,6 +2,7 @@ package money.Tracker.common.utilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -75,8 +76,7 @@ public class Chart extends AbstractChart {
 						String startDateMonth = Converter.toString(startDate,"MM");
 						String startDateYear = Converter.toString(startDate,"yyyy");
 
-						if (scheduleMonth.equals(startDateMonth)
-								&& scheduleYear.equals(startDateYear)) {
+						if (scheduleMonth.equals(startDateMonth) && scheduleYear.equals(startDateYear)) {
 							long id = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Id"));
 
 							Cursor scheduleDetailCursor = SqlHelper.instance.select("ScheduleDetail", "*","Schedule_Id=" + id);
@@ -85,7 +85,7 @@ public class Chart extends AbstractChart {
 								if (scheduleDetailCursor.moveToFirst()) {
 									do {
 										String name = "";
-										int categoryID = scheduleDetailCursor.getInt(scheduleDetailCursor.getColumnIndex("Category_Id"));
+										long categoryID = scheduleDetailCursor.getLong(scheduleDetailCursor.getColumnIndex("Category_Id"));
 										double categoryValue = scheduleDetailCursor.getDouble(scheduleDetailCursor.getColumnIndex("Budget"));
 
 										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
@@ -105,12 +105,17 @@ public class Chart extends AbstractChart {
 						}
 					} else {
 						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						Date scheduleEndDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("End_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calScheduleStart = Calendar.getInstance();
+				        calScheduleStart.setTime(scheduleStartDate);
+				        int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(scheduleStartDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
 
-						if ((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) < 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) < 0)) {
+						if (scheduleMonth.equals(startDateMonth) && scheduleWeek == startDateWeek){
 							long id = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Id"));
 
 							Cursor scheduleDetailCursor = SqlHelper.instance.select("ScheduleDetail", "*","Schedule_Id=" + id);
@@ -119,7 +124,7 @@ public class Chart extends AbstractChart {
 								if (scheduleDetailCursor.moveToFirst()) {
 									do {
 										String name = "";
-										int categoryID = scheduleDetailCursor.getInt(scheduleDetailCursor.getColumnIndex("Category_Id"));
+										long categoryID = scheduleDetailCursor.getLong(scheduleDetailCursor.getColumnIndex("Category_Id"));
 										double categoryValue = scheduleDetailCursor.getDouble(scheduleDetailCursor.getColumnIndex("Budget"));
 
 										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
@@ -168,7 +173,7 @@ public class Chart extends AbstractChart {
 										double value = 0;
 										int color = 0;
 
-										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
 										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
 										if (categoryCursor != null) {
 											if (categoryCursor.moveToFirst()) {
@@ -213,9 +218,17 @@ public class Chart extends AbstractChart {
 							}
 						}
 					} else {
-						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
-								|| entryDate.compareTo(startDate) == 0
-								|| entryDate.compareTo(endDate) == 0) {
+						String entryMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calEntry = Calendar.getInstance();
+				        calEntry.setTime(entryDate);
+				        int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(startDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+
+						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek){
 							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
@@ -224,7 +237,7 @@ public class Chart extends AbstractChart {
 										double value = 0;
 										int color = 0;
 
-										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
 										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
 										if (categoryCursor != null) {
 											if (categoryCursor.moveToFirst()) {
@@ -446,7 +459,7 @@ public class Chart extends AbstractChart {
 		renderer.setXLabelsAlign(Align.LEFT);
 		renderer.setYLabelsAlign(Align.LEFT);
 		//renderer.setChartTitleTextSize(25);
-		//renderer.setLabelsTextSize(25);
+		renderer.setLabelsTextSize(15);
 		renderer.setLegendTextSize(20);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
@@ -580,7 +593,7 @@ public class Chart extends AbstractChart {
 		renderer.setXLabelsAlign(Align.LEFT);
 		renderer.setYLabelsAlign(Align.LEFT);
 		//renderer.setChartTitleTextSize(25);
-		//renderer.setLabelsTextSize(25);
+		renderer.setLabelsTextSize(15);
 		renderer.setLegendTextSize(20);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);

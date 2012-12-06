@@ -36,7 +36,7 @@ public class ReportMainViewChartActivity extends TabActivity {
 		if (checkMonthly) {
 			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy", Converter.toDate(startDate)));
 		} else {
-			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy",Converter.toDate(endDate))).toString());
+			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM/yyyy", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy",Converter.toDate(endDate))).toString());
 		}
 		
 		Log.d("Check chart", "Check 1");

@@ -39,7 +39,7 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		if (checkMonthly) {
 			reportViewDetailTitle.setText(DateFormat.format("MMMM yyyy",Converter.toDate(startDate)));
 		} else {
-			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy",Converter.toDate(endDate))).toString());
+			reportViewDetailTitle.setText(new StringBuilder(DateFormat.format("dd/MM/yyyy", Converter.toDate(startDate))).append("-").append(DateFormat.format("dd/MM/yyyy",Converter.toDate(endDate))).toString());
 		}
 
 		// Create tab and intent for view detail information
@@ -50,24 +50,17 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		setupTab(reportViewDetailIntent, "Chi tiết", mTabHost);
 
 		// Create tab and intent for chart
-		Intent reportViewChartIntent = new Intent(this,
-				ReportViewChartActivity.class);
-		Log.d("Main View Detail", "Check 3_1");
+		Intent reportViewChartIntent = new Intent(this, ReportViewChartActivity.class);
 		reportViewChartIntent.putExtra("checkMonthly", checkMonthly);
-		Log.d("Main View Detail", "Check 3_1" + checkMonthly);
 		reportViewChartIntent.putExtra("start_date", startDate);
-		Log.d("Main View Detail", "Check 3_1" + startDate);
-		reportViewChartIntent.putExtra("end_date", endDate);
-		Log.d("Main View Detail", "Check 3_1" + endDate);
-		Log.d("Main View Detail", "Check 4_1");
+		reportViewChartIntent.putExtra("end_date", endDate);		
 		
 		// Create chart tab.
 		// setupTab(reportViewChartIntent, "Biểu đồ", mTabHost);
 		TextView chartTitle = (TextView)findViewById(R.id.report_chart_title);
 		chartTitle.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				Intent reportMainViewChart = new Intent(getBaseContext(),
-						ReportMainViewChartActivity.class);
+				Intent reportMainViewChart = new Intent(getBaseContext(), ReportMainViewChartActivity.class);
 				reportMainViewChart.putExtra("checkMonthly", checkMonthly);
 				reportMainViewChart.putExtra("start_date", startDate);
 				reportMainViewChart.putExtra("end_date", endDate);

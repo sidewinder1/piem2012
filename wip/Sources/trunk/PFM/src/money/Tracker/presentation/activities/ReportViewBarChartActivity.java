@@ -221,7 +221,58 @@ public class ReportViewBarChartActivity extends Activity {
 				}
 			}
 		} else {
+			Cursor weekEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%W', Date) DESC");
+			if (weekEntry != null) {
+				if (weekEntry.moveToFirst()) {
+					do {
+						String week = weekEntry.getString(weekEntry.getColumnIndex("weekEntry"));
+						String year = weekEntry.getString(weekEntry.getColumnIndex("yearEntry"));
 
+						Cursor entry = SqlHelper.instance.select("Entry", "*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry", "");
+						Date startDate = null;
+						Date endDate = null;
+
+						if (entry != null) {
+							if (entry.moveToFirst()) {
+								do {
+									Date entryDate = Converter.toDate(entry.getString(entry.getColumnIndex("Date")));
+									String entryWeek = entry.getString(entry.getColumnIndex("weekEntry"));
+									String entryYear = entry.getString(entry.getColumnIndex("yearEntry"));
+
+									if (entryWeek.equals(week) && entryYear.equals(year)) {
+										if (startDate == null) {
+											startDate = entryDate;
+										} else if (endDate == null) {
+											if (startDate.compareTo(entryDate) < 0) {
+												endDate = entryDate;
+											} else {
+												endDate = startDate;
+												startDate = entryDate;
+											}
+										} else {
+											if (startDate.compareTo(entryDate) < 0) {
+												endDate = entryDate;
+											} else {
+												endDate = startDate;
+												startDate = entryDate;
+											}
+										}
+									}
+								} while (entry.moveToNext());
+							}
+						}
+
+						if (endDate != null){
+							endDate = startDate;
+						}
+
+						if (startDate != null) {
+							LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT);
+							barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonth, startDate, endDate, dateList, check), params);
+						}
+					} while (weekEntry.moveToNext());
+				}
+			}
 		}
 	}
 }

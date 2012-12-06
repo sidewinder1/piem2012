@@ -1,6 +1,7 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -67,8 +68,9 @@ public class ReportViewPieChartActivity extends Activity {
 		{
 			LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 			Log.d("Check Pie Chart Legend", "Check 1 " + i);
-			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense), params1);
 			Log.d("Check Pie Chart Legend", entryCategoryColor.get(i) + " - " + entryCategoryName.get(i) + " - " + entryCategoryValue.get(i) + " - " + totalExpense);
+			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense), params1);
+			Log.d("Check Pie Chart Legend", "Check 1 finished");
 		}
 		
 		Log.d("Check Pie Chart Legend", "Chekck 2");
@@ -96,7 +98,7 @@ public class ReportViewPieChartActivity extends Activity {
 										long value = 0;
 										String color = "";
 
-										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
 										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
 										if (categoryCursor != null) {
 											if (categoryCursor.moveToFirst()) {
@@ -139,9 +141,17 @@ public class ReportViewPieChartActivity extends Activity {
 							}
 						}
 					} else {
-						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
-								|| entryDate.compareTo(startDate) == 0
-								|| entryDate.compareTo(endDate) == 0) {
+						String entryMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calEntry = Calendar.getInstance();
+				        calEntry.setTime(entryDate);
+				        int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(startDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+
+						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
 							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
@@ -150,7 +160,7 @@ public class ReportViewPieChartActivity extends Activity {
 										long value = 0;										
 										String color = "";
 
-										int categoryID = entryDetailCursor.getInt(entryDetailCursor.getColumnIndex("Category_Id"));
+										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
 										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
 										if (categoryCursor != null) {
 											if (categoryCursor.moveToFirst()) {
