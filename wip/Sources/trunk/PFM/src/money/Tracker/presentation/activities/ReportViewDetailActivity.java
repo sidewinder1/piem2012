@@ -1,6 +1,7 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -64,23 +65,20 @@ public class ReportViewDetailActivity extends Activity {
 						if (scheduleMonth.equals(startDateMonth) && scheduleYear.equals(startDateYear))
 							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
 					} else {
-						Date scheduleStartDate = Converter
-								.toDate(scheduleCursor.getString(scheduleCursor
-										.getColumnIndex("Start_date")));
-						Date scheduleEndDate = Converter.toDate(scheduleCursor
-								.getString(scheduleCursor
-										.getColumnIndex("End_date")));
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calScheduleStart = Calendar.getInstance();
+				        calScheduleStart.setTime(scheduleStartDate);
+				        int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(scheduleStartDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
 
-						if ((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate
-								.compareTo(endDate) < 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate
-										.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate
-										.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate
-										.compareTo(endDate) < 0))
-							budget = scheduleCursor.getLong(scheduleCursor
-									.getColumnIndex("Budget"));
+						if (scheduleMonth.equals(startDateMonth) && scheduleWeek == startDateWeek){
+							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
+						}
 					}
 				} while (scheduleCursor.moveToNext());
 			}
@@ -89,7 +87,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (budget != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportMainDetailCategory(this, "Budget", budget, checkMonthly, startDate, endDate), params);
+			reportDetail.addView(new ReportMainDetailCategory(this, "Ngân Sách", budget, checkMonthly, startDate, endDate), params);
 		}
 	}
 
@@ -159,9 +157,17 @@ public class ReportViewDetailActivity extends Activity {
 							}
 						}
 					} else {
-						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
-								|| entryDate.compareTo(startDate) == 0
-								|| entryDate.compareTo(endDate) == 0) {
+						String entryMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calEntry = Calendar.getInstance();
+				        calEntry.setTime(entryDate);
+				        int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(startDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+
+						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
 							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
@@ -216,7 +222,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (totalIncome != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportMainDetailCategory(this, "Income", totalIncome, checkMonthly, startDate, endDate), params);
+			reportDetail.addView(new ReportMainDetailCategory(this, "Thu Nhập", totalIncome, checkMonthly, startDate, endDate), params);
 		}
 		
 	}
@@ -287,9 +293,17 @@ public class ReportViewDetailActivity extends Activity {
 							}
 						}
 					} else {
-						if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
-								|| entryDate.compareTo(startDate) == 0
-								|| entryDate.compareTo(endDate) == 0) {
+						String entryMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calEntry = Calendar.getInstance();
+				        calEntry.setTime(entryDate);
+				        int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(startDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+
+						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
 							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
@@ -344,7 +358,7 @@ public class ReportViewDetailActivity extends Activity {
 		if (totalExpense != 0) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			reportDetail.addView(new ReportMainDetailCategory(this, "Expense", totalExpense, checkMonthly, startDate, endDate), params);
+			reportDetail.addView(new ReportMainDetailCategory(this, "Chi Phí", totalExpense, checkMonthly, startDate, endDate), params);
 		}
 	}
 
@@ -369,10 +383,17 @@ public class ReportViewDetailActivity extends Activity {
 						}
 					} else
 					{
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
+						String entryMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calEntry = Calendar.getInstance();
+				        calEntry.setTime(entryDate);
+				        int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(startDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+
+						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
 						Log.d("report detail", "Check 56");
 						totalBorrowing += borrowingCursor
 								.getLong(borrowingCursor
@@ -384,7 +405,7 @@ public class ReportViewDetailActivity extends Activity {
 
 			if (totalBorrowing != 0) {
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-				reportDetail.addView(new ReportMainDetailCategory(this, "Borrowing", totalBorrowing, checkMonthly, startDate, endDate), params);
+				reportDetail.addView(new ReportMainDetailCategory(this, "Vay", totalBorrowing, checkMonthly, startDate, endDate), params);
 			}
 		}
 	}
@@ -392,8 +413,7 @@ public class ReportViewDetailActivity extends Activity {
 	private void getLending() {
 		long totalLending = 0;
 
-		Cursor lendingCursor = SqlHelper.instance.select("BorrowLend", "*",
-				"Debt_type like 'Lending'");
+		Cursor lendingCursor = SqlHelper.instance.select("BorrowLend", "*", "Debt_type like 'Lending'");
 		if (lendingCursor != null) {
 			if (lendingCursor.moveToFirst()) {
 				do {
@@ -415,23 +435,28 @@ public class ReportViewDetailActivity extends Activity {
 						}
 					}else
 					{
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
+						String entryMonth = Converter.toString(entryDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calEntry = Calendar.getInstance();
+				        calEntry.setTime(entryDate);
+				        int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(startDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+
+						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek){
 						Log.d("report detail", "Check 56");
-						totalLending += lendingCursor.getLong(lendingCursor
-								.getColumnIndex("Money"));
+						totalLending += lendingCursor.getLong(lendingCursor.getColumnIndex("Money"));
 					}
 					}
 				} while (lendingCursor.moveToNext());
 			}
 
 			if (totalLending != 0) {
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-				reportDetail.addView(new ReportMainDetailCategory(this, "Lending", totalLending, checkMonthly, startDate, endDate), params);
+				reportDetail.addView(new ReportMainDetailCategory(this, "Cho Vay", totalLending, checkMonthly, startDate, endDate), params);
 			}
 		}
 

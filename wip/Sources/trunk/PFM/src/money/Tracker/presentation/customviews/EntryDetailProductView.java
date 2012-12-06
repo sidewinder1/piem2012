@@ -17,8 +17,7 @@ public class EntryDetailProductView extends LinearLayout {
 
 	public EntryDetailProductView(Context context, EntryDetail data) {
 		super(context);
-		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.entry_detail_product_item, this, true);
 
 		// Get control from .xml file.

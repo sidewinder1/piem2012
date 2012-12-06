@@ -1,5 +1,7 @@
 package money.Tracker.presentation.customviews;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import money.Tracker.common.sql.SqlHelper;
@@ -38,45 +40,27 @@ public class ReportViewItem extends LinearLayout {
 		if (checkMonthly)
 			reportViewDate.setText(Converter.toString(startDate, "MMMM, yyyy"));
 		else
-			reportViewDate.setText(new StringBuilder(Converter.toString(
-					startDate, "dd/MM/yyyy")).append(" - ").append(
-					Converter.toString(endDate, "dd/MM/yyyy")));
+			reportViewDate.setText(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
 
 		// get spent
 		long spent = 0;
 
-		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*",
-				"Type=1");
+		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*", "Type=1");
 		if (entryExpenseCursor != null) {
-			Log.d("Check spent", "Check 1");
-			if (entryExpenseCursor.moveToFirst()) {
-				Log.d("Check spent", "Check 2");
+			if (entryExpenseCursor.moveToFirst()) {				
 				do {
-					Log.d("Check spent", "Check 3");
-					long id = entryExpenseCursor.getLong(entryExpenseCursor
-							.getColumnIndex("Id"));
-					Date entryDate = Converter.toDate(entryExpenseCursor
-							.getString(entryExpenseCursor
-									.getColumnIndex("Date")));
-					Log.d("Check spent", "Check 4");
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
+					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
+					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
+					
+					if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
-						Log.d("Check spent", "Check 5 - " + id);
-						Cursor entryDetailCursor = SqlHelper.instance.select(
-								"EntryDetail", "*", "Entry_Id=" + id);
+							|| entryDate.compareTo(endDate) == 0) {						
+						Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "*", "Entry_Id=" + id);
 						Log.d("Check spent", "Check 6");
 						if (entryDetailCursor != null) {
-							Log.d("Check spent", "Check 7");
 							if (entryDetailCursor.moveToFirst()) {
-								Log.d("Check spent", "Check 8");
 								do {
-									Log.d("Check spent", "Check 9");
-									spent += entryDetailCursor
-											.getLong(entryDetailCursor
-													.getColumnIndex("Money"));
-									Log.d("Check spent", String.valueOf(spent));
+									spent += entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Money"));									
 								} while (entryDetailCursor.moveToNext());
 							}
 						}
@@ -87,55 +71,45 @@ public class ReportViewItem extends LinearLayout {
 
 		// get budget
 		long budget = 0;
+		Log.d("Check budget", "Check 1");
 		String whereCondition = "";
 		if (checkMonthly)
 			whereCondition = "Type = 1";
 		else
 			whereCondition = "Type = 0";
 
-		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*",
-				whereCondition);
+		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*", whereCondition);
 		if (scheduleCursor != null) {
 			if (scheduleCursor.moveToFirst()) {
 				do {
 					if (checkMonthly) {
-						Date scheduleStartDate = Converter
-								.toDate(scheduleCursor.getString(scheduleCursor
-										.getColumnIndex("Start_date")));
-						String scheduleMonth = Converter.toString(
-								scheduleStartDate, "MM");
-						Log.d("Check get Month", scheduleMonth);
-						String startDateMonth = Converter.toString(startDate,
-								"MM");
-						Log.d("Check get Month", startDateMonth);
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
 
 						if (scheduleMonth.equals(startDateMonth))
-							budget = scheduleCursor.getLong(scheduleCursor
-									.getColumnIndex("Budget"));
+							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
 					} else {
-						Date scheduleStartDate = Converter
-								.toDate(scheduleCursor.getString(scheduleCursor
-										.getColumnIndex("Start_date")));
-						Date scheduleEndDate = Converter.toDate(scheduleCursor
-								.getString(scheduleCursor
-										.getColumnIndex("End_date")));
+						Log.d("Check Schedule Budget", "" + checkMonthly);
+						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						
+				        Calendar calScheduleStart = Calendar.getInstance();
+				        calScheduleStart.setTime(scheduleStartDate);
+				        int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_MONTH);
+				        Calendar calStartDate = Calendar.getInstance();
+				        calStartDate.setTime(scheduleStartDate);
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
 
-						if ((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate
-								.compareTo(endDate) < 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate
-										.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate
-										.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate
-										.compareTo(endDate) < 0))
-							budget = scheduleCursor.getLong(scheduleCursor
-									.getColumnIndex("Budget"));
+						if (scheduleMonth.equals(startDateMonth) && scheduleWeek == startDateWeek)
+							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
 					}
 				} while (scheduleCursor.moveToNext());
 			}
 		}
 
-		reportViewSpentBudget.setText("Spent/Budget: "+ Converter.toString(spent) + "/" + Converter.toString(budget));
+		reportViewSpentBudget.setText("Chi Phí/Ngân Sách: "+ Converter.toString(spent) + "/" + Converter.toString(budget));
 		
 		if (budget - spent > 0)
 		{
@@ -162,8 +136,7 @@ public class ReportViewItem extends LinearLayout {
 
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent reportDetail = new Intent(getContext(),
-						ReportMainViewDetailActivity.class);
+				Intent reportDetail = new Intent(getContext(), ReportMainViewDetailActivity.class);
 				reportDetail.putExtra("checkMonthly", checkMonth);
 				reportDetail.putExtra("start_date", sDate);
 				reportDetail.putExtra("end_date", eDate);
