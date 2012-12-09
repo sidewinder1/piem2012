@@ -4,7 +4,7 @@ import junit.framework.TestSuite;
 import android.test.InstrumentationTestRunner;
 import android.test.InstrumentationTestSuite;
 
-public class PfmInstrumentationTestRuner extends InstrumentationTestRunner {
+public class PfmInstrumentationTestRunner extends InstrumentationTestRunner {
 
 	@Override
 	public TestSuite getAllTests() {		
@@ -25,6 +25,6 @@ public class PfmInstrumentationTestRuner extends InstrumentationTestRunner {
 	@Override
 	public ClassLoader getLoader() {
 		// TODO Auto-generated method stub
-		return PfmInstrumentationTestRuner.class.getClassLoader();
+		return PfmInstrumentationTestRunner.class.getClassLoader();
 	}
 }
