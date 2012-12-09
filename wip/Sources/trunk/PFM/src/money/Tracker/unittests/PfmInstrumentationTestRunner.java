@@ -18,6 +18,9 @@ public class PfmInstrumentationTestRunner extends InstrumentationTestRunner {
 		suite.addTestSuite(DateTimeHelperTestCase.class);
 		suite.addTestSuite(EntryDeleteTestCase.class);
 		suite.addTestSuite(ScheduleDeleteTestCase.class);
+		suite.addTestSuite(BorrowLendViewTestCase.class);
+		suite.addTestSuite(BorrowLendEditTestCase.class);
+		suite.addTestSuite(BorrowLendDeleteTestCase.class);
 		
 		return suite;
 	}

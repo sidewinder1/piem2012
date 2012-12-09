@@ -59,23 +59,14 @@ public class BorrowLendViewActivity extends Activity {
 			public void onItemClick(AdapterView<?> listView, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Log.d("On Click Item", "Check 1");
-				borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(
-						position);
+				borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);
 				Log.d("On Click Item", "Check 2");
 				if (borrowLend != null) {
-					Intent borrowLendDetail = new Intent(
-							BorrowLendViewActivity.this,
-							BorrowLendViewDetailActivity.class);
-					Log.d("On Click Item", "Check 3");
-					borrowLendDetail.putExtra("borrowLendID",
-							borrowLend.getId());
-					Log.d("On Click Item", "Check 4 - " + borrowLend.getId());
+					Intent borrowLendDetail = new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
+					borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
 					borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
-					Log.d("On Click Item", "Check 5 - " + checkBorrowing);
 					startActivity(borrowLendDetail);
 				}
-				Log.d("On Click Item", "Check 6");
 			}
 		});
 
@@ -95,8 +86,7 @@ public class BorrowLendViewActivity extends Activity {
 	}
 
 	private void getTotalInformatation() {
-		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*",
-				"Debt_type like '" + debtType + "'");
+		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*", "Debt_type like '" + debtType + "'");
 
 		double totalMoney = 0;
 		String latesExpiredDateString = "1/1/1900";
@@ -104,27 +94,17 @@ public class BorrowLendViewActivity extends Activity {
 		if (borrowLendData != null) {
 			if (borrowLendData.moveToFirst()) {
 				do {
-					totalMoney += borrowLendData.getDouble(borrowLendData
-							.getColumnIndex("Money"));
+					totalMoney += borrowLendData.getDouble(borrowLendData.getColumnIndex("Money"));
 
-					if (!borrowLendData
-							.getString(
-									borrowLendData
-											.getColumnIndex("Expired_date"))
-							.trim().equals("")) {
-						String expiredDateString = borrowLendData.getString(
-								borrowLendData.getColumnIndex("Expired_date"))
-								.trim();
-						Log.d("errorDateTime", expiredDateString);
-						Date _expiredDate = Converter.toDate(expiredDateString,
-								"dd/MM/yyyy");
-						Date _latesExpiredDate = Converter.toDate(
-								latesExpiredDateString, "dd/MM/yyyy");
+					if (!borrowLendData.getString(borrowLendData.getColumnIndex("Expired_date")).trim().equals("")) {
+						String expiredDateString = borrowLendData.getString(borrowLendData.getColumnIndex("Expired_date")).trim();
+						Date _expiredDate = Converter.toDate(expiredDateString, "dd/MM/yyyy");
+						Date _latesExpiredDate = Converter.toDate(latesExpiredDateString, "dd/MM/yyyy");
 						Long latesExpiredDate = _latesExpiredDate.getTime();
 						Long expiredDate = _expiredDate.getTime();
 
 						if (expiredDate > latesExpiredDate) {
-							latesExpiredDateString = expiredDateString;
+							latesExpiredDateString = Converter.toString(_expiredDate, "dd/MM/yyyy");
 						}
 					}
 				} while (borrowLendData.moveToNext());
@@ -162,8 +142,7 @@ public class BorrowLendViewActivity extends Activity {
 		}
 
 		sort();
-		borrowLendAdapter = new BorrowLendAdapter(this,
-				R.layout.activity_borrow_lend_view_item, values);
+		borrowLendAdapter = new BorrowLendAdapter(this, R.layout.activity_borrow_lend_view_item, values);
 
 		borrowLendList.setVisibility(View.VISIBLE);
 		borrowLendAdapter.notifyDataSetChanged();
@@ -174,10 +153,8 @@ public class BorrowLendViewActivity extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		if (v.getId() == R.id.borrow_lend_list_view) {
-			menu.setHeaderTitle(getResources().getString(
-					R.string.schedule_menu_title));
-			String[] menuItems = getResources().getStringArray(
-					R.array.schedule_context_menu_item);
+			menu.setHeaderTitle(getResources().getString(R.string.schedule_menu_title));
+			String[] menuItems = getResources().getStringArray(R.array.schedule_context_menu_item);
 			for (int i = 0; i < menuItems.length; i++) {
 				menu.add(Menu.NONE, i, i, menuItems[i]);
 			}
@@ -186,8 +163,7 @@ public class BorrowLendViewActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-				.getMenuInfo();
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int menuItemIndex = item.getItemId();
 		borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(
 				info.position);
