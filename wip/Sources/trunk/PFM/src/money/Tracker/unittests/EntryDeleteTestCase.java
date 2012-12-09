@@ -4,12 +4,20 @@ import junit.framework.Assert;
 import money.Tracker.common.sql.SqlHelper;
 import android.test.AndroidTestCase;
 
+/* 
+ * This class is used for unit test of deleting a entry record.
+ */
+
 public class EntryDeleteTestCase extends AndroidTestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
 
+	/* 
+	 * This method will be called by Instrumentation test runner.
+	 * This method is to test deleting a entry record.
+	 */
 	public void testDeleteEntry() {
 		// Delete old data.
 		SqlHelper.instance.delete("Entry", "1 = 1");

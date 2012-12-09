@@ -127,7 +127,7 @@
     </application>
 
     <instrumentation
-        android:name="money.Tracker.unittests.PfmInstrumentationTestRuner"
+        android:name="money.Tracker.unittests.PfmInstrumentationTestRunner"
         android:targetPackage="money.Tracker.presentation.activities" />
 
 </manifest>

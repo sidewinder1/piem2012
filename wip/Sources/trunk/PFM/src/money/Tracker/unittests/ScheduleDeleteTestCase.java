@@ -10,7 +10,10 @@ public class ScheduleDeleteTestCase extends AndroidTestCase {
 		super.setUp();
 	}
 
-	public void testDeleteEntry() {
+	/* 
+	 * This method is used for unit test deleting a schedule.
+	 */
+	public void testDeleteSchedule() {
 		// Delete old data.
 		SqlHelper.instance.delete("Schedule", "1 = 1");
 

@@ -12,7 +12,7 @@ public class ConverterTestCase extends AndroidTestCase {
 	}
 
 	public void testDateToString() {
-		Assert.assertEquals("1990-11-20 12:00:00",
+		Assert.assertEquals("1990-11-20 00:00:00",
 				Converter.toString(DateTimeHelper.getDate(1990, 10, 20)));
 	}
 
@@ -22,15 +22,15 @@ public class ConverterTestCase extends AndroidTestCase {
 	}
 
 	public void testDoubleToString() {
-		Assert.assertEquals("1200,00", Converter.toString(1200));
+		Assert.assertEquals("1,200", Converter.toString(1200));
 	}
 
 	public void testDoubleToStringWithFormat() {
-		Assert.assertEquals("1200,0000", Converter.toString(1200, "##0.0000"));
+		Assert.assertEquals("1200.0000", Converter.toString(1200, "##0.0000"));
 	}
 	
 	public void testStringToDate(){
-		Assert.assertEquals(DateTimeHelper.getDate(2011, 9, 12), Converter.toDate("2011-10-12 12:00:00"));
+		Assert.assertEquals(DateTimeHelper.getDate(2011, 9, 12), Converter.toDate("2011-10-12 00:00:00"));
 	}
 	
 	public void testStringToDateWithFormat(){
