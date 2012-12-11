@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.AdapterView;
@@ -47,7 +48,8 @@ public class ScheduleEditActivity extends Activity {
 	private static final int DATE_DIALOG_ID = 0;
 	private EditText startDateEdit;
 	private EditText endDateEdit;
-	private ToggleButton periodic;
+	private Button periodic;
+	private boolean mIsWeek;
 	private EditText total_budget;
 	private long passed_schedule_id = -1;
 	LinearLayout list;
@@ -98,32 +100,11 @@ public class ScheduleEditActivity extends Activity {
 		});
 
 		endDateEdit = (EditText) findViewById(R.id.schedule_end_date);
-		periodic = (ToggleButton) findViewById(R.id.periodic);
-		periodic.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				String lastDate = endDateEdit.getText().toString();
-				updateDisplay();
-
-				Cursor checkExist = SqlHelper.instance.select(
-						"Schedule",
-						"Id",
-						new StringBuilder("Type=")
-								.append(isChecked ? 1 : 0)
-								.append(" AND End_date='")
-								.append(Converter.toString(Converter.toDate(
-										endDateEdit.getText().toString(),
-										"MMMM dd, yyyy"))).append("'")
-								.toString());
-				if (checkExist != null && checkExist.moveToFirst()
-						&& checkExist.getLong(0) != passed_schedule_id) {
-					Alert.getInstance().show(
-							getBaseContext(),
-							getResources().getString(
-									R.string.schedule_exist_message));
-					periodic.setChecked(!isChecked);
-					endDateEdit.setText(lastDate);
-				}
+		periodic = (Button) findViewById(R.id.periodic);
+		periodic.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				setChecked(!mIsWeek);
 			}
 		});
 
@@ -151,7 +132,7 @@ public class ScheduleEditActivity extends Activity {
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
 					.getData("Id = " + passed_schedule_id).get(0);
 			if (schedule != null) {
-				periodic.setChecked(schedule.type == 1);
+				setChecked(schedule.type == 1);
 				mMonth = schedule.start_date.getMonth();
 				mDay = schedule.start_date.getDate();
 				mYear = schedule.start_date.getYear() + 1900;
@@ -175,6 +156,32 @@ public class ScheduleEditActivity extends Activity {
 					addToList(value, -1, true);
 				}
 			}
+		}
+	}
+
+	private void setChecked(boolean b) {
+		// TODO Auto-generated method stub
+		mIsWeek = b;
+		periodic.setBackgroundResource(b ? R.drawable.calendar_month_icon
+				: R.drawable.calendar_week_icon);
+		String lastDate = endDateEdit.getText().toString();
+		updateDisplay();
+
+		Cursor checkExist = SqlHelper.instance.select(
+				"Schedule",
+				"Id",
+				new StringBuilder("Type=")
+						.append(b ? 1 : 0)
+						.append(" AND End_date='")
+						.append(Converter.toString(Converter.toDate(endDateEdit
+								.getText().toString(), "MMMM dd, yyyy")))
+						.append("'").toString());
+		if (checkExist != null && checkExist.moveToFirst()
+				&& checkExist.getLong(0) != passed_schedule_id) {
+			Alert.getInstance().show(getBaseContext(),
+					getResources().getString(R.string.schedule_exist_message));
+			setChecked(!b);
+			endDateEdit.setText(lastDate);
 		}
 	}
 
@@ -428,7 +435,7 @@ public class ScheduleEditActivity extends Activity {
 			return;
 		}
 
-		String Time_id = (periodic.isChecked() ? "1" : "0");
+		String Time_id = (!mIsWeek ? "1" : "0");
 
 		if (passed_schedule_id != -1) {
 			String budget_value = String.valueOf(Converter.toLong(total_budget
@@ -602,7 +609,7 @@ public class ScheduleEditActivity extends Activity {
 		startDateEdit.setText(Converter.toString(startDate, "MMMM dd, yyyy"));
 		Date endDate;
 
-		if (periodic.isChecked()) {
+		if (!mIsWeek) {
 			endDate = DateTimeHelper.getLastDateOfMonth(mYear, mMonth);
 		} else {
 			endDate = DateTimeHelper.getLastDayOfWeek(startDate);
