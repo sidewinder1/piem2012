@@ -6,16 +6,24 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:background="@color/blue_background"
+        android:layout_height="40sp"
         android:gravity="center_vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/entry_detail_expanded_status"
+            android:contentDescription="@string/image_icon_description"
+            android:src="@drawable/combobox_icon" />
 
         <TextView
             android:id="@+id/entry_detail_category_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
+            android:textSize="18sp"
+            android:layout_toRightOf="@+id/entry_detail_expanded_status"
             android:text="@string/dummy_data"
             android:textColor="@color/white_text_color" />
 
@@ -23,8 +31,9 @@
             android:id="@+id/entry_detail_category_item_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
             android:layout_toRightOf="@+id/entry_detail_category_item_name"
-            android:text="@string/dummy_data"
+            android:text="@string/time_token"
             android:textColor="@color/white_text_color" />
 
         <TextView
@@ -32,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:textSize="18sp"
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="10dp"
             android:text="@string/dummy_data"
@@ -41,13 +51,15 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@color/white_text_color" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/brown_line" />
 
     <LinearLayout
         android:id="@+id/entry_detail_category_list"
         android:layout_width="fill_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:visibility="gone" />
 
 </LinearLayout>

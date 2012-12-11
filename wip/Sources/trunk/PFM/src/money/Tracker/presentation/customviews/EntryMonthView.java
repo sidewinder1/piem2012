@@ -12,9 +12,9 @@ import money.Tracker.repository.EntryRepository;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +23,7 @@ public class EntryMonthView extends LinearLayout {
 	private TextView cost;
 	private LinearLayout chart;
 	private LinearLayout entryDayList;
-	private TextView count_text;
+//	private TextView count_text;
 	private boolean switcher = true;
 
 	public EntryMonthView(Context context) {
@@ -38,15 +38,15 @@ public class EntryMonthView extends LinearLayout {
 
 		name = (TextView) findViewById(R.id.entry_view_month_item_name);
 		cost = (TextView) findViewById(R.id.entry_view_month_item_cost);
-		count_text = (TextView) findViewById(R.id.entry_view_month_count);
 		chart = (LinearLayout) findViewById(R.id.entry_view_month_stacked_bar_chart);
 		entryDayList = (LinearLayout) findViewById(R.id.entry_view_week_item_list);
 
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				ImageView comboBox = (ImageView)findViewById(R.id.entry_list_item);
 				entryDayList.setVisibility(switcher ? View.VISIBLE : View.GONE);
-				count_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0,
-						switcher ? R.drawable.opened : R.drawable.collapsed);
+				comboBox.setImageResource(
+						switcher ? R.drawable.combobox_icon_expanded : R.drawable.combobox_icon);
 				switcher = !switcher;
 			}
 		});
@@ -59,8 +59,8 @@ public class EntryMonthView extends LinearLayout {
 		if (entrySet != null) {
 			long total = 0;
 			// Set count.
-			count_text.setText(new StringBuilder("(").append(entrySet.size())
-					.append(")"));
+//			count_text.setText(new StringBuilder("(").append(entrySet.size())
+//					.append(")"));
 
 			// Draw chart.
 			entryDayList.removeAllViews();

@@ -34,40 +34,40 @@ import android.widget.TextView;
 
 public class TabViewActivity extends Activity {
 	private final String sub_path = "type.tab.path.id.subtab";
-	public static TabViewActivity context;
+	public static TabViewActivity mContext;
 
-	TextView displayText;
-	LinearLayout chart_legend;
-	ListView list;
-	LinearLayout entry_list;
-	ArrayList<IModelBase> values;
-	ScrollView entry_scroll;
+	TextView mDisplayText, mNote;
+	LinearLayout mChartLegend;
+	ListView mList;
+	LinearLayout mEntryList;
+	ArrayList<IModelBase> mValues;
+	ScrollView mEntryScroll;
 
-	boolean isTabOne, isEntry;
+	boolean mIsTabOne, mIsEntry;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tab_content_view);
-		context = this;
+		mContext = this;
 		Bundle extras = getIntent().getExtras();
-		isTabOne = extras.getString(sub_path).startsWith("1");
-		isEntry = extras.getString(sub_path).endsWith("0");
-		entry_list = (LinearLayout) findViewById(R.id.entry_tab_content_view_list);
-		displayText = (TextView) findViewById(R.id.no_data_edit);
-		entry_scroll = (ScrollView) findViewById(R.id.entry_view_scroll);
+		mIsTabOne = extras.getString(sub_path).startsWith("1");
+		mIsEntry = extras.getString(sub_path).endsWith("0");
+		mEntryList = (LinearLayout) findViewById(R.id.entry_tab_content_view_list);
+		mDisplayText = (TextView) findViewById(R.id.no_data_edit);
+		mEntryScroll = (ScrollView) findViewById(R.id.entry_view_scroll);
+		mNote = (TextView) findViewById(R.id.tab_content_view_note);
+		mChartLegend = (LinearLayout) findViewById(R.id.chart_legend);
+		mList = (ListView) findViewById(R.id.tab_content_view_list);
+		mList.setOnItemClickListener(onListClick);
 
-		chart_legend = (LinearLayout) findViewById(R.id.chart_legend);
-		list = (ListView) findViewById(R.id.tab_content_view_list);
-		list.setOnItemClickListener(onListClick);
-
-		registerForContextMenu(list);
+		registerForContextMenu(mList);
 	}
 
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> listView, View view,
 				int position, long id) {
 			long data_id = -1;
-			if (isEntry) {
+			if (mIsEntry) {
 				Entry entry = (Entry) listView.getAdapter().getItem(position);
 				data_id = entry.getId();
 			} else {
@@ -95,13 +95,12 @@ public class TabViewActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		if (v.getClass() == EntryDayView.class){
+		if (v.getClass() == EntryDayView.class) {
 			selectedEntryItem = (EntryDayView) v;
-		}
-		else{
+		} else {
 			selectedEntryItem = null;
 		}
-		
+
 		if (v.getId() == R.id.tab_content_view_list
 				|| selectedEntryItem != null) {
 			menu.setHeaderTitle(getResources().getString(
@@ -125,17 +124,17 @@ public class TabViewActivity extends Activity {
 		if (selectedEntryItem != null) {
 			id = selectedEntryItem.id;
 		} else {
-			if (isEntry) {
-				id = ((Entry) values.get(info.position)).getId();
+			if (mIsEntry) {
+				id = ((Entry) mValues.get(info.position)).getId();
 			} else {
-				id = ((Schedule) values.get(info.position)).id;
+				id = ((Schedule) mValues.get(info.position)).id;
 			}
 		}
 
 		switch (menuItemIndex) {
 		case 0: // Edit
 			Intent edit = null;
-			if (isEntry) {
+			if (mIsEntry) {
 				edit = new Intent(this, EntryEditActivity.class);
 				edit.putExtra("entry_id", id);
 			} else {
@@ -146,7 +145,7 @@ public class TabViewActivity extends Activity {
 			break;
 		case 1: // Delete
 			final long sId = id;
-			final String table = isEntry ? "Entry" : "Schedule";
+			final String table = mIsEntry ? "Entry" : "Schedule";
 			Alert.getInstance().showDialog(getParent(),
 					getResources().getString(R.string.delete_confirm),
 					new OnClickListener() {
@@ -165,53 +164,54 @@ public class TabViewActivity extends Activity {
 
 	public void bindData() {
 		String whereCondition;
-		if (isTabOne) {
+		if (mIsTabOne) {
 			whereCondition = "Type = 1";
 		} else {
 			whereCondition = "Type = 0";
 		}
 
-		values = isEntry ? EntryRepository.getInstance()
-				.getData(whereCondition) : ScheduleRepository.getInstance()
-				.getData(whereCondition);
+		mValues = mIsEntry ? EntryRepository.getInstance().getData(
+				whereCondition) : ScheduleRepository.getInstance().getData(
+				whereCondition);
 
-		if (values.size() == 0) {
+		if (mValues.size() == 0) {
 			hasData(false);
 			return;
 		}
 
-		DataManager.sort(values);
+		DataManager.sort(mValues);
 		hasData(true);
 
-		if (isEntry) {
-			entry_list.removeAllViews();
+		if (mIsEntry) {
+			mEntryList.removeAllViews();
 			for (String key : EntryRepository.getInstance().orderedEntries
 					.keySet()) {
-				entry_list.addView(new EntryMonthView(this, key));
+				mEntryList.addView(new EntryMonthView(this, key));
 			}
 		} else {
 			ScheduleViewAdapter scheduleAdapter = new ScheduleViewAdapter(this,
-					R.layout.schedule_edit_item, values);
+					R.layout.schedule_edit_item, mValues);
 
 			scheduleAdapter.notifyDataSetChanged();
-			list.setAdapter(scheduleAdapter);
+			mList.setAdapter(scheduleAdapter);
 		}
 
 		bindChartLegend();
 	}
 
 	private void hasData(boolean hasData) {
-		list.setVisibility(hasData && !isEntry ? View.VISIBLE : View.GONE);
-		entry_scroll.setVisibility(hasData && isEntry ? View.VISIBLE
+		mList.setVisibility(hasData && !mIsEntry ? View.VISIBLE : View.GONE);
+		mEntryScroll.setVisibility(hasData && mIsEntry ? View.VISIBLE
 				: View.GONE);
-		displayText.setVisibility(!hasData ? View.VISIBLE : View.GONE);
-		chart_legend.setVisibility(hasData ? View.VISIBLE : View.GONE);
+		mNote.setVisibility(hasData ? View.VISIBLE : View.GONE);
+		mDisplayText.setVisibility(!hasData ? View.VISIBLE : View.GONE);
+		mChartLegend.setVisibility(hasData ? View.VISIBLE : View.GONE);
 	}
 
 	private void bindChartLegend() {
 		// Bind chart legend:
-		String subTable = isEntry ? "EntryDetail" : "ScheduleDetail";
-		String table = isEntry ? "Entry" : "Schedule";
+		String subTable = mIsEntry ? "EntryDetail" : "ScheduleDetail";
+		String table = mIsEntry ? "Entry" : "Schedule";
 		Cursor category = SqlHelper.instance.query(new StringBuilder(
 				"SELECT DISTINCT Category.Name, Category.User_Color ")
 				.append("FROM Category ").append("INNER JOIN ")
@@ -219,12 +219,12 @@ public class TabViewActivity extends Activity {
 				.append(".Category_Id").append(" INNER JOIN ").append(table)
 				.append(" ON ").append(subTable).append(".").append(table)
 				.append("_Id=").append(table).append(".Id ").append(" WHERE ")
-				.append(table).append(".Type = ").append(isTabOne ? "1" : "0")
+				.append(table).append(".Type = ").append(mIsTabOne ? "1" : "0")
 				.toString());
 
 		if (category != null && category.moveToFirst()) {
 			int index = 1;
-			chart_legend.removeAllViews();
+			mChartLegend.removeAllViews();
 			LinearLayout itemView = new LinearLayout(this);
 			do {
 				CategoryLegendItemView item = new CategoryLegendItemView(this);
@@ -237,7 +237,7 @@ public class TabViewActivity extends Activity {
 				if ((index % 2 == 0) || index == category.getCount()) {
 					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
 							LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-					chart_legend.addView(itemView, params1);
+					mChartLegend.addView(itemView, params1);
 					itemView = new LinearLayout(this);
 				}
 

@@ -21,6 +21,10 @@ public class SqlHelper {
 		currentDb = openHelper.getWritableDatabase();
 	}
 
+	/*
+	 * This method is used to create a table with specified name and column
+	 * information if this table doesn’t exist.
+	 */
 	public boolean createTable(String tableName, String columnsInfo) {
 		try {
 			currentDb.execSQL(new StringBuilder("CREATE TABLE IF NOT EXISTS ")
@@ -317,11 +321,13 @@ public class SqlHelper {
 				new StringBuilder(
 						"Id LONG PRIMARY KEY,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,")
 						.append("User_Color TEXT").toString());
-		String[] names = PfmApplication.getAppResources().getStringArray(R.array.category_name);
-		String[] colors = PfmApplication.getAppResources().getStringArray(R.array.category_color);
+		String[] names = PfmApplication.getAppResources().getStringArray(
+				R.array.category_name);
+		String[] colors = PfmApplication.getAppResources().getStringArray(
+				R.array.category_color);
 
-		Cursor categoryCheck = select("Category", "*",
-				"Name='" + names[0] + "' AND User_Color='" + colors[0] + "'");
+		Cursor categoryCheck = select("Category", "*", "Name='" + names[0]
+				+ "' AND User_Color='" + colors[0] + "'");
 
 		if (categoryCheck != null && !categoryCheck.moveToFirst()) {
 			for (int index = 0; index < names.length; index++) {
@@ -339,9 +345,11 @@ public class SqlHelper {
 						"Id LONG PRIMARY KEY, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER, UserName TEXT,")
 						.append("User_Color TEXT").toString());
 
-		String[] color_codes = PfmApplication.getAppResources().getStringArray(R.array.color_list);
+		String[] color_codes = PfmApplication.getAppResources().getStringArray(
+				R.array.color_list);
 
-		Cursor colorCheck = select("UserColor", "*", "User_Color='" + color_codes[0] + "'");
+		Cursor colorCheck = select("UserColor", "*", "User_Color='"
+				+ color_codes[0] + "'");
 
 		if (colorCheck != null && !colorCheck.moveToFirst()) {
 			for (int index = 0; index < color_codes.length; index++) {

@@ -36,26 +36,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class EntryEditActivity extends NfcDetectorActivity {
 	private int mYear;
 	private int mMonth;
 	private int mDay;
-	private TextView title;
+	private TextView mTitle;
 	private static final int DATE_DIALOG_ID = 0;
-	private EditText mDateEdit;
-	private ToggleButton mEntryType;
+	private TextView mDateEdit;
 	private long mPassedEntryId = -1;
 	private LinearLayout mEntryList;
 	private NdefMessage[] msgs;
 	private boolean mBlocked;
+	private boolean mIsIncome;
+	private Button mTypeCheck;
 
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -71,20 +69,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 		}
 
+		mTypeCheck = (Button) findViewById(R.id.entry_edit_toggle_type);
 		mEntryList = (LinearLayout) findViewById(R.id.entry_edit_list);
-		title = (TextView) findViewById(R.id.entry_edit_tilte);
-		mDateEdit = (EditText) findViewById(R.id.entry_edit_date);
+		mTitle = (TextView) findViewById(R.id.entry_edit_tilte);
+		mDateEdit = (TextView) findViewById(R.id.entry_edit_date);
 		mDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
-			}
-		});
-
-		mEntryType = (ToggleButton) findViewById(R.id.entry_edit_type);
-		mEntryType.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				updateTitle();
 			}
 		});
 
@@ -109,11 +100,11 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				mMonth = entry.getDate().getMonth();
 				mDay = entry.getDate().getDate();
 				mYear = entry.getDate().getYear() + 1900;
-				
+
 				mDateEdit.setText(Converter.toString(entry.getDate(),
 						"dd/MM/yyyy"));
 
-				mEntryType.setChecked(entry.getType() == 1);
+				setChecked(entry.getType() == 0);
 			}
 
 			HashMap<String, ArrayList<EntryDetail>> values = EntryDetailRepository
@@ -125,6 +116,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 		}
 
+		updateTitle();
+	}
+
+	private void setChecked(boolean isIncome) {
+		mIsIncome = isIncome;
+		mTypeCheck.setBackgroundResource(isIncome ? R.drawable.income_icon
+				: R.drawable.expense_icon);
 		updateTitle();
 	}
 
@@ -222,12 +220,33 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 	}
 
+	/*
+	 * The method will handle event when user clicks on NFC button.
+	 */
+	public void addNfcClicked(View view){
+		Alert.getInstance().show(this, getResources().getString(R.string.entry_edit_nfc_message));
+	}
+	
+	/*
+	 * The method will handle event when user clicks on NFC button.
+	 */
+	public void addQrCodeClicked(View view){
+		getQRCode();
+	}
+	
+	/*
+	 * The method will handle event when user clicks on NFC button.
+	 */
+	public void toggleTypeClicked(View view){
+		setChecked(!mIsIncome);
+	}
+	
 	private void updateTitle() {
-		title.setText(getResources()
+		mTitle.setText(getResources()
 				.getString(
-						((mPassedEntryId != -1) ? (mEntryType.isChecked() ? R.string.entry_edit_expense_title
+						((mPassedEntryId != -1) ? (!mIsIncome ? R.string.entry_edit_expense_title
 								: R.string.entry_edit_income_title)
-								: (mEntryType.isChecked() ? R.string.entry_new_expense_title
+								: (!mIsIncome ? R.string.entry_new_expense_title
 										: R.string.entry_new_income_title)))
 				.replace("{0}", mDateEdit.getText().toString()));
 	}
@@ -273,7 +292,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			return false;
 		}
 
-		int type = mEntryType.isChecked() ? 1 : 0;
+		int type = mIsIncome ? 0 : 1;
 		Date inputDate = Converter.toDate(String.valueOf(mDateEdit.getText()),
 				"dd/MM/yyyy");
 		if (inputDate.after(new Date())) {
@@ -413,7 +432,9 @@ public class EntryEditActivity extends NfcDetectorActivity {
 											str.split(":")[1].trim()));
 						} else {
 							value.setCategory_id(CategoryRepository
-									.getInstance().getId(getResources().getString(R.string.others)));
+									.getInstance().getId(
+											getResources().getString(
+													R.string.others)));
 						}
 					}
 				}
