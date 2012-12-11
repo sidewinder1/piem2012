@@ -39,9 +39,6 @@ public class ScheduleDetailViewAdapter extends ArrayAdapter<DetailSchedule> {
 					.getBudget()));
 			scheduleItemView.title.setText(CategoryRepository.getInstance()
 					.getName((scheduleDetail.getCategory())));
-			scheduleItemView.setBackgroundColor(Color
-					.parseColor(CategoryRepository.getInstance().getColor(
-							scheduleDetail.getCategory())));
 		}
 
 		return scheduleItemView;

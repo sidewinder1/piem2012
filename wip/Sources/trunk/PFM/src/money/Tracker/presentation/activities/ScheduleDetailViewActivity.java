@@ -84,7 +84,7 @@ public class ScheduleDetailViewActivity extends Activity {
 			average.setText(new StringBuilder(Converter.toString(schedule
 					.getLong(1)
 					/ DateTimeHelper.getDayOfMonth(end_date.getYear(),
-							end_date.getMonth()))).append("/day"));
+							end_date.getMonth()))).toString());
 		}
 	}
 
