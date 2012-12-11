@@ -16,14 +16,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
@@ -46,15 +43,16 @@ public class ScheduleEditActivity extends Activity {
 	private int mMonth;
 	private int mDay;
 	private static final int DATE_DIALOG_ID = 0;
-	private EditText startDateEdit;
-	private EditText endDateEdit;
-	private Button periodic;
+	private EditText mStartDateEdit;
+	private EditText mEndDateEdit;
+	private Button mPeriodic;
 	private boolean mIsWeek;
-	private EditText total_budget;
-	private long passed_schedule_id = -1;
-	LinearLayout list;
-	private CategoryAdapter categoryAdapter;
-	private String removedScheduleDetails = "";
+	private EditText mTotalBudget;
+	private long mPassedScheduleId = -1;
+	private LinearLayout mList;
+	private int mLastAddedItem;
+	private CategoryAdapter mCategoryAdapter;
+	private String mRemovedScheduleDetails = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,23 +60,23 @@ public class ScheduleEditActivity extends Activity {
 		setContentView(R.layout.schedule_edit);
 		// new ScheduleRepository();
 		Bundle extras = getIntent().getExtras();
-		passed_schedule_id = extras.getLong("schedule_id");
+		mPassedScheduleId = extras.getLong("schedule_id");
 
 		// Add item for detail schedule.
-		categoryAdapter = new CategoryAdapter(this,
+		mCategoryAdapter = new CategoryAdapter(this,
 				R.layout.dropdown_list_item, new ArrayList<Category>(
 						CategoryRepository.getInstance().categories));
 
-		categoryAdapter.notifyDataSetChanged();
+		mCategoryAdapter.notifyDataSetChanged();
 
-		list = (LinearLayout) findViewById(R.id.list);
+		mList = (LinearLayout) findViewById(R.id.list);
 
-		total_budget = (EditText) findViewById(R.id.schedule_total_budget);
+		mTotalBudget = (EditText) findViewById(R.id.schedule_total_budget);
 
-		total_budget.setOnFocusChangeListener(completeAfterLostFocus);
+		mTotalBudget.setOnFocusChangeListener(completeAfterLostFocus);
 
 		// Add event to total_budget to handle business logic.
-		total_budget.addTextChangedListener(new TextWatcher() {
+		mTotalBudget.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 			}
@@ -92,18 +90,17 @@ public class ScheduleEditActivity extends Activity {
 			}
 		});
 
-		startDateEdit = (EditText) findViewById(R.id.schedule_start_date);
-		startDateEdit.setOnClickListener(new View.OnClickListener() {
+		mStartDateEdit = (EditText) findViewById(R.id.schedule_start_date);
+		mStartDateEdit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
 
-		endDateEdit = (EditText) findViewById(R.id.schedule_end_date);
-		periodic = (Button) findViewById(R.id.periodic);
-		periodic.setOnClickListener(new View.OnClickListener() {
+		mEndDateEdit = (EditText) findViewById(R.id.schedule_end_date);
+		mPeriodic = (Button) findViewById(R.id.periodic);
+		mPeriodic.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				setChecked(!mIsWeek);
 			}
 		});
@@ -114,13 +111,13 @@ public class ScheduleEditActivity extends Activity {
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 
-		String initialValue = total_budget.getText().toString();
+		String initialValue = mTotalBudget.getText().toString();
 		if (initialValue + "" == "") {
 			initialValue = "0";
 		}
 
 		// New Mode
-		if (passed_schedule_id == -1) {
+		if (mPassedScheduleId == -1) {
 			updateDisplay();
 			addToList(
 					new DetailSchedule(-1, 0, Converter.toLong(initialValue)),
@@ -130,23 +127,23 @@ public class ScheduleEditActivity extends Activity {
 			title.setText("Schedule");
 
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
-					.getData("Id = " + passed_schedule_id).get(0);
+					.getData("Id = " + mPassedScheduleId).get(0);
 			if (schedule != null) {
 				setChecked(schedule.type == 1);
 				mMonth = schedule.start_date.getMonth();
 				mDay = schedule.start_date.getDate();
 				mYear = schedule.start_date.getYear() + 1900;
-				startDateEdit.setText(Converter.toString(schedule.start_date,
-						"MMMM dd, yyyy"));
-				endDateEdit.setText(Converter.toString(schedule.end_date,
-						"MMMM dd, yyyy"));
-				total_budget.setText(Converter
+				mStartDateEdit.setText(Converter.toString(schedule.start_date,
+						"dd/MM/yyyy"));
+				mEndDateEdit.setText(Converter.toString(schedule.end_date,
+						"dd/MM/yyyy"));
+				mTotalBudget.setText(Converter
 						.toString(schedule.budget, "####"));
 			}
 
 			ArrayList<DetailSchedule> values = DetailScheduleRepository
 					.getInstance().getData(
-							"Schedule_Id = " + passed_schedule_id);
+							"Schedule_Id = " + mPassedScheduleId);
 			if (values.size() == 0) {
 				addToList(
 						new DetailSchedule(-1, 0,
@@ -159,36 +156,33 @@ public class ScheduleEditActivity extends Activity {
 		}
 	}
 
-	private void setChecked(boolean b) {
-		// TODO Auto-generated method stub
-		mIsWeek = b;
-		periodic.setBackgroundResource(b ? R.drawable.calendar_month_icon
-				: R.drawable.calendar_week_icon);
-		String lastDate = endDateEdit.getText().toString();
+	private void setChecked(boolean isWeek) {
+		mIsWeek = isWeek;
+		mPeriodic.setBackgroundResource(isWeek ? R.drawable.calendar_week_icon
+				: R.drawable.calendar_month_icon);
+		String lastDate = mEndDateEdit.getText().toString();
 		updateDisplay();
 
 		Cursor checkExist = SqlHelper.instance.select(
 				"Schedule",
 				"Id",
 				new StringBuilder("Type=")
-						.append(b ? 1 : 0)
+						.append(isWeek ? 0 : 1)
 						.append(" AND End_date='")
-						.append(Converter.toString(Converter.toDate(endDateEdit
-								.getText().toString(), "MMMM dd, yyyy")))
+						.append(Converter.toString(Converter.toDate(mEndDateEdit
+								.getText().toString(), "dd/MM/yyyy")))
 						.append("'").toString());
 		if (checkExist != null && checkExist.moveToFirst()
-				&& checkExist.getLong(0) != passed_schedule_id) {
+				&& checkExist.getLong(0) != mPassedScheduleId) {
 			Alert.getInstance().show(getBaseContext(),
 					getResources().getString(R.string.schedule_exist_message));
-			setChecked(!b);
-			endDateEdit.setText(lastDate);
+			setChecked(!isWeek);
+			mEndDateEdit.setText(lastDate);
 		}
 	}
 
-	int lastAddedItem;
-
 	private void addToList(DetailSchedule detail, int index, boolean init) {
-		ScheduleItem itemView = new ScheduleItem(this, categoryAdapter,
+		ScheduleItem itemView = new ScheduleItem(this, mCategoryAdapter,
 				detail.getId());
 		itemView.mCategory.setTag(itemView.mCategoryEdit);
 
@@ -259,9 +253,9 @@ public class ScheduleEditActivity extends Activity {
 		itemView.mCategory.setSelection(CategoryRepository.getInstance()
 				.getIndex(detail.getCategory()));
 		if (index < 0) {
-			list.addView(itemView);
+			mList.addView(itemView);
 		} else {
-			list.addView(itemView, index);
+			mList.addView(itemView, index);
 		}
 
 		itemView.setFocusable(true);
@@ -270,11 +264,11 @@ public class ScheduleEditActivity extends Activity {
 		itemView.addBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				int lastItem = 0;
-				for (int index = 0; index < list.getChildCount(); index++) {
-					if (list.getChildAt(index) == v.getParent().getParent()) {
+				for (int index = 0; index < mList.getChildCount(); index++) {
+					if (mList.getChildAt(index) == v.getParent().getParent()) {
 						lastItem = index + 1;
 					}
-					ScheduleItem item = (ScheduleItem) list.getChildAt(index);
+					ScheduleItem item = (ScheduleItem) mList.getChildAt(index);
 					if (item.getBudget() <= 0) {
 						Alert.getInstance().show(getBaseContext(),
 								"A slot is empty");
@@ -294,15 +288,15 @@ public class ScheduleEditActivity extends Activity {
 					}
 				}
 
-				lastAddedItem = lastItem;
+				mLastAddedItem = lastItem;
 				addToList(new DetailSchedule(-1, 0, getNextHint()),
-						lastAddedItem, false);
+						mLastAddedItem, false);
 			}
 		});
 
 		itemView.removeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (list.getChildCount() > 1) {
+				if (mList.getChildCount() > 1) {
 					ScheduleItem item = (ScheduleItem) v.getParent()
 							.getParent();
 					if (item == null) {
@@ -310,7 +304,7 @@ public class ScheduleEditActivity extends Activity {
 					}
 
 					if (item.Id != -1) {
-						removedScheduleDetails += item.Id + ",";
+						mRemovedScheduleDetails += item.Id + ",";
 					}
 
 					// Insert userColor to db again.
@@ -319,7 +313,7 @@ public class ScheduleEditActivity extends Activity {
 							new String[] { String.valueOf(item.mCategoryEdit
 									.getTag()) });
 
-					list.removeView(item);
+					mList.removeView(item);
 					updateTotalBudget(true);
 				}
 			}
@@ -343,12 +337,12 @@ public class ScheduleEditActivity extends Activity {
 	};
 
 	public void updateHint() {
-		if (list.getChildCount() == 0) {
+		if (mList.getChildCount() == 0) {
 			return;
 		}
 
-		ScheduleItem scheduleItem = (ScheduleItem) list
-				.getChildAt(lastAddedItem);
+		ScheduleItem scheduleItem = (ScheduleItem) mList
+				.getChildAt(mLastAddedItem);
 
 		if (scheduleItem == null) {
 			return;
@@ -370,17 +364,17 @@ public class ScheduleEditActivity extends Activity {
 
 	public long getTotalDetailBudget() {
 		long total = 0;
-		for (int index = 0; index < list.getChildCount(); index++) {
-			total += ((ScheduleItem) list.getChildAt(index)).getBudget();
+		for (int index = 0; index < mList.getChildCount(); index++) {
+			total += ((ScheduleItem) mList.getChildAt(index)).getBudget();
 		}
 
 		return Math.max(0, total);
 	}
 
 	public long getTotalBudget() {
-		String budget_value = total_budget.getText().toString();
+		String budget_value = mTotalBudget.getText().toString();
 		if ("".equals(budget_value)) {
-			budget_value = total_budget.getHint().toString();
+			budget_value = mTotalBudget.getHint().toString();
 
 			if ("".equals(budget_value) || budget_value.contains(" ")) {
 				budget_value = "0";
@@ -393,17 +387,17 @@ public class ScheduleEditActivity extends Activity {
 	public boolean updateTotalBudget(boolean eanbleDialog) {
 		long totalDetail = getTotalDetailBudget();
 
-		if ("".equals(total_budget.getText().toString())) {
-			total_budget.setHint(Converter.toString(totalDetail));
+		if ("".equals(mTotalBudget.getText().toString())) {
+			mTotalBudget.setHint(Converter.toString(totalDetail));
 		} else {
 			if (getTotalBudget() < totalDetail && eanbleDialog) {
 				Alert.getInstance().showDialog(this, "Over budget! Add more?",
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-								total_budget.setText(Converter.toString(
+								mTotalBudget.setText(Converter.toString(
 										getTotalDetailBudget(), "####"));
-								total_budget.requestFocus();
+								mTotalBudget.requestFocus();
 							}
 						}, new OnClickListener() {
 
@@ -437,12 +431,12 @@ public class ScheduleEditActivity extends Activity {
 
 		String Time_id = (!mIsWeek ? "1" : "0");
 
-		if (passed_schedule_id != -1) {
-			String budget_value = String.valueOf(Converter.toLong(total_budget
+		if (mPassedScheduleId != -1) {
+			String budget_value = String.valueOf(Converter.toLong(mTotalBudget
 					.getText().toString()));
 			if ("".equals(budget_value)) {
 				budget_value = String
-						.valueOf(total_budget.getHint().toString());
+						.valueOf(mTotalBudget.getHint().toString());
 			}
 
 			// Update schedule record.
@@ -456,8 +450,8 @@ public class ScheduleEditActivity extends Activity {
 							.append(Time_id)
 							.append(" AND End_date = '")
 							.append(Converter.toString(Converter.toDate(
-									endDateEdit.getText().toString(),
-									"MMMM dd, yyyy"))).append("'").toString());
+									mEndDateEdit.getText().toString(),
+									"dd/MM/yyyy"))).append("'").toString());
 			if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
 				Alert.getInstance().show(this,
 						"A schedule for this time is existing!");
@@ -468,13 +462,13 @@ public class ScheduleEditActivity extends Activity {
 			addSchedule(Time_id);
 		}
 
-		if (removedScheduleDetails.length() > 1) {
+		if (mRemovedScheduleDetails.length() > 1) {
 			// Delete items that removed before.
 			SqlHelper.instance.delete(
 					"ScheduleDetail",
 					"Id IN ("
-							+ removedScheduleDetails.substring(0,
-									removedScheduleDetails.length() - 1) + ")");
+							+ mRemovedScheduleDetails.substring(0,
+									mRemovedScheduleDetails.length() - 1) + ")");
 		}
 
 		CategoryRepository.getInstance().updateData();
@@ -497,39 +491,43 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	private void updateSchedule(String Time_id, String budget_value) {
-		SqlHelper.instance.update(
-				"Schedule",
-				new String[] { "Budget", "Start_date", "End_date", "Type" },
-				new String[] {
-						budget_value,
-						Converter.toString(Converter.toDate(startDateEdit
-								.getText().toString(), "MMMM dd, yyyy")),
-						Converter.toString(Converter.toDate(endDateEdit
-								.getText().toString(), "MMMM dd, yyyy")),
-						Time_id },
-				new StringBuilder("Id = ").append(passed_schedule_id)
-						.toString());
+		SqlHelper.instance
+				.update("Schedule",
+						new String[] { "Budget", "Start_date", "End_date",
+								"Type" },
+						new String[] {
+								budget_value,
+								Converter.toString(Converter.toDate(
+										mStartDateEdit.getText().toString(),
+										"dd/MM/yyyy")),
+								Converter.toString(Converter.toDate(mEndDateEdit
+										.getText().toString(), "dd/MM/yyyy")),
+								Time_id },
+						new StringBuilder("Id = ").append(mPassedScheduleId)
+								.toString());
 
 		// Delete all records that have schedule id equals
 		// passed_schedule_id
 		// SqlHelper.instance.delete("ScheduleDetail", new StringBuilder(
 		// "Schedule_Id = ").append(passed_schedule_id).toString());
 		// Insert new.
-		saveDetailSchedule(passed_schedule_id);
+		saveDetailSchedule(mPassedScheduleId);
 		Alert.getInstance().show(this, "Updated 1 record sucessfully");
 	}
 
 	private void addSchedule(String Time_id) {
-		long newScheduleId = SqlHelper.instance.insert(
-				"Schedule",
-				new String[] { "Budget", "Start_date", "End_date", "Type" },
-				new String[] {
-						String.valueOf(getTotalBudget()),
-						Converter.toString(Converter.toDate(startDateEdit
-								.getText().toString(), "MMMM dd, yyyy")),
-						Converter.toString(Converter.toDate(endDateEdit
-								.getText().toString(), "MMMM dd, yyyy")),
-						Time_id });
+		long newScheduleId = SqlHelper.instance
+				.insert("Schedule",
+						new String[] { "Budget", "Start_date", "End_date",
+								"Type" },
+						new String[] {
+								String.valueOf(getTotalBudget()),
+								Converter.toString(Converter.toDate(
+										mStartDateEdit.getText().toString(),
+										"dd/MM/yyyy")),
+								Converter.toString(Converter.toDate(mEndDateEdit
+										.getText().toString(), "dd/MM/yyyy")),
+								Time_id });
 		if (newScheduleId != -1) {
 			saveDetailSchedule(newScheduleId);
 
@@ -540,8 +538,8 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	public boolean hasNewCategory() {
-		for (int index = 0; index < list.getChildCount(); index++) {
-			ScheduleItem item = (ScheduleItem) list.getChildAt(index);
+		for (int index = 0; index < mList.getChildCount(); index++) {
+			ScheduleItem item = (ScheduleItem) mList.getChildAt(index);
 			if (item.mCategoryEdit.getVisibility() == View.VISIBLE
 					&& "".equals(item.mCategoryEdit.getText().toString())) {
 				Alert.getInstance().show(this, "Category is empty");
@@ -554,8 +552,8 @@ public class ScheduleEditActivity extends Activity {
 	}
 
 	private void saveDetailSchedule(long newScheduleId) {
-		for (int index = 0; index < list.getChildCount(); index++) {
-			ScheduleItem detailItem = (ScheduleItem) list.getChildAt(index);
+		for (int index = 0; index < mList.getChildCount(); index++) {
+			ScheduleItem detailItem = (ScheduleItem) mList.getChildAt(index);
 			if (detailItem.getBudget() == 0) {
 				continue;
 			}
@@ -606,7 +604,7 @@ public class ScheduleEditActivity extends Activity {
 	// updates the date in the TextView
 	private void updateDisplay() {
 		Date startDate = DateTimeHelper.getDate(mYear, mMonth, mDay);
-		startDateEdit.setText(Converter.toString(startDate, "MMMM dd, yyyy"));
+		mStartDateEdit.setText(Converter.toString(startDate, "dd/MM/yyyy"));
 		Date endDate;
 
 		if (!mIsWeek) {
@@ -615,7 +613,7 @@ public class ScheduleEditActivity extends Activity {
 			endDate = DateTimeHelper.getLastDayOfWeek(startDate);
 		}
 
-		endDateEdit.setText(Converter.toString(endDate, "MMMM dd, yyyy"));
+		mEndDateEdit.setText(Converter.toString(endDate, "dd/MM/yyyy"));
 	}
 
 	// the callback received when the user "sets" the date in the dialog

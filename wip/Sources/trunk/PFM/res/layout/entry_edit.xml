@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_margin="25sp"
             android:text="@string/entry_edit_expense_title"
             android:textColor="@color/white08"
             android:textSize="26sp"
