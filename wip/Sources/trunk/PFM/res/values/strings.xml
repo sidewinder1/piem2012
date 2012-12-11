@@ -5,7 +5,9 @@
     <string name="menu_settings">Thiết lập</string>
     <string name="menu_import">Nhập…</string>
     <string name="menu_export">Xuất…</string>
+    <string name="note"><u>Chú thích</u></string>
     <string name="title_activity_home">Money Tracker</string>
+    <string name="time_token">:</string>
     <string name="dummy_data">Dummy data</string>
     <string name="no_data">Không có dữ liệu</string>
     <string name="file_not_exist">Tệp tin không tồn tại</string>
@@ -104,14 +106,15 @@
     <string name="entry_unformated_data">Định dạng sai</string>
     <string name="entry_view_week_item_title">Week</string>
     <string name="entry_product_name_hint">Tên sản phẩm</string>
-    <string name="entry_daily_total_expense_title">Tổng chi phí ngày</string>
-    <string name="entry_daily_total_income_title">Tổng thu nhập ngày</string>
-    <string name="entry_total_budget_week">Ngân sách tuần còn lại</string>
-    <string name="entry_total_budget_month">Ngân sách tháng còn lại</string>
-    <string name="entry_daily_expense_title">Chi phí ngày {0}</string>
-    <string name="entry_daily_income_title">Thu nhập ngày {0}</string>
-    <string name="entry_edit_expense_title">Sửa chi phí {0}</string>
-    <string name="entry_edit_income_title">Sửa thu nhập {0}</string>
+    <string name="entry_daily_total_expense_title">Tổng chi phí ngày:</string>
+    <string name="entry_daily_total_income_title">Tổng thu nhập ngày:</string>
+    <string name="entry_total_budget_week">Ngân sách tuần còn lại:</string>
+    <string name="entry_total_budget_month">Ngân sách tháng còn lại:</string>
+    <string name="entry_daily_expense_title">Xem chi phí</string>
+    <string name="entry_daily_income_title">Xem thu nhập</string>
+    <string name="entry_edit_expense_title">Sửa chi phí</string>
+    <string name="entry_edit_income_title">Sửa thu nhập</string>
+    <string name="entry_edit_nfc_message">Quẹt thẻ NFC qua thiết bị…</string>
 
     <!-- These are resources for Entry function -->
     <string name="entry_edit_menu_title">Menu</string>
@@ -189,10 +192,12 @@
         <item>Get NFC</item>
     </string-array>
 
-    <color name="white_text_color">#F9FFFFFF</color>
+    <color name="white_text_color">#F9000000</color>
+    <color name="white08">#80FFFFFF</color>
     <color name="white_text_color_transparent">#605599FF</color>
     <color name="blue_background">#432230FF</color>
     <color name="light_gray_background">#33F8F8F8</color>
+    <color name="brown_line">#FFDDA01D</color>
 
     <string name="title_activity_report_chart">ReportChartActivity</string>
     <string name="hello_world">Hello world!</string>

@@ -10,12 +10,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class EntryDetailCategoryView extends LinearLayout {
-	private TextView category_name, category_count, category_total;
+	private TextView category_name, category_total;
 	private LinearLayout category_list;
+	private ImageView mStatus;
 	private boolean mSwitcher;
 
 	public EntryDetailCategoryView(Context context, AttributeSet attrs) {
@@ -24,12 +26,13 @@ public class EntryDetailCategoryView extends LinearLayout {
 
 	public EntryDetailCategoryView(Context context, ArrayList<EntryDetail> data) {
 		super(context);
-		LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.entry_detail_category_item, this, true);
 
 		// Get control from .xml file.
 		category_name = (TextView) findViewById(R.id.entry_detail_category_item_name);
-		category_count = (TextView) findViewById(R.id.entry_detail_category_item_count);
+		mStatus = (ImageView) findViewById(R.id.entry_detail_expanded_status);
 		category_total = (TextView) findViewById(R.id.entry_detail_category_item_total);
 		category_list = (LinearLayout) findViewById(R.id.entry_detail_category_list);
 
@@ -38,27 +41,26 @@ public class EntryDetailCategoryView extends LinearLayout {
 				(data.get(0).getCategory_id())));
 
 		long total = 0;
-		int count = 0;
 		category_list.removeAllViews();
 		for (EntryDetail entryDetail : data) {
 			EntryDetailProductView item = new EntryDetailProductView(context,
 					entryDetail);
 
 			total += entryDetail.getMoney();
-			count++;
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 			category_list.addView(item, params);
 		}
 
-		category_count.setText(new StringBuilder(" (").append(count)
-				.append(")").toString());
 		this.category_total.setText(Converter.toString(total));
-		
+
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				mSwitcher = !mSwitcher;
-				category_list.setVisibility(mSwitcher ? View.VISIBLE : View.GONE);
+				mStatus.setImageResource(mSwitcher ? R.drawable.combobox_icon_expanded
+						: R.drawable.combobox_icon);
+				category_list.setVisibility(mSwitcher ? View.VISIBLE
+						: View.GONE);
 			}
 		});
 	}

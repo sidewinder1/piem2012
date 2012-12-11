@@ -24,7 +24,7 @@ public class MainViewActivity extends TabActivity {
 		setContentView(R.layout.main_view);
 
 		TabHost mTabHost = getTabHost();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
+//		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
 		// Get bundle from HomeActivity
 		Bundle extras = getIntent().getExtras();
@@ -40,10 +40,10 @@ public class MainViewActivity extends TabActivity {
 				R.string.schedule_weekly));
 
 		// Set title of screen.
-		TextView title = (TextView) findViewById(R.id.title);
-		title.setText(getResources().getString(
-				(tab_type == 0) ? R.string.entry_management_title
-						: R.string.schedule_title));
+//		TextView title = (TextView) findViewById(R.id.title);
+//		title.setText(getResources().getString(
+//				(tab_type == 0) ? R.string.entry_management_title
+//						: R.string.schedule_title));
 
 		// Create tab and intent for schedule.
 		Intent monthlyIntent = new Intent(this, TabViewActivity.class);

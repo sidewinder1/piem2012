@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_background"
+    android:background="@drawable/main_content_background"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="25dp"
-        android:background="@drawable/title_background"
         android:orientation="horizontal" >
 
         <TextView
@@ -35,6 +34,7 @@
     <TabHost
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@android:id/tabhost"
+        android:layout_marginTop="20dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
