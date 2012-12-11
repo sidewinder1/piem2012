@@ -7,136 +7,131 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/title_background" >
 
         <TextView
+            android:id="@+id/schedule_edit_tilte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/schedule_edit_tilte"
+            android:layout_marginLeft="20sp"
             android:text="@string/schedule_edit_title"
-            android:textColor="@color/white_text_color"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/doneBtn"
-            android:layout_width="21dp"
-            android:layout_height="21dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/save_icon"
-            android:onClick="doneBtnClicked" />
-
-        <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="21dp"
-            android:layout_height="21dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="2dp"
-            android:layout_toLeftOf="@+id/doneBtn"
-            android:background="@drawable/cancel_icon"
-            android:onClick="cancelBtnClicked" />
+            android:textColor="@color/white08"
+            android:textSize="26sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:background="@drawable/main_content_background"
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_weight="1"
-                    android:text="@string/schedule_duration"
-                    android:textColor="@color/white_text_color"
-                    android:textSize="20dp" />
-
-                <ToggleButton
-                    android:id="@+id/periodic"
-                    android:layout_width="0dp"
-                    android:layout_height="41dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:textOff="@string/schedule_weekly"
-                    android:textOn="@string/schedule_monthly"
-                    android:textSize="12dp" />
-            </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_marginTop="25sp"
+            android:layout_weight="1" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="vertical" >
 
-                <EditText
-                    android:id="@+id/schedule_start_date"
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:inputType="date"
-                    android:paddingLeft="2dp"
-                    android:textSize="15dp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_weight="0"
+                    android:layout_height="wrap_content" >
 
-                <EditText
-                    android:id="@+id/schedule_end_date"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="7dp"
-                    android:layout_weight="1"
-                    android:background="@color/blue_background"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:inputType="date"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/white_text_color"
-                    android:textSize="15dp" />
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/periodic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="30sp"
+                        android:background="@drawable/calendar_month_icon" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <EditText
+                            android:id="@+id/schedule_start_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:background="@drawable/note_input_day"
+                            android:drawableRight="@drawable/note_input_day_right"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:inputType="date"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/schedule_end_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:background="@drawable/note_input_day"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:inputType="date"
+                            android:textColor="@color/white_text_color"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/schedule_total_budget"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_weight="3"
-                    android:maxLength="12"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="0"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="25dp"
+                    android:background="@drawable/note_budget"
                     android:digits="0123456789"
                     android:hint="@string/schedule_budget"
                     android:inputType="number"
-                    android:textSize="16dp" />
-                
+                    android:maxLength="12"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/list"
+                    android:layout_weight="1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" />
             </LinearLayout>
-            <LinearLayout android:layout_width="fill_parent"
-            android:id="@+id/list"
-            android:orientation="vertical"
-            android:layout_height="wrap_content"/>
-        </LinearLayout>
-        
-    </ScrollView>
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@drawable/title_background" >
+
+            <Button
+                android:id="@+id/doneBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="20sp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/save_icon"
+                android:onClick="doneBtnClicked" />
+
+            <Button
+                android:id="@+id/cancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/cancel_icon"
+                android:onClick="cancelBtnClicked" />
+        </RelativeLayout>
+    </LinearLayout>
+
 </LinearLayout>
