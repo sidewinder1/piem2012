@@ -35,13 +35,13 @@
     <string name="schedule_duration">Khoảng thời gian</string>
     <string name="schedule_monthly">Hàng tháng</string>
     <string name="schedule_exist_message">Kế hoạch này đã tồn tại</string>
-    <string name="schedule_detail_budget_title">Budget</string>
+    <string name="schedule_detail_budget_title">Tổng ngân sách:</string>
     <string name="schedule_weekly">Hàng tuần</string>
     <string name="schedule_title">Kế hoạch</string>
     <string name="schedule_edit_title">Kế hoạch mới</string>
     <string name="schedule_new_category">Mục mới</string>
     <string name="schedule_view_detail_title">Xem kế hoạch</string>
-    <string name="schedule_detail_average_title">Trung bình</string>
+    <string name="schedule_detail_average_title">Trung bình/ Ngày:</string>
     <string name="schedule_menu_title">Danh mục</string>
 
     <!-- These are resources for Synchronization function -->
