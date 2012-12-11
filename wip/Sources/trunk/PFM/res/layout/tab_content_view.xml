@@ -30,6 +30,8 @@
         <LinearLayout
             android:id="@+id/entry_tab_content_view_list"
             android:layout_width="fill_parent"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
@@ -53,8 +55,9 @@
             android:id="@+id/chart_legend"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|fill_vertical"
-            android:layout_margin="10sp"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp"
+            android:layout_marginBottom="20sp"
             android:minHeight="80dp"
             android:orientation="vertical" />
     </ScrollView>

@@ -83,7 +83,7 @@ public class Converter {
 			parsed = inputFormat.parse(date);
 
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			Logger.Log(e.getMessage(), "Converter");
 		}
 
 		return parsed;
@@ -96,7 +96,7 @@ public class Converter {
 		try {
 			parsed = inputFormat.parse(date);
 		} catch (Exception e) {
-			// TODO Add log
+			Logger.Log(e.getMessage(), "Converter");
 		}
 
 		return parsed;
