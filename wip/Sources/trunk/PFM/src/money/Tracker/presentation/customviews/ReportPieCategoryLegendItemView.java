@@ -27,20 +27,7 @@ public class ReportPieCategoryLegendItemView extends LinearLayout {
 		
 		colorContent.setBackgroundColor(Color.parseColor(color));
 		itemName.setText(name);
-		Log.d("Check percent", value + " - " + totalExpense + " - " + String.valueOf((double)value / (double)totalExpense));
 		itemPercent.setText(Converter.toString(((double)value / (double)totalExpense * 100)) + "%");
 		itemValue.setText(Converter.toString(value));
 	}
-
-	public void getChartLedgen() {
-			return;
-		}
-
-	public void getChartLegend() {
-			return;
-		}
-
-	public void getChartLedgend() {
-			return;
-		}
 }

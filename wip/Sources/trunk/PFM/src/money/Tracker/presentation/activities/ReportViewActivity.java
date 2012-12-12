@@ -2,7 +2,6 @@ package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.Logger;
@@ -26,16 +25,26 @@ import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import android.content.Context;
+import android.app.Dialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 public class ReportViewActivity extends Activity {
 
 	private boolean checkMonthly;
 	private TextView displayNoReportDataText;
 	private LinearLayout reportListView;
+	private Context myContext = this;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -112,11 +121,20 @@ public class ReportViewActivity extends Activity {
 						ReportViewItem monthReportViewItem = new ReportViewItem(this.getApplicationContext(), startDate, endDate, checkMonthly);
 						reportListView.addView(monthReportViewItem, params);
 						
-						monthReportViewItem.setOnClickListener(new View.OnClickListener() {
+						monthReportViewItem.setOnClickListener(new OnClickListener() {
 							
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
-								onItemClick();
+								//onItemClick();
+								final Dialog dialog = new Dialog(myContext);
+								//TextView textView = new TextView(myContext);
+								//textView.setText("test");
+								//dialog.setContentView(textView);
+								dialog.setContentView(R.layout.report_view_chart_custom_dialog);
+								// TODO: chuyen het tat ca hardcode string den strings.xml.
+								dialog.setTitle(getResources().getString(R.string.report_select_chart));
+
+								dialog.show();
 							}
 						});
 						
@@ -187,9 +205,9 @@ public class ReportViewActivity extends Activity {
 		//TextView textView = new TextView(myContext);
 		//textView.setText("test");
 		//dialog.setContentView(textView);
-		// dialog.setContentView(R.layout.report_view_chart_custom_dialog);
+		dialog.setContentView(R.layout.report_view_chart_custom_dialog);
 		// TODO: chuyen het tat ca hardcode string den strings.xml.
-		dialog.setTitle("Thống kê so sánh");
+		dialog.setTitle(getResources().getString(R.string.dummy_data));
 
 		dialog.show();
 		

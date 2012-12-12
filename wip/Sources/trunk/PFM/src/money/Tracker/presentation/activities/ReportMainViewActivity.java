@@ -28,12 +28,12 @@ public class ReportMainViewActivity extends TabActivity {
 		// Create tab and intent for schedule.
 		Intent borrowViewIntent = new Intent(this, ReportViewActivity.class);
 		borrowViewIntent.putExtra("Monthly", true);
-		setupTab(borrowViewIntent, "Tháng", mTabHost);
+		setupTab(borrowViewIntent, getResources().getString(R.string.month), mTabHost);
 
 		// Create tab and intent for Borrowing and Lending.
 		Intent lendViewIntent = new Intent(this, ReportViewActivity.class);
 		lendViewIntent.putExtra("Monthly", false);
-		setupTab(lendViewIntent, "Tuần", mTabHost);
+		setupTab(lendViewIntent, getResources().getString(R.string.week), mTabHost);
 	}
 
 	// This method is used to setup a tab with Name tab and content of tab.
