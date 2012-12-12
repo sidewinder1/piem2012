@@ -24,7 +24,7 @@
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/report_detail_category_item_name"
-            android:drawableBottom="@drawable/collapsed"/>
+            android:drawableBottom="@drawable/combobox_icon"/>
 
         <TextView
             android:id="@+id/report_detail_category_item_total"

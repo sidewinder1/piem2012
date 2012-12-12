@@ -23,8 +23,8 @@
             android:id="@+id/entry_edit_tilte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="25sp"
+          	android:layout_marginTop="10sp"
+            android:layout_centerHorizontal="true"
             android:text="@string/entry_edit_expense_title"
             android:textColor="@color/white08"
             android:textSize="26sp"
@@ -45,8 +45,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/main_content_background"
-        android:orientation="vertical"
-        android:paddingTop="25sp" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -54,7 +53,6 @@
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_marginTop="25dp"
                 android:onClick="toggleTypeClicked"
                 android:id="@+id/entry_edit_toggle_type"
                 android:layout_marginBottom="25dp"
@@ -65,8 +63,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="25dp"
-                android:id="@+id/entry_edit_date"
+                android:layout_marginLeft="15sp"
+                android:layout_marginTop="5sp"
+                android:id="@+id/entry_edit_date"                
                 android:gravity="center"
                 android:textColor="@color/white_text_color"
                 android:background="@drawable/note_input_day"

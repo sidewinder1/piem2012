@@ -28,7 +28,7 @@ public class ReportMainViewDetailActivity extends TabActivity {
 		setContentView(R.layout.activity_report_main_view_detail);
 
 		TabHost mTabHost = getTabHost();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
+//		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
 		Bundle extras = getIntent().getExtras();
 		final boolean checkMonthly = extras.getBoolean("checkMonthly");

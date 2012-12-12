@@ -6,297 +6,240 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/title_background" >
 
         <TextView
             android:id="@+id/title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:text="New Borrowing"
-            android:textColor="@android:color/white"
-            android:textSize="30dp" />
-
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/save_icon" />
-
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:layout_toLeftOf="@+id/saveButton"
-            android:background="@drawable/cancel_icon" />
+            android:layout_margin="10sp"
+            android:text="@string/borrow_add_title"
+            android:textColor="@color/white08"
+            android:textSize="26sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="fill_parent"
+        android:background="@drawable/main_content_background"
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/app_background"
-            android:orientation="vertical" >
+            android:layout_weight="1"
+            android:layout_height="0dip" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:orientation="vertical" >
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type         "
-                    android:textColor="@android:color/white" />
+                    android:orientation="horizontal" >
 
-                <ToggleButton
-                    android:id="@+id/borrowLendType"
-                    android:layout_width="140dp"
-                    android:layout_height="42dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:checked="true"
-                    android:paddingBottom="-20dp"
-                    android:textOff="Lending"
-                    android:textOn="Borrowing"
-                    android:textSize="12dp" />
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/borrowLendType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/borrow_icon" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
+                    <LinearLayout
+                        android:layout_width="0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
 
-            <AutoCompleteTextView
-                android:id="@+id/name_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="36dp"
-                android:textSize="16dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:hint="Name"
-                android:maxLength="30"
-                android:singleLine="true"
-                android:textColor="@android:color/black"/>
+                        <AutoCompleteTextView
+                            android:id="@+id/name_edit_text"
+                            android:layout_width="fill_parent"
+                            android:layout_height="36dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="50sp"
+                            android:hint="@string/borrow_lend_name"
+                            android:maxLength="30"
+                            android:singleLine="true"
+                            android:textColor="@android:color/black"
+                            android:textSize="16dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
-
-            <EditText
-                android:id="@+id/phone_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="36dp"
-                android:textSize="16dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:hint="Phone"
-                android:inputType="number"
-                android:maxLength="13"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
-
-            <EditText
-                android:id="@+id/address_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="36dp"
-                android:textSize="16dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:hint="Address"
-                android:inputType="text"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
-
-            <EditText
-                android:id="@+id/money_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="36dp"
-                android:textSize="16dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:hint="Total"
-                android:inputType="number"
-                android:maxLength="20"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Interest Type"
-                    android:textSize="15dp"
-                    android:textColor="@android:color/white" />
-
-                <ToggleButton
-                    android:id="@+id/interestType"
-                    android:layout_width="140dp"
-                    android:layout_height="42dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:checked="true"
-                    android:paddingBottom="-20dp"
-                    android:textOff="Compound"
-                    android:textOn="Simple"
-                    android:textSize="12dp" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:textSize="16dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Interest Rate"
-                    android:textColor="@android:color/white"/>
+                        <EditText
+                            android:id="@+id/phone_edit_text"
+                            android:layout_width="fill_parent"
+                            android:layout_height="36dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="20sp"
+                            android:hint="@string/borrow_lend_add_phone"
+                            android:inputType="number"
+                            android:maxLength="13"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <EditText
-                    android:id="@+id/interest_rate_edit_text"
-                    android:layout_width="165dp"
+                    android:id="@+id/address_edit_text"
+                    android:layout_width="fill_parent"
                     android:layout_height="36dp"
-                	android:textSize="16dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/spinner_bottom"
+                    android:hint="@string/borrow_lend_add_address"
+                    android:inputType="text"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/money_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/note_budget"
+                    android:hint="@string/borrow_lend_total_money"
                     android:inputType="number"
-                    android:maxLength="3"/>
+                    android:maxLength="20"
+                    android:textSize="16dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:textSize="16dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="%"
-                    android:textColor="@android:color/white"/>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/borrow_lend_interest"
+                        android:textColor="@color/white_text_color"
+                        android:textSize="16dp" />
+
+                    <EditText
+                        android:id="@+id/interest_rate_edit_text"
+                        android:layout_width="165dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/spinner_bottom"
+                        android:layout_marginRight="10dp"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="%"
+                        android:textColor="@color/white_text_color"
+                        android:textSize="16dp" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/borrow_lend_interest_type"
+                        android:textColor="@color/white_text_color"
+                        android:textSize="15dp" />
+
+                    <ToggleButton
+                        android:id="@+id/interestType"
+                        android:layout_width="140dp"
+                        android:layout_height="42dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:checked="true"
+                        android:paddingBottom="-20dp"
+                        android:textOff="Compound"
+                        android:textOn="Simple"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/start_date_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:background="@drawable/note_input_day"
+                        android:inputType="date"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="-"
+                        android:textColor="@color/white_text_color"
+                        android:textSize="16dp" />
+
+                    <EditText
+                        android:id="@+id/expired_date_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/note_input_day"
+                        android:drawableRight="@drawable/note_input_day_right"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:inputType="date"
+                        android:textSize="16dp" />
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
 
-            <TextView
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/cancelBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/cancel_icon" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:textSize="16dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Start Date     "
-                    android:textColor="@android:color/white"/>
-
-                <EditText
-                    android:id="@+id/start_date_edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                	android:textSize="16dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:inputType="date"/>
-            </LinearLayout>
-
-            <TextView
+            <Button
+                android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text=""
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                	android:textSize="16dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Expired Date"
-                    android:textColor="@android:color/white"/>
-
-                <EditText
-                    android:id="@+id/expired_date_edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                	android:textSize="16dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:inputType="date"/>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/save_icon" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

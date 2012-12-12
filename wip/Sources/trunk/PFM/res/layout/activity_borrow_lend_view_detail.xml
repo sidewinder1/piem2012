@@ -2,42 +2,280 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/app_background"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/title_background" >
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_background_2" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/borrow_lend_detail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:text="View Detail"
-            android:textColor="@color/white_text_color"
-            android:textSize="30dp" />
-
-        <Button
-            android:id="@+id/borrow_lend_detail_view_edit_button"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/management_icon" />
+            android:layout_margin="10dp"
+            android:text="@string/borrow_view_title"
+            android:textColor="@color/white08"
+            android:textSize="26sp"
+            android:textStyle="bold" />
     </RelativeLayout>
-
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:clipChildren="false">
+        android:layout_height="fill_parent"
+        android:background="@drawable/main_content_background"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:clipChildren="false" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="18sp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="15dp"
+                        android:text="@string/borrow_lend_name"
+                        android:textColor="@color/white_text_color" />
+
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:gravity="right"
+                        android:layout_marginRight="15dp"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+             
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:textSize="18sp"
+                        android:text="@string/borrow_lend_phone"
+                        android:layout_weight="1"
+                        android:textColor="@color/white_text_color" />
+                
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textSize="18sp"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="15dp"
+                        android:textSize="18sp"
+                        android:text="@string/borrow_lend_address"
+                        android:textColor="@color/white_text_color" />
+               
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:gravity="right"
+                        android:layout_marginRight="15dp"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:text="@string/borrow_lend_total_money"
+                        android:textColor="@color/white_text_color" />
+
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textSize="18sp"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="20sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="18sp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="15dp"
+                        android:text="@string/borrow_lend_interest_type"
+                        android:textColor="@color/white_text_color" />
+
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_interest_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="15dp"
+                        android:gravity="right"
+                        android:textSize="18sp"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:text="@string/borrow_lend_interest"
+                        android:textColor="@color/white_text_color" />
+
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_interest_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:gravity="right"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+         
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="20sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:text="@string/borrow_lend_start_date"
+                        android:textColor="@color/white_text_color" />
+
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_start_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:gravity="right"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="20sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:layout_marginRight="15dp"
+                        android:text="@string/borrow_lend_end_date"
+                        android:textColor="@color/white_text_color" />
+
+                    <TextView
+                        android:id="@+id/borrow_lend_detail_view_expired_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:gravity="right"
+                        android:textSize="18sp"
+                        android:layout_weight="1"
+                        android:text="@string/dummy_data"
+                        android:textColor="@color/white_text_color" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
+            android:id="@+id/informationBorrowLend"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -48,381 +286,69 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="             Name"
-                    android:textColor="@android:color/white" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/borrow_lend_total_money"
+                    android:textColor="@color/white_text_color" />
 
                 <TextView
+                    android:id="@+id/borrow_lend_detail_view_total_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
+                    android:layout_marginLeft="15dp"
+                    android:gravity="right"
+                    android:textSize="18sp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:text="@string/dummy_data"
+                    android:textColor="@color/white_text_color" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="323dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="            Phone"
-                    android:textColor="@android:color/white" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/borrow_lend_interest"
+                    android:textColor="@color/white_text_color" />
 
                 <TextView
+                    android:id="@+id/borrow_lend_detail_view_total_interest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
+                    android:layout_marginLeft="15dp"
+                    android:gravity="right"
+                    android:textSize="18sp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/dummy_data"
+                    android:layout_weight="1"
+                    android:textColor="@color/white_text_color" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         Address"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="               Total"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Interest Type"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_interest_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Interest Rate"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_interest_rate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="     Start Date"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_start_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Expired Date"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="         "
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/borrow_lend_detail_view_expired_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Debt Type"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/informationBorrowLend"
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Total                         "
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/borrow_lend_detail_view_total_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Debt Type"
-                android:textColor="@android:color/white" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="323dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-            <TextView
+            <Button
+                android:id="@+id/borrow_lend_detail_view_edit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Interest                   "
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="                  "
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/borrow_lend_detail_view_total_interest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Debt Type"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/borrow_lend_detail_view_left_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Debt Type"
-            android:textColor="@android:color/white" />
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_icon" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>
