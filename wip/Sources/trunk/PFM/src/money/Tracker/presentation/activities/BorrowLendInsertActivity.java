@@ -3,7 +3,6 @@ package money.Tracker.presentation.activities;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TooManyListenersException;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
@@ -13,32 +12,23 @@ import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.adapters.ContactsAutoCompleteCursorAdapter;
 import money.Tracker.presentation.model.BorrowLend;
-import money.Tracker.presentation.model.Contact;
 import money.Tracker.repository.*;
 import android.os.Bundle;
-import android.provider.Contacts;
-import android.provider.Contacts.People;
 import android.provider.ContactsContract;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class BorrowLendInsertActivity extends Activity {
@@ -302,22 +292,16 @@ public class BorrowLendInsertActivity extends Activity {
 
 		// Hand on debt type
 		debtTypeButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			public void onClick(View v) {
 				setChecked(!mIsBorrow);
-				if (borrow_lend_id == -1) {
-					if (mIsBorrow) {
-						debtTypeTextView.setText("New Borrowing");
-					} else {
-						debtTypeTextView.setText("New Lending");
-					}
-				} else {
-					if (mIsBorrow) {
-						debtTypeTextView.setText("Edit Borrowing");
-					} else {
-						debtTypeTextView.setText("Edit Lending");
-					}
-				}
+				debtTypeTextView
+						.setText(getResources()
+								.getString(
+										borrow_lend_id == -1 ? (mIsBorrow ? R.string.borrow_add_title
+												: R.string.lend_add_title)
+												: (mIsBorrow ? R.string.borrow_edit_title
+														: R.string.lend_edit_title)));
 			}
 		});
 
@@ -355,7 +339,8 @@ public class BorrowLendInsertActivity extends Activity {
 
 	private void setChecked(boolean isBorrow) {
 		mIsBorrow = isBorrow;
-		
+		debtTypeButton.setBackgroundResource(isBorrow ? R.drawable.borrow_icon
+				: R.drawable.lending_icon);
 	}
 
 	// updates the date in the TextView
@@ -552,7 +537,7 @@ public class BorrowLendInsertActivity extends Activity {
 										phoneEditText.getText().toString(),
 										addressEditText.getText().toString() });
 				setResult(100);
-				
+
 				try {
 					if (!SynchronizeTask.isSynchronizing()
 							&& Boolean.parseBoolean(XmlParser.getInstance()
