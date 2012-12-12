@@ -69,7 +69,7 @@
                             android:maxLength="30"
                             android:singleLine="true"
                             android:textColor="@android:color/black"
-                            android:textSize="16dp" />
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/phone_edit_text"
@@ -81,7 +81,7 @@
                             android:hint="@string/borrow_lend_add_phone"
                             android:inputType="number"
                             android:maxLength="13"
-                            android:textSize="16dp" />
+                            android:textSize="18sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -94,7 +94,7 @@
                     android:background="@drawable/spinner_bottom"
                     android:hint="@string/borrow_lend_add_address"
                     android:inputType="text"
-                    android:textSize="16dp" />
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/money_edit_text"
@@ -107,7 +107,7 @@
                     android:hint="@string/borrow_lend_total_money"
                     android:inputType="number"
                     android:maxLength="20"
-                    android:textSize="16dp" />
+                    android:textSize="18sp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -122,7 +122,7 @@
                         android:layout_marginRight="5dp"
                         android:text="@string/borrow_lend_interest"
                         android:textColor="@color/white_text_color"
-                        android:textSize="16dp" />
+                        android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/interest_rate_edit_text"
@@ -133,7 +133,7 @@
                         android:layout_marginRight="10dp"
                         android:inputType="number"
                         android:maxLength="3"
-                        android:textSize="16dp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                         android:layout_marginRight="5dp"
                         android:text="%"
                         android:textColor="@color/white_text_color"
-                        android:textSize="16dp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
                 
                 <LinearLayout
@@ -158,20 +158,19 @@
                         android:layout_marginRight="5dp"
                         android:text="@string/borrow_lend_interest_type"
                         android:textColor="@color/white_text_color"
-                        android:textSize="15dp" />
+                        android:textSize="18sp" />
 
                     <ToggleButton
                         android:id="@+id/interestType"
-                        android:layout_width="140dp"
-                        android:layout_height="42dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:checked="true"
                         android:background="@drawable/interest_type_bg_selector"
-                        android:paddingBottom="-20dp"
-                        android:textOff="Compound"
-                        android:textOn="Simple"
-                        android:textSize="12dp" />
+                        android:textOff="@string/compound_interest"
+                        android:textOn="@string/simple_interest"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -191,7 +190,7 @@
                         android:focusable="false"
                         android:background="@drawable/note_input_day"
                         android:inputType="date"
-                        android:textSize="16dp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -200,7 +199,7 @@
                         android:layout_marginRight="5dp"
                         android:text="-"
                         android:textColor="@color/white_text_color"
-                        android:textSize="16dp" />
+                        android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/expired_date_edit_text"
@@ -215,7 +214,7 @@
                         android:ems="10"
                         android:focusable="false"
                         android:inputType="date"
-                        android:textSize="16dp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

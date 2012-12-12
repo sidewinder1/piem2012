@@ -35,9 +35,9 @@
     <string name="borrow_lend_name">Tên</string>
     <string name="borrow_lend_add_phone">Điện thoại</string>
     <string name="borrow_lend_add_address">Địa chỉ</string>
-     <string name="borrow_lend_start_date">Ngày vay:</string>
+    <string name="borrow_lend_start_date">Ngày vay:</string>
     <string name="borrow_lend_end_date">Ngày đáo hạn:</string>
-     <string name="borrow_lend_phone">Điện thoại:</string>
+    <string name="borrow_lend_phone">Điện thoại:</string>
     <string name="borrow_lend_address">Địa chỉ:</string>
     <string name="borrow_lend_total_money">Tổng tiền:</string>
     <string name="borrow_lend_interest">Lãi suất:</string>
@@ -47,11 +47,13 @@
     <string name="borrow_lend_current_interest">Lãi suất hiện tại:</string>
     <string name="borrow_add_title">Thêm khoản vay</string>
     <string name="lend_add_title">Thêm khoản cho vay</string>
-     <string name="borrow_edit_title">Sửa khoản vay</string>
+    <string name="borrow_edit_title">Sửa khoản vay</string>
     <string name="lend_edit_title">Sửa khoản cho vay</string>
     <string name="borrow_view_title">Xem khoản vay</string>
     <string name="lend_view_title">Xem khoản cho vay</string>
-
+    <string name="simple_interest">Lãi đơn</string>
+    <string name="compound_interest">Lãi kép</string>
+    
     <!-- These are resources for Schedule function. -->
     <string name="schedule_start_day">Từ</string>
     <string name="schedule_end_day">Đến</string>
