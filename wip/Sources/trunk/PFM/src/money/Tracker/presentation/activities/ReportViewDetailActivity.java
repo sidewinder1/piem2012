@@ -39,8 +39,6 @@ public class ReportViewDetailActivity extends Activity {
 		bindData();
 	}
 
-	// get schedule budget
-
 	private void getSchedule() {
 		long budget = 0;
 		String whereCondition = "";
@@ -57,10 +55,8 @@ public class ReportViewDetailActivity extends Activity {
 						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
 						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
 						String scheduleYear = Converter.toString(scheduleStartDate, "YYYY");
-						Log.d("Check get Month", scheduleMonth);
 						String startDateMonth = Converter.toString(startDate,"MM");
 						String startDateYear = Converter.toString(startDate,"YYYY");
-						Log.d("Check get Month", startDateMonth);
 
 						if (scheduleMonth.equals(startDateMonth) && scheduleYear.equals(startDateYear))
 							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
@@ -395,9 +391,7 @@ public class ReportViewDetailActivity extends Activity {
 
 						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
 						Log.d("report detail", "Check 56");
-						totalBorrowing += borrowingCursor
-								.getLong(borrowingCursor
-										.getColumnIndex("Money"));
+						totalBorrowing += borrowingCursor.getLong(borrowingCursor.getColumnIndex("Money"));
 					}
 					}
 				} while (borrowingCursor.moveToNext());
@@ -423,15 +417,12 @@ public class ReportViewDetailActivity extends Activity {
 					if (checkMonthly)
 					{
 						String entryDateMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate,
-								"MM");
-						String entryDateYear = Converter.toString(entryDate, "YYYY");
-						String startDateYear = Converter.toString(startDate,
-								"YYYY");
+						String startDateMonth = Converter.toString(startDate, "MM");
+						String entryDateYear = Converter.toString(entryDate, "yyyy");
+						String startDateYear = Converter.toString(startDate, "yyyy");
 						if(entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear))
 						{
-							totalLending += lendingCursor.getLong(lendingCursor
-									.getColumnIndex("Money"));
+							totalLending += lendingCursor.getLong(lendingCursor.getColumnIndex("Money"));
 						}
 					}else
 					{
@@ -464,15 +455,12 @@ public class ReportViewDetailActivity extends Activity {
 
 	private void bindData() {
 		// TODO Auto-generated method stub
-		Log.d("report detail", "Check 1");
 		Bundle extras = getIntent().getExtras();
-		long scheduleID = extras.getLong("schedule_id");
 		checkMonthly = extras.getBoolean("checkMonthly");
 		_startDate = extras.getString("start_date");
 		startDate = Converter.toDate(_startDate);
 		_endDate = extras.getString("end_date");
 		endDate = Converter.toDate(_endDate);
-		Log.d("report detail", "Check 2 - " + scheduleID);
 
 		reportDetail = (LinearLayout) findViewById(R.id.report_detail_list_view);
 		reportDetail.removeAllViews();
@@ -482,11 +470,5 @@ public class ReportViewDetailActivity extends Activity {
 		getExpense();
 		getBorrowing();
 		getLending();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_report_view_detail, menu);
-		return true;
 	}
 }

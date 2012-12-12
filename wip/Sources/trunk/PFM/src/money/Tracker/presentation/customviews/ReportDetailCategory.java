@@ -87,4 +87,8 @@ public class ReportDetailCategory extends LinearLayout {
 			changedState = false;
 		}
 	}
+
+	public void createView() {
+			return;
+		}
 }

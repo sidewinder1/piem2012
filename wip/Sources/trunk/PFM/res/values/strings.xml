@@ -22,7 +22,7 @@
     <string name="existed_category_message">Mục này đã tồn tại</string>
     <string name="input_dialog_title">Nhập giá trị</string>
     <string name="ok">Đồng ý</string>
-    <string name="cancel">Hủy</string>
+    <string name="cancel">Hủy bỏ</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
 
@@ -161,6 +161,10 @@
     <string name="report_management_detail_lending">Lending</string>
     <string name="report_management_custom_dialog_check_all">Chọn tất cả</string>
     <string name="report_management_custom_dialog_uncheck_all">Bỏ chọn tất cả</string>
+    <string name="report_in_month">Thống kê trong tháng</string>
+    <string name="report_in_week">Thống kê trong tuần</string>
+    <string name="report_between_month">Thống kê giữa các tháng</string>
+    <string name="report_between_week">Thống kế giữa các tuần</string>
     <string name="report_chart_tab_title">Biểu đồ</string>
 
     <!-- Others resources -->

@@ -27,16 +27,16 @@ public class ReportCustomDialogViewItem extends LinearLayout {
 		super(context);
 
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		layoutInflater.inflate(R.layout.report_view_chart_custom_dialog_view_item, this, true);
+		layoutInflater.inflate(R.layout.report_view_chart_compare_custom_dialog_view_item, this, true);
 
 		// Get control from .xml file.
-		CheckBox viewItemCheckbox = (CheckBox) findViewById(R.id.report_custom_dialog_view_item_checkbox);
-		TextView viewItemTitle = (TextView) findViewById(R.id.report_custom_dialog_view_item_title);
+		CheckBox viewItemCheckbox = (CheckBox) findViewById(R.id.report_compare_custom_dialog_view_item_checkbox);
+		TextView viewItemTitle = (TextView) findViewById(R.id.report_compare_custom_dialog_view_item_title);
 
 		// Set value to item.
 		if(checkMonthly)
 		{
-			viewItemTitle.setText(Converter.toString(startDate, "MMMM, yyyy"));
+			viewItemTitle.setText(Converter.toString(startDate, "MM/ yyyy"));
 		} else
 		{
 			viewItemTitle.setText(Converter.toString(startDate, "dd/MMM/yyyy") + " - " + Converter.toString(endDate, "dd/MMM/yyyy"));

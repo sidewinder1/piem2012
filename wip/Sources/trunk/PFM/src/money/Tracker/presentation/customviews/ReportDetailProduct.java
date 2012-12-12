@@ -34,4 +34,8 @@ public class ReportDetailProduct extends LinearLayout {
 
 	}
 
+	public void createView() {
+			return;
+		}
+
 }
