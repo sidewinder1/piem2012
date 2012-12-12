@@ -59,7 +59,8 @@
                             android:id="@+id/schedule_start_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10sp"                            
+                            android:layout_margin="10sp"                
+                            android:gravity="center_horizontal"            
                             android:background="@drawable/note_input_day"
                             android:drawableRight="@drawable/note_input_day_right"
                             android:editable="false"
@@ -69,6 +70,7 @@
 
                         <EditText
                             android:id="@+id/schedule_end_date"
+                            android:gravity="center_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10sp"

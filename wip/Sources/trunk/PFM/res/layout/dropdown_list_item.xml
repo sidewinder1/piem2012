@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
     <LinearLayout
@@ -14,6 +14,7 @@
     <TextView
         android:id="@+id/item_content"
         android:layout_width="fill_parent"
+        android:textSize="18sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textColor="@color/white_text_color" />
