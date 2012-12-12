@@ -109,8 +109,17 @@ public class ReportViewActivity extends Activity {
 						}
 
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-
-						reportListView.addView(new ReportViewItem(this, startDate, endDate, checkMonthly), params);
+						ReportViewItem monthReportViewItem = new ReportViewItem(this.getApplicationContext(), startDate, endDate, checkMonthly);
+						reportListView.addView(monthReportViewItem, params);
+						
+						monthReportViewItem.setOnClickListener(new View.OnClickListener() {
+							
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								onItemClick();
+							}
+						});
+						
 					} while (monthlyEntry.moveToNext());
 				}
 			}
@@ -163,12 +172,175 @@ public class ReportViewActivity extends Activity {
 						}
 
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT);
-
-						reportListView.addView(new ReportViewItem(this, startDate, endDate, checkMonthly), params);
+						ReportViewItem weekReportViewItem = new ReportViewItem(this, startDate, endDate, checkMonthly);
+						reportListView.addView(weekReportViewItem, params);
 					} while (weekEntry.moveToNext());
 				}
 			}
 		}
 	}
+	
+	private void onItemClick()
+	{
+		Log.d("Check report view", "Check on click 1");
+		final Dialog dialog = new Dialog(ReportViewActivity.this);
+		//TextView textView = new TextView(myContext);
+		//textView.setText("test");
+		//dialog.setContentView(textView);
+		// dialog.setContentView(R.layout.report_view_chart_custom_dialog);
+		// TODO: chuyen het tat ca hardcode string den strings.xml.
+		dialog.setTitle("Thống kê so sánh");
 
+		dialog.show();
+		
+		/*
+		 * final CheckBox reportInMonthWeekCheckBox = (CheckBox)
+		 * dialog.findViewById(R.id.report_in_month_week_checkbox);
+		 * TextView reportInMonthWeekTextView = (TextView)
+		 * dialog.findViewById(R.id.report_in_month_week_text_view);
+		 * 
+		 * final CheckBox reportBetweenMonthWeekCheckBox = (CheckBox)
+		 * dialog.findViewById(R.id.report_betwwen_month_week_checkbox);
+		 * TextView reportBetweenMonthWeekTextView = (TextView)
+		 * dialog.findViewById(R.id.report_betwwen_month_week_textview);
+		 * 
+		 * Log.d("Check report view", "Check on click 2");
+		 * 
+		 * if (checkMonth) {
+		 * reportBetweenMonthWeekTextView.setText(R.string
+		 * .report_between_month);
+		 * reportInMonthWeekTextView.setText(R.string.report_in_month);
+		 * } else { reportBetweenMonthWeekTextView.setText(R.string.
+		 * report_between_week);
+		 * reportInMonthWeekTextView.setText(R.string.report_in_week); }
+		 * 
+		 * Log.d("Check report view", "Check on click 3");
+		 * 
+		 * reportInMonthWeekCheckBox.setOnCheckedChangeListener(new
+		 * OnCheckedChangeListener() { public void
+		 * onCheckedChanged(CompoundButton buttonView, boolean
+		 * isChecked) { // TODO Auto-generated method stub if
+		 * (isChecked) { checked = 1;
+		 * reportBetweenMonthWeekCheckBox.setChecked(false); } else {
+		 * checked = 0; } } });
+		 * 
+		 * reportBetweenMonthWeekCheckBox.setOnCheckedChangeListener(new
+		 * OnCheckedChangeListener() { public void
+		 * onCheckedChanged(CompoundButton buttonView, boolean
+		 * isChecked) { // TODO Auto-generated method stub if
+		 * (isChecked) { checked = 2;
+		 * reportInMonthWeekCheckBox.setChecked(false); } else { checked
+		 * = 0; } } });
+		 */
+
+		/*
+		 * Log.d("Check report view", "Check on click 4"); Button
+		 * okButton = (Button)
+		 * dialog.findViewById(R.id.report_custom_dialog_ok_button);
+		 * Button cancelButton = (Button)
+		 * dialog.findViewById(R.id.report_custom_dialog_cancel_button);
+		 * 
+		 * Log.d("Check report view", "Check on click 5");
+		 * cancelButton.setOnClickListener(new View.OnClickListener() {
+		 * 
+		 * public void onClick(View v) { // TODO Auto-generated method
+		 * stub checked = 0; dialog.dismiss(); } });
+		 * 
+		 * final Context context = ReportViewItem.this.getContext();
+		 * Log.d("Check report view", "Check on click 6");
+		 * okButton.setOnClickListener(new View.OnClickListener() {
+		 * 
+		 * public void onClick(View v) { // TODO Auto-generated method
+		 * stub switch (checked) { case 1: Intent pieChart = new
+		 * Intent(context, ReportViewPieChartActivity.class);
+		 * pieChart.putExtra("checkMonthly", checkMonth);
+		 * pieChart.putExtra("start_date", sDate);
+		 * pieChart.putExtra("end_date", eDate);
+		 * 
+		 * checked = 0; dialog.dismiss();
+		 * 
+		 * break;
+		 * 
+		 * case 2: /* final Dialog compareDialog = new
+		 * Dialog(ReportViewItem.this.getContext());
+		 * 
+		 * compareDialog.setContentView(R.layout.
+		 * report_view_chart_compare_custom_dialog);
+		 * 
+		 * if (checkMonth) compareDialog.setTitle("Chọn tháng so sánh");
+		 * else compareDialog.setTitle("Chọn tuần so sánh");
+		 * 
+		 * barChartListDate = (LinearLayout)
+		 * compareDialog.findViewById(R
+		 * .id.report_compare_custom_dialog_list_date_view);
+		 * barChartListDate.removeAllViews();
+		 * bindDataCustomItemView(false);
+		 * 
+		 * Button okButton = (Button) compareDialog.findViewById(R.id.
+		 * report_compare_custom_dialog_ok_button); Button cancelButton
+		 * = (Button) compareDialog.findViewById(R.id.
+		 * report_compare_custom_dialog_cancel_button);
+		 * 
+		 * cancelButton.setOnClickListener(new View.OnClickListener() {
+		 * 
+		 * public void onClick(View v) { // TODO Auto-generated method
+		 * stub int size = dateList.size();
+		 * 
+		 * for (int i = 1; i < size; i++) { dateList.remove(1); }
+		 * 
+		 * compareDialog.dismiss(); } });
+		 * 
+		 * okButton.setOnClickListener(new View.OnClickListener() {
+		 * 
+		 * public void onClick(View v) { // TODO Auto-generated method
+		 * stub int size = dateList.size(); for (int i = 1; i < size;
+		 * i++) { dateList.remove(1); Log.d("Check remove dateList",
+		 * (dateList.size() + " - " + i)); } compareDialog.dismiss(); }
+		 * });
+		 * 
+		 * Log.d("Check report view", "Check on click 7"); final
+		 * CheckBox checkAllCheckBox = (CheckBox)
+		 * compareDialog.findViewById
+		 * (R.id.report_compare_custom_dialog_check_all_checkbox); final
+		 * CheckBox uncheckAllCheckBox = (CheckBox)
+		 * compareDialog.findViewById
+		 * (R.id.report_compare_custom_dialog_uncheck_all_checkbox);
+		 * 
+		 * checkAllCheckBox.setOnCheckedChangeListener(new
+		 * OnCheckedChangeListener() { public void
+		 * onCheckedChanged(CompoundButton buttonView, boolean
+		 * isChecked) { // TODO Auto-generated method stub if
+		 * (isChecked) { int size = dateList.size(); for (int i = 1; i <
+		 * size; i++) { dateList.remove(1);
+		 * Log.d("Check remove dateList", (dateList.size() + " - " +
+		 * i)); }
+		 * 
+		 * barChartListDate.removeAllViews();
+		 * bindDataCustomItemView(true);
+		 * 
+		 * uncheckAllCheckBox.setChecked(false); } } });
+		 * 
+		 * uncheckAllCheckBox.setOnCheckedChangeListener(new
+		 * OnCheckedChangeListener() { public void
+		 * onCheckedChanged(CompoundButton buttonView, boolean
+		 * isChecked) { // TODO Auto-generated method stub if
+		 * (isChecked) { int size = dateList.size(); for (int i = 1; i <
+		 * size; i++) { dateList.remove(1); }
+		 * 
+		 * barChartListDate.removeAllViews();
+		 * bindDataCustomItemView(false);
+		 * 
+		 * checkAllCheckBox.setChecked(false); } } });
+		 * 
+		 * compareDialog.show();
+		 * 
+		 * checked = 0; dialog.dismiss();
+		 * 
+		 * break;
+		 * 
+		 * default: checked = 0; dialog.dismiss();
+		 * 
+		 * break; } } });
+		 */
+	}
 }
