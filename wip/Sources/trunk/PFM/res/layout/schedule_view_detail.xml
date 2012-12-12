@@ -8,12 +8,12 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/title_background" >
+        android:background="@drawable/title_background_2" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20sp"
+            android:layout_margin="10dp"
             android:text="@string/schedule_view_detail_title"
             android:textColor="@color/white08"
             android:textSize="26sp"
@@ -23,14 +23,16 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/view_content_background"
+        android:background="@drawable/main_content_background"
         android:orientation="vertical" >
 
       <TextView
         android:id="@+id/schedule_detail_main_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="35sp"
+        android:layout_marginRight="35sp"
+        android:layout_marginBottom="35sp"
+        android:layout_marginLeft="35sp"
 		android:gravity="center_horizontal"
         android:background="@drawable/spinner_bottom"
         android:textColor="@color/white_text_color"
@@ -68,13 +70,14 @@
             android:id="@+id/schedule_detail_item_list"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="25sp"
-            android:layout_marginRight="25sp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="25dp"
             android:layout_weight="6"
             android:focusable="false" />
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginBottom="25dp"
             android:layout_height="wrap_content" >
 
             <TextView

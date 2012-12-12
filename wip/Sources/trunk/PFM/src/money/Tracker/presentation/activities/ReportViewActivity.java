@@ -5,6 +5,7 @@ import java.util.Date;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.adapters.BorrowLendAdapter;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.customviews.CategoryLegendItemView;
@@ -39,9 +40,11 @@ public class ReportViewActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_report_view);
-
-		bindData();
-
+		try {
+			bindData();
+		} catch (Exception e) {
+			Logger.Log(e.getMessage(), "ReportViewActivity");
+		}
 	}
 
 	@Override
@@ -54,11 +57,13 @@ public class ReportViewActivity extends Activity {
 		public void onItemClick(AdapterView<?> listView, View view,
 				int position, long id) {
 			long data_id = -1;
-			Schedule schedule = (Schedule) listView.getAdapter().getItem(position);
+			Schedule schedule = (Schedule) listView.getAdapter().getItem(
+					position);
 			data_id = schedule.id;
 
-			Intent reportDetail = new Intent(ReportViewActivity.this, ReportMainViewDetailActivity.class);
-			reportDetail.putExtra("schedule_id", data_id);			
+			Intent reportDetail = new Intent(ReportViewActivity.this,
+					ReportMainViewDetailActivity.class);
+			reportDetail.putExtra("schedule_id", data_id);
 			startActivity(reportDetail);
 		}
 	};
@@ -71,26 +76,39 @@ public class ReportViewActivity extends Activity {
 		reportListView.removeAllViews();
 
 		if (checkMonthly) {
-			Cursor monthlyEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
+			Cursor monthlyEntry = SqlHelper.instance
+					.select("Entry",
+							"DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry",
+							"1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
 			if (monthlyEntry != null) {
 				displayNoReportDataText.setVisibility(View.GONE);
 				if (monthlyEntry.moveToFirst()) {
 					do {
-						String month = monthlyEntry.getString(monthlyEntry.getColumnIndex("monthEntry"));
-						String year = monthlyEntry.getString(monthlyEntry.getColumnIndex("yearEntry"));
-						
-						Cursor entry = SqlHelper.instance.select("Entry", "*, strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry", "");
+						String month = monthlyEntry.getString(monthlyEntry
+								.getColumnIndex("monthEntry"));
+						String year = monthlyEntry.getString(monthlyEntry
+								.getColumnIndex("yearEntry"));
+
+						Cursor entry = SqlHelper.instance
+								.select("Entry",
+										"*, strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry",
+										"");
 						Date startDate = null;
 						Date endDate = null;
 
 						if (entry != null) {
 							if (entry.moveToFirst()) {
 								do {
-									Date entryDate = Converter.toDate(entry.getString(entry.getColumnIndex("Date")));
-									String entryMonth = entry.getString(entry.getColumnIndex("monthEntry"));
-									String entryYear = entry.getString(entry.getColumnIndex("yearEntry"));
+									Date entryDate = Converter.toDate(entry
+											.getString(entry
+													.getColumnIndex("Date")));
+									String entryMonth = entry.getString(entry
+											.getColumnIndex("monthEntry"));
+									String entryYear = entry.getString(entry
+											.getColumnIndex("yearEntry"));
 
-									if (entryMonth.equals(month) && entryYear.equals(year)) {
+									if (entryMonth.equals(month)
+											&& entryYear.equals(year)) {
 										if (startDate == null) {
 											startDate = entryDate;
 										} else if (endDate == null) {
@@ -113,38 +131,54 @@ public class ReportViewActivity extends Activity {
 							}
 						}
 
-						if (endDate == null){
+						if (endDate == null) {
 							endDate = startDate;
 						}
 
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
 
-						reportListView.addView(new ReportViewItem(this, startDate, endDate, checkMonthly), params);
+						reportListView.addView(new ReportViewItem(this,
+								startDate, endDate, checkMonthly), params);
 					} while (monthlyEntry.moveToNext());
 				}
 			}
 
 		} else {
-			Cursor weekEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%W', Date) DESC");
+			Cursor weekEntry = SqlHelper.instance
+					.select("Entry",
+							"DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
+							"1=1 order by strftime('%Y', Date) DESC, strftime('%W', Date) DESC");
 			if (weekEntry != null) {
 				displayNoReportDataText.setVisibility(View.GONE);
 				if (weekEntry.moveToFirst()) {
 					do {
-						String week = weekEntry.getString(weekEntry.getColumnIndex("weekEntry"));
-						String year = weekEntry.getString(weekEntry.getColumnIndex("yearEntry"));
+						String week = weekEntry.getString(weekEntry
+								.getColumnIndex("weekEntry"));
+						String year = weekEntry.getString(weekEntry
+								.getColumnIndex("yearEntry"));
 
-						Cursor entry = SqlHelper.instance.select("Entry", "*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry", "");
+						Cursor entry = SqlHelper.instance
+								.select("Entry",
+										"*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
+										"");
 						Date startDate = null;
 						Date endDate = null;
 
 						if (entry != null) {
 							if (entry.moveToFirst()) {
 								do {
-									Date entryDate = Converter.toDate(entry.getString(entry.getColumnIndex("Date")));
-									String entryWeek = entry.getString(entry.getColumnIndex("weekEntry"));
-									String entryYear = entry.getString(entry.getColumnIndex("yearEntry"));
+									Date entryDate = Converter.toDate(entry
+											.getString(entry
+													.getColumnIndex("Date")));
+									String entryWeek = entry.getString(entry
+											.getColumnIndex("weekEntry"));
+									String entryYear = entry.getString(entry
+											.getColumnIndex("yearEntry"));
 
-									if (entryWeek.equals(week) && entryYear.equals(year)) {
+									if (entryWeek.equals(week)
+											&& entryYear.equals(year)) {
 										if (startDate == null) {
 											startDate = entryDate;
 										} else if (endDate == null) {
@@ -167,13 +201,16 @@ public class ReportViewActivity extends Activity {
 							}
 						}
 
-						if (endDate == null){
+						if (endDate == null) {
 							endDate = startDate;
 						}
 
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
 
-						reportListView.addView(new ReportViewItem(this,startDate, endDate, checkMonthly), params);
+						reportListView.addView(new ReportViewItem(this,
+								startDate, endDate, checkMonthly), params);
 					} while (weekEntry.moveToNext());
 				}
 			}

@@ -23,7 +23,7 @@ public class ReportMainViewActivity extends TabActivity {
 		setContentView(R.layout.activity_report_main_view);
 
 		TabHost mTabHost = getTabHost();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
+//		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
 		// Create tab and intent for schedule.
 		Intent borrowViewIntent = new Intent(this, ReportViewActivity.class);

@@ -19,17 +19,17 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		setContentView(R.layout.borrow_lend_main_view);
 
 		TabHost mTabHost = getTabHost();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
+//		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
 		// Create tab and intent for schedule.
 		Intent borrowViewIntent = new Intent(this, BorrowLendViewActivity.class);
 		borrowViewIntent.putExtra("Borrow", true);
-		setupTab(borrowViewIntent, "Borrow", mTabHost);
+		setupTab(borrowViewIntent, getResources().getString(R.string.borrowing_title), mTabHost);
 
 		// Create tab and intent for Borrowing and Lending.
 		Intent lendViewIntent = new Intent(this, BorrowLendViewActivity.class);
 		lendViewIntent.putExtra("Borrow", false);
-		setupTab(lendViewIntent, "Lend", mTabHost);
+		setupTab(lendViewIntent, getResources().getString(R.string.lending_tilte), mTabHost);
 
 		Button addBorrowLend = (Button) findViewById(R.id.addBorrowAndLend);
 		addBorrowLend.setOnClickListener(new View.OnClickListener() {

@@ -14,7 +14,7 @@
             android:id="@+id/schedule_edit_tilte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20sp"
+            android:layout_margin="10sp"
             android:text="@string/schedule_edit_title"
             android:textColor="@color/white08"
             android:textSize="26sp"
@@ -30,7 +30,6 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="25sp"
             android:layout_weight="1" >
 
             <LinearLayout
@@ -48,19 +47,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_margin="30sp"
+                        android:layout_marginLeft="20sp"
                         android:background="@drawable/calendar_month_icon" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
                         android:orientation="vertical" >
 
                         <EditText
                             android:id="@+id/schedule_start_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20sp"
+                            android:layout_margin="10sp"                            
                             android:background="@drawable/note_input_day"
                             android:drawableRight="@drawable/note_input_day_right"
                             android:editable="false"
@@ -72,7 +72,7 @@
                             android:id="@+id/schedule_end_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20sp"
+                            android:layout_margin="10sp"
                             android:background="@drawable/note_input_day"
                             android:editable="false"
                             android:focusable="false"
@@ -107,8 +107,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:background="@drawable/title_background" >
+            android:layout_weight="0">
 
             <Button
                 android:id="@+id/doneBtn"

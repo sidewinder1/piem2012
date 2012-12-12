@@ -56,7 +56,7 @@ public class BorrowLendInsertActivity extends Activity {
 	private Button saveButton;
 	private Button cancelButton;
 	private TextView debtTypeTextView;
-	private ToggleButton debtTypeButton;
+	private Button debtTypeButton;
 	private AutoCompleteTextView nameEditText;
 	private EditText phoneEditText;
 	private EditText addressEditText;
@@ -68,6 +68,7 @@ public class BorrowLendInsertActivity extends Activity {
 	private ArrayList<String> valuesChanged;
 	private long borrow_lend_id = -1;
 	private String debtType = "";
+	private boolean mIsBorrow = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,9 +76,9 @@ public class BorrowLendInsertActivity extends Activity {
 		setContentView(R.layout.activity_borrow_lend_insert);
 
 		saveButton = (Button) findViewById(R.id.saveButton);
-		cancelButton = (Button) findViewById(R.id.cancelButton);
+		cancelButton = (Button) findViewById(R.id.cancelBtn);
 		debtTypeTextView = (TextView) findViewById(R.id.title_text_view);
-		debtTypeButton = (ToggleButton) findViewById(R.id.borrowLendType);
+		debtTypeButton = (Button) findViewById(R.id.borrowLendType);
 		nameEditText = (AutoCompleteTextView) findViewById(R.id.name_edit_text);
 		phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
 		addressEditText = (EditText) findViewById(R.id.address_edit_text);
@@ -110,10 +111,10 @@ public class BorrowLendInsertActivity extends Activity {
 			BorrowLend values = bolere.getDetailData("ID=" + borrow_lend_id);
 			Log.d("Check Edit", "Check 4");
 			if (values.getDebtType().toString().equals("Borrowing")) {
-				debtTypeButton.setChecked(true);
+				setChecked(true);
 				debtTypeTextView.setText("Edit Borrowing");
 			} else {
-				debtTypeButton.setChecked(false);
+				setChecked(false);
 				debtTypeTextView.setText("Edit Lending");
 			}
 			Log.d("Check Edit", "Check 5");
@@ -139,18 +140,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
 					column.add("Person_name");
 					valuesChanged.add(String.valueOf(nameEditText.getText()));
 				}
@@ -160,18 +156,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
 					column.add("Person_Phone");
 					valuesChanged.add(phoneEditText.getText().toString());
 				}
@@ -181,18 +172,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
 					column.add("Person_address");
 					valuesChanged.add(addressEditText.getText().toString());
 				}
@@ -202,18 +188,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
 					column.add("Money");
 					valuesChanged.add(moneyEditText.getText().toString());
 				}
@@ -223,18 +204,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
 					column.add("Interest_rate");
 					valuesChanged.add(interestRate.getText().toString());
 				}
@@ -244,18 +220,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
 					column.add("Start_date");
 					valuesChanged.add(Converter.toString(Converter.toDate(
 							startDateEditText.getText().toString(),
@@ -267,18 +238,13 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
 					column.add("Expired_date");
 					valuesChanged.add(Converter.toString(Converter.toDate(
 							expiredDateEditText.getText().toString(),
@@ -317,8 +283,6 @@ public class BorrowLendInsertActivity extends Activity {
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
 				if (borrow_lend_id != -1) {
 					updateData();
 				} else {
@@ -332,24 +296,23 @@ public class BorrowLendInsertActivity extends Activity {
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				BorrowLendInsertActivity.this.finish();
 			}
 		});
 
 		// Hand on debt type
 		debtTypeButton.setOnClickListener(new View.OnClickListener() {
-
+			
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				setChecked(!mIsBorrow);
 				if (borrow_lend_id == -1) {
-					if (debtTypeButton.isChecked()) {
+					if (mIsBorrow) {
 						debtTypeTextView.setText("New Borrowing");
 					} else {
 						debtTypeTextView.setText("New Lending");
 					}
 				} else {
-					if (debtTypeButton.isChecked()) {
+					if (mIsBorrow) {
 						debtTypeTextView.setText("Edit Borrowing");
 					} else {
 						debtTypeTextView.setText("Edit Lending");
@@ -373,7 +336,6 @@ public class BorrowLendInsertActivity extends Activity {
 		startDateEditText.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Log.d("st", "Check 1");
 				showDialog(DATE_DIALOG_ID);
 			}
@@ -384,12 +346,16 @@ public class BorrowLendInsertActivity extends Activity {
 		expiredDateEditText.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Log.d("ex", "Check 1");
 				showDialog(DATE_DIALOG_ID1);
 			}
 		});
 
+	}
+
+	private void setChecked(boolean isBorrow) {
+		mIsBorrow = isBorrow;
+		
 	}
 
 	// updates the date in the TextView
@@ -498,7 +464,7 @@ public class BorrowLendInsertActivity extends Activity {
 		column.add("Interest_type");
 		valuesChanged.add(interestTypeString);
 
-		if (debtTypeButton.isChecked())
+		if (mIsBorrow)
 			debtType = "Borrowing";
 		else
 			debtType = "Lending";
@@ -557,7 +523,7 @@ public class BorrowLendInsertActivity extends Activity {
 			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText
 					.getText().toString().equals(""))
 					|| interestRate.getText().toString().equals("")) {
-				if (debtTypeButton.isChecked()) {
+				if (mIsBorrow) {
 					debtType = "Borrowing";
 				} else {
 					debtType = "Lending";

@@ -38,7 +38,7 @@ public class Alert {
 			public void run() {
 				Context context = PfmApplication.getAppContext();
 				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-						context).setSmallIcon(R.drawable.report_icon)
+						context).setSmallIcon(R.drawable.report)
 						.setContentTitle(title).setContentText(message);
 				
 				// Creates an explicit intent for an Activity in your app.

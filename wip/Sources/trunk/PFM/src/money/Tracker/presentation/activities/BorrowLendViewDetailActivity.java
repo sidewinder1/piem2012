@@ -84,7 +84,8 @@ public class BorrowLendViewDetailActivity extends Activity {
 
 		TextView totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_money);
 		TextView totalInterestTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_interest);
-		TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
+		//TODO: TuanNA
+//		TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
 
 		totalMoneyTextView.setText(Converter.toString(totalMoney));
 		Log.d("View detail", String.valueOf(totalMoney));
@@ -92,7 +93,8 @@ public class BorrowLendViewDetailActivity extends Activity {
 				.setText(Converter.toString(totalInterestCaculate));
 		Log.d("View detail", "" + totalInterestCaculate);
 		if (leftDate != 0)
-			leftDayTextView.setText("You only have " + leftDate + " day");
+			//TODO: TuanNA
+//			leftDayTextView.setText("You only have " + leftDate + " day");
 		// Handle edit button
 		editButton.setOnClickListener(new View.OnClickListener() {
 
