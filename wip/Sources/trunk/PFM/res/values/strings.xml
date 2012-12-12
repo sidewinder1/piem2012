@@ -25,6 +25,8 @@
     <string name="cancel">Hủy bỏ</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
+    <string name="month">Tháng</string>
+    <string name="week">Tuần</string>
 
     <!-- These are resources for Borrowing & Lending function. -->
     <string name="borrowing_title">Vay</string>
@@ -166,6 +168,8 @@
     <string name="report_between_month">Thống kê giữa các tháng</string>
     <string name="report_between_week">Thống kế giữa các tuần</string>
     <string name="report_chart_tab_title">Biểu đồ</string>
+    <string name="report_expense_schedule_stacked_bar_chart">Thực tế/Kế hoạch: </string>
+    <string name="report_select_chart">Thống kê chi phí</string>
 
     <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
