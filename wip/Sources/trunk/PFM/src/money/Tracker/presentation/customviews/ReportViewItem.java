@@ -118,7 +118,7 @@ public class ReportViewItem extends LinearLayout {
 			}
 		}
 
-		reportViewSpentBudget.setText("Thực tế/Kế hoạch: " + Converter.toString(spent) + "/" + Converter.toString(budget));
+		reportViewSpentBudget.setText(getResources().getString(R.string.report_expense_schedule_stacked_bar_chart) + Converter.toString(spent) + "/" + Converter.toString(budget));
 
 		if (budget - spent > 0) {
 			View stackItem = new View(getContext());
