@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import money.Tracker.presentation.activities.BorrowLendViewDetailActivity;
 
 public class BorrowLendViewActivity extends Activity {
 	private TextView displayText;
@@ -36,6 +37,7 @@ public class BorrowLendViewActivity extends Activity {
 	private TextView totalMoneyTextView;
 	private TextView mCurrentInterest;
 	private ArrayList<Object> values;
+	private BorrowLendViewDetailActivity borrowLendViewDetailActivity1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

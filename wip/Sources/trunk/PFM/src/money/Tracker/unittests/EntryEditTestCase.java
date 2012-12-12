@@ -15,10 +15,7 @@ public class EntryEditTestCase extends AndroidTestCase {
 	 * This method is used to test adding a entry.
 	 */
 	public void testAddEntry() {
-		Assert.assertNotSame(-1,
-				SqlHelper.instance.insert("Entry", new String[] { "Date",
-						"Type" }, new String[] {
-						 "2012-10-31", "1" }));
+		Assert.assertNotSame(-1,SqlHelper.instance.insert("Entry", new String[] { "Date","Type" }, new String[] {"2012-10-31", "1" }));
 	}
 
 	/*

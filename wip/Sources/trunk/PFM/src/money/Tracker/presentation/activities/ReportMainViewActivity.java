@@ -33,14 +33,11 @@ public class ReportMainViewActivity extends TabActivity {
 		// Create tab and intent for Borrowing and Lending.
 		Intent lendViewIntent = new Intent(this, ReportViewActivity.class);
 		lendViewIntent.putExtra("Monthly", false);
-		//Chart pie = new Chart(new Date(), new Date());
-		//Intent lendViewIntent = pie.getBarIntent(this);
 		setupTab(lendViewIntent, "Tuần", mTabHost);
 	}
 
 	// This method is used to setup a tab with Name tab and content of tab.
-	private void setupTab(final Intent intent, final String tag,
-			TabHost mTabHost) {
+	private void setupTab(final Intent intent, final String tag, TabHost mTabHost) {
 		View tabview = createTabView(mTabHost.getContext(), tag);
 		TabSpec setContent = mTabHost.newTabSpec(tag).setIndicator(tabview);
 		setContent.setContent(intent);

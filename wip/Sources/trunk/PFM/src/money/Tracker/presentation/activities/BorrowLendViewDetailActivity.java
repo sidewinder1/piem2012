@@ -119,8 +119,7 @@ public class BorrowLendViewDetailActivity extends Activity {
 			double money = values.getMoney();
 			double interestRate = 0;
 			if (daysBetween(startDate, expiredDate) != 0)
-				interestRate = values.getInterestRate()
-						/ daysBetween(startDate, expiredDate);
+				interestRate = values.getInterestRate() / daysBetween(startDate, expiredDate);
 
 			if (compareDate(currentDate, expiredDate)) {
 				caculateInterestDate = daysBetween(startDate, currentDate);
@@ -185,8 +184,8 @@ public class BorrowLendViewDetailActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater()
-				.inflate(R.menu.activity_borrow_lend_view_detail, menu);
+		getMenuInflater().inflate(R.menu.activity_borrow_lend_view_detail, menu);
 		return true;
 	}
+
 }

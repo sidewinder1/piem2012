@@ -31,4 +31,16 @@ public class ReportPieCategoryLegendItemView extends LinearLayout {
 		itemPercent.setText(Converter.toString(((double)value / (double)totalExpense * 100)) + "%");
 		itemValue.setText(Converter.toString(value));
 	}
+
+	public void getChartLedgen() {
+			return;
+		}
+
+	public void getChartLegend() {
+			return;
+		}
+
+	public void getChartLedgend() {
+			return;
+		}
 }
