@@ -178,6 +178,9 @@
     <string name="report_chart_tab_title">Biểu đồ</string>
     <string name="report_expense_schedule_stacked_bar_chart">Thực tế/Kế hoạch: </string>
     <string name="report_select_chart">Thống kê chi phí</string>
+    <string name="report_pie_chart_total_money">Tổng số tiền:</string>
+    <string name="report_bar_chart_month_title">So sánh giữa các tháng</string>
+    <string name="report_bar_chart_week_title">So sánh giữa các tuần</string>
 
     <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>
