@@ -190,7 +190,7 @@ public class ScheduleEditActivity extends Activity {
 		if (init) {
 			itemView.setBudget(detail.getBudget());
 		} else {
-			itemView.setBudget(detail.getBudget());
+			itemView.getBudgetText().setHint(String.valueOf(detail.getBudget()));
 		}
 
 		// Add events to to detail budget to handle business logic.
