@@ -7,7 +7,7 @@
     <string name="menu_export">Xuất…</string>
     <string name="note"><u>Chú thích</u></string>
     <string name="saved">Đã lưu</string>
-     <string name="percent">%</string>
+    <string name="percent">%</string>
     <string name="error_save">Có lỗi khi lưu trữ</string>
     <string name="title_activity_home">Money Tracker</string>
     <string name="time_token">:</string>
@@ -58,7 +58,7 @@
     <string name="lend_view_title">Xem khoản cho vay</string>
     <string name="simple_interest">Lãi đơn</string>
     <string name="compound_interest">Lãi kép</string>
-    
+
     <!-- These are resources for Schedule function. -->
     <string name="schedule_start_day">Từ</string>
     <string name="schedule_end_day">Đến</string>
@@ -239,6 +239,7 @@
         <item>Get NFC</item>
     </string-array>
 
+    <color name="transparent">#00FFFFFF</color>
     <color name="white_text_color">#F9000000</color>
     <color name="white08">#80FFFFFF</color>
     <color name="white_text_color_transparent">#605599FF</color>
@@ -251,5 +252,6 @@
     <string name="title_activity_report_view_chart">ReportViewChartActivity</string>
     <string name="title_activity_report_main_view_chart">ReportMainViewChartActivity</string>
     <string name="title_activity_report_view_bar_chart">ReportViewBarChartActivity</string>
+    <string name="score_symbol">-</string>
 
 </resources>
