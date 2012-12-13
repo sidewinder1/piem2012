@@ -93,7 +93,7 @@ public class EntryDetailViewActivity extends Activity {
 						new StringBuilder("Type = ").append(entry.getType())
 								.toString());
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
-				.get(Converter.toString(entry.getDate(), "MMMM, yyyy"));
+				.get(Converter.toString(entry.getDate(), "MM/yyyy"));
 		double total_entry = 0;
 		total_entry_value.setText(Converter.toString(entry.getTotal()));
 		for (Entry entryItem : entries) {

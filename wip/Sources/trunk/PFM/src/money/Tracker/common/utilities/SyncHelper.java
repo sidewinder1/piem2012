@@ -137,7 +137,7 @@ public class SyncHelper {
 
 			Date lastDateSync = Converter.toDate(
 					String.valueOf(syncDate.getPropertyAsString(0).replace('T',
-							' ')), "yyyy-MM-dd hh:mm:ss");
+							' ')), "yyyy-MM-dd kk:mm:ss");
 
 			// Find records are modified after last date sync.
 			for (String table : sTables) {

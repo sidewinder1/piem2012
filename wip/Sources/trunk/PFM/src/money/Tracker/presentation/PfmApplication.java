@@ -81,7 +81,7 @@ public class PfmApplication extends Application {
 		EntryRepository.getInstance().updateData(
 				new StringBuilder("Type = 1").toString());
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
-				.get(Converter.toString(DateTimeHelper.now(false), "MMMM, yyyy"));
+				.get(Converter.toString(DateTimeHelper.now(false), "MM/yyyy"));
 		long total_entry = 0;
 		for (Entry entryItem : entries) {
 			total_entry += entryItem.getTotal();
