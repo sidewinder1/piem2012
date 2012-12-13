@@ -35,23 +35,23 @@
 	    <LinearLayout
 	        android:id="@+id/report_bar_chart"
 	        android:layout_width="fill_parent"
-	        android:layout_height="300dp">
+	        android:layout_height="250dp">
 	    </LinearLayout>
 	    
 	    <ScrollView
-	        android:layout_width="fill_parent"
-	        android:layout_height="0dip"
-	        android:layout_weight="1"
-	        android:clipChildren="false" >
-		    <LinearLayout 
-		        android:id="@+id/report_bar_chart_detail"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="top|fill_vertical"
-	            android:layout_marginBottom="10dp"
-	            android:minHeight="100dp"
-	            android:orientation="vertical">
-		    </LinearLayout>
-	    </ScrollView>
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="0"
+            android:clipChildren="false" >
+
+            <LinearLayout
+                android:id="@+id/report_bar_chart_detail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20sp"
+                android:minHeight="1000dp"
+                android:orientation="vertical" />
+        </ScrollView>
     </LinearLayout>
 </LinearLayout>

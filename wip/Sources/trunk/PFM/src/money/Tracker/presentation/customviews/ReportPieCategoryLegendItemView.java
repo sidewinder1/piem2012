@@ -1,5 +1,6 @@
 package money.Tracker.presentation.customviews;
 
+import jxl.Image;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
@@ -34,7 +36,7 @@ public class ReportPieCategoryLegendItemView extends LinearLayout {
 		TextView itemName = (TextView) findViewById(R.id.report_category_legend_item_name);
 		TextView itemPercent = (TextView) findViewById(R.id.report_category_legend_item_percent);
 		TextView itemValue = (TextView) findViewById(R.id.report_category_legend_item_value);
-		Button collapsedButton = (Button) findViewById(R.id.report_collapsed_button);
+		final ImageView collapsedButton = (ImageView) findViewById(R.id.report_collapsed_button);
 		subItemLinearLayout = (LinearLayout) findViewById(R.id.report_category_pie_chart_ledgend_sub_item);
 		
 		colorContent.setBackgroundColor(Color.parseColor(color));
@@ -42,18 +44,28 @@ public class ReportPieCategoryLegendItemView extends LinearLayout {
 		itemPercent.setText(Converter.toString(((double)value / (double)totalExpense * 100)) + "%");
 		itemValue.setText(Converter.toString(value));
 		
+		
 		collapsedButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				bindData();
+				if (changedState)
+				{
+					changedState = false;
+					collapsedButton.setImageResource(R.drawable.combobox_icon_expanded);
+				}else
+				{
+					changedState = true;
+					collapsedButton.setImageResource(R.drawable.combobox_icon);
+				}
 			}
 		});
 	}
 	
 	private void bindData()
 	{
-		if (changedState == false)
+		if (!changedState)
 		{
 			Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Name, sum(Money) as Total", "Category_Id = " + categoryID + " and Entry_ID = " + entryID + " group by Name" );
 			if (entryDetailCursor != null)
@@ -64,7 +76,7 @@ public class ReportPieCategoryLegendItemView extends LinearLayout {
 				{
 					String name = entryDetailCursor.getString(entryDetailCursor.getColumnIndex("Name"));
 					long value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
-					
+					Log.d("abc", name + value);
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT);
 					subItemLinearLayout.addView(new ReportPieCategoryLegendSubItemView(this.getContext(), name, value, totalExpense), params);
 				}while(entryDetailCursor.moveToNext());

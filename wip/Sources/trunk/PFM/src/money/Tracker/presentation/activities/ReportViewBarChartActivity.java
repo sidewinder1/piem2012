@@ -107,7 +107,7 @@ public class ReportViewBarChartActivity extends Activity {
 				name += getResources().getString(R.string.report_bar_chart_expense_schedule);
 			}
 			Log.d("Check bind view detail", name + " - " + entryCategoryValue.get(i) + " - " + scheduleCategoryValue.get(i) + " - " + dateListString.get(i));
-			barViewDetail.addView(new ReportBarChartViewDetailItemView(this.getApplicationContext(), name, (entryCategoryValue.get(i) - scheduleCategoryValue.get(i)), dateListString.get(i)), params);
+			barViewDetail.addView(new ReportBarChartViewDetailItemView(this.getApplicationContext(), name, (scheduleCategoryValue.get(i) - entryCategoryValue.get(i)), dateListString.get(i)), params);
 			Log.d("Check bind view detail", "Check finish");
 		}
 	}

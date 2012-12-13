@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/title_background_2">
+        android:background="@drawable/title_background_2" >
 
         <TextView
             android:id="@+id/report_pie_chart_title_text_view"
@@ -18,66 +18,62 @@
             android:layout_margin="10sp"
             android:text="@string/dummy_data"
             android:textColor="@color/white08"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
     </RelativeLayout>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/main_content_background"
-        android:orientation="vertical">
-	    <LinearLayout
-	        android:id="@+id/report_pie_chart"
-	        android:layout_width="fill_parent"
-	        android:layout_height="300dp" >
-	    </LinearLayout>
-	
-	    <LinearLayout 
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal">
-	        
-	        <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginRight="5dp"
-	        android:focusable="true"
-	        android:gravity="right"
-	        android:text="@string/report_pie_chart_total_money"
-	        android:textColor="@color/white_text_color"
-	        android:textSize="15dp" />
-	        
-	    	
-	        <TextView
-	        android:id="@+id/report_pie_chart_total_money"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginRight="5dp"
-	        android:focusable="true"
-	        android:gravity="right"
-	        android:text="@string/dummy_data"
-	        android:textColor="@color/white_text_color"
-	        android:textSize="15dp" />
-	        
-	    </LinearLayout>
-	    
-	
-	    <ScrollView
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="bottom"
-	        android:layout_weight="0" >
-	
-	        <LinearLayout
-	            android:id="@+id/report_pie_chart_legend"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="top|fill_vertical"
-	            android:layout_marginBottom="10dp"
-	            android:minHeight="80dp"
-	            android:orientation="vertical" >
-	        </LinearLayout>
-	    </ScrollView>
-	</LinearLayout>
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/report_pie_chart"
+            android:layout_width="fill_parent"
+            android:layout_height="230dp" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:focusable="true"
+                android:gravity="right"
+                android:text="@string/report_pie_chart_total_money"
+                android:textColor="@color/white_text_color"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/report_pie_chart_total_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="10dp"
+                android:text="@string/dummy_data"
+                android:textColor="@color/white_text_color" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="0"
+            android:clipChildren="false" >
+
+            <LinearLayout
+                android:id="@+id/report_pie_chart_legend"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20sp"
+                android:minHeight="80dp"
+                android:orientation="vertical" />
+        </ScrollView>
+    </LinearLayout>
+
 </LinearLayout>
