@@ -31,7 +31,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35sp"
-            android:layout_marginBottom="15sp"
             android:layout_marginRight="35sp"
             android:gravity="center_horizontal"
             android:textColor="@color/white_text_color"

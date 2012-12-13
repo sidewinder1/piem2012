@@ -51,6 +51,7 @@
         android:id="@+id/schedule_item_price"
         style="@style/normalEditNumber"
         android:layout_width="0dp"
+        android:hint="@string/schedule_budget_hint"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
@@ -64,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="25sp"
-        android:layout_marginLeft="10sp"
+        android:layout_marginLeft="5sp"
         android:layout_weight="0"
         android:background="@drawable/plus_icon" />
     
