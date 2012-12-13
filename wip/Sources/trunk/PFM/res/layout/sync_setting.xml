@@ -156,7 +156,8 @@
                     <TextView
                         style="@style/normalText"
                         android:layout_width="fill_parent"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
                         android:gravity="left|center_vertical"
                         android:text="@string/warning_schedule_title"
                         android:textStyle="bold" />
@@ -202,7 +203,7 @@
                                     android:id="@+id/warning_schedule_warn_before"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="left|bottom"
+                                    android:layout_gravity="center|bottom"
                                     android:background="@drawable/spinner_bottom"
                                     android:textColor="@color/white_text_color"
                                     android:textSize="18sp" />
@@ -241,8 +242,8 @@
 
                                 <Spinner
                                     android:id="@+id/warning_schedule_ring"
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="left|bottom"
                                     android:layout_marginLeft="15dp"
                                     android:background="@drawable/spinner_bottom"
@@ -283,8 +284,8 @@
 
                                 <Spinner
                                     android:id="@+id/warning_schedule_remain"
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="left|bottom"
                                     android:layout_marginLeft="15dp"
                                     android:background="@drawable/spinner_bottom"
@@ -299,12 +300,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15sp"
+                    android:orientation="vertical"
                     android:background="@drawable/note_budget" >
 
                     <TextView
                         style="@style/normalText"
                         android:layout_width="fill_parent"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="10sp"
                         android:gravity="left|center_vertical"
                         android:text="@string/warning_borrow_title"
@@ -350,8 +352,8 @@
 
                                 <Spinner
                                     android:id="@+id/warning_borrow_warn_before"
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="left|bottom"
                                     android:layout_marginLeft="15dp"
                                     android:background="@drawable/spinner_bottom"
@@ -392,8 +394,8 @@
 
                                 <Spinner
                                     android:id="@+id/warning_borrow_ring"
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="left|bottom"
                                     android:layout_marginLeft="15dp"
                                     android:background="@drawable/spinner_bottom"
@@ -434,8 +436,8 @@
 
                                 <Spinner
                                     android:id="@+id/warning_borrow_remain"
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="left|bottom"
                                     android:layout_marginLeft="15dp"
                                     android:background="@drawable/spinner_bottom"

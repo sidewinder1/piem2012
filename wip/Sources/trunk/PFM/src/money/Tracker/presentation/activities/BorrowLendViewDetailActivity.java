@@ -92,12 +92,12 @@ public class BorrowLendViewDetailActivity extends Activity {
 		totalInterestTextView
 				.setText(Converter.toString(totalInterestCaculate));
 		Log.d("View detail", "" + totalInterestCaculate);
-		if (leftDate != 0)
-			//TODO: TuanNA
+
+		//TODO: TuanNA
+		//		if (leftDate != 0)
 //			leftDayTextView.setText("You only have " + leftDate + " day");
 		// Handle edit button
 		editButton.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent borrowLendEdit = new Intent(
