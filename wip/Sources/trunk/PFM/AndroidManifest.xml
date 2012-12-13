@@ -53,7 +53,7 @@
             android:name=".ScheduleEditActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateUnchanged" />
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".SyncSettingActivity"
             android:screenOrientation="portrait"
