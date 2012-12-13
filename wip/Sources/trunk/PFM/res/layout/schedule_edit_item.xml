@@ -5,15 +5,15 @@
     android:orientation="horizontal" >
 
     <Button
-        android:id="@+id/schedule_item_add"
+        android:id="@+id/schedule_item_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="25sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="25sp"
         android:layout_weight="0"
-        android:background="@drawable/plus_icon" />
-
+        android:background="@drawable/minus_icon" />
+    
     <Spinner
         android:id="@+id/schedule_item_category"
         android:layout_width="0dp"
@@ -23,10 +23,12 @@
         android:layout_weight="7"
         android:background="@drawable/spinner_bottom"
         android:gravity="center_vertical" />
-   <EditText
+
+    <EditText
         android:id="@+id/schedule_item_category_edit"
+        style="@style/normalEditText"
         android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="2dp"
@@ -34,43 +36,37 @@
         android:background="@drawable/spinner_bottom"
         android:gravity="center_vertical"
         android:hint="@string/schedule_new_category"
-        android:maxLength="25"
-        android:textColor="@color/white_text_color"
-        android:textSize="16dp"
         android:visibility="gone" >
     </EditText>
-    
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="bottom"
         android:layout_weight="0"
         android:contentDescription="@string/image_icon_description"
         android:src="@drawable/spinner_right" />
 
     <EditText
         android:id="@+id/schedule_item_price"
+        style="@style/normalEditNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="2dp"
-        android:layout_weight="6"
-        android:background="@drawable/spinner_bottom"
-        android:digits="0123456789"
-        android:gravity="bottom"
-        android:inputType="number"
-        android:maxLength="12"
-        android:textSize="16dp" />
+        android:layout_weight="6"        
+        android:gravity="bottom" />
 
     <Button
-        android:id="@+id/schedule_item_remove"
+        android:id="@+id/schedule_item_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5sp"
-        android:layout_marginRight="25sp"
+        android:layout_marginLeft="25sp"
+        android:layout_marginRight="10sp"
         android:layout_weight="0"
-        android:background="@drawable/minus_icon" />
+        android:background="@drawable/plus_icon" />
+    
 
 </LinearLayout>

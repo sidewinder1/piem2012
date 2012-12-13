@@ -1,5 +1,22 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
+    <style name="normalText" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/white_text_color</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="normalEditText" parent="android:Widget.EditText">
+        <item name="android:maxLength">25</item>
+        <item name="android:textColor">@color/white_text_color</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/spinner_bottom</item>
+    </style>
+    <style name="normalEditNumber" parent="android:Widget.EditText">
+        <item name="android:digits">0123456789</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">12</item>
+        <item name="android:background">@drawable/spinner_bottom</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

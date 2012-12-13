@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
@@ -28,8 +29,8 @@
 
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:layout_height="0dip" >
+            android:layout_height="0dip"
+            android:layout_weight="1" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -61,10 +62,10 @@
                             android:id="@+id/name_edit_text"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/spinner_bottom"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="30sp"
+                            android:background="@drawable/spinner_bottom"
                             android:hint="@string/borrow_lend_name"
                             android:maxLength="30"
                             android:singleLine="true"
@@ -78,6 +79,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="20sp"
+                            android:fitsSystemWindows="true"
                             android:hint="@string/borrow_lend_add_phone"
                             android:inputType="number"
                             android:maxLength="13"
@@ -129,8 +131,8 @@
                         android:layout_width="165dp"
                         android:layout_height="36dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/spinner_bottom"
                         android:layout_marginRight="10dp"
+                        android:background="@drawable/spinner_bottom"
                         android:inputType="number"
                         android:maxLength="3"
                         android:textSize="18sp" />
@@ -140,11 +142,11 @@
                         android:layout_height="36dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="%"
+                        android:text="@string/percent"
                         android:textColor="@color/white_text_color"
                         android:textSize="18sp" />
                 </LinearLayout>
-                
+
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -166,8 +168,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:checked="true"
                         android:background="@drawable/interest_type_bg_selector"
+                        android:checked="true"
                         android:textOff="@string/compound_interest"
                         android:textOn="@string/simple_interest"
                         android:textSize="18sp" />
@@ -175,8 +177,8 @@
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_marginTop="15dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal" >
 
                     <EditText
@@ -186,30 +188,30 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/note_input_day"
                         android:editable="false"
                         android:focusable="false"
-                        android:background="@drawable/note_input_day"
                         android:inputType="date"
                         android:textSize="18sp" />
-
+
                     <TextView
+                        style="@style/normalText"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="-"
-                        android:textColor="@color/white_text_color"
-                        android:textSize="18sp" />
+                        android:fitsSystemWindows="true"
+                        android:text="@string/score_symbol" />
 
                     <EditText
                         android:id="@+id/expired_date_edit_text"
                         android:layout_width="0dp"
                         android:layout_height="36dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/note_input_day"
-                        android:drawableRight="@drawable/note_input_day_right"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/note_input_day"
+                        android:drawableRight="@drawable/note_input_day_right"
                         android:editable="false"
                         android:ems="10"
                         android:focusable="false"
@@ -221,7 +223,7 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
 
             <Button
                 android:id="@+id/cancelBtn"
