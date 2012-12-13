@@ -8,6 +8,7 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Chart;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.presentation.customviews.ReportBarChartViewDetailItemView;
 import money.Tracker.presentation.customviews.ReportCustomDialogViewItem;
 import money.Tracker.presentation.customviews.ReportViewItem;
 import android.os.Bundle;
@@ -35,6 +36,9 @@ public class ReportViewBarChartActivity extends Activity {
 	private List<Date[]> dateList;
 	private List<Double> entryCategoryValue;
 	private List<Double> scheduleCategoryValue;
+	private List<String> dateListString;
+	private long maxValue;
+	private String maxDate;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,12 +47,33 @@ public class ReportViewBarChartActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		checkMonthly = extras.getBoolean("checkMonthly");
-		startDate = Converter.toDate(extras.getString("start_date"));
-		endDate = Converter.toDate(extras.getString("end_date"));
+		// startDate = Converter.toDate(extras.getString("start_date"));
+		// endDate = Converter.toDate(extras.getString("end_date"));
+		dateList = new ArrayList<Date[]>();
+		int size = extras.getInt("Size_List");
+		for (int i = 0; i < size; i++)
+		{
+			Date sDate = Converter.toDate(extras.getString("start_date_" + i ));
+			Date eDate = Converter.toDate(extras.getString("end_date_" + i ));
+			dateList.add(new Date[] {sDate, eDate});
+		}
+		
+		TextView barChartTitle = (TextView) findViewById(R.id.report_bar_chart_title_text_view);
+		if (checkMonthly)
+		{
+			barChartTitle.setText(getResources().getString(R.string.report_bar_chart_month_title));
+		} else
+		{
+			barChartTitle.setText(getResources().getString(R.string.report_bar_chart_week_title));
+		}
 		barChart = (LinearLayout) findViewById(R.id.report_bar_chart);
 		
 		entryCategoryValue = new ArrayList<Double>();
 		scheduleCategoryValue = new ArrayList<Double>();
+		dateListString = new ArrayList<String>();
+		maxValue = 0;
+		maxDate = "";
+		
 		
 		if (dateList.size() > 1)
 		{
@@ -67,9 +92,23 @@ public class ReportViewBarChartActivity extends Activity {
 			getData();
 		}
 		
+		
+		LinearLayout barViewDetail = (LinearLayout) findViewById(R.id.report_bar_chart_detail);
+		barViewDetail.removeAllViews();
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		barViewDetail.addView(new ReportBarChartViewDetailItemView(this, getResources().getString(R.string.report_bar_chart_max_value), maxValue, maxDate), params);
+		
+		
 		for (int i = 0; i < dateList.size(); i++)
 		{
-			
+			String name = "";
+			if (i == 0)
+			{
+				name += getResources().getString(R.string.report_bar_chart_expense_schedule);
+			}
+			Log.d("Check bind view detail", name + " - " + entryCategoryValue.get(i) + " - " + scheduleCategoryValue.get(i) + " - " + dateListString.get(i));
+			barViewDetail.addView(new ReportBarChartViewDetailItemView(this.getApplicationContext(), name, (entryCategoryValue.get(i) - scheduleCategoryValue.get(i)), dateListString.get(i)), params);
+			Log.d("Check bind view detail", "Check finish");
 		}
 	}
 	
@@ -135,5 +174,20 @@ public class ReportViewBarChartActivity extends Activity {
 		
 		entryCategoryValue.add((double) spent);
 		scheduleCategoryValue.add((double) budget);
+		String dateString = "";
+		if (checkMonthly)
+		{
+			if (checkMonthly)
+				dateString = Converter.toString(startDate, "MM/ yyyy");
+			else
+				dateString = String.valueOf(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
+		}
+		dateListString.add(dateString);
+		
+		if (spent > maxValue)
+		{
+			maxValue = spent;
+			maxDate = dateString;
+		}
 	}
 }
