@@ -126,7 +126,7 @@ public class ReportViewActivity extends Activity {
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
 								//onItemClick();
-								final Dialog dialog = new Dialog(myContext);
+								final Dialog dialog = new Dialog(getParent());
 								//TextView textView = new TextView(myContext);
 								//textView.setText("test");
 								//dialog.setContentView(textView);
@@ -201,7 +201,7 @@ public class ReportViewActivity extends Activity {
 	private void onItemClick()
 	{
 		Log.d("Check report view", "Check on click 1");
-		final Dialog dialog = new Dialog(ReportViewActivity.this);
+		final Dialog dialog = new Dialog(getParent());
 		//TextView textView = new TextView(myContext);
 		//textView.setText("test");
 		//dialog.setContentView(textView);
@@ -285,8 +285,8 @@ public class ReportViewActivity extends Activity {
 		 * compareDialog.setContentView(R.layout.
 		 * report_view_chart_compare_custom_dialog);
 		 * 
-		 * if (checkMonth) compareDialog.setTitle("Chọn tháng so sánh");
-		 * else compareDialog.setTitle("Chọn tuần so sánh");
+		 * if (checkMonth) compareDialog.setTitle("nh");
+		 * else compareDialog.setTitle("Cnh");
 		 * 
 		 * barChartListDate = (LinearLayout)
 		 * compareDialog.findViewById(R
