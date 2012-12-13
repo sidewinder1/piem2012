@@ -6,31 +6,42 @@
     android:baselineAligned="false"
     android:orientation="vertical" >
    
-    <LinearLayout
-            android:id="@+id/report_bar_chart_button_compare"
-            android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" >
-            
-            <TextView
-            android:id="@+id/report_bar_chart_button_compare_title"
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+        android:background="@drawable/title_background_2">
+
+        <TextView
+            android:id="@+id/report_bar_chart_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:focusable="true"
-            android:gravity="left"
+            android:layout_margin="10sp"
             android:text="@string/dummy_data"
-            android:textColor="@color/white_text_color"
-            android:textSize="15dp" />
-            
-	</LinearLayout>
-
+            android:textColor="@color/white08"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
     
-    <LinearLayout
-        android:id="@+id/report_bar_chart"
+    <LinearLayout 
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="fill_parent"
+        android:background="@drawable/main_content_background"
+        android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+        android:orientation="vertical">
+	        
+	    <LinearLayout
+	        android:id="@+id/report_bar_chart"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:id="@+id/report_bar_chart_detail"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package money.Tracker.common.utilities;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,8 +10,6 @@ import java.util.Random;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.activities.R;
-import money.Tracker.presentation.customviews.ReportDetailCategory;
-
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.AbstractChart;
 import org.achartengine.chart.BarChart.Type;

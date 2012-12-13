@@ -37,6 +37,8 @@ public class ReportViewPieChartActivity extends Activity {
 	private List<String> entryCategoryName;
 	private List<Long> entryCategoryValue;
 	private List<String> entryCategoryColor;
+	private List<Long> entryIDList;
+	private List<Long> categoryIDList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,29 +53,31 @@ public class ReportViewPieChartActivity extends Activity {
 		entryCategoryName = new ArrayList<String>();
 		entryCategoryValue = new ArrayList<Long>();
 		entryCategoryColor = new ArrayList<String>();
+		entryIDList = new ArrayList<Long>();
+		categoryIDList = new ArrayList<Long>();
 		
 		LinearLayout pieChart = (LinearLayout) findViewById(R.id.report_pie_chart);
 		TextView totalMoneyTextView = (TextView) findViewById(R.id.report_pie_chart_total_money);
 		LinearLayout pieChartLegend = (LinearLayout) findViewById(R.id.report_pie_chart_legend);
+		TextView titlePieChart = (TextView) findViewById(R.id.report_pie_chart_title_text_view);
+		
+		if (checkMonthly)
+			titlePieChart.setText(Converter.toString(startDate, "MM/ yyyy"));
+		else
+			titlePieChart.setText(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
 
 		getData();
 		totalMoneyTextView.setText(Converter.toString(totalExpense));
 	
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		Log.d("Check Pie Chart Legend", "Chekck 0");
 		Chart chart = new Chart();
 		pieChart.addView(chart.getPieIntent(this.getApplicationContext(), checkMonthly, startDate, endDate), params);
 		
 		for(int i = 0; i < entryCategoryColor.size(); i++)
 		{
 			LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			Log.d("Check Pie Chart Legend", "Check 1 " + i);
-			Log.d("Check Pie Chart Legend", entryCategoryColor.get(i) + " - " + entryCategoryName.get(i) + " - " + entryCategoryValue.get(i) + " - " + totalExpense);
-			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense), params1);
-			Log.d("Check Pie Chart Legend", "Check 1 finished");
+			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense, entryIDList.get(i), categoryIDList.get(i)), params1);
 		}
-		
-		Log.d("Check Pie Chart Legend", "Chekck 2");
 	}
 	
 	private void getData() {
@@ -123,12 +127,16 @@ public class ReportViewPieChartActivity extends Activity {
 											}
 
 											if (check == false) {
+												entryIDList.add(id);
+												categoryIDList.add(categoryID);
 												entryCategoryName.add(name);
 												entryCategoryValue.add(value);
 												entryCategoryColor.add(color);
 											}
 
 										} else {
+											entryIDList.add(id);
+											categoryIDList.add(categoryID);
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
 											entryCategoryColor.add(color);
@@ -185,12 +193,16 @@ public class ReportViewPieChartActivity extends Activity {
 											}
 
 											if (check == false) {
+												entryIDList.add(id);
+												categoryIDList.add(categoryID);
 												entryCategoryName.add(name);
 												entryCategoryValue.add(value);
 												entryCategoryColor.add(color);
 											}
 
 										} else {
+											entryIDList.add(id);
+											categoryIDList.add(categoryID);
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
 											entryCategoryColor.add(color);
