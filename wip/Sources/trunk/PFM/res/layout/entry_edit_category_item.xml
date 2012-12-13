@@ -13,8 +13,8 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="0"
             android:background="@drawable/minus_icon" />
 
@@ -31,7 +31,6 @@
             android:id="@+id/entry_item_category_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginRight="2dp"
             android:layout_weight="7"
             android:background="@drawable/spinner_bottom"
@@ -66,8 +65,8 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="0"
             android:background="@drawable/plus_icon" />
     </LinearLayout>
