@@ -45,7 +45,6 @@
             android:id="@+id/report_category_legend_item_value"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_gravity="center_vertical|right"
             android:gravity="center_vertical"
@@ -56,6 +55,7 @@
     <LinearLayout
         android:id="@+id/report_category_pie_chart_ledgend_sub_item"
         android:layout_width="fill_parent"
+        android:orientation="vertical"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

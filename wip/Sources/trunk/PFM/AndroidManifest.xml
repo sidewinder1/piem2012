@@ -53,17 +53,17 @@
             android:name=".ScheduleEditActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".SyncSettingActivity"
             android:screenOrientation="portrait"
-             android:windowSoftInputMode="stateVisible|adjustPan"
+             android:windowSoftInputMode="stateHidden|adjustPan"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".EntryEditActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateVisible|adjustPan" >
+            android:windowSoftInputMode="stateHidden|adjustPan" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -92,7 +92,7 @@
             android:name=".BorrowLendInsertActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".BorrowLendViewActivity"
             android:screenOrientation="portrait" />
