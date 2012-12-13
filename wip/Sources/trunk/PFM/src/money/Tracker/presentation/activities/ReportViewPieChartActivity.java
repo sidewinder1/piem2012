@@ -62,9 +62,9 @@ public class ReportViewPieChartActivity extends Activity {
 		TextView titlePieChart = (TextView) findViewById(R.id.report_pie_chart_title_text_view);
 		
 		if (checkMonthly)
-			titlePieChart.setText(Converter.toString(startDate, "MM/ yyyy"));
+			titlePieChart.setText(getResources().getString(R.string.report_in_month) + " " + Converter.toString(startDate, "MM"));
 		else
-			titlePieChart.setText(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
+			titlePieChart.setText(getResources().getString(R.string.report_in_month) + " " +new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
 
 		getData();
 		totalMoneyTextView.setText(Converter.toString(totalExpense));

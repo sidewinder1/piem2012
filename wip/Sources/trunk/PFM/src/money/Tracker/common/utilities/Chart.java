@@ -447,17 +447,20 @@ public class Chart extends AbstractChart {
 		
 		xMax = entryCategoryValueArray.length + 1;
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "", "x1000 VND", 0.5, xMax, 0, yMax, Color.GRAY, Color.LTGRAY);
+		setChartSettings(renderer, "", "", "x1000 VND", 0.5, xMax, 0, yMax, Color.TRANSPARENT, Color.TRANSPARENT);
+		renderer.setXLabels(0);
+		renderer.setYLabels(0);
 		for(int i = 0; i < dateList.size(); i++)
 		{
 			Date [] compareDate = dateList.get(i);
 			this.startDate = compareDate[0];
 			this.endDate = compareDate[1];
-			
+
 			if (checkMonthly)
 				renderer.addXTextLabel(i+1, Converter.toString(startDate, "MM/ yyyy"));
 			else
 				renderer.addXTextLabel(i+1, Converter.toString(startDate, "dd/MM/yyyy") + " - " + Converter.toString(endDate, "dd/MM/yyyy"));
+
 		}
 		//renderer.setXLabels(12);
 		//renderer.setYLabels(10);
@@ -469,8 +472,9 @@ public class Chart extends AbstractChart {
 		renderer.setXLabelsAlign(Align.LEFT);
 		renderer.setYLabelsAlign(Align.LEFT);
 		//renderer.setChartTitleTextSize(25);
-		renderer.setLabelsTextSize(15);
+		renderer.setLabelsTextSize(20);
 		renderer.setLegendTextSize(20);
+		renderer.setChartValuesTextSize(20);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
 		//renderer.setZoomRate(1.1f);
