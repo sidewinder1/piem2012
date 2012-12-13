@@ -41,7 +41,7 @@ public class ScheduleViewAdapter extends ArrayAdapter<IModelBase> {
 			// Set content to item title:
 			final TextView item_title = ((ScheduleViewItem) scheduleItemView).schedule_item_title;
 			if (schedule.type == 1) {
-				item_title.setText(DateFormat.format("MMMM yyyy",
+				item_title.setText(DateFormat.format("MM/yyyy",
 						schedule.end_date));
 			} else {
 				item_title.setText(new StringBuilder(DateFormat.format("dd/MM",

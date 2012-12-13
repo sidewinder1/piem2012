@@ -252,7 +252,8 @@ public class SyncSettingActivity extends Activity {
 								.toString());
 
 		if (warningSetting != null && warningSetting.moveToFirst()) {
-			getIndexFromStringArray(warningSetting.getString(0), " %",
+			getIndexFromStringArray(warningSetting.getString(0), getResources()
+					.getString(R.string.percent),
 					mScheduleWarnArr, mScheduleWarn);
 			getIndexFromStringArray(warningSetting.getString(1), "",
 					mScheduleRingArr, mScheduleRing);

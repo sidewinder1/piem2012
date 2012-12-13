@@ -340,7 +340,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 		}
 
-		Alert.getInstance().show(this, "Save successfully!");
+		Alert.getInstance().show(this, getResources().getString(R.string.saved));
 		return true;
 	}
 

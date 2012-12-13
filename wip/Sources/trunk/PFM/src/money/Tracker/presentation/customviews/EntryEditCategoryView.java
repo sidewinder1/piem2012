@@ -145,8 +145,10 @@ public class EntryEditCategoryView extends LinearLayout {
 							&& entryEdit.mCategoryEdit.getVisibility() == View.VISIBLE
 							&& "".equals(entryEdit.mCategoryEdit.getText()
 									.toString())) {
-						Alert.getInstance().show(getContext(),
-								"New category is empty");
+						Alert.getInstance().show(
+								getContext(),
+								getResources().getString(
+										R.string.schedule_empty_exists));
 						entryEdit.mCategoryEdit.requestFocus();
 						return;
 					}
@@ -293,7 +295,7 @@ public class EntryEditCategoryView extends LinearLayout {
 	public String checkBeforeSave() {
 		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
 			if ("".equals(mCategoryEdit.getText().toString())) {
-				return "Category is empty!";
+				return getResources().getString(R.string.schedule_empty_exists);
 			} else {
 				// Check duplicate.
 				Cursor oldCategory = SqlHelper.instance.select(
@@ -303,7 +305,7 @@ public class EntryEditCategoryView extends LinearLayout {
 								.append(mCategoryEdit.getText().toString())
 								.append("'").toString());
 				if (oldCategory != null && oldCategory.moveToFirst()) {
-					return "Duplicate category";
+					return getResources().getString(R.string.existed_category_message);
 				}
 			}
 		}

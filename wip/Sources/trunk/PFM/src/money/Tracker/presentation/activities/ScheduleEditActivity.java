@@ -124,7 +124,8 @@ public class ScheduleEditActivity extends Activity {
 					-1, false);
 		} else { // Edit mode
 			TextView title = (TextView) findViewById(R.id.schedule_edit_tilte);
-			title.setText("Schedule");
+			title.setText(getResources()
+					.getString(R.string.schedule_edit_title));
 
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
 					.getData("Id = " + mPassedScheduleId).get(0);
@@ -142,8 +143,8 @@ public class ScheduleEditActivity extends Activity {
 			}
 
 			ArrayList<DetailSchedule> values = DetailScheduleRepository
-					.getInstance().getData(
-							"Schedule_Id = " + mPassedScheduleId);
+					.getInstance()
+					.getData("Schedule_Id = " + mPassedScheduleId);
 			if (values.size() == 0) {
 				addToList(
 						new DetailSchedule(-1, 0,
@@ -169,9 +170,9 @@ public class ScheduleEditActivity extends Activity {
 				new StringBuilder("Type=")
 						.append(isWeek ? 0 : 1)
 						.append(" AND End_date='")
-						.append(Converter.toString(Converter.toDate(mEndDateEdit
-								.getText().toString(), "dd/MM/yyyy")))
-						.append("'").toString());
+						.append(Converter.toString(Converter
+								.toDate(mEndDateEdit.getText().toString(),
+										"dd/MM/yyyy"))).append("'").toString());
 		if (checkExist != null && checkExist.moveToFirst()
 				&& checkExist.getLong(0) != mPassedScheduleId) {
 			Alert.getInstance().show(getBaseContext(),
@@ -270,8 +271,10 @@ public class ScheduleEditActivity extends Activity {
 					}
 					ScheduleItem item = (ScheduleItem) mList.getChildAt(index);
 					if (item.getBudget() <= 0) {
-						Alert.getInstance().show(getBaseContext(),
-								"A slot is empty");
+						Alert.getInstance().show(
+								getBaseContext(),
+								getResources().getString(
+										R.string.schedule_empty_exists));
 						item.getBudgetText().setFocusable(true);
 						item.getBudgetText().requestFocus();
 						return;
@@ -280,8 +283,10 @@ public class ScheduleEditActivity extends Activity {
 					if (item.mCategoryEdit.getVisibility() == View.VISIBLE
 							&& "".equals(item.mCategoryEdit.getText()
 									.toString())) {
-						Alert.getInstance().show(getBaseContext(),
-								"New category is empty");
+						Alert.getInstance().show(
+								getBaseContext(),
+								getResources().getString(
+										R.string.schedule_empty_exists));
 						item.mCategoryEdit.setFocusable(true);
 						item.mCategoryEdit.requestFocus();
 						return;
@@ -391,7 +396,8 @@ public class ScheduleEditActivity extends Activity {
 			mTotalBudget.setHint(Converter.toString(totalDetail));
 		} else {
 			if (getTotalBudget() < totalDetail && eanbleDialog) {
-				Alert.getInstance().showDialog(this, "Over budget! Add more?",
+				Alert.getInstance().showDialog(this,
+						getResources().getString(R.string.schedule_overbudget),
 						new OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
@@ -416,12 +422,18 @@ public class ScheduleEditActivity extends Activity {
 
 	public void doneBtnClicked(View v) {
 		if (getTotalBudget() <= 0) {
-			Alert.getInstance().show(this, "Input Total budget!");
+			Alert.getInstance().show(
+					this,
+					getResources().getString(
+							R.string.schedule_please_input_total_budget));
 			return;
 		}
 
 		if (getTotalBudget() < getTotalDetailBudget()) {
-			Alert.getInstance().show(this, "Total budget not enough!");
+			Alert.getInstance().show(
+					this,
+					getResources().getString(
+							R.string.schedule_over_total_budget));
 			return;
 		}
 
@@ -453,8 +465,10 @@ public class ScheduleEditActivity extends Activity {
 									mEndDateEdit.getText().toString(),
 									"dd/MM/yyyy"))).append("'").toString());
 			if (scheduleCursor != null && scheduleCursor.moveToFirst()) {
-				Alert.getInstance().show(this,
-						"A schedule for this time is existing!");
+				Alert.getInstance().show(
+						this,
+						getResources().getString(
+								R.string.schedule_exist_message));
 				return;
 			}
 
@@ -464,11 +478,14 @@ public class ScheduleEditActivity extends Activity {
 
 		if (mRemovedScheduleDetails.length() > 1) {
 			// Delete items that removed before.
-			SqlHelper.instance.delete(
-					"ScheduleDetail",
-					"Id IN ("
-							+ mRemovedScheduleDetails.substring(0,
-									mRemovedScheduleDetails.length() - 1) + ")");
+			SqlHelper.instance
+					.delete("ScheduleDetail",
+							"Id IN ("
+									+ mRemovedScheduleDetails
+											.substring(0,
+													mRemovedScheduleDetails
+															.length() - 1)
+									+ ")");
 		}
 
 		CategoryRepository.getInstance().updateData();
@@ -500,9 +517,9 @@ public class ScheduleEditActivity extends Activity {
 								Converter.toString(Converter.toDate(
 										mStartDateEdit.getText().toString(),
 										"dd/MM/yyyy")),
-								Converter.toString(Converter.toDate(mEndDateEdit
-										.getText().toString(), "dd/MM/yyyy")),
-								Time_id },
+								Converter.toString(Converter.toDate(
+										mEndDateEdit.getText().toString(),
+										"dd/MM/yyyy")), Time_id },
 						new StringBuilder("Id = ").append(mPassedScheduleId)
 								.toString());
 
@@ -525,15 +542,17 @@ public class ScheduleEditActivity extends Activity {
 								Converter.toString(Converter.toDate(
 										mStartDateEdit.getText().toString(),
 										"dd/MM/yyyy")),
-								Converter.toString(Converter.toDate(mEndDateEdit
-										.getText().toString(), "dd/MM/yyyy")),
-								Time_id });
+								Converter.toString(Converter.toDate(
+										mEndDateEdit.getText().toString(),
+										"dd/MM/yyyy")), Time_id });
 		if (newScheduleId != -1) {
 			saveDetailSchedule(newScheduleId);
 
-			Alert.getInstance().show(this, "Save sucessfully");
+			Alert.getInstance().show(this,
+					getResources().getString(R.string.saved));
 		} else {
-			Alert.getInstance().show(this, "Can not save data");
+			Alert.getInstance().show(this,
+					getResources().getString(R.string.error_save));
 		}
 	}
 
@@ -542,7 +561,10 @@ public class ScheduleEditActivity extends Activity {
 			ScheduleItem item = (ScheduleItem) mList.getChildAt(index);
 			if (item.mCategoryEdit.getVisibility() == View.VISIBLE
 					&& "".equals(item.mCategoryEdit.getText().toString())) {
-				Alert.getInstance().show(this, "Category is empty");
+				Alert.getInstance().show(
+						this,
+						getResources()
+								.getString(R.string.schedule_empty_exists));
 				item.mCategoryEdit.requestFocus();
 				return false;
 			}
