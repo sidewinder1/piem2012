@@ -277,6 +277,8 @@ public class ReportViewActivity extends Activity {
 						break;
 						
 					case 2:
+						dateList = new ArrayList<Date[]>();
+						dateList.add(new Date[]{sDate, eDate});
 						
 						final Dialog compareDialog = new Dialog(getParent());
 						compareDialog.setContentView(R.layout.report_view_chart_compare_custom_dialog);
@@ -298,15 +300,29 @@ public class ReportViewActivity extends Activity {
 									dateList.remove(1); 
 								}
 								
-								compareDialog.dismiss(); } });
+								compareDialog.dismiss(); 
+							} 
+						});
 						okButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) { 
-									// TODO Auto-generated method stub 
+									// TODO Auto-generated method stub
+									Intent barChartIntent = new Intent(ReportViewActivity.this, ReportViewBarChartActivity.class);
+									
 									int size = dateList.size(); 
+									barChartIntent.putExtra("Size_List", size);
+									barChartIntent.putExtra("checkMonthly", checkMonth);
+									for (int i = 0; i < size; i++)
+									{
+										Date [] compareDate = dateList.get(i);
+										barChartIntent.putExtra("start_date_" + i, Converter.toString(compareDate[0]));
+										barChartIntent.putExtra("end_date_" + i, Converter.toString(compareDate[1]));
+										Log.d("Check list extra", i + " - " + Converter.toString(compareDate[0]) + " - " + Converter.toString(compareDate[1]));
+									}
 									for (int i = 1; i < size; i++) { 
 										dateList.remove(1); 
 									} 
 									
+									startActivity(barChartIntent);
 									compareDialog.dismiss(); 
 								}
 							});
@@ -321,10 +337,11 @@ public class ReportViewActivity extends Activity {
 								
 								for (int i = 1; i < size; i++) { 
 									dateList.remove(1);		 
-									barChartListDate.removeAllViews();
-									bindDataCustomItemView(true, sDate, eDate);
-									uncheckAllCheckBox.setChecked(false); 
 								} 
+								
+								barChartListDate.removeAllViews();
+								bindDataCustomItemView(true, sDate, eDate);
+								uncheckAllCheckBox.setChecked(false); 
 							}
 						}
 					});	
@@ -337,11 +354,12 @@ public class ReportViewActivity extends Activity {
 								for (int i = 1; i < size; i++) { 
 									dateList.remove(1); 
 								}
+								
+								barChartListDate.removeAllViews();
+								bindDataCustomItemView(false, sDate, eDate);
+								checkAllCheckBox.setChecked(false);
+								uncheckAllCheckBox.setChecked(false);
 							}
-							
-							barChartListDate.removeAllViews();
-							bindDataCustomItemView(false, sDate, eDate);
-							checkAllCheckBox.setChecked(false); 
 						} 
 					});
 					

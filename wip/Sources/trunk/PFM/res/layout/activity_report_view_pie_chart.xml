@@ -75,7 +75,6 @@
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="top|fill_vertical"
 	            android:layout_marginBottom="10dp"
-	            android:background="@color/blue_background"
 	            android:minHeight="80dp"
 	            android:orientation="vertical" >
 	        </LinearLayout>

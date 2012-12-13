@@ -181,6 +181,8 @@
     <string name="report_pie_chart_total_money">Tổng số tiền:</string>
     <string name="report_bar_chart_month_title">So sánh giữa các tháng</string>
     <string name="report_bar_chart_week_title">So sánh giữa các tuần</string>
+    <string name="report_bar_chart_max_value">Chi Phí Cao Nhất</string>
+    <string name="report_bar_chart_expense_schedule">Thực tế - Kế hoạch</string>
 
     <!-- Others resources -->
     <string name="title_activity_borrow_view">BorrowViewActivity</string>

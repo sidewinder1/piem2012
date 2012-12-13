@@ -447,13 +447,24 @@ public class Chart extends AbstractChart {
 		
 		xMax = entryCategoryValueArray.length + 1;
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "", "", 0.5, xMax, 0, yMax, Color.GRAY, Color.LTGRAY);
+		setChartSettings(renderer, "", "", "x1000 VND", 0.5, xMax, 0, yMax, Color.GRAY, Color.LTGRAY);
+		for(int i = 0; i < dateList.size(); i++)
+		{
+			Date [] compareDate = dateList.get(i);
+			this.startDate = compareDate[0];
+			this.endDate = compareDate[1];
+			
+			if (checkMonthly)
+				renderer.addXTextLabel(i+1, Converter.toString(startDate, "MM/ yyyy"));
+			else
+				renderer.addXTextLabel(i+1, Converter.toString(startDate, "dd/MM/yyyy") + " - " + Converter.toString(endDate, "dd/MM/yyyy"));
+		}
 		//renderer.setXLabels(12);
 		//renderer.setYLabels(10);
-		renderer.clearTextLabels();
+		//renderer.clearTextLabels();
 		renderer.setApplyBackgroundColor(true);
 		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
-		renderer.setDisplayChartValues(false);
+		renderer.setDisplayChartValues(true);
 		renderer.setOrientation(Orientation.VERTICAL); 
 		renderer.setXLabelsAlign(Align.LEFT);
 		renderer.setYLabelsAlign(Align.LEFT);
@@ -466,12 +477,14 @@ public class Chart extends AbstractChart {
 		renderer.setBarSpacing(0.5f);
 		//renderer.setShowLabels(false);
 		renderer.setPanEnabled(false, false);
-		renderer.setLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
-		renderer.setXLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
+		renderer.setLabelsColor(Color.BLACK);
+		renderer.setXLabelsColor(Color.BLACK); //Color.argb(0x00, 0x01, 0x01, 0x01)
+		renderer.setAxesColor(Color.BLACK);
+		//renderer.setYLabelsColor(Color.BLACK);
 		//renderer.clearXTextLabels();
 		//renderer.clearYTextLabels();
 		//return ChartFactory.getBarChartIntent(context, buildBarDataset(titles, values), renderer, Type.STACKED);
-		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.STACKED);
+		return ChartFactory.getBarChartView(context, buildBarDataset(titles, values), renderer, Type.DEFAULT);
 	}
 
 	@SuppressWarnings("deprecation")
