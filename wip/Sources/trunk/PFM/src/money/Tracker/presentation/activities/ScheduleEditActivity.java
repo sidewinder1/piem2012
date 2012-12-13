@@ -130,7 +130,7 @@ public class ScheduleEditActivity extends Activity {
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
 					.getData("Id = " + mPassedScheduleId).get(0);
 			if (schedule != null) {
-				setChecked(schedule.type == 1);
+				setChecked(schedule.type == 0);
 				mMonth = schedule.start_date.getMonth();
 				mDay = schedule.start_date.getDate();
 				mYear = schedule.start_date.getYear() + 1900;
@@ -441,7 +441,7 @@ public class ScheduleEditActivity extends Activity {
 			return;
 		}
 
-		String Time_id = (!mIsWeek ? "1" : "0");
+		String Time_id = (mIsWeek ? "0" :  "1");
 
 		if (mPassedScheduleId != -1) {
 			String budget_value = String.valueOf(Converter.toLong(mTotalBudget

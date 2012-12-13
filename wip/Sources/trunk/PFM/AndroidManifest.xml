@@ -33,33 +33,37 @@
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ScheduleDetailViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".TabViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".MainViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ScheduleEditActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateUnchanged" />
         <activity
             android:name=".SyncSettingActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+             android:windowSoftInputMode="stateVisible|adjustPan"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".EntryEditActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateVisible|adjustPan" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -70,71 +74,72 @@
         </activity>
         <activity
             android:name=".EntryDetailViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".BorrowLendMainViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".BorrowViewActivity"
             android:screenOrientation="portrait"
-             android:theme="@android:style/Theme.NoTitleBar"  />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".LendViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".BorrowLendInsertActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".BorrowLendViewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".BorrowLendViewDetailActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportMainViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportViewActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".FileExplorerActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportViewDetailActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportMainViewDetailActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportViewPieChartActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportChartActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportViewChartActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportMainViewChartActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ReportViewBarChartActivity"
-             android:theme="@android:style/Theme.NoTitleBar" 
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="jim.h.common.android.lib.zxing.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"

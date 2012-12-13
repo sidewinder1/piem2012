@@ -39,7 +39,7 @@ public class EntryRepository implements IDataRepository {
 				long id = entryCursor.getLong(entryCursor.getColumnIndex("Id"));
 				String keyMonth = Converter.toString(Converter
 						.toDate(entryCursor.getString(entryCursor
-								.getColumnIndex("Date"))), "MMMM, yyyy");
+								.getColumnIndex("Date"))), "MM/yyyy");
 
 				if (!orderedEntries.containsKey(keyMonth)) {
 					orderedEntries.put(keyMonth, new ArrayList<Entry>());
@@ -84,7 +84,7 @@ public class EntryRepository implements IDataRepository {
 				long id = entryCursor.getLong(entryCursor.getColumnIndex("Id"));
 				String keyMonth = Converter.toString(Converter
 						.toDate(entryCursor.getString(entryCursor
-								.getColumnIndex("Date"))), "MMMM, yyyy");
+								.getColumnIndex("Date"))), "MM/yyyy");
 
 				if (!orderedEntries.containsKey(keyMonth)) {
 					orderedEntries.put(keyMonth, new ArrayList<Entry>());
