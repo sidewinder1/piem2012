@@ -8,7 +8,8 @@
     <string name="note"><u>Chú thích</u></string>
     <string name="saved">Đã lưu</string>
     <string name="percent">%</string>
-    <string name="error_save">Có lỗi khi lưu trữ</string>
+    <string name="error_save">Lỗi khi lưu trữ</string>
+    <string name="error_load">Lỗi khi tải dữ liệu</string>
     <string name="title_activity_home">Money Tracker</string>
     <string name="time_token">:</string>
     <string name="dummy_data">Dummy data</string>

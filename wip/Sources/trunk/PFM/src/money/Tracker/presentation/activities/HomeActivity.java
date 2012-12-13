@@ -1,6 +1,8 @@
 package money.Tracker.presentation.activities;
 
+import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.ExcelHelper;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.PfmApplication;
 import android.os.Bundle;
 import android.app.TabActivity;
@@ -29,12 +31,14 @@ public class HomeActivity extends TabActivity {
 		// Create Expense & income tab.
 		Intent managementIntent = new Intent(this, MainViewActivity.class);
 		managementIntent.putExtra(typeTabPathId, 0);
-		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost, R.drawable.tab_bg_selector_entry);
+		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost,
+				R.drawable.tab_bg_selector_entry);
 
 		// Create tab and intent for schedule.
 		Intent scheduleIntent = new Intent(this, MainViewActivity.class);
 		scheduleIntent.putExtra(typeTabPathId, 1);
-		setupTab(scheduleIntent, "Schedule", mTabHost, R.drawable.tab_bg_selector_schedule);
+		setupTab(scheduleIntent, "Schedule", mTabHost,
+				R.drawable.tab_bg_selector_schedule);
 
 		// Create tab and intent for Borrowing and Lending.
 		Intent borrowAndLendIntent = new Intent(this,
@@ -44,7 +48,8 @@ public class HomeActivity extends TabActivity {
 
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
-		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.tab_bg_selector_report);
+		setupTab(reportIntent, "Báo cáo", mTabHost,
+				R.drawable.tab_bg_selector_report);
 	}
 
 	public static void setupTab(final Intent intent, final String tag,
@@ -59,7 +64,7 @@ public class HomeActivity extends TabActivity {
 	private static View createTabView(final Context context, final int id) {
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.main_tab_background, null);
-//		view.setBackgroundResource(id);
+		// view.setBackgroundResource(id);
 		ImageView imageView = (ImageView) view
 				.findViewById(R.id.main_tab_background_icon);
 		imageView.setImageResource(id);
@@ -87,7 +92,13 @@ public class HomeActivity extends TabActivity {
 			startActivity(sync);
 			break;
 		case R.id.menu_export:
-			ExcelHelper.getInstance().exportData("data.xls");
+			try {
+				ExcelHelper.getInstance().exportData("data.xls");
+				Alert.getInstance().show(this, getResources().getString(R.string.saved));
+			} catch (Exception e) {
+				Alert.getInstance().show(this, getResources().getString(R.string.error_load));
+				Logger.Log(e.getMessage(), "HomeViewActivity");
+			}
 			break;
 		case R.id.menu_import:
 			Intent explorerIntent = new Intent(PfmApplication.getAppContext(),

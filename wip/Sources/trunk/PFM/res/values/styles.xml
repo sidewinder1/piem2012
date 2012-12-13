@@ -19,4 +19,9 @@
         <item name="android:background">@drawable/spinner_bottom</item>
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="HeaderTitle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/white08</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -12,13 +12,11 @@
 
         <TextView
             android:id="@+id/schedule_edit_tilte"
+            style="@style/HeaderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
-            android:text="@string/schedule_add_title"
-            android:textColor="@color/white08"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:text="@string/schedule_add_title" />
     </RelativeLayout>
 
     <LinearLayout
@@ -39,8 +37,8 @@
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_weight="0"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0" >
 
                     <Button
                         android:id="@+id/periodic"
@@ -60,24 +58,24 @@
                             android:id="@+id/schedule_start_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10sp"                
-                            android:gravity="center_horizontal"            
+                            android:layout_margin="10sp"
                             android:background="@drawable/note_input_day"
                             android:drawableRight="@drawable/note_input_day_right"
                             android:editable="false"
                             android:focusable="false"
+                            android:gravity="center_horizontal"
                             android:inputType="date"
                             android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/schedule_end_date"
-                            android:gravity="center_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10sp"
                             android:background="@drawable/note_input_day"
                             android:editable="false"
                             android:focusable="false"
+                            android:gravity="center_horizontal"
                             android:inputType="date"
                             android:textColor="@color/white_text_color"
                             android:textSize="18sp" />
@@ -85,23 +83,20 @@
                 </LinearLayout>
 
                 <EditText
+                    style="@style/normalEditNumber"
                     android:id="@+id/schedule_total_budget"
                     android:layout_width="fill_parent"
-                    android:layout_weight="0"
                     android:layout_height="wrap_content"
                     android:layout_margin="25dp"
+                    android:layout_weight="0"
                     android:background="@drawable/note_budget"
-                    android:digits="0123456789"
-                    android:hint="@string/schedule_budget"
-                    android:inputType="number"
-                    android:maxLength="12"
-                    android:textSize="18sp" />
+                    android:hint="@string/schedule_budget" />
 
                 <LinearLayout
                     android:id="@+id/list"
-                    android:layout_weight="1"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical" />
             </LinearLayout>
         </ScrollView>
@@ -109,7 +104,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0">
+            android:layout_weight="0" >
 
             <Button
                 android:id="@+id/doneBtn"
