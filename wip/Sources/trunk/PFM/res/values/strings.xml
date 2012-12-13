@@ -64,7 +64,7 @@
     <string name="schedule_end_day">Đến</string>
     <string name="schedule_budget">Tổng</string>
     <string name="schedule_living_cost">Chi phí</string>
-    <string name="schedule_price">Giá</string>
+    <string name="schedule_budget_hint">Ngân sách</string>
     <string name="schedule_duration">Khoảng thời gian</string>
     <string name="schedule_monthly">Hàng tháng</string>
     <string name="schedule_exist_message">Đã có kế hoạch trong thời gian này!\r\nXin vui lòng chọn lại!</string>

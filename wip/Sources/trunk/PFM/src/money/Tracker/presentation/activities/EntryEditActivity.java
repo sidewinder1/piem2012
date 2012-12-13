@@ -314,8 +314,9 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				SqlHelper.instance.delete(table, new StringBuilder("Id = ")
 						.append(mPassedEntryId).toString());
 				EntryDetailViewActivity.sEntryId = oldEntry.getLong(0);
-				mPassedEntryId = oldEntry.getLong(0);
 			}
+			
+			mPassedEntryId = oldEntry.getLong(0);
 		}
 
 		long id = mPassedEntryId;
