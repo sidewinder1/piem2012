@@ -40,17 +40,17 @@
 	    
 	    <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            android:layout_height="fill_parent"
             android:layout_gravity="bottom"
-            android:layout_weight="0"
+            android:layout_marginBottom="35sp"
+            android:layout_weight="2"
             android:clipChildren="false" >
 
             <LinearLayout
                 android:id="@+id/report_bar_chart_detail"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20sp"
-                android:minHeight="1000dp"
+                android:minHeight="80dp"
                 android:orientation="vertical" />
         </ScrollView>
     </LinearLayout>

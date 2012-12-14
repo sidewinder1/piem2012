@@ -78,7 +78,7 @@ public class ReportViewBarChartActivity extends Activity {
 		if (dateList.size() > 1)
 		{
 			Chart chart = new Chart();
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			barChart.removeAllViews();
 			barChart.addView(chart.getBarCompareIntent(this, checkMonthly, dateList), params);
 		}
