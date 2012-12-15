@@ -22,8 +22,8 @@ public class BorrowLendViewTestCase extends AndroidTestCase {
 			SqlHelper.instance.insert("BorrowLend", 
 					new String[] { "Debt_type", "Money", "Interest_type", "Interest_rate", "Start_date", "Expired_date", 
 					"Person_name", "Person_phone", "Person_address" },
-					new String[] { "Borrowing", String.valueOf(i * 10000), "Simple", "", "2012-10-" + i, "2012-11-" + (i + 20), 
-					"A" + i, "", "" });
+					new String[] { "Borrowing", String.valueOf(i * 10000), "Simple", String.valueOf(i), "2012-10-" + i, 
+					"2012-11-" + (i + 20), "A" + i, "", "" });
 		}
 
 		Assert.assertNotSame(10, SqlHelper.instance.select("BorrowLend", "*", "1 = 1"));
@@ -38,14 +38,14 @@ public class BorrowLendViewTestCase extends AndroidTestCase {
 			SqlHelper.instance.insert("BorrowLend", 
 					new String[] { "Debt_type", "Money", "Interest_type", "Interest_rate", "Start_date", "Expired_date", 
 					"Person_name", "Person_phone", "Person_address" },
-					new String[] { "Borrowing", String.valueOf(i * 10000), "Simple", "", "2012-10-" + i, "2012-11-" + (i + 20), 
-					"A" + i, "", "" });
+					new String[] { "Borrowing", String.valueOf(i * 10000), "Simple", String.valueOf(i), "2012-11-10", 
+					"2012-11-15", "A" + i, "", "" });
 		}
 
-		Cursor entry = SqlHelper.instance.select("BorrowLend", "*", "Debt_type like Borrowing");
+		Cursor entry = SqlHelper.instance.select("BorrowLend", "*", "Debt_type = 'Borrowing'");
 		Assert.assertNotNull(entry);
 		Assert.assertEquals(true, entry.moveToFirst());
-		Assert.assertEquals(5, entry.getCount());
+		Assert.assertEquals(10, entry.getCount());
 		Assert.assertEquals("2012-11-10", entry.getString(entry.getColumnIndex("Start_date")));
 	}
 }

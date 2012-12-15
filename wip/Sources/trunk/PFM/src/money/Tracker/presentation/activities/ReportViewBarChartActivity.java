@@ -1,6 +1,7 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -160,12 +161,17 @@ public class ReportViewBarChartActivity extends Activity {
 							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
 					} else {
 						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						Date scheduleEndDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("End_date")));
+						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
+						String startDateMonth = Converter.toString(startDate,"MM");
 
-						if ((scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) < 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) > 0 && scheduleEndDate.compareTo(endDate) == 0)
-								|| (scheduleStartDate.compareTo(startDate) == 0 && scheduleEndDate.compareTo(endDate) < 0))
+						Calendar calScheduleStart = Calendar.getInstance();
+						calScheduleStart.setTime(scheduleStartDate);
+						int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_MONTH);
+						Calendar calStartDate = Calendar.getInstance();
+						calStartDate.setTime(scheduleStartDate);
+						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+
+						if (scheduleMonth.equals(startDateMonth) && scheduleWeek == startDateWeek)
 							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
 					}
 				} while (scheduleCursor.moveToNext());

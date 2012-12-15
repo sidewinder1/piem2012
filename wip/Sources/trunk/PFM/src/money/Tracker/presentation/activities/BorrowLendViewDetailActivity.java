@@ -33,7 +33,6 @@ public class BorrowLendViewDetailActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d("View Detail", "Check 00");
 		bindData();
 	}
 
@@ -67,76 +66,74 @@ public class BorrowLendViewDetailActivity extends Activity {
 		personAddress.setText(String.valueOf(values.getPersonAddress()));
 		total.setText(Converter.toString(values.getMoney()));
 		interest.setText(String.valueOf(values.getInterestRate()));
-		interestType.setText(String.valueOf(values.getInterestType()));
+		if (String.valueOf(values.getInterestType()).equals("Simple"))
+			interestType.setText(getResources().getString(R.string.simple_interest));
+		else
+			interestType.setText(getResources().getString(R.string.compound_interest));
 		Log.d("View Detail", String.valueOf(values.getStartDate()));
-		startDate.setText(Converter.toString(values.getStartDate(),
-				"dd/MM/yyyy"));
+		startDate.setText(Converter.toString(values.getStartDate(), "dd/MM/yyyy"));
 		Log.d("View Detail", String.valueOf(values.getExpiredDate()));
 		if (values.getExpiredDate() != null) {
-			expriedDate.setText(Converter.toString(values.getExpiredDate(),
-					"dd/MM/yyyy"));
+			expriedDate.setText(Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
 		} else {
 			expriedDate.setText("");
 		}
-		Log.d("View Detail", "Check 5");
 
 		caculateInterest();
 
 		TextView totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_money);
 		TextView totalInterestTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_interest);
 		//TODO: TuanNA
-//		TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
+		//TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
 
 		totalMoneyTextView.setText(Converter.toString(totalMoney));
-		Log.d("View detail", String.valueOf(totalMoney));
-		totalInterestTextView
-				.setText(Converter.toString(totalInterestCaculate));
-		Log.d("View detail", "" + totalInterestCaculate);
+		totalInterestTextView.setText(Converter.toString(totalInterestCaculate));
 
 		//TODO: TuanNA
 		//		if (leftDate != 0)
-//			leftDayTextView.setText("You only have " + leftDate + " day");
+		//leftDayTextView.setText("You only have " + leftDate + " day");
 		// Handle edit button
 		editButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent borrowLendEdit = new Intent(
-						BorrowLendViewDetailActivity.this,
-						BorrowLendInsertActivity.class);
+				Intent borrowLendEdit = new Intent(BorrowLendViewDetailActivity.this, BorrowLendInsertActivity.class);
 				borrowLendEdit.putExtra("borrowLendID", borrow_lend_id);
 				startActivity(borrowLendEdit);
 			}
 		});
 	}
 
-	private void caculateInterest() {
+	private void caculateInterest() {		
 		Date currentDate = new Date();
-		Date startDate = values.getStartDate();
+		Date startDate = values.getStartDate();		
 		if (values.getExpiredDate() != null) {
 			Date expiredDate = values.getExpiredDate();
 			long caculateInterestDate = 0;
-
 			double money = values.getMoney();
 			double interestRate = 0;
 			if (daysBetween(startDate, expiredDate) != 0)
-				interestRate = values.getInterestRate() / daysBetween(startDate, expiredDate);
-
+				interestRate = (double)values.getInterestRate() / (double)daysBetween(startDate, expiredDate) /100;
+			
 			if (compareDate(currentDate, expiredDate)) {
 				caculateInterestDate = daysBetween(startDate, currentDate);
-				leftDate += daysBetween(currentDate, expiredDate);
+				leftDate = daysBetween(currentDate, expiredDate);
 			} else {
 				caculateInterestDate = daysBetween(startDate, expiredDate);
 			}
-
+			
+			Log.d("Check caculate interest Date", leftDate + " - " + caculateInterestDate);
+			
 			if (values.getInterestType().equals("Simple")) {
-				totalInterestCaculate += money * interestRate
-						* caculateInterestDate;
-				totalMoney += money + totalInterestCaculate;
+				Log.d("Check caculate interest Date", money + " - " + interestRate + " - " + caculateInterestDate);
+				totalInterestCaculate = money * interestRate * caculateInterestDate;
+				totalMoney = money + totalInterestCaculate;
 			} else {
 				totalMoney += 1;
+				
 				for (long i = 0; i < leftDate; i++) {
-					totalMoney = totalMoney * totalMoney * interestRate;
+					totalMoney = totalMoney * (1 + interestRate);
 				}
+				
 				totalMoney = money * totalMoney;
 
 				totalInterestCaculate += totalMoney - money;
@@ -181,11 +178,4 @@ public class BorrowLendViewDetailActivity extends Activity {
 		else
 			return false;
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_borrow_lend_view_detail, menu);
-		return true;
-	}
-
 }

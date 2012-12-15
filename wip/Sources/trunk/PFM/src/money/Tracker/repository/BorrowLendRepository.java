@@ -55,7 +55,7 @@ public class BorrowLendRepository {
 		}
 		return returnValues;
 	}
-
+	
 	public BorrowLend getDetailData(String condition) {
 		BorrowLend bole = new BorrowLend();
 		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*", condition);
@@ -67,9 +67,9 @@ public class BorrowLendRepository {
 					bole.setMoney(borrowLendData.getLong(borrowLendData.getColumnIndex("Money")));
 					bole.setInterestType(borrowLendData.getString(borrowLendData.getColumnIndex("Interest_type")));
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData.getColumnIndex("Interest_rate")));
-					bole.setStartDate(Converter.toDate(borrowLendData.getString(borrowLendData.getColumnIndex("Start_date")).trim(), "dd/MM/yyyy"));
+					bole.setStartDate(Converter.toDate(borrowLendData.getString(borrowLendData.getColumnIndex("Start_date")).trim()));
 					if (!borrowLendData.getString(borrowLendData.getColumnIndex("Expired_date")).trim().equals("")) {
-						bole.setExpiredDate(Converter.toDate(borrowLendData.getString(borrowLendData.getColumnIndex("Expired_date")).trim(), "dd/MM/yyyy"));
+						bole.setExpiredDate(Converter.toDate(borrowLendData.getString(borrowLendData.getColumnIndex("Expired_date")).trim()));
 					} else {
 						bole.setExpiredDate(null);
 					}
