@@ -27,8 +27,8 @@ public class BorrowLendDeleteTestCase extends AndroidTestCase {
 							"2012-11-" + (i + 20), "A" + i, "", "" });
 		}
 
-		Assert.assertEquals(true, SqlHelper.instance.delete("BorrowLend","Start_date = '2012-11-21 12:00:00'"));
-		Assert.assertEquals(true, SqlHelper.instance.delete("Schedule","Debt_type like 'Borrowing'"));
+		Assert.assertEquals(true, SqlHelper.instance.delete("BorrowLend","Start_date = '2012-11-21'"));
+		Assert.assertEquals(true, SqlHelper.instance.delete("BorrowLend","Debt_type = 'Borrowing'"));
 		Assert.assertEquals(true, SqlHelper.instance.delete("BorrowLend", "1 = 1"));
 	}
 }
