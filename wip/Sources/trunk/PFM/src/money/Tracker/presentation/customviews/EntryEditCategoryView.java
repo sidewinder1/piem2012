@@ -160,8 +160,12 @@ public class EntryEditCategoryView extends LinearLayout {
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 				parent.addView(item, addedIndex, params);
 
-				item.mTotal_money.setFocusable(true);
-				item.mTotal_money.requestFocus();
+				// Get first item.
+				EntryEditProductView firstItem = (EntryEditProductView) item.mCategoryList.getChildAt(0);
+				if (firstItem != null)
+				{
+					firstItem.setFocus();
+				}
 			}
 		});
 
@@ -189,7 +193,7 @@ public class EntryEditCategoryView extends LinearLayout {
 						double percent = checkOverBudget.getLong(0) / 100d;
 
 						if (budget * percent <= PfmApplication.getTotalEntry()
-								+ Long.parseLong(arg0.toString())) {
+								+ Converter.toLong(arg0.toString())) {
 							Alert.getInstance().show(
 									getContext(),
 									getResources().getString(
@@ -305,7 +309,8 @@ public class EntryEditCategoryView extends LinearLayout {
 								.append(mCategoryEdit.getText().toString())
 								.append("'").toString());
 				if (oldCategory != null && oldCategory.moveToFirst()) {
-					return getResources().getString(R.string.existed_category_message);
+					return getResources().getString(
+							R.string.existed_category_message);
 				}
 			}
 		}

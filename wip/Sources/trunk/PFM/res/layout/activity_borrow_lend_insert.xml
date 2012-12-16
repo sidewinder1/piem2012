@@ -59,57 +59,47 @@
                         android:orientation="vertical" >
 
                         <AutoCompleteTextView
+                            style="@style/normalEditText"
                             android:id="@+id/name_edit_text"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_marginTop="30sp"
-                            android:background="@drawable/spinner_bottom"
-                            android:hint="@string/borrow_lend_name"
-                            android:maxLength="30"
-                            android:singleLine="true"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:hint="@string/borrow_lend_name" />
 
                         <EditText
+                            style="@style/normalEditNumber"
                             android:id="@+id/phone_edit_text"
                             android:layout_width="fill_parent"
-                            android:layout_height="36dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_marginTop="20sp"
-                            android:fitsSystemWindows="true"
+                            android:layout_marginTop="10sp"
                             android:hint="@string/borrow_lend_add_phone"
-                            android:inputType="number"
-                            android:maxLength="13"
-                            android:textSize="18sp" />
+                            android:maxLength="11" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <EditText
+                    style="@style/normalEditText"
                     android:id="@+id/address_edit_text"
                     android:layout_width="fill_parent"
-                    android:layout_height="36dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:maxLength="50"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/spinner_bottom"
-                    android:hint="@string/borrow_lend_add_address"
-                    android:inputType="text"
-                    android:textSize="18sp" />
+                    android:hint="@string/borrow_lend_add_address" />
 
                 <EditText
+                    style="@style/normalEditNumber"
                     android:id="@+id/money_edit_text"
                     android:layout_width="fill_parent"
-                    android:layout_height="36dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/note_budget"
-                    android:hint="@string/borrow_lend_total_money"
-                    android:inputType="number"
-                    android:maxLength="20"
-                    android:textSize="18sp" />
+                    android:hint="@string/borrow_lend_total_money" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -118,20 +108,19 @@
                     android:orientation="horizontal" >
 
                     <TextView
+                        style="@style/normalText"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="@string/borrow_lend_interest"
-                        android:textColor="@color/white_text_color"
-                        android:textSize="18sp" />
+                        android:text="@string/borrow_lend_interest" />
 
                     <EditText
                         android:id="@+id/interest_rate_edit_text"
-                        android:layout_width="165dp"
-                        android:layout_height="36dp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
                         android:background="@drawable/spinner_bottom"
                         android:inputType="number"
                         android:maxLength="3"
@@ -139,7 +128,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:text="@string/percent"
@@ -154,13 +143,12 @@
                     android:orientation="horizontal" >
 
                     <TextView
+                        style="@style/normalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="@string/borrow_lend_interest_type"
-                        android:textColor="@color/white_text_color"
-                        android:textSize="18sp" />
+                        android:text="@string/borrow_lend_interest_type" />
 
                     <ToggleButton
                         android:id="@+id/interestType"
@@ -197,7 +185,7 @@
                     <TextView
                         style="@style/normalText"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:fitsSystemWindows="true"

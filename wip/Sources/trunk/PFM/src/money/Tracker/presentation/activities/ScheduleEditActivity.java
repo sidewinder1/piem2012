@@ -120,7 +120,7 @@ public class ScheduleEditActivity extends Activity {
 		if (mPassedScheduleId == -1) {
 			updateDisplay();
 			addToList(
-					new DetailSchedule(-1, 0, Converter.toLong(initialValue)),
+					new DetailSchedule(-1, -1, Converter.toLong(initialValue)),
 					-1, false);
 		} else { // Edit mode
 			TextView title = (TextView) findViewById(R.id.schedule_edit_tilte);
@@ -147,7 +147,7 @@ public class ScheduleEditActivity extends Activity {
 					.getData("Schedule_Id = " + mPassedScheduleId);
 			if (values.size() == 0) {
 				addToList(
-						new DetailSchedule(-1, 0,
+						new DetailSchedule(-1, -1,
 								Converter.toLong(initialValue)), -1, false);
 			} else {
 				for (DetailSchedule value : values) {
@@ -190,7 +190,8 @@ public class ScheduleEditActivity extends Activity {
 		if (init) {
 			itemView.setBudget(detail.getBudget());
 		} else {
-			itemView.getBudgetText().setHint(String.valueOf(detail.getBudget()));
+			itemView.getBudgetText()
+					.setHint(String.valueOf(detail.getBudget()));
 		}
 
 		// Add events to to detail budget to handle business logic.
@@ -253,6 +254,8 @@ public class ScheduleEditActivity extends Activity {
 
 		itemView.mCategory.setSelection(CategoryRepository.getInstance()
 				.getIndex(detail.getCategory()));
+		((CategoryAdapter) itemView.mCategory.getAdapter())
+				.notifyDataSetChanged();
 		if (index < 0) {
 			mList.addView(itemView);
 		} else {
@@ -294,7 +297,7 @@ public class ScheduleEditActivity extends Activity {
 				}
 
 				mLastAddedItem = lastItem;
-				addToList(new DetailSchedule(-1, 0, getNextHint()),
+				addToList(new DetailSchedule(-1, -1, getNextHint()),
 						mLastAddedItem, false);
 			}
 		});
@@ -441,7 +444,7 @@ public class ScheduleEditActivity extends Activity {
 			return;
 		}
 
-		String Time_id = (mIsWeek ? "0" :  "1");
+		String Time_id = (mIsWeek ? "0" : "1");
 
 		if (mPassedScheduleId != -1) {
 			String budget_value = String.valueOf(Converter.toLong(mTotalBudget

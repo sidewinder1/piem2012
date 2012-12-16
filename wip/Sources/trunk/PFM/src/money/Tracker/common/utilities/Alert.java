@@ -13,7 +13,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.provider.MediaStore.Audio;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
@@ -38,9 +37,9 @@ public class Alert {
 			public void run() {
 				Context context = PfmApplication.getAppContext();
 				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-						context).setSmallIcon(R.drawable.report)
+						context).setSmallIcon(R.drawable.report).setAutoCancel(true)
 						.setContentTitle(title).setContentText(message);
-				
+
 				// Creates an explicit intent for an Activity in your app.
 				Intent resultIntent = new Intent(context, activity);
 				TaskStackBuilder stackBuilder = TaskStackBuilder
@@ -51,7 +50,8 @@ public class Alert {
 						.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
 				int mId = 0;
-				mBuilder.setContentIntent(resultPendingIntent);
+				mBuilder.setContentIntent(resultPendingIntent).setDefaults(
+						Notification.DEFAULT_VIBRATE);
 				NotificationManager mNotificationManager = (NotificationManager) context
 						.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -60,24 +60,18 @@ public class Alert {
 				} catch (InterruptedException e) {
 					Logger.Log(e.getMessage(), "Alert");
 				}
-				
-//				Notification notification = mBuilder.build();
-				if (useDefaultRing){
-//					notification.defaults = Notification.DEFAULT_ALL;
-				}
-				else{
-					if (notifyRing != null){
+
+				if (useDefaultRing) {
+					mBuilder.setDefaults(Notification.DEFAULT_SOUND);
+				} else {
+					if (notifyRing != null) {
 						mBuilder.setSound(notifyRing, AudioManager.STREAM_MUSIC);
-//						mBuilder.setSound(Uri.withAppendedPath(Audio.Media.EXTERNAL_CONTENT_URI, "1"), AudioManager.STREAM_MUSIC);
-//						notification.sound = notifyRing;
-					} 
-					else{
+					} else {
 						mBuilder.setSound(null);
 					}
 				}
-
 				// mId allows you to update the notification later on.
-				mNotificationManager.notify(mId, mBuilder.build());// notification);
+				mNotificationManager.notify(mId, mBuilder.build());
 			};
 		}).start();
 	}

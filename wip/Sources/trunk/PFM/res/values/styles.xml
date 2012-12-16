@@ -2,16 +2,24 @@
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="normalText" parent="android:Widget.TextView">
         <item name="android:textColor">@color/white_text_color</item>
         <item name="android:textSize">18sp</item>
     </style>
+
     <style name="normalEditText" parent="android:Widget.EditText">
         <item name="android:maxLength">25</item>
         <item name="android:textColor">@color/white_text_color</item>
         <item name="android:textSize">18sp</item>
         <item name="android:background">@drawable/spinner_bottom</item>
     </style>
+
     <style name="normalEditNumber" parent="android:Widget.EditText">
         <item name="android:digits">0123456789</item>
         <item name="android:inputType">number</item>
@@ -19,9 +27,11 @@
         <item name="android:background">@drawable/spinner_bottom</item>
         <item name="android:textSize">18sp</item>
     </style>
+
     <style name="HeaderTitle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/white08</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
 </resources>

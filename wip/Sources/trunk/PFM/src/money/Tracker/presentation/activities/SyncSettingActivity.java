@@ -11,9 +11,11 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
+import money.Tracker.presentation.customviews.SyncSettingInputDialogView;
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.InputType;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -36,7 +39,7 @@ import android.widget.TextView;
 
 public class SyncSettingActivity extends Activity {
 	public static LinearLayout sAccountList;
-	private Spinner mScheduleWarn, mScheduleRing, mScheduleRemind, mBorrowWarn,
+	private Spinner mScheduleWarn, mScheduleRemind, mBorrowWarn, //mScheduleRing, 
 			mBorrowRing, mBorrowRemind;
 	private CheckBox mAutoSync;
 	private ArrayList<String> mScheduleWarnArr, mScheduleRemindArr,
@@ -51,21 +54,21 @@ public class SyncSettingActivity extends Activity {
 		sAccountList = (LinearLayout) findViewById(R.id.sync_view_account_list);
 		mAutoSync = (CheckBox) findViewById(R.id.sync_auto_checkbox);
 		mScheduleWarn = (Spinner) findViewById(R.id.warning_schedule_warn_before);
-		mScheduleRing = (Spinner) findViewById(R.id.warning_schedule_ring);
+//		mScheduleRing = (Spinner) findViewById(R.id.warning_schedule_ring);
 		mScheduleRemind = (Spinner) findViewById(R.id.warning_schedule_remain);
 		mBorrowWarn = (Spinner) findViewById(R.id.warning_borrow_warn_before);
 		mBorrowRing = (Spinner) findViewById(R.id.warning_borrow_ring);
 		mBorrowRemind = (Spinner) findViewById(R.id.warning_borrow_remain);
 
 		mScheduleWarn.setOnItemSelectedListener(itemSelected);
-		mScheduleRing.setOnItemSelectedListener(itemSelected);
+//		mScheduleRing.setOnItemSelectedListener(itemSelected);
 		mScheduleRemind.setOnItemSelectedListener(itemSelected);
 		mBorrowWarn.setOnItemSelectedListener(itemSelected);
 		mBorrowRing.setOnItemSelectedListener(itemSelected);
 		mBorrowRemind.setOnItemSelectedListener(itemSelected);
 
 		mScheduleWarn.setTag(1);
-		mScheduleRing.setTag(2);
+//		mScheduleRing.setTag(2);
 		mScheduleRemind.setTag(3);
 		mBorrowWarn.setTag(4);
 		mBorrowRing.setTag(5);
@@ -92,7 +95,7 @@ public class SyncSettingActivity extends Activity {
 				android.R.layout.simple_spinner_item, mBorrowRingArr);
 		borrowRingAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mScheduleRing.setAdapter(scheduleRingAdapter);
+//		mScheduleRing.setAdapter(scheduleRingAdapter);
 
 		mBorrowRing.setAdapter(borrowRingAdapter);
 
@@ -255,8 +258,8 @@ public class SyncSettingActivity extends Activity {
 			getIndexFromStringArray(warningSetting.getString(0), getResources()
 					.getString(R.string.percent),
 					mScheduleWarnArr, mScheduleWarn);
-			getIndexFromStringArray(warningSetting.getString(1), "",
-					mScheduleRingArr, mScheduleRing);
+//			getIndexFromStringArray(warningSetting.getString(1), "",
+//					mScheduleRingArr, mScheduleRing);
 			getIndexFromStringArray(warningSetting.getString(2), " "
 					+ getResources().getString(R.string.minutes),
 					mScheduleRemindArr, mScheduleRemind);
@@ -338,39 +341,33 @@ public class SyncSettingActivity extends Activity {
 			// Select time that before warning or reminding.
 			if (getResources().getString(R.string.others).equals(
 					((TextView) view).getText().toString())) {
-				LayoutParams inputParams = new LayoutParams(0,
-						LayoutParams.WRAP_CONTENT, 1);
-				LayoutParams textParams = new LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0);
+				int unitType = currentAdapterIndex == 1 ? SyncSettingInputDialogView.SCHEDULE_WARNING_BEFORE : 
+								(currentAdapterIndex == 4 ? SyncSettingInputDialogView.BORROW_WARNING_BEFORE
+										: SyncSettingInputDialogView.WARNING_REMIND);
 
-				String unit = currentAdapterIndex == 1 ? " %" : getResources()
-						.getString(
-								currentAdapterIndex == 4 ? R.string.hours
-										: R.string.minutes);
-
-				TextView unitText = new TextView(getBaseContext());
-				unitText.setText(unit);
-				input = new EditText(getBaseContext());
-				LinearLayout content = new LinearLayout(getBaseContext());
-				content.addView(input, inputParams);
-				content.addView(unitText, textParams);
-				input.setInputType(InputType.TYPE_CLASS_NUMBER);
-				new AlertDialog.Builder(view.getContext())
-						.setTitle(
-								getResources().getString(
-										R.string.input_dialog_title))
-						.setView(content)
-						.setPositiveButton(
-								getResources().getString(R.string.ok),
-								itemClicked)
-						.setNegativeButton(
-								getResources().getString(R.string.cancel),
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int whichButton) {
-										initializeWarningSetting();
-									}
-								}).show();
+				SyncSettingInputDialogView dialogView = new SyncSettingInputDialogView(getBaseContext(), unitType);
+				input = dialogView.getInputValue();
+				
+//				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(view.getContext());
+//				dialogBuilder.setCustomTitle(dialogView.getTitle())
+//						.setView(dialogView);
+				final Dialog dialog = new Dialog(view.getContext(), R.style.CustomDialogTheme);
+				dialog.setContentView(dialogView);
+				dialogView.setPositiveButton(new View.OnClickListener() {
+					public void onClick(View v) {
+						positiveAction();
+						dialog.dismiss();
+					}
+				});
+				
+				dialogView.setNegativeButton(new View.OnClickListener() {
+					public void onClick(View v) {
+						initializeWarningSetting();
+						dialog.dismiss();
+					}
+				});
+				
+				dialog.show();
 			} else {
 				switch (currentAdapterIndex) {
 				case 1:
@@ -425,13 +422,13 @@ public class SyncSettingActivity extends Activity {
 			switch (requestCode) {
 			case 108:
 				// Ring of Schedule function.
-				updateConfig("ScheduleRing", data.getData().getPath());
-				createSpinnerItem(data.getDataString(), "", mScheduleRing,
-						mScheduleRingArr);
+				updateConfig("ScheduleRing", data.getDataString());
+//				createSpinnerItem(data.getDataString(), "", mScheduleRing,
+//						mScheduleRingArr);
 				break;
 			case 111:
 				// Ring of Borrow function.
-				updateConfig("BorrowRing", data.getData().getPath());
+				updateConfig("BorrowRing", data.getDataString());
 				createSpinnerItem(data.getDataString(), "", mBorrowRing,
 						mBorrowRingArr);
 				break;
@@ -481,34 +478,38 @@ public class SyncSettingActivity extends Activity {
 
 	private DialogInterface.OnClickListener itemClicked = new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int whichButton) {
-			String value = input.getText().toString();
-			switch (currentAdapterIndex) {
-			case 1:
-				createSpinnerItem(value, " %", mScheduleWarn, mScheduleWarnArr);
-				updateConfig("ScheduleWarn", value);
-				break;
-			case 3:
-				createSpinnerItem(value,
-						" " + getResources().getString(R.string.minutes),
-						mScheduleRemind, mScheduleRemindArr);
-				updateConfig("ScheduleRemind", value);
-				break;
-			case 4:
-				createSpinnerItem(value,
-						" " + getResources().getString(R.string.hours),
-						mBorrowWarn, mBorrowWarnArr);
-				updateConfig("BorrowWarn", value);
-				break;
-			case 6:
-				createSpinnerItem(value,
-						" " + getResources().getString(R.string.minutes),
-						mBorrowRemind, mBorrowRemindArr);
-				updateConfig("BorrowRemind", value);
-				break;
-			}
+			positiveAction();
 		}
 	};
 
+	private void positiveAction() {
+		String value = input.getText().toString();
+		switch (currentAdapterIndex) {
+		case 1:
+			createSpinnerItem(value, " %", mScheduleWarn, mScheduleWarnArr);
+			updateConfig("ScheduleWarn", value);
+			break;
+		case 3:
+			createSpinnerItem(value,
+					" " + getResources().getString(R.string.minutes),
+					mScheduleRemind, mScheduleRemindArr);
+			updateConfig("ScheduleRemind", value);
+			break;
+		case 4:
+			createSpinnerItem(value,
+					" " + getResources().getString(R.string.hours),
+					mBorrowWarn, mBorrowWarnArr);
+			updateConfig("BorrowWarn", value);
+			break;
+		case 6:
+			createSpinnerItem(value,
+					" " + getResources().getString(R.string.minutes),
+					mBorrowRemind, mBorrowRemindArr);
+			updateConfig("BorrowRemind", value);
+			break;
+		}
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();

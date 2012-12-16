@@ -171,7 +171,7 @@ public class TabViewActivity extends Activity {
 		}
 
 		mValues = mIsEntry ? EntryRepository.getInstance().getData(
-				whereCondition) : ScheduleRepository.getInstance().getData(
+				whereCondition ) : ScheduleRepository.getInstance().getData(
 				whereCondition);
 
 		if (mValues.size() == 0) {

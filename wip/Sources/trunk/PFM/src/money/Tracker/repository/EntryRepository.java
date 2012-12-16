@@ -76,7 +76,7 @@ public class EntryRepository implements IDataRepository {
 
 		Cursor entryCursor = SqlHelper.instance.query(new StringBuilder(
 				"SELECT * FROM Entry ").append(param)
-				.append(" ORDER BY Date DESC").toString());
+				.append(" ORDER BY Date DESC,Id ASC").toString());
 		if (entryCursor != null && entryCursor.moveToFirst()) {
 			orderedEntries = new LinkedHashMap<String, ArrayList<Entry>>();
 

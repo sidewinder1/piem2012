@@ -223,24 +223,25 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	/*
 	 * The method will handle event when user clicks on NFC button.
 	 */
-	public void addNfcClicked(View view){
-		Alert.getInstance().show(this, getResources().getString(R.string.entry_edit_nfc_message));
+	public void addNfcClicked(View view) {
+		Alert.getInstance().show(this,
+				getResources().getString(R.string.entry_edit_nfc_message));
 	}
-	
+
 	/*
 	 * The method will handle event when user clicks on NFC button.
 	 */
-	public void addQrCodeClicked(View view){
+	public void addQrCodeClicked(View view) {
 		getQRCode();
 	}
-	
+
 	/*
 	 * The method will handle event when user clicks on NFC button.
 	 */
-	public void toggleTypeClicked(View view){
+	public void toggleTypeClicked(View view) {
 		setChecked(!mIsIncome);
 	}
-	
+
 	private void updateTitle() {
 		mTitle.setText(getResources()
 				.getString(
@@ -296,7 +297,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		Date inputDate = Converter.toDate(String.valueOf(mDateEdit.getText()),
 				"dd/MM/yyyy");
 		if (inputDate.after(new Date())) {
-			Alert.getInstance().show(this, "Not the future!");
+			Alert.getInstance().show(
+					this,
+					getResources().getString(
+							R.string.entry_daily_not_for_furture));
 			return false;
 		}
 
@@ -315,7 +319,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 						.append(mPassedEntryId).toString());
 				EntryDetailViewActivity.sEntryId = oldEntry.getLong(0);
 			}
-			
+
 			mPassedEntryId = oldEntry.getLong(0);
 		}
 
@@ -341,7 +345,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 		}
 
-		Alert.getInstance().show(this, getResources().getString(R.string.saved));
+		Alert.getInstance()
+				.show(this, getResources().getString(R.string.saved));
 		return true;
 	}
 
