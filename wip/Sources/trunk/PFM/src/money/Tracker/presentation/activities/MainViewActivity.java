@@ -34,16 +34,10 @@ public class MainViewActivity extends TabActivity {
 		// tab.
 		String firstTabTitle = (tab_type == 0 ? getResources().getString(
 				R.string.entry_expense_title) : getResources().getString(
-				R.string.schedule_monthly));
+				R.string.month));
 		String secondTabTitle = (tab_type == 0 ? getResources().getString(
 				R.string.entry_income_title) : getResources().getString(
-				R.string.schedule_weekly));
-
-		// Set title of screen.
-//		TextView title = (TextView) findViewById(R.id.title);
-//		title.setText(getResources().getString(
-//				(tab_type == 0) ? R.string.entry_management_title
-//						: R.string.schedule_title));
+				R.string.week));
 
 		// Create tab and intent for schedule.
 		Intent monthlyIntent = new Intent(this, TabViewActivity.class);

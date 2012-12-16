@@ -59,11 +59,6 @@
     <string name="lend_view_title">Xem khoản cho vay</string>
     <string name="simple_interest">Lãi đơn</string>
     <string name="compound_interest">Lãi kép</string>
-    <string name="borrow_lend_warning_name_total_money">Bạn phải nhập tên và tổng số tiền</string>
-    <string name="borrow_lend_warning_interest_rate_expired_date">Ban phải nhập hoặc bỏ qua lãi suất và ngày đáo hạn</string>
-    <string name="borrow_lend_warning_interest_rate_0">Bạn không được nhập lãi suất bằng 0</string>
-    <string name="borrow_lend_warning_interest_rate_100">Bạn không được nhập lãi suất vượt quá 100%</string>
-    
 
     <!-- These are resources for Schedule function. -->
     <string name="schedule_start_day">Từ</string>

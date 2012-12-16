@@ -1,0 +1,258 @@
+<resources>
+
+    <!-- These are common resources for app -->
+    <string name="app_name">Money Tracker</string>
+    <string name="menu_settings">Setting</string>
+    <string name="menu_import">Import…</string>
+    <string name="menu_export">Export…</string>
+    <string name="note"><u>Note</u></string>
+    <string name="saved">Saved</string>
+    <string name="percent">%</string>
+    <string name="error_save">Saving Error</string>
+    <string name="error_load">Loading Error</string>
+    <string name="title_activity_home">Money Tracker</string>
+    <string name="time_token">:</string>
+    <string name="dummy_data">Dummy data</string>
+    <string name="no_data">No data</string>
+    <string name="file_not_exist">File not found</string>
+    <string name="image_icon_description">Image of tab</string>
+    <string name="delete_confirm">Delete?</string>
+    <string name="success">Success</string>
+    <string name="others">Others…</string>
+    <string name="hours">hours</string>
+    <string name="minutes">minutes</string>
+    <string name="days">days</string>
+    <string name="weeks">weeks</string>
+    <string name="existed_category_message">Existed category</string>
+    <string name="input_dialog_title">Input value</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="month">Monthly</string>
+    <string name="week">Weekly</string>
+
+    <!-- These are resources for Borrowing & Lending function. -->
+    <string name="borrowing_title">Borrow</string>
+    <string name="lending_tilte">Lend</string>
+    <string name="total_borrow_money">Total borrowing money:</string>
+    <string name="total_lend_money">Total lending money:</string>
+    <string name="total_revenue">Total revenue:</string>
+    <string name="borrow_lend_name">Name</string>
+    <string name="borrow_lend_add_phone">Phone number</string>
+    <string name="borrow_lend_add_address">Address</string>
+    <string name="borrow_lend_start_date">Start date</string>
+    <string name="borrow_lend_end_date">Expired date:</string>
+    <string name="borrow_lend_phone">Phone number:</string>
+    <string name="borrow_lend_address">Address:</string>
+    <string name="borrow_lend_total_money">Total:</string>
+    <string name="borrow_lend_interest">Interest:</string>
+    <string name="borrow_lend_interest_type">Interest type:</string>
+    <string name="borrow_lend_borrower">Borrower:</string>
+    <string name="borrow_lend_lender">Lender:</string>
+    <string name="borrow_lend_current_interest">Current interest:</string>
+    <string name="borrow_add_title">New borrowing</string>
+    <string name="lend_add_title">New lending</string>
+    <string name="borrow_edit_title">Update borrowing</string>
+    <string name="lend_edit_title">Update lending</string>
+    <string name="borrow_view_title">View borrowing</string>
+    <string name="lend_view_title">View lending</string>
+    <string name="simple_interest">Simple</string>
+    <string name="compound_interest">Compound</string>
+
+    <!-- These are resources for Schedule function. -->
+    <string name="schedule_budget">Total</string>
+    <string name="schedule_living_cost">Cost</string>
+    <string name="schedule_budget_hint">Budget</string>
+    <string name="schedule_duration">Duration</string>
+    <string name="schedule_exist_message">Have a schedule for this time!\r\nPlease input again!</string>
+    <string name="schedule_detail_budget_title">Total budget:</string>
+    <string name="schedule_title">Schedule</string>
+    <string name="schedule_please_input_total_budget">Please input total budget</string>
+    <string name="schedule_overbudget">Overbudget,\r\ninput more?</string>
+    <string name="schedule_over_total_budget">Total budget not enough</string>
+    <string name="schedule_empty_exists">A field is empty</string>
+    <string name="schedule_add_title">New schedule</string>
+    <string name="schedule_edit_title">Update schedule</string>
+    <string name="schedule_new_category">New category</string>
+    <string name="schedule_view_detail_title">View schedule</string>
+    <string name="schedule_detail_average_title">Average/ day:</string>
+    <string name="schedule_menu_title">Menu</string>
+
+    <!-- These are resources for Synchronization function -->
+    <string name="sync_view_title">Synchronization</string>
+    <string name="sync_view_setting_title">Sync Setting</string>
+    <string name="sync_view_auto_sync">Auto sync</string>
+    <string name="sync_view_auto_sync_description">Application data will be synchronized automatically</string>
+    <string name="sync_view_account_management">Account management</string>
+    <string name="sync_view_account_active">On</string>
+    <string name="sync_view_account_deactive">Off</string>
+    <string name="sync_view_new_account">New account</string>
+    <string name="sync_success">Sync success</string>
+    <string name="sync_fail">Sync fail</string>
+    <string name="sync_waiting_synchronization">Synchronizing…</string>
+    <string name="sync_no_account_message">Need an account for sync.\r\nCreate new?</string>
+
+    <!-- These are resources for Warning function -->
+    <string name="warning_title">General warning setting</string>
+    <string name="warning_schedule_title">Schedule</string>
+    <string name="warning_borrow_title">Borrowing and Lending</string>
+    <string name="warning_schedule_warn_before">Warning before</string>
+    <string name="warning_borrow_warn_before">Warning before expired date</string>
+    <string name="warning_ring">Ring</string>
+    <string name="warning_borrow_overbudget">Over {0}% of total budget!!!</string>
+    <string name="warning_remain">Remind</string>
+
+    <string-array name="warning_ring_array">
+        <item>None</item>
+        <item>Default</item>
+        <item>Borrower</item>
+    </string-array>
+    <string-array name="warning_remain_array">
+        <item>Never</item>
+        <item>10 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>Others…</item>
+    </string-array>
+    <string-array name="warning_schedule_warn_array">
+        <item>25 %</item>
+        <item>50 %</item>
+        <item>70 %</item>
+        <item>100 %</item>
+        <item>Others…</item>
+    </string-array>
+    <string-array name="warning_borrow_warn_array">
+        <item>1 hour</item>
+        <item>10 hours</item>
+        <item>1 day</item>
+        <item>1 week</item>
+        <item>Others…</item>
+    </string-array>
+
+    <!-- These are resources for Entry function -->
+    <string name="entry_management_title">Incomes and Expenses Management</string>
+    <string name="entry_expense_title">Expenses</string>
+    <string name="entry_income_title">Incomes</string>
+    <string name="entry_new_expense_title">New expense</string>
+    <string name="entry_new_income_title">New income</string>
+    <string name="entry_price_hint">Price</string>
+    <string name="entry_detect_record">Detected {0} records</string>
+    <string name="entry_unformated_data">Incorrect format</string>
+    <string name="entry_view_week_item_title">Week</string>
+    <string name="entry_product_name_hint">Product name</string>
+    <string name="entry_daily_total_expense_title">Total daily expenses:</string>
+    <string name="entry_daily_total_income_title">Total daily incomes:</string>
+    <string name="entry_total_budget_week">Remain budget of week:</string>
+    <string name="entry_total_budget_month">Remain budget of month:</string>
+    <string name="entry_daily_expense_title">View expense</string>
+    <string name="entry_daily_income_title">View incomes</string>
+    <string name="entry_daily_not_for_furture">Not for future</string>
+    <string name="entry_edit_expense_title">Update expense</string>
+    <string name="entry_edit_income_title">Update income</string>
+    <string name="entry_edit_nfc_message">Scan NFC tag by your device…</string>
+
+    <!-- These are resources for Entry function -->
+    <string name="entry_edit_menu_title">Menu</string>
+    <string name="entry_edit_qr_code">QR Code</string>
+    <string name="entry_edit_nfc">NFC</string>
+
+    <!-- These are resources for Export/Import function -->
+    <string name="import_wrong_format">Incorrect format.\r\nCannot import…</string>
+
+    <!-- These are resources for Report function -->
+    <string name="report_management_title">Report</string>
+    <string name="report_management_detail_budget">Budget</string>
+    <string name="report_management_detail_income">Income</string>
+    <string name="report_management_detail_expense">Expense</string>
+    <string name="report_management_detail_borrowing">Borrowing</string>
+    <string name="report_management_detail_lending">Lending</string>
+    <string name="report_management_custom_dialog_check_all">Select all</string>
+    <string name="report_management_custom_dialog_uncheck_all">Unselect all</string>
+    <string name="report_in_month">Monthly report</string>
+    <string name="report_in_week">Weekly report</string>
+    <string name="report_between_month">Report for months</string>
+    <string name="report_between_week">Report for weeks</string>
+    <string name="report_chart_tab_title">Chart</string>
+    <string name="report_expense_schedule_stacked_bar_chart">Expense/Schedule: </string>
+    <string name="report_select_chart">Expense report</string>
+    <string name="report_pie_chart_total_money">Total:</string>
+    <string name="report_bar_chart_month_title">Compare months</string>
+    <string name="report_bar_chart_week_title">Compare weeks</string>
+    <string name="report_bar_chart_max_value">The highest expense</string>
+    <string name="report_bar_chart_expense_schedule">Schedule - Expense</string>
+    <string name="report_no_data_compare_date">No data for comparing</string>
+
+    <!-- Others resources -->
+    <string name="title_activity_borrow_view">BorrowViewActivity</string>
+    <string name="title_activity_lend_view">LendViewActivity</string>
+    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
+    <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
+
+    <string-array name="currency_symbol">
+        <item>VND</item>
+        <item>USD</item>
+    </string-array>
+    <string-array name="category_name">
+        <item>Birthday</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Shopping</item>
+        <item>Others…</item>
+    </string-array>
+    <string-array name="category_color">
+        <item>#99FF0000</item>
+        <item>#99F4A460</item>
+        <item>#99B8860B</item>
+        <item>#99F08080</item>
+        <item>#99C71585</item>
+    </string-array>
+    <string-array name="color_list">
+        <item>#99FFFF00</item>
+        <item>#99FF8C00</item>
+        <item>#99FF1493</item>
+        <item>#99A52A2A</item>
+        <item>#999ACD32</item>
+        <item>#999370D8</item>
+        <item>#998B4513</item>
+        <item>#998B008B</item>
+        <item>#998B0000</item>
+        <item>#99808000</item>
+        <item>#99800000</item>
+        <item>#997FFF00</item>
+        <item>#99708090</item>
+        <item>#994B0082</item>
+        <item>#994169E1</item>
+        <item>#9940E0D0</item>
+        <item>#9932CD32</item>
+        <item>#992E8B57</item>
+        <item>#99006400</item>
+        <item>#990000FF</item>
+        <item>#9900008B</item>
+        <item>#99000000</item>
+    </string-array>
+    <string-array name="schedule_context_menu_item">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
+    <string-array name="entry_edit_context_menu_item">
+        <item>Get QR</item>
+        <item>Get NFC</item>
+    </string-array>
+
+    <color name="transparent">#00FFFFFF</color>
+    <color name="white_text_color">#F9000000</color>
+    <color name="white08">#80FFFFFF</color>
+    <color name="white_text_color_transparent">#605599FF</color>
+    <color name="blue_background">#432230FF</color>
+    <color name="light_gray_background">#33F8F8F8</color>
+    <color name="brown_line">#FFDDA01D</color>
+
+    <string name="title_activity_report_chart">ReportChartActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_report_view_chart">ReportViewChartActivity</string>
+    <string name="title_activity_report_main_view_chart">ReportMainViewChartActivity</string>
+    <string name="title_activity_report_view_bar_chart">ReportViewBarChartActivity</string>
+    <string name="score_symbol">-</string>
+
+</resources>

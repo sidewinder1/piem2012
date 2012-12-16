@@ -22,6 +22,11 @@ public class EntryEditProductView extends LinearLayout {
 	private LinearLayout.LayoutParams mLastParams;
 	public long Id;
 
+	public EntryEditProductView(Context context) {
+		super(context);
+		total_text_view = null;
+	}
+
 	public EntryEditProductView(Context context, TextView total_view, long id) {
 		super(context);
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
@@ -34,6 +39,8 @@ public class EntryEditProductView extends LinearLayout {
 		removeBtn = (Button) findViewById(R.id.entry_edit_product_remove);
 		Id = id;
 		mLastParams = (LayoutParams) product.getLayoutParams();
+		product.setFocusable(true);
+		price.setFocusable(true);
 
 		price.addTextChangedListener(new TextWatcher() {
 			long sValue = 0;
@@ -65,7 +72,7 @@ public class EntryEditProductView extends LinearLayout {
 						.valueOf(total_text_view.getText()));
 				long total = currentValue + Converter.toLong(cValue.toString())
 						- sValue;
-				total_text_view.setText(Converter.toString(total));				
+				total_text_view.setText(Converter.toString(total));
 			}
 		});
 
@@ -122,7 +129,7 @@ public class EntryEditProductView extends LinearLayout {
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 				parent.addView(item, addedIndex, params);
-				item.product.setFocusable(true);
+
 				item.product.requestFocus();
 			}
 		});
@@ -161,6 +168,10 @@ public class EntryEditProductView extends LinearLayout {
 		}
 
 		return null;
+	}
+
+	public void setFocus() {
+		product.requestFocus();
 	}
 
 	public void setName(String name) {

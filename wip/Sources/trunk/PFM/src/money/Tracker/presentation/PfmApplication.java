@@ -2,6 +2,7 @@ package money.Tracker.presentation;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
@@ -13,12 +14,14 @@ import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.activities.BorrowLendMainViewActivity;
+import money.Tracker.presentation.activities.HomeActivity;
 import money.Tracker.presentation.activities.SyncSettingActivity;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.repository.EntryRepository;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
@@ -31,7 +34,9 @@ public class PfmApplication extends Application {
 	private static Context sContext;
 	public static Context sCurrentContext;
 	private String CONFIG_FILE = "PfmConfig.pxml";
+	private static Locale sLocale = null;
 	private static Resources sResources;
+	private static Context sBaseContext;
 	private static SynchronizeTask syncTask = new SynchronizeTask(null);
 
 	private static Thread runBackground = new Thread(new Runnable() {
@@ -53,19 +58,19 @@ public class PfmApplication extends Application {
 							EmailAccountCustomView email = (EmailAccountCustomView) SyncSettingActivity.sAccountList
 									.getChildAt(index);
 							if (email != null) {
-								if (email.getActive())
-								{
+								if (email.getActive()) {
 									sync_data = email.getButton();
-									((AnimationDrawable) sync_data.getBackground()).start();
+									((AnimationDrawable) sync_data
+											.getBackground()).start();
 									sync_data.setVisibility(View.VISIBLE);
-								}	
-								else{
-									((AnimationDrawable)email.getButton().getBackground()).stop();
+								} else {
+									((AnimationDrawable) email.getButton()
+											.getBackground()).stop();
 								}
 							}
 						}
 					}
-			
+
 					syncTask = new SynchronizeTask(sync_data);
 					syncTask.execute();
 					Thread.sleep(1 * 3600000);
@@ -80,6 +85,10 @@ public class PfmApplication extends Application {
 	public static long getTotalEntry() {
 		EntryRepository.getInstance().updateData(
 				new StringBuilder("Type = 1").toString());
+		if (EntryRepository.getInstance().orderedEntries == null){
+			return 0;
+		}
+		
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
 				.get(Converter.toString(DateTimeHelper.now(false), "MM/yyyy"));
 		long total_entry = 0;
@@ -143,7 +152,7 @@ public class PfmApplication extends Application {
 										+ "'");
 						if (checkBorrow != null && checkBorrow.moveToFirst()) {
 							Alert.getInstance().notify(
-									BorrowLendMainViewActivity.class,
+									HomeActivity.class,
 									"Expired date",
 									checkBorrow.getString(1),
 									0,
@@ -161,10 +170,22 @@ public class PfmApplication extends Application {
 		}
 	});
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (sLocale != null) {
+			newConfig.locale = sLocale;
+			Locale.setDefault(sLocale);
+			getBaseContext().getResources().updateConfiguration(newConfig,
+					getBaseContext().getResources().getDisplayMetrics());
+		}
+	}
+
 	public void onCreate() {
 		super.onCreate();
 		PfmApplication.sContext = getApplicationContext();
 		PfmApplication.sResources = getResources();
+		sBaseContext = getBaseContext();
 
 		// Create config file.
 		IOHelper.getInstance()
@@ -172,12 +193,11 @@ public class PfmApplication extends Application {
 						CONFIG_FILE,
 						"<config><autoSync>false</autoSync><serverConfig><namespace>http://pfm.org/</namespace><url>http://54.251.59.102:83/PFMService.asmx</url></serverConfig></config>");
 
-		// Create db connector.
+		// Create DB connector.
 		SqlHelper.instance = new SqlHelper(this);
 		SqlHelper.instance.initializeTable();
-		Logger.Log("Start applicaton "
-				+ AccountProvider.getInstance().getAccounts().size(),
-				"money.tracker.presentation");
+
+		setDefaultLanguage("vn");
 		warningTimer.start();
 		if (!Boolean.parseBoolean(XmlParser.getInstance().getConfigContent(
 				"autoSync"))) {
@@ -185,6 +205,19 @@ public class PfmApplication extends Application {
 		} else {
 			runBackground.start();
 			runThread = true;
+		}
+	}
+
+	public static void setDefaultLanguage(String lang) {
+		Configuration config = sBaseContext.getResources()
+				.getConfiguration();
+		if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
+			sLocale = new Locale(lang);
+			Locale.setDefault(sLocale);
+			config.locale = sLocale;
+			sBaseContext.getResources().updateConfiguration(config,
+					sBaseContext.getResources().getDisplayMetrics());
+
 		}
 	}
 
