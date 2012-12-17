@@ -8,6 +8,7 @@ import java.util.Date;
 import money.Tracker.common.sql.SqlHelper;
 //import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.presentation.customviews.BorrowLendViewDetailViewItem;
 import money.Tracker.presentation.model.BorrowLend;
 import money.Tracker.repository.BorrowLendRepository;
 
@@ -21,7 +22,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 public class BorrowLendViewDetailActivity extends Activity {
 
@@ -44,6 +47,7 @@ public class BorrowLendViewDetailActivity extends Activity {
 
 	private void bindData() {
 		setContentView(R.layout.activity_borrow_lend_view_detail);
+		/*
 		TextView personName = (TextView) findViewById(R.id.borrow_lend_detail_view_name);
 		TextView personPhone = (TextView) findViewById(R.id.borrow_lend_detail_view_phone);
 		TextView personAddress = (TextView) findViewById(R.id.borrow_lend_detail_view_address);
@@ -52,15 +56,19 @@ public class BorrowLendViewDetailActivity extends Activity {
 		TextView interestType = (TextView) findViewById(R.id.borrow_lend_detail_view_interest_type);
 		TextView startDate = (TextView) findViewById(R.id.borrow_lend_detail_view_start_date);
 		TextView expriedDate = (TextView) findViewById(R.id.borrow_lend_detail_view_expired_date);
+		*/
+		
+		TextView borrowLendDetailTitle = (TextView) findViewById(R.id.borrow_lend_detail_title);
+		LinearLayout listViewDetail = (LinearLayout) findViewById(R.id.borrow_lend_list_view_detail);
+		
 		Button editButton = (Button) findViewById(R.id.borrow_lend_detail_view_edit_button);
-
-		Log.d("View Detail", "Check 1");
+		
 		Bundle extras = getIntent().getExtras();
 		final long borrow_lend_id = extras.getLong("borrowLendID");
 
 		BorrowLendRepository bolere = new BorrowLendRepository();
 		values = bolere.getDetailData("ID=" + borrow_lend_id);
-		Log.d("View Detail", "Check 4");
+		/*
 		personName.setText(String.valueOf(values.getPersonName()));
 		personPhone.setText(String.valueOf(values.getPersonPhone()));
 		personAddress.setText(String.valueOf(values.getPersonAddress()));
@@ -78,7 +86,39 @@ public class BorrowLendViewDetailActivity extends Activity {
 		} else {
 			expriedDate.setText("");
 		}
-
+		*/
+		if (values.getDebtType().equals("Borrowing"))
+			borrowLendDetailTitle.setText(getResources().getString(R.string.borrow_view_title));
+		else
+			borrowLendDetailTitle.setText(getResources().getString(R.string.lend_view_title));
+		
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		
+		listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_name), values.getPersonName()), params);
+		
+		if (!values.getPersonPhone().equals(""))
+			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_phone), values.getPersonPhone()), params);
+		
+		if (!values.getPersonPhone().equals(""))
+			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_address), values.getPersonAddress()), params);
+		
+		listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_total_money), Converter.toString(values.getMoney())), params);
+		
+		if (values.getInterestRate() != 0)
+		{
+			if (values.getInterestType().equals("Simple"))
+				listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest_type), getResources().getString(R.string.simple_interest)), params);
+			else
+				listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest_type), getResources().getString(R.string.compound_interest)), params);
+			
+			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest), String.valueOf(values.getInterestRate())), params);
+		}
+		
+		listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_start_date), Converter.toString(values.getStartDate(), "dd/MM/yyyy")), params);
+		
+		if (values.getExpiredDate() != null)
+			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_end_date), Converter.toString(values.getExpiredDate(), "dd/MM/yyyy")), params);
+		
 		caculateInterest();
 
 		TextView totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_total_money);
