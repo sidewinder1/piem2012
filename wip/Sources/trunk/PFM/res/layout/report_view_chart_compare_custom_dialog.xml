@@ -1,64 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10sp"
+    android:background="@drawable/content_dialog_background"
     android:orientation="vertical" >
-	
+
+    <TextView
+        android:id="@+id/compare_report_dialog_title"
+        style="@style/HeaderTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="75sp"
+        android:background="@drawable/title_dialog_background"
+        android:gravity="center_horizontal|top"
+        android:paddingTop="10sp" />
+
+    <CheckBox
+        android:id="@+id/compare_report_dialog_select_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/checkbox_selector"
+        android:text="@string/select_all"
+        android:textColor="@color/white_text_color"
+        android:textSize="18sp" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
         android:clipChildren="false" >
-    
-	    <LinearLayout
-	        android:id="@+id/report_compare_custom_dialog_list_date_view"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical" />
-    
+
+        <LinearLayout
+            android:id="@+id/report_compare_custom_dialog_list_date_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
     </ScrollView>
 
-    <RadioGroup
-        xmlns:android="http://schemas.android.com/apk/res/android"        
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/report_compare_custom_dialog_check_all_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_management_custom_dialog_check_all"
-            android:textSize="15dp" />
-
-        <RadioButton
-            android:id="@+id/report_compare_custom_dialog_uncheck_all_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_management_custom_dialog_uncheck_all"
-            android:textSize="15dp" />
-    </RadioGroup>
-    
     <LinearLayout
         android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10sp"
+        android:background="@color/brown_line" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp" >
+        android:layout_margin="10sp" >
 
         <Button
             android:id="@+id/report_compare_custom_dialog_ok_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ok" />
-
-        <LinearLayout
-            android:layout_width="40dp"
-            android:layout_height="wrap_content" />
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/save_icon" />
 
         <Button
             android:id="@+id/report_compare_custom_dialog_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" />
-    </LinearLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/cancel_icon" />
+    </RelativeLayout>
 
 </LinearLayout>

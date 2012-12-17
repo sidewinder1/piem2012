@@ -3,19 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
-    
+
     <CheckBox
-            android:id="@+id/report_compare_custom_dialog_view_item_checkbox"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:button="@drawable/checkbox_selector" />
+        android:id="@+id/report_compare_custom_dialog_view_item_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/checkbox_selector" />
 
-        <TextView
-            android:id="@+id/report_compare_custom_dialog_view_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dummy_data"
-            android:textSize="20dp" />
-
+    <TextView
+        android:id="@+id/report_compare_custom_dialog_view_item_title"
+        style="@style/normalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dummy_data" />
 </LinearLayout>

@@ -36,7 +36,7 @@ public class ReportCustomDialogViewItem extends LinearLayout {
 		// Set value to item.
 		if(checkMonthly)
 		{
-			viewItemTitle.setText(Converter.toString(startDate, "MM/ yyyy"));
+			viewItemTitle.setText(Converter.toString(startDate, "MM/yyyy"));
 		} else
 		{
 			viewItemTitle.setText(Converter.toString(startDate, "dd/MM/yyyy") + " - " + Converter.toString(endDate, "dd/MM/yyyy"));
