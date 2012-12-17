@@ -1,8 +1,6 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
@@ -35,7 +33,6 @@ public class EntryEditCategoryView extends LinearLayout {
 	private LinearLayout mCategoryList;
 	private CategoryAdapter mCategoryAdapter;
 	public EditText mCategoryEdit;
-	private Date mEntryDate;
 
 	public EntryEditCategoryView(Context context) {
 		super(context);
@@ -262,10 +259,6 @@ public class EntryEditCategoryView extends LinearLayout {
 				}
 			}
 		});
-	}
-
-	public void setEntryDate(Date date) {
-		mEntryDate = date;
 	}
 
 	public boolean removeEmptyEntry() {

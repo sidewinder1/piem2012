@@ -7,6 +7,7 @@ import java.util.List;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.adapters.BorrowLendAdapter;
 import money.Tracker.presentation.adapters.ScheduleViewAdapter;
@@ -536,74 +537,76 @@ public class ReportViewActivity extends Activity {
 					.select("Entry",
 							"DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
 							"1=1 order by strftime('%Y', Date) DESC, strftime('%W', Date) DESC");
-			if (weekEntry != null) {
-				if (weekEntry.moveToFirst()) {
-					do {
-						String week = weekEntry.getString(weekEntry
-								.getColumnIndex("weekEntry"));
-						String year = weekEntry.getString(weekEntry
-								.getColumnIndex("yearEntry"));
+			if (weekEntry != null && weekEntry.moveToFirst()) {
+				do {
+					String week = weekEntry.getString(weekEntry
+							.getColumnIndex("weekEntry"));
+					String year = weekEntry.getString(weekEntry
+							.getColumnIndex("yearEntry"));
 
-						Cursor entry = SqlHelper.instance
-								.select("Entry",
-										"*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
-										"");
-						Date startDate = null;
-						Date endDate = null;
+					Cursor entry = SqlHelper.instance
+							.select("Entry",
+									"*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
+									"");
+					Date startDate = null;
+					Date endDate = null;
 
-						if (entry != null) {
-							if (entry.moveToFirst()) {
-								do {
-									Date entryDate = Converter.toDate(entry
-											.getString(entry
-													.getColumnIndex("Date")));
-									String entryWeek = entry.getString(entry
-											.getColumnIndex("weekEntry"));
-									String entryYear = entry.getString(entry
-											.getColumnIndex("yearEntry"));
+					if (entry != null) {
+						if (entry.moveToFirst()) {
+							do {
+								Date entryDate = Converter
+										.toDate(entry.getString(entry
+												.getColumnIndex("Date")));
+								String entryWeek = entry.getString(entry
+										.getColumnIndex("weekEntry"));
+								String entryYear = entry.getString(entry
+										.getColumnIndex("yearEntry"));
 
-									if (entryWeek.equals(week)
-											&& entryYear.equals(year)) {
-										if (startDate == null) {
-											startDate = entryDate;
-										} 
-										
-										if (endDate == null) {
-											if (startDate.compareTo(entryDate) < 0) {
-												endDate = entryDate;
-											} else {
-												endDate = startDate;
-												startDate = entryDate;
-											}
+								if (entryWeek.equals(week)
+										&& entryYear.equals(year)) {
+									if (startDate == null) {
+										startDate = entryDate;
+									} else if (endDate == null) {
+										if (startDate.compareTo(entryDate) < 0) {
+											endDate = entryDate;
 										} else {
-											if (startDate.compareTo(entryDate) < 0) {
-												endDate = entryDate;
-											} else {
-												endDate = startDate;
-												startDate = entryDate;
-											}
+											endDate = startDate;
+											startDate = entryDate;
+										}
+									} else {
+										if (startDate.compareTo(entryDate) < 0) {
+											endDate = entryDate;
+										} else {
+											endDate = startDate;
+											startDate = entryDate;
 										}
 									}
-								} while (entry.moveToNext());
-							}
+								}
+							} while (entry.moveToNext());
+						}
+					}
+
+					if (endDate != null) {
+						endDate = startDate;
+					}
+
+					if (startDate != null) {
+						// TODO: Locnd hotfix for case: endDate = null
+						if (endDate == null) {
+							endDate = DateTimeHelper
+									.getLastDayOfWeek(startDate);
 						}
 
-						if (endDate != null) {
-							endDate = startDate;
-						}
-
-						if (startDate != null) {
-							LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-									LayoutParams.FILL_PARENT,
-									LayoutParams.WRAP_CONTENT);
-							barChartListDate.addView(
-									new ReportCustomDialogViewItem(this,
-											checkMonthly, startDate, endDate,
-											dateList, check), params);
-							hasData = true;
-						}
-					} while (weekEntry.moveToNext());
-				}
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LayoutParams.FILL_PARENT,
+								LayoutParams.WRAP_CONTENT);
+						barChartListDate.addView(
+								new ReportCustomDialogViewItem(this,
+										checkMonthly, startDate, endDate,
+										dateList, check), params);
+						hasData = true;
+					}
+				} while (weekEntry.moveToNext());
 			}
 		}
 	}

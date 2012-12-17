@@ -21,9 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.InputType;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -350,9 +348,6 @@ public class SyncSettingActivity extends Activity {
 				SyncSettingInputDialogView dialogView = new SyncSettingInputDialogView(getBaseContext(), unitType);
 				input = dialogView.getInputValue();
 				
-//				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(view.getContext());
-//				dialogBuilder.setCustomTitle(dialogView.getTitle())
-//						.setView(dialogView);
 				final Dialog dialog = new Dialog(view.getContext(), R.style.CustomDialogTheme);
 				dialog.setContentView(dialogView);
 				dialogView.setPositiveButton(new View.OnClickListener() {
