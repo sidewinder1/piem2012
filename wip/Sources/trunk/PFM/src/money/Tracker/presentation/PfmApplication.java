@@ -13,7 +13,6 @@ import money.Tracker.common.utilities.IOHelper;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
-import money.Tracker.presentation.activities.BorrowLendMainViewActivity;
 import money.Tracker.presentation.activities.HomeActivity;
 import money.Tracker.presentation.activities.SyncSettingActivity;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
@@ -199,11 +198,11 @@ public class PfmApplication extends Application {
 
 		setDefaultLanguage("vn");
 		warningTimer.start();
+		runBackground.start();
 		if (!Boolean.parseBoolean(XmlParser.getInstance().getConfigContent(
 				"autoSync"))) {
 			runThread = false;
 		} else {
-			runBackground.start();
 			runThread = true;
 		}
 	}

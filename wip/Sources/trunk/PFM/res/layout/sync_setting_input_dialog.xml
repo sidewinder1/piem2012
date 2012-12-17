@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:background="@drawable/main_content_background"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10sp"
+    android:background="@drawable/content_dialog_background"
     android:orientation="vertical" >
+
+    <TextView
+        style="@style/HeaderTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="75sp"
+        android:background="@drawable/title_dialog_background"
+        android:gravity="center_horizontal|top"
+        android:paddingTop="10sp"
+        android:text="@string/input_dialog_title" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_weight="1"
+        android:layout_height="0dip"
         android:layout_margin="10sp"
-        android:layout_height="0dip" >
+        android:layout_weight="1" >
 
         <EditText
             android:id="@+id/sync_dialog_value_box"
@@ -29,10 +40,16 @@
             android:text="@string/dummy_data" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10sp"
+        android:background="@color/brown_line" />
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10sp" >
+        android:layout_margin="10sp" >
 
         <Button
             android:id="@+id/sync_setting_cancelBtn"

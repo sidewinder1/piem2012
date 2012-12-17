@@ -7,6 +7,7 @@
     <string name="menu_export">Xuất…</string>
     <string name="note"><u>Chú thích</u></string>
     <string name="saved">Đã lưu</string>
+    <string name="select_all">Chọn tất cả</string>
     <string name="percent">%</string>
     <string name="error_save">Lỗi khi lưu trữ</string>
     <string name="error_load">Lỗi khi tải dữ liệu</string>
@@ -63,7 +64,6 @@
     <string name="borrow_lend_warning_interest_rate_expired_date">Ban phải nhập hoặc bỏ qua lãi suất và ngày đáo hạn</string>
     <string name="borrow_lend_warning_interest_rate_0">Bạn không được nhập lãi suất bằng 0</string>
     <string name="borrow_lend_warning_interest_rate_100">Bạn không được nhập lãi suất vượt quá 100%</string>
-    
 
     <!-- These are resources for Schedule function. -->
     <string name="schedule_start_day">Từ</string>
@@ -190,12 +190,6 @@
     <string name="report_bar_chart_expense_schedule">Kế hoạch - Thực tế</string>
     <string name="report_no_data_compare_date">Không có dữ liệu để so sánh</string>
 
-    <!-- Others resources -->
-    <string name="title_activity_borrow_view">BorrowViewActivity</string>
-    <string name="title_activity_lend_view">LendViewActivity</string>
-    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
-    <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
-
     <string-array name="currency_symbol">
         <item>VND</item>
         <item>USD</item>
@@ -249,17 +243,13 @@
 
     <color name="transparent">#00FFFFFF</color>
     <color name="white_text_color">#F9000000</color>
-    <color name="white08">#80FFFFFF</color>
+    <color name="white08">#90FFFFFF</color>
     <color name="white_text_color_transparent">#605599FF</color>
     <color name="blue_background">#432230FF</color>
     <color name="light_gray_background">#33F8F8F8</color>
     <color name="brown_line">#FFDDA01D</color>
+    <color name="transparent_dark_03">#70000000</color>
 
-    <string name="title_activity_report_chart">ReportChartActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_report_view_chart">ReportViewChartActivity</string>
-    <string name="title_activity_report_main_view_chart">ReportMainViewChartActivity</string>
-    <string name="title_activity_report_view_bar_chart">ReportViewBarChartActivity</string>
     <string name="score_symbol">-</string>
 
 </resources>

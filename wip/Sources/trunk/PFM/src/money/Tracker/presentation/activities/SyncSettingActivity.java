@@ -149,6 +149,8 @@ public class SyncSettingActivity extends Activity {
 						}
 
 						ScrollView scroll = new ScrollView(getBaseContext());
+						scroll.setBackgroundResource(R.drawable.app_background);
+						
 						LinearLayout list = new LinearLayout(getBaseContext());
 						scroll.setLayoutParams(new LayoutParams(
 								LayoutParams.FILL_PARENT,

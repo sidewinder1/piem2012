@@ -6,17 +6,15 @@
     
     <CheckBox
             android:id="@+id/report_custom_dialog_view_item_checkbox"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:button="@drawable/checkbox_selector" />
 
         <TextView
             android:id="@+id/report_custom_dialog_view_item_title"
+            style="@style/normalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dummy_data"
-            android:textColor="@color/white_text_color"
-            android:textSize="15dp" />
+            android:text="@string/dummy_data"/>
 
 </LinearLayout>
