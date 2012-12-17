@@ -72,7 +72,7 @@ public class PfmApplication extends Application {
 
 					syncTask = new SynchronizeTask(sync_data);
 					syncTask.execute();
-					Thread.sleep(1 * 3600000);
+					Thread.sleep(1 * 60000);
 				} catch (Exception e) {
 					Logger.Log(e.getMessage(), "PfmApplication");
 				}

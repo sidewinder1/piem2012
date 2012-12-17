@@ -49,7 +49,7 @@ public class ReportMainViewActivity extends TabActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_report_main, menu);
+		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
 	}
 }

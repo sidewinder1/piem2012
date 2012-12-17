@@ -7,6 +7,7 @@
     <string name="menu_export">Export…</string>
     <string name="note"><u>Note</u></string>
     <string name="saved">Saved</string>
+	<string name="select_all">Select all</string>
     <string name="percent">%</string>
     <string name="error_save">Saving Error</string>
     <string name="error_load">Loading Error</string>
@@ -25,6 +26,7 @@
     <string name="weeks">weeks</string>
     <string name="existed_category_message">Existed category</string>
     <string name="input_dialog_title">Input value</string>
+	<string name="choose_account_dialog_title">Choose an account</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
@@ -37,7 +39,7 @@
     <string name="lending_tilte">Lend</string>
     <string name="total_borrow_money">Total borrowing money:</string>
     <string name="total_lend_money">Total lending money:</string>
-    <string name="total_revenue">Total revenue:</string>
+    <string name="total_revenue">Total interest:</string>
     <string name="borrow_lend_name">Name</string>
     <string name="borrow_lend_add_phone">Phone number</string>
     <string name="borrow_lend_add_address">Address</string>
@@ -59,6 +61,10 @@
     <string name="lend_view_title">View lending</string>
     <string name="simple_interest">Simple</string>
     <string name="compound_interest">Compound</string>
+	<string name="borrow_lend_warning_name_total_money">Please input name and total of money</string>
+    <string name="borrow_lend_warning_interest_rate_expired_date">Please input or ignore both of interest and expired date</string>
+    <string name="borrow_lend_warning_interest_rate_0">The interest value must be larger than 0</string>
+    <string name="borrow_lend_warning_interest_rate_100">The interest value must be smaller than 100%</string>
 
     <!-- These are resources for Schedule function. -->
     <string name="schedule_budget">Total</string>
@@ -183,16 +189,6 @@
     <string name="report_bar_chart_expense_schedule">Schedule - Expense</string>
     <string name="report_no_data_compare_date">No data for comparing</string>
 
-    <!-- Others resources -->
-    <string name="title_activity_borrow_view">BorrowViewActivity</string>
-    <string name="title_activity_lend_view">LendViewActivity</string>
-    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
-    <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
-
-    <string-array name="currency_symbol">
-        <item>VND</item>
-        <item>USD</item>
-    </string-array>
     <string-array name="category_name">
         <item>Birthday</item>
         <item>Food</item>
@@ -200,59 +196,9 @@
         <item>Shopping</item>
         <item>Others…</item>
     </string-array>
-    <string-array name="category_color">
-        <item>#99FF0000</item>
-        <item>#99F4A460</item>
-        <item>#99B8860B</item>
-        <item>#99F08080</item>
-        <item>#99C71585</item>
-    </string-array>
-    <string-array name="color_list">
-        <item>#99FFFF00</item>
-        <item>#99FF8C00</item>
-        <item>#99FF1493</item>
-        <item>#99A52A2A</item>
-        <item>#999ACD32</item>
-        <item>#999370D8</item>
-        <item>#998B4513</item>
-        <item>#998B008B</item>
-        <item>#998B0000</item>
-        <item>#99808000</item>
-        <item>#99800000</item>
-        <item>#997FFF00</item>
-        <item>#99708090</item>
-        <item>#994B0082</item>
-        <item>#994169E1</item>
-        <item>#9940E0D0</item>
-        <item>#9932CD32</item>
-        <item>#992E8B57</item>
-        <item>#99006400</item>
-        <item>#990000FF</item>
-        <item>#9900008B</item>
-        <item>#99000000</item>
-    </string-array>
+   
     <string-array name="schedule_context_menu_item">
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
-    <string-array name="entry_edit_context_menu_item">
-        <item>Get QR</item>
-        <item>Get NFC</item>
-    </string-array>
-
-    <color name="transparent">#00FFFFFF</color>
-    <color name="white_text_color">#F9000000</color>
-    <color name="white08">#80FFFFFF</color>
-    <color name="white_text_color_transparent">#605599FF</color>
-    <color name="blue_background">#432230FF</color>
-    <color name="light_gray_background">#33F8F8F8</color>
-    <color name="brown_line">#FFDDA01D</color>
-
-    <string name="title_activity_report_chart">ReportChartActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_report_view_chart">ReportViewChartActivity</string>
-    <string name="title_activity_report_main_view_chart">ReportMainViewChartActivity</string>
-    <string name="title_activity_report_view_bar_chart">ReportViewBarChartActivity</string>
-    <string name="score_symbol">-</string>
-
 </resources>
