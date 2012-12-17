@@ -106,7 +106,7 @@ public class BorrowLendInsertActivity extends Activity {
 			nameEditText.setText(String.valueOf(values.getPersonName()));
 			phoneEditText.setText(String.valueOf(values.getPersonPhone()));
 			addressEditText.setText(String.valueOf(values.getPersonAddress()));
-			moneyEditText.setText(Converter.toString(values.getMoney()));
+			moneyEditText.setText(Converter.toString(values.getMoney()).replaceAll(",", ""));
 			if (String.valueOf(values.getInterestType()).equals("Simple"))
 				interestType.setChecked(true);
 			else
@@ -433,10 +433,10 @@ public class BorrowLendInsertActivity extends Activity {
 		
 		if (!nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals("")) {
 			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText.getText().toString().equals("")) || interestRate.getText().toString().equals("")) {
-				if (Integer.parseInt(interestRate.getText().toString().trim()) == 0)
+				if (!interestRate.getText().toString().equals("") && Integer.parseInt(interestRate.getText().toString().trim()) == 0)
 				{
 					alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
-				} else if (Integer.parseInt(interestRate.getText().toString().trim()) > 100)
+				} else if (!interestRate.getText().toString().equals("") && Integer.parseInt(interestRate.getText().toString().trim()) > 100)
 				{
 					alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_100));
 				} else
@@ -485,10 +485,11 @@ public class BorrowLendInsertActivity extends Activity {
 
 		if (!nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals("")) {
 			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText.getText().toString().equals("")) || interestRate.getText().toString().equals("")) {
-				if (Integer.parseInt(interestRate.getText().toString().trim()) == 0)
+				Log.d("Check interest rate", interestRate.getText().toString());
+				if (!interestRate.getText().toString().equals("") && Integer.parseInt(interestRate.getText().toString().trim()) == 0)
 				{
 					alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
-				} else if (Integer.parseInt(interestRate.getText().toString().trim()) > 100)
+				} else if (!interestRate.getText().toString().equals("") && Integer.parseInt(interestRate.getText().toString().trim()) > 100)
 				{
 					alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_100));
 				} else
@@ -510,8 +511,8 @@ public class BorrowLendInsertActivity extends Activity {
 											moneyEditText.getText().toString(),
 											interestTypeString,
 											interestRate.getText().toString(),
-											Converter.toString(Converter.toDate(startDateEditText.getText().toString().trim(), "dd/MM/yyyy")),
-											Converter.toString(Converter.toDate(expiredDateEditText.getText().toString().trim(), "dd/MM/yyyy")),
+											startDateEditText.getText().toString().trim(),
+											expiredDateEditText.getText().toString().trim(),
 											nameEditText.getText().toString(),
 											phoneEditText.getText().toString(),
 											addressEditText.getText().toString() });
