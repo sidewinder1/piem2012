@@ -1,7 +1,5 @@
 package money.Tracker.presentation.customviews;
 
-import java.lang.Character.UnicodeBlock;
-
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
@@ -73,7 +71,9 @@ public class SyncSettingInputDialogView extends LinearLayout {
 		mInputValue = (EditText) findViewById(R.id.sync_dialog_value_box);
 		mOkBtn = (Button) findViewById(R.id.sync_setting_doneBtn);
 		mCancelBtn = (Button) findViewById(R.id.sync_setting_cancelBtn);
-		mOkBtn.getBackground().setAlpha(45);
+		Drawable drawable = getResources().getDrawable(R.drawable.save_icon);
+		drawable.setAlpha(45);
+		mOkBtn.setBackgroundDrawable(drawable);
 		mOkBtn.setEnabled(false);
 
 		mInputValue.addTextChangedListener(new TextWatcher() {
@@ -86,10 +86,11 @@ public class SyncSettingInputDialogView extends LinearLayout {
 			}
 
 			public void afterTextChanged(Editable s) {
-				if (("".equals(s.toString()) || Converter.toLong(s.toString()) == 0)
-						&& mOkBtn.isEnabled()) {
-					mOkBtn.getBackground().setAlpha(45);
-					mOkBtn.setEnabled(false);
+				if (("".equals(s.toString()) || Converter.toLong(s.toString()) == 0)) {
+					if (mOkBtn.isEnabled()) {
+						mOkBtn.getBackground().setAlpha(45);
+						mOkBtn.setEnabled(false);
+					}
 				} else if (!mOkBtn.isEnabled()) {
 					mOkBtn.setEnabled(true);
 					Drawable drawable = getResources().getDrawable(

@@ -26,6 +26,7 @@
     <string name="weeks">tuần</string>
     <string name="existed_category_message">Mục này đã tồn tại</string>
     <string name="input_dialog_title">Nhập giá trị</string>
+    <string name="choose_account_dialog_title">Chọn tài khoản</string>
     <string name="ok">Đồng ý</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="yes">Có</string>
