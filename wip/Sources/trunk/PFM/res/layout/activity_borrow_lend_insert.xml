@@ -86,7 +86,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:maxLength="50"
+                    android:maxLength="90"
                     android:layout_marginRight="5dp"
                     android:hint="@string/borrow_lend_add_address" />
 
@@ -98,6 +98,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="15dp"
+                    android:drawableRight="@drawable/note_input_day_right"
                     android:background="@drawable/note_budget"
                     android:hint="@string/borrow_lend_total_money" />
 
@@ -176,6 +177,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:gravity="center_horizontal"
                         android:background="@drawable/note_input_day"
                         android:editable="false"
                         android:focusable="false"
@@ -198,6 +200,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:gravity="center_horizontal"
                         android:background="@drawable/note_input_day"
                         android:drawableRight="@drawable/note_input_day_right"
                         android:editable="false"

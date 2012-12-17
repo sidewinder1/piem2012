@@ -34,7 +34,6 @@ public class PfmApplication extends Application {
 	public static Context sCurrentContext;
 	private String CONFIG_FILE = "PfmConfig.pxml";
 	private static Locale sLocale = null;
-	private static Resources sResources;
 	private static Context sBaseContext;
 	private static SynchronizeTask syncTask = new SynchronizeTask(null);
 
@@ -183,7 +182,6 @@ public class PfmApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		PfmApplication.sContext = getApplicationContext();
-		PfmApplication.sResources = getResources();
 		sBaseContext = getBaseContext();
 
 		// Create config file.
@@ -192,11 +190,12 @@ public class PfmApplication extends Application {
 						CONFIG_FILE,
 						"<config><autoSync>false</autoSync><serverConfig><namespace>http://pfm.org/</namespace><url>http://54.251.59.102:83/PFMService.asmx</url></serverConfig></config>");
 
+		setDefaultLanguage("vn");
+		
 		// Create DB connector.
 		SqlHelper.instance = new SqlHelper(this);
 		SqlHelper.instance.initializeTable();
 
-		setDefaultLanguage("vn");
 		warningTimer.start();
 		runBackground.start();
 		if (!Boolean.parseBoolean(XmlParser.getInstance().getConfigContent(
@@ -227,7 +226,7 @@ public class PfmApplication extends Application {
 	}
 
 	public static Resources getAppResources() {
-		return PfmApplication.sResources;
+		return sBaseContext.getResources();
 	}
 
 	public static void startSynchronize() {
