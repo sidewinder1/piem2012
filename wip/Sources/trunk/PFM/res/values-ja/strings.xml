@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- These are common resources for app -->
     <string name="menu_settings">設定</string>
     <string name="menu_import">のインポート…</string>
@@ -32,4 +33,108 @@
     <string name="no">いいえ</string>
     <string name="month">月刊</string>
     <string name="week">ウィークリー</string>
+
+    <!-- These are resources for Borrowing & Lending function. -->
+    <string name="borrowing_title">借りる</string>
+    <string name="lending_tilte">貸す</string>
+    <string name="total_borrow_money">トータルお金を借りる：</string>
+    <string name="total_lend_money">合計貸出金：</string>
+    <string name="total_revenue">利息合計：</string>
+    <string name="borrow_lend_name">名</string>
+    <string name="borrow_lend_add_phone">電話番号</string>
+    <string name="borrow_lend_add_address">アドレス</string>
+    <string name="borrow_lend_start_date">開始日</string>
+    <string name="borrow_lend_end_date">日付を期限切れ：</string>
+    <string name="borrow_lend_phone">電話番号：</string>
+    <string name="borrow_lend_address">アドレス：</string>
+    <string name="borrow_lend_total_money">合計：</string>
+    <string name="borrow_lend_interest">関係：</string>
+    <string name="borrow_lend_interest_type">インタレストタイプ：</string>
+    <string name="borrow_lend_borrower">借入を：</string>
+    <string name="borrow_lend_lender">貸し手を：</string>
+    <string name="borrow_lend_current_interest">現在関心：</string>
+    <string name="borrow_add_title">新規借入</string>
+    <string name="lend_add_title">新規貸付</string>
+    <string name="borrow_edit_title">更新借り入れ</string>
+    <string name="lend_edit_title">アップデート融資</string>
+    <string name="borrow_view_title">ビュー借り入れ</string>
+    <string name="lend_view_title">ビュー融資</string>
+    <string name="simple_interest">シンプル</string>
+    <string name="compound_interest">化合物</string>
+    <string name="borrow_lend_warning_name_total_money">は、入力名と金額の合計してください</string>
+    <string name="borrow_lend_warning_interest_rate_expired_date">を入力してくださいまたは関心の両方を無視しての日付有効期限が切れ</string>
+    <string name="borrow_lend_warning_interest_rate_0">は、金利の値は 0 をより大きくなければなりません</string>
+    <string name="borrow_lend_warning_interest_rate_100">興味値をは100％をより小さくなければなりません</string>
+
+    <!-- These are resources for Schedule function. -->
+    <string name="schedule_budget">合計</string>
+    <string name="schedule_living_cost">原価は</string>
+    <string name="schedule_budget_hint">予算</string>
+    <string name="schedule_duration">時間</string>
+    <string name="schedule_exist_message">がこの時間のスケジュールを持ちなさい！はしばらく入力再び！</string>
+    <string name="schedule_detail_budget_title">総予算：</string>
+    <string name="schedule_title">スケジュール</string>
+    <string name="schedule_please_input_total_budget">はを入力してください総予算</string>
+    <string name="schedule_overbudget">予算オーバーのは、\r\nもっと？</string>
+    <string name="schedule_over_total_budget">総予算が足りない</string>
+    <string name="schedule_empty_exists">のフィールドをは空</string>
+    <string name="schedule_add_title">新しいスケジュール</string>
+    <string name="schedule_edit_title">アップデートスケジュール</string>
+    <string name="schedule_new_category">新カテゴリ</string>
+    <string name="schedule_view_detail_title">表示スケジュール</string>
+    <string name="schedule_detail_average_title">平均/日：</string>
+    <string name="schedule_menu_title">メニュー</string>
+
+    <!-- These are resources for Synchronization function -->
+    <string name="sync_view_title">同期</string>
+    <string name="sync_view_setting_title">同期設定</string>
+    <string name="sync_view_auto_sync">オートシンク</string>
+    <string name="sync_view_auto_sync_description">アプリケーションデータは自動的に同期されます</string>
+    <string name="sync_view_account_management">アカウント管理</string>
+    <string name="sync_view_account_active">オン</string>
+    <string name="sync_view_account_deactive">オフ</string>
+    <string name="sync_view_new_account">新しいアカウントは</string>
+    <string name="sync_success">同期成功</string>
+    <string name="sync_fail">同期は失敗</string>
+    <string name="sync_waiting_synchronization">同期…</string>
+    <string name="sync_no_account_message">が同期のためのアカウントが必要です。は\r\n新しい？</string>
+    <!-- These are resources for Warning function -->
+    <string name="warning_title">全般警告設定</string>
+    <string name="warning_schedule_title">スケジュール</string>
+    <string name="warning_borrow_title">の借入と貸付</string>
+    <string name="warning_schedule_warn_before">警告を前に</string>
+    <string name="warning_borrow_warn_before">期限切れの日付を前警告</string>
+    <string name="warning_ring">リング</string>
+    <string name="warning_borrow_overbudget">総予算の{0}％以上</string>
+    <string name="warning_remain">思い出させる</string>
+ <!--
+    <string-array name="warning_ring_array">
+        <item>なし</item>
+        <item>のデフォルト</item>
+        <item>の借入</item>
+    </string-array>
+       
+string-array name="warning_remain_array">
+        の<item>決して</ item>は、
+        <item>の10分</ item>は、
+        <item>の30分</ item>は、
+        <item>の1時間</ item>は、
+        の<item>その他... </ item>は
+    </文字列配列>
+    <string-array name="warning_schedule_warn_array">
+        <item>の25％</ item>は
+        <item>の50％</ item>は
+        <item>の70％</ item>は
+        <item>の100％</ item>は
+        の<item>その他... </ item>は
+    </文字列配列>
+    <string-array name="warning_borrow_warn_array">
+        <item>の1時間</ item>は、
+        <item>の10時間</ item>は、
+        <item>の1日</ item>は、
+        <item>の1週間</ item>は、
+        の<item>その他... </ item>は
+    </文字列配列>
+    -->
+
 </resources>
