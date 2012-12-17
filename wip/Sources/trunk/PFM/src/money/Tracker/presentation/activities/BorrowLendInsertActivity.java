@@ -516,6 +516,11 @@ public class BorrowLendInsertActivity extends Activity {
 							debtType = "Lending";
 						}
 						
+						String expiredDateString = "";
+						
+						if (!expiredDateEditText.getText().toString().equals(""))
+							expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
+						
 						long check = SqlHelper.instance.insert("BorrowLend",
 										new String[] { "Debt_type", "Money",
 												"Interest_type", "Interest_rate",
@@ -528,7 +533,7 @@ public class BorrowLendInsertActivity extends Activity {
 												interestTypeString,
 												interestRate.getText().toString(),
 												Converter.toString(Converter.toDate(startDateEditText.getText().toString(), "dd/MM/yyyy")),
-												Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy")),
+												expiredDateString,
 												nameEditText.getText().toString(),
 												phoneEditText.getText().toString(),
 												addressEditText.getText().toString() });
@@ -555,6 +560,11 @@ public class BorrowLendInsertActivity extends Activity {
 						debtType = "Lending";
 					}
 					
+					String expiredDateString = "";
+					
+					if (!expiredDateEditText.getText().toString().equals(""))
+						expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
+					
 					long check = SqlHelper.instance.insert("BorrowLend",
 									new String[] { "Debt_type", "Money",
 											"Interest_type", "Interest_rate",
@@ -567,7 +577,7 @@ public class BorrowLendInsertActivity extends Activity {
 											interestTypeString,
 											interestRate.getText().toString(),
 											Converter.toString(Converter.toDate(startDateEditText.getText().toString(), "dd/MM/yyyy")),
-											Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy")),
+											expiredDateString,
 											nameEditText.getText().toString(),
 											phoneEditText.getText().toString(),
 											addressEditText.getText().toString() });

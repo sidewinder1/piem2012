@@ -65,8 +65,8 @@
     <string name="compound_interest">Lãi kép</string>
     <string name="borrow_lend_warning_name_total_money">Bạn phải nhập tên và tổng số tiền</string>
     <string name="borrow_lend_warning_interest_rate_expired_date">Bạn phải nhập hoặc bỏ qua lãi suất và ngày đáo hạn</string>
-    <string name="borrow_lend_warning_interest_rate_0">Bạn không được nhập lãi suất bằng 0</string>
-    <string name="borrow_lend_warning_interest_rate_100">Bạn không được nhập lãi suất vượt quá 100%</string>
+    <string name="borrow_lend_warning_interest_rate_0">Lãi suất phải lớn hơn 0 và nhỏ hơn 100</string>
+    <string name="borrow_lend_warning_interest_rate_100">Lãi suất phải lớn hơn 0 và nhỏ hơn 100</string>
 
     <!-- These are resources for Schedule function. -->
     <string name="schedule_budget">Tổng</string>
