@@ -217,7 +217,7 @@ public class BorrowLendViewActivity extends Activity {
 		double totalMoney = 0;
 		
 		if (daysBetween(startDate, expiredDate) != 0)
-			interestRate = (double)interestRateData / (double)daysBetween(startDate, expiredDate) /100;
+			interestRate = (double)interestRateData / 360 /100;
 			
 			if (compareDate(currentDate, expiredDate)) {
 				caculateInterestDate = daysBetween(startDate, currentDate);
