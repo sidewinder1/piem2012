@@ -37,7 +37,7 @@ public class ViewHelper {
 	public static void attachAction(Dialog dialog, View.OnClickListener positiveAction,
 			View.OnClickListener negativeAction){
 		((Button)dialog.findViewById(R.id.app_dialog_doneBtn)).setOnClickListener(positiveAction);
-		((Button)dialog.findViewById(R.id.app_dialog_doneBtn)).setOnClickListener(negativeAction);
+		((Button)dialog.findViewById(R.id.app_dialog_cancelBtn)).setOnClickListener(negativeAction);
 	}
 
 	// Create tab view.

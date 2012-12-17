@@ -71,9 +71,6 @@ public class SyncSettingInputDialogView extends LinearLayout {
 		mInputValue = (EditText) findViewById(R.id.sync_dialog_value_box);
 		mOkBtn = (Button) findViewById(R.id.sync_setting_doneBtn);
 		mCancelBtn = (Button) findViewById(R.id.sync_setting_cancelBtn);
-		Drawable drawable = getResources().getDrawable(R.drawable.save_icon);
-		drawable.setAlpha(45);
-		mOkBtn.setBackgroundDrawable(drawable);
 		mOkBtn.setEnabled(false);
 
 		mInputValue.addTextChangedListener(new TextWatcher() {
@@ -88,15 +85,10 @@ public class SyncSettingInputDialogView extends LinearLayout {
 			public void afterTextChanged(Editable s) {
 				if (("".equals(s.toString()) || Converter.toLong(s.toString()) == 0)) {
 					if (mOkBtn.isEnabled()) {
-						mOkBtn.getBackground().setAlpha(45);
 						mOkBtn.setEnabled(false);
 					}
 				} else if (!mOkBtn.isEnabled()) {
 					mOkBtn.setEnabled(true);
-					Drawable drawable = getResources().getDrawable(
-							R.drawable.save_icon);
-					drawable.setAlpha(255);
-					mOkBtn.setBackgroundDrawable(drawable);
 				}
 			}
 		});
