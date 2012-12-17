@@ -42,10 +42,13 @@ public class BorrowLendRepository {
 					bole.setInterestRate(borrowLendData.getInt(borrowLendData.getColumnIndex("Interest_rate")));
 					bole.setStartDate(Converter.toDate(borrowLendData.getString(borrowLendData.getColumnIndex("Start_date")).trim()));
 					if (!borrowLendData.getString(borrowLendData.getColumnIndex("Expired_date")).trim().equals("")) {
+						Log.d("Check expired date", "Check 1");
 						bole.setExpiredDate(Converter.toDate(borrowLendData.getString(borrowLendData.getColumnIndex("Expired_date")).trim()));
 					} else {
+						Log.d("Check expired date", "Check 2");
 						bole.setExpiredDate(null);
 					}
+					Log.d("Check expired date", String.valueOf(bole.getExpiredDate()));
 					bole.setPersonName(borrowLendData.getString(borrowLendData.getColumnIndex("Person_name")));
 					bole.setPersonPhone(borrowLendData.getString(borrowLendData.getColumnIndex("Person_phone")));
 					bole.setPersonAddress(borrowLendData.getString(borrowLendData.getColumnIndex("Person_address")));
