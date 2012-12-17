@@ -38,7 +38,6 @@ import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
 public class Chart extends AbstractChart {
-
 	private Date startDate = null;
 	private Date endDate = null;
 	private boolean checkMonthly = true;
@@ -49,8 +48,6 @@ public class Chart extends AbstractChart {
 	private List<Double> scheduleCategoryValue;
 
 	public Chart() {
-		// TODO Auto-generated constructor stub
-
 	}
 
 	private void getScheduleData() {
@@ -482,7 +479,7 @@ public class Chart extends AbstractChart {
 		renderer.setShowAxes(true);
 
 		// renderer.setChartTitleTextSize(25);
-		renderer.setLabelsTextSize(14);
+		renderer.setLabelsTextSize(18);
 		renderer.setLegendTextSize(18);
 		renderer.setFitLegend(true);
 		renderer.setAntialiasing(true);
@@ -495,7 +492,7 @@ public class Chart extends AbstractChart {
 		// renderer.setInitialRange(new double[]{0, 100, 0, yMax}, 1);
 		renderer.setBarSpacing(0.6f);
 		// renderer.setShowLabels(false);
-		renderer.setXLabelsAngle(checkMonthly ? 0 : -85);
+		renderer.setXLabelsAngle(checkMonthly ? 0 : -90);
 		renderer.setPanEnabled(false, false);
 		renderer.setLabelsColor(Color.BLACK);
 		renderer.setXLabelsColor(Color.BLACK); // Color.argb(0x00, 0x01, 0x01,

@@ -1,13 +1,13 @@
 package money.Tracker.common.utilities;
 
 import money.Tracker.presentation.activities.R;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
@@ -20,6 +20,24 @@ public class ViewHelper {
 		TabSpec setContent = mTabHost.newTabSpec(tag).setIndicator(tabview);
 		setContent.setContent(intent);
 		mTabHost.addTab(setContent);
+	}
+
+	public static Dialog createAppDialog(Context context, int titleId,
+			View contentView) {
+		Dialog dialog = new Dialog(context, R.style.CustomDialogTheme);
+		dialog.setContentView(R.layout.app_dialog);
+		((TextView) dialog.findViewById(R.id.app_dialog_title))
+				.setText(titleId);
+		((LinearLayout) dialog.findViewById(R.id.app_dialog_main_content))
+				.addView(contentView);
+		
+		return dialog;
+	}
+	
+	public static void attachAction(Dialog dialog, View.OnClickListener positiveAction,
+			View.OnClickListener negativeAction){
+		((Button)dialog.findViewById(R.id.app_dialog_doneBtn)).setOnClickListener(positiveAction);
+		((Button)dialog.findViewById(R.id.app_dialog_doneBtn)).setOnClickListener(negativeAction);
 	}
 
 	// Create tab view.

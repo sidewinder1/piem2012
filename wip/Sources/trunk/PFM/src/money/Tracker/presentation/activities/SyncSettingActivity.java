@@ -8,6 +8,7 @@ import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.ViewHelper;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
@@ -37,7 +38,7 @@ import android.widget.TextView;
 
 public class SyncSettingActivity extends Activity {
 	public static LinearLayout sAccountList;
-	private Spinner mScheduleWarn, mScheduleRemind, mBorrowWarn, //mScheduleRing, 
+	private Spinner mScheduleWarn, mScheduleRemind, mBorrowWarn, // mScheduleRing,
 			mBorrowRing, mBorrowRemind;
 	private CheckBox mAutoSync;
 	private ArrayList<String> mScheduleWarnArr, mScheduleRemindArr,
@@ -52,21 +53,21 @@ public class SyncSettingActivity extends Activity {
 		sAccountList = (LinearLayout) findViewById(R.id.sync_view_account_list);
 		mAutoSync = (CheckBox) findViewById(R.id.sync_auto_checkbox);
 		mScheduleWarn = (Spinner) findViewById(R.id.warning_schedule_warn_before);
-//		mScheduleRing = (Spinner) findViewById(R.id.warning_schedule_ring);
+		// mScheduleRing = (Spinner) findViewById(R.id.warning_schedule_ring);
 		mScheduleRemind = (Spinner) findViewById(R.id.warning_schedule_remain);
 		mBorrowWarn = (Spinner) findViewById(R.id.warning_borrow_warn_before);
 		mBorrowRing = (Spinner) findViewById(R.id.warning_borrow_ring);
 		mBorrowRemind = (Spinner) findViewById(R.id.warning_borrow_remain);
 
 		mScheduleWarn.setOnItemSelectedListener(itemSelected);
-//		mScheduleRing.setOnItemSelectedListener(itemSelected);
+		// mScheduleRing.setOnItemSelectedListener(itemSelected);
 		mScheduleRemind.setOnItemSelectedListener(itemSelected);
 		mBorrowWarn.setOnItemSelectedListener(itemSelected);
 		mBorrowRing.setOnItemSelectedListener(itemSelected);
 		mBorrowRemind.setOnItemSelectedListener(itemSelected);
 
 		mScheduleWarn.setTag(1);
-//		mScheduleRing.setTag(2);
+		// mScheduleRing.setTag(2);
 		mScheduleRemind.setTag(3);
 		mBorrowWarn.setTag(4);
 		mBorrowRing.setTag(5);
@@ -93,7 +94,7 @@ public class SyncSettingActivity extends Activity {
 				android.R.layout.simple_spinner_item, mBorrowRingArr);
 		borrowRingAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//		mScheduleRing.setAdapter(scheduleRingAdapter);
+		// mScheduleRing.setAdapter(scheduleRingAdapter);
 
 		mBorrowRing.setAdapter(borrowRingAdapter);
 
@@ -147,12 +148,11 @@ public class SyncSettingActivity extends Activity {
 						}
 
 						ScrollView scroll = new ScrollView(getBaseContext());
-						scroll.setBackgroundResource(R.drawable.app_background);
 						
 						LinearLayout list = new LinearLayout(getBaseContext());
 						scroll.setLayoutParams(new LayoutParams(
 								LayoutParams.FILL_PARENT,
-								LayoutParams.FILL_PARENT));
+								250));
 						scroll.addView(list, new LayoutParams(
 								LayoutParams.FILL_PARENT,
 								LayoutParams.WRAP_CONTENT));
@@ -162,38 +162,29 @@ public class SyncSettingActivity extends Activity {
 
 						((EmailAccountCustomView) list.getChildAt(0))
 								.setActive(true);
+						final Dialog dialog = ViewHelper.createAppDialog(
+								arg0.getContext(),
+								R.string.choose_account_dialog_title, scroll);
 
-						new AlertDialog.Builder(arg0.getContext())
-								.setTitle(
-										getResources().getString(
-												R.string.input_dialog_title))
-								// .setMessage(message)
-								.setView(scroll)
-								.setPositiveButton(
-										getResources().getString(R.string.ok),
-										new DialogInterface.OnClickListener() {
-											public void onClick(
-													DialogInterface arg0,
-													int arg1) {
-												try {
-													PfmApplication
-															.startSynchronize();
-												} catch (Exception e) {
-													Logger.Log(e.getMessage(),
-															"SyncSettingActivity");
-												}
-											}
-										})
-								.setNegativeButton(
-										getResources().getString(
-												R.string.cancel),
-										new DialogInterface.OnClickListener() {
-											public void onClick(
-													DialogInterface dialog,
-													int whichButton) {
-												mAutoSync.setChecked(false);
-											}
-										}).show();
+						ViewHelper.attachAction(dialog,
+								new View.OnClickListener() {
+									public void onClick(View v) {
+										try {
+											PfmApplication.startSynchronize();
+										} catch (Exception e) {
+											Logger.Log(e.getMessage(),
+													"SyncSettingActivity");
+										}
+
+										dialog.dismiss();
+									}
+								}, new View.OnClickListener() {
+									public void onClick(View v) {
+										mAutoSync.setChecked(false);
+										dialog.dismiss();
+									}
+								});
+						dialog.show();
 					} else {
 						Alert.getInstance().showDialog(
 								arg0.getContext(),
@@ -256,10 +247,10 @@ public class SyncSettingActivity extends Activity {
 
 		if (warningSetting != null && warningSetting.moveToFirst()) {
 			getIndexFromStringArray(warningSetting.getString(0), getResources()
-					.getString(R.string.percent),
-					mScheduleWarnArr, mScheduleWarn);
-//			getIndexFromStringArray(warningSetting.getString(1), "",
-//					mScheduleRingArr, mScheduleRing);
+					.getString(R.string.percent), mScheduleWarnArr,
+					mScheduleWarn);
+			// getIndexFromStringArray(warningSetting.getString(1), "",
+			// mScheduleRingArr, mScheduleRing);
 			getIndexFromStringArray(warningSetting.getString(2), " "
 					+ getResources().getString(R.string.minutes),
 					mScheduleRemindArr, mScheduleRemind);
@@ -278,7 +269,8 @@ public class SyncSettingActivity extends Activity {
 			ArrayList<String> list, Spinner parentSpinner) {
 
 		int valueIndex = -1;
-		int div = getResources().getString(R.string.hours).equals(unit.trim()) ? 60 : 1;
+		int div = getResources().getString(R.string.hours).equals(unit.trim()) ? 60
+				: 1;
 		if (key.startsWith("#")) {
 			if ("#NONE".equals(key)) {
 				valueIndex = 0;
@@ -341,14 +333,16 @@ public class SyncSettingActivity extends Activity {
 			// Select time that before warning or reminding.
 			if (getResources().getString(R.string.others).equals(
 					((TextView) view).getText().toString())) {
-				int unitType = currentAdapterIndex == 1 ? SyncSettingInputDialogView.SCHEDULE_WARNING_BEFORE : 
-								(currentAdapterIndex == 4 ? SyncSettingInputDialogView.BORROW_WARNING_BEFORE
-										: SyncSettingInputDialogView.WARNING_REMIND);
+				int unitType = currentAdapterIndex == 1 ? SyncSettingInputDialogView.SCHEDULE_WARNING_BEFORE
+						: (currentAdapterIndex == 4 ? SyncSettingInputDialogView.BORROW_WARNING_BEFORE
+								: SyncSettingInputDialogView.WARNING_REMIND);
 
-				SyncSettingInputDialogView dialogView = new SyncSettingInputDialogView(getBaseContext(), unitType);
+				SyncSettingInputDialogView dialogView = new SyncSettingInputDialogView(
+						getBaseContext(), unitType);
 				input = dialogView.getInputValue();
-				
-				final Dialog dialog = new Dialog(view.getContext(), R.style.CustomDialogTheme);
+
+				final Dialog dialog = new Dialog(view.getContext(),
+						R.style.CustomDialogTheme);
 				dialog.setContentView(dialogView);
 				dialogView.setPositiveButton(new View.OnClickListener() {
 					public void onClick(View v) {
@@ -356,14 +350,14 @@ public class SyncSettingActivity extends Activity {
 						dialog.dismiss();
 					}
 				});
-				
+
 				dialogView.setNegativeButton(new View.OnClickListener() {
 					public void onClick(View v) {
 						initializeWarningSetting();
 						dialog.dismiss();
 					}
 				});
-				
+
 				dialog.show();
 			} else {
 				switch (currentAdapterIndex) {
@@ -386,7 +380,7 @@ public class SyncSettingActivity extends Activity {
 				}
 			}
 		}
-		
+
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	};
@@ -395,18 +389,21 @@ public class SyncSettingActivity extends Activity {
 		int unit = 1;
 		String[] valuesOfItem = valueOfItem.split(" ");
 		long value = 0;
-		if (valuesOfItem.length == 2) {
-			value = Converter.toLong(valuesOfItem[0]);
-			if (getResources().getString(R.string.hours).equals(
-					valuesOfItem[1])) {
-				unit = 60 / div;
-			} else if (getResources().getString(R.string.days).equals(
-					valuesOfItem[1])) {
-				unit = 1440 / div;
-			} else if (getResources().getString(R.string.weeks).equals(
-					valuesOfItem[1])) {
-				unit = 10080 / div;
-			}
+		if (valuesOfItem.length != 2
+				|| getResources().getString(R.string.others).equals(
+						valuesOfItem[0])) {
+			return valueOfItem;
+		}
+
+		value = Converter.toLong(valuesOfItem[0]);
+		if (getResources().getString(R.string.hours).equals(valuesOfItem[1])) {
+			unit = 60 / div;
+		} else if (getResources().getString(R.string.days).equals(
+				valuesOfItem[1])) {
+			unit = 1440 / div;
+		} else if (getResources().getString(R.string.weeks).equals(
+				valuesOfItem[1])) {
+			unit = 10080 / div;
 		}
 
 		return Converter.toString(value * unit);
@@ -420,8 +417,8 @@ public class SyncSettingActivity extends Activity {
 			case 108:
 				// Ring of Schedule function.
 				updateConfig("ScheduleRing", data.getDataString());
-//				createSpinnerItem(data.getDataString(), "", mScheduleRing,
-//						mScheduleRingArr);
+				// createSpinnerItem(data.getDataString(), "", mScheduleRing,
+				// mScheduleRingArr);
 				break;
 			case 111:
 				// Ring of Borrow function.
@@ -473,12 +470,6 @@ public class SyncSettingActivity extends Activity {
 						.toString());
 	}
 
-	private DialogInterface.OnClickListener itemClicked = new DialogInterface.OnClickListener() {
-		public void onClick(DialogInterface dialog, int whichButton) {
-			positiveAction();
-		}
-	};
-
 	private void positiveAction() {
 		String value = input.getText().toString();
 		switch (currentAdapterIndex) {
@@ -506,7 +497,7 @@ public class SyncSettingActivity extends Activity {
 			break;
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -525,7 +516,6 @@ public class SyncSettingActivity extends Activity {
 
 	@Override
 	protected void onPause() {
-		// TODO: Save user's setting to DB and start user's configuration.
 		SqlHelper.instance.update("AppInfo", new String[] { "Status" },
 				new String[] { "0" }, "Status = 1");
 		if (mAutoSync.isChecked()) {
