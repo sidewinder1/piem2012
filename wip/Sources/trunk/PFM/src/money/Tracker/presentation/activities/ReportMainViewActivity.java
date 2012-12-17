@@ -1,18 +1,12 @@
 package money.Tracker.presentation.activities;
 
-import java.util.Date;
-
-import money.Tracker.common.utilities.Chart;
-import money.Tracker.common.utilities.Converter;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;

@@ -484,17 +484,18 @@ public class Chart extends AbstractChart {
 		// renderer.setChartTitleTextSize(25);
 		renderer.setLabelsTextSize(14);
 		renderer.setLegendTextSize(18);
+		renderer.setFitLegend(true);
 		renderer.setAntialiasing(true);
 		renderer.setZoomEnabled(true, false);
 		renderer.setChartValuesTextSize(14);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
 		// renderer.setZoomRate(1.1f);
-		renderer.setMargins(new int[] { 40, -10, 40, 20 });
+		renderer.setMargins(new int[] { 60, -10, 120, 0 });
 		// renderer.setInitialRange(new double[]{0, 100, 0, yMax}, 1);
 		renderer.setBarSpacing(0.6f);
 		// renderer.setShowLabels(false);
-		renderer.setXLabelsAngle(checkMonthly ? 0 : -80);
+		renderer.setXLabelsAngle(checkMonthly ? 0 : -85);
 		renderer.setPanEnabled(false, false);
 		renderer.setLabelsColor(Color.BLACK);
 		renderer.setXLabelsColor(Color.BLACK); // Color.argb(0x00, 0x01, 0x01,
