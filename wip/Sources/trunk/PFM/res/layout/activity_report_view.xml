@@ -8,11 +8,11 @@
         android:id="@+id/no_report_data"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        style="@style/normalText"
+        android:layout_marginTop="15sp"
         android:text="@string/no_data"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="25sp"
-        android:textColor="@color/white_text_color" />
+        android:layout_marginLeft="25sp" />
 
     <ScrollView
         android:id="@+id/entry_view_scroll"

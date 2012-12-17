@@ -8,11 +8,11 @@
         android:id="@+id/no_data_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        style="@style/normalText"
+        android:layout_marginTop="15sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="25sp"
-        android:text="@string/no_data"
-        android:textColor="@color/white_text_color" />
+        android:text="@string/no_data" />
 
     <ListView
         android:id="@+id/tab_content_view_list"

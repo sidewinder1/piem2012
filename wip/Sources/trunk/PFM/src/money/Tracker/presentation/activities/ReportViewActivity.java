@@ -83,170 +83,163 @@ public class ReportViewActivity extends Activity {
 		displayNoReportDataText = (TextView) findViewById(R.id.no_report_data);
 		reportListView = (LinearLayout) findViewById(R.id.report_view_list_view);
 		reportListView.removeAllViews();
-
+		displayNoReportDataText.setVisibility(View.VISIBLE);
 		if (checkMonthly) {
 			Cursor monthlyEntry = SqlHelper.instance
 					.select("Entry",
 							"DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry",
 							"1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
-			if (monthlyEntry != null) {
+			if (monthlyEntry != null && monthlyEntry.moveToFirst()) {
 				displayNoReportDataText.setVisibility(View.GONE);
-				if (monthlyEntry.moveToFirst()) {
-					do {
-						String month = monthlyEntry.getString(monthlyEntry
-								.getColumnIndex("monthEntry"));
-						String year = monthlyEntry.getString(monthlyEntry
-								.getColumnIndex("yearEntry"));
+				do {
+					String month = monthlyEntry.getString(monthlyEntry
+							.getColumnIndex("monthEntry"));
+					String year = monthlyEntry.getString(monthlyEntry
+							.getColumnIndex("yearEntry"));
 
-						Cursor entry = SqlHelper.instance
-								.select("Entry",
-										"*, strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry",
-										"");
-						Date startDate = null;
-						Date endDate = null;
+					Cursor entry = SqlHelper.instance
+							.select("Entry",
+									"*, strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry",
+									"");
+					Date startDate = null;
+					Date endDate = null;
 
-						if (entry != null) {
-							if (entry.moveToFirst()) {
-								do {
-									Date entryDate = Converter.toDate(entry
-											.getString(entry
-													.getColumnIndex("Date")));
-									String entryMonth = entry.getString(entry
-											.getColumnIndex("monthEntry"));
-									String entryYear = entry.getString(entry
-											.getColumnIndex("yearEntry"));
+					if (entry != null) {
+						if (entry.moveToFirst()) {
+							do {
+								Date entryDate = Converter
+										.toDate(entry.getString(entry
+												.getColumnIndex("Date")));
+								String entryMonth = entry.getString(entry
+										.getColumnIndex("monthEntry"));
+								String entryYear = entry.getString(entry
+										.getColumnIndex("yearEntry"));
 
-									if (entryMonth.equals(month)
-											&& entryYear.equals(year)) {
-										if (startDate == null) {
-											startDate = entryDate;
-										} else if (endDate == null) {
-											if (startDate.compareTo(entryDate) < 0) {
-												endDate = entryDate;
-											} else {
-												endDate = startDate;
-												startDate = entryDate;
-											}
+								if (entryMonth.equals(month)
+										&& entryYear.equals(year)) {
+									if (startDate == null) {
+										startDate = entryDate;
+									} else if (endDate == null) {
+										if (startDate.compareTo(entryDate) < 0) {
+											endDate = entryDate;
 										} else {
-											if (startDate.compareTo(entryDate) < 0) {
-												endDate = entryDate;
-											} else {
-												endDate = startDate;
-												startDate = entryDate;
-											}
+											endDate = startDate;
+											startDate = entryDate;
+										}
+									} else {
+										if (startDate.compareTo(entryDate) < 0) {
+											endDate = entryDate;
+										} else {
+											endDate = startDate;
+											startDate = entryDate;
 										}
 									}
-								} while (entry.moveToNext());
-							}
+								}
+							} while (entry.moveToNext());
 						}
+					}
 
-						if (endDate == null) {
-							endDate = startDate;
-						}
+					if (endDate == null) {
+						endDate = startDate;
+					}
 
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT,
-								LayoutParams.WRAP_CONTENT);
-						ReportViewItem monthReportViewItem = new ReportViewItem(
-								this.getApplicationContext(), startDate,
-								endDate, checkMonthly);
-						reportListView.addView(monthReportViewItem, params);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+							LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+					ReportViewItem monthReportViewItem = new ReportViewItem(
+							this.getApplicationContext(), startDate, endDate,
+							checkMonthly);
+					reportListView.addView(monthReportViewItem, params);
 
-						final Date sDate = startDate;
-						final Date eDate = endDate;
-						monthReportViewItem
-								.setOnClickListener(new OnClickListener() {
+					final Date sDate = startDate;
+					final Date eDate = endDate;
+					monthReportViewItem
+							.setOnClickListener(new OnClickListener() {
 
-									public void onClick(View v) {
-										// TODO Auto-generated method stub
-										onItemClick(checkMonthly, sDate, eDate);
-									}
-								});
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									onItemClick(checkMonthly, sDate, eDate);
+								}
+							});
 
-					} while (monthlyEntry.moveToNext());
-				}
+				} while (monthlyEntry.moveToNext());
 			}
-
 		} else {
 			Cursor weekEntry = SqlHelper.instance
 					.select("Entry",
 							"DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
 							"1=1 order by strftime('%Y', Date) DESC, strftime('%W', Date) DESC");
-			if (weekEntry != null) {
+			if (weekEntry != null && weekEntry.moveToFirst()) {
 				displayNoReportDataText.setVisibility(View.GONE);
-				if (weekEntry.moveToFirst()) {
-					do {
-						String week = weekEntry.getString(weekEntry
-								.getColumnIndex("weekEntry"));
-						String year = weekEntry.getString(weekEntry
-								.getColumnIndex("yearEntry"));
+				do {
+					String week = weekEntry.getString(weekEntry
+							.getColumnIndex("weekEntry"));
+					String year = weekEntry.getString(weekEntry
+							.getColumnIndex("yearEntry"));
 
-						Cursor entry = SqlHelper.instance
-								.select("Entry",
-										"*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
-										"");
-						Date startDate = null;
-						Date endDate = null;
+					Cursor entry = SqlHelper.instance
+							.select("Entry",
+									"*, strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry",
+									"");
+					Date startDate = null;
+					Date endDate = null;
 
-						if (entry != null) {
-							if (entry.moveToFirst()) {
-								do {
-									Date entryDate = Converter.toDate(entry
-											.getString(entry
-													.getColumnIndex("Date")));
-									String entryWeek = entry.getString(entry
-											.getColumnIndex("weekEntry"));
-									String entryYear = entry.getString(entry
-											.getColumnIndex("yearEntry"));
+					if (entry != null) {
+						if (entry.moveToFirst()) {
+							do {
+								Date entryDate = Converter
+										.toDate(entry.getString(entry
+												.getColumnIndex("Date")));
+								String entryWeek = entry.getString(entry
+										.getColumnIndex("weekEntry"));
+								String entryYear = entry.getString(entry
+										.getColumnIndex("yearEntry"));
 
-									if (entryWeek.equals(week)
-											&& entryYear.equals(year)) {
-										if (startDate == null) {
-											startDate = entryDate;
-										} else if (endDate == null) {
-											if (startDate.compareTo(entryDate) < 0) {
-												endDate = entryDate;
-											} else {
-												endDate = startDate;
-												startDate = entryDate;
-											}
+								if (entryWeek.equals(week)
+										&& entryYear.equals(year)) {
+									if (startDate == null) {
+										startDate = entryDate;
+									} else if (endDate == null) {
+										if (startDate.compareTo(entryDate) < 0) {
+											endDate = entryDate;
 										} else {
-											if (startDate.compareTo(entryDate) < 0) {
-												endDate = entryDate;
-											} else {
-												endDate = startDate;
-												startDate = entryDate;
-											}
+											endDate = startDate;
+											startDate = entryDate;
+										}
+									} else {
+										if (startDate.compareTo(entryDate) < 0) {
+											endDate = entryDate;
+										} else {
+											endDate = startDate;
+											startDate = entryDate;
 										}
 									}
-								} while (entry.moveToNext());
-							}
+								}
+							} while (entry.moveToNext());
 						}
+					}
 
-						if (endDate == null) {
-							endDate = startDate;
-						}
+					if (endDate == null) {
+						endDate = startDate;
+					}
 
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT,
-								LayoutParams.WRAP_CONTENT);
-						ReportViewItem weekReportViewItem = new ReportViewItem(
-								this, startDate, endDate, checkMonthly);
-						reportListView.addView(weekReportViewItem, params);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+							LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+					ReportViewItem weekReportViewItem = new ReportViewItem(
+							this, startDate, endDate, checkMonthly);
+					reportListView.addView(weekReportViewItem, params);
 
-						final Date sDate = startDate;
-						final Date eDate = endDate;
-						weekReportViewItem
-								.setOnClickListener(new OnClickListener() {
+					final Date sDate = startDate;
+					final Date eDate = endDate;
+					weekReportViewItem
+							.setOnClickListener(new OnClickListener() {
 
-									public void onClick(View v) {
-										// TODO Auto-generated method stub
-										onItemClick(checkMonthly, sDate, eDate);
-									}
-								});
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									onItemClick(checkMonthly, sDate, eDate);
+								}
+							});
 
-					} while (weekEntry.moveToNext());
-				}
+				} while (weekEntry.moveToNext());
 			}
 		}
 	}

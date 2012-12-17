@@ -1,260 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- These are common resources for app -->
-    <string name="app_name">Money Tracker</string>
-    <string name="menu_settings">Thiết lập</string>
-    <string name="menu_import">Nhập…</string>
-    <string name="menu_export">Xuất…</string>
-    <string name="note"><u>Chú thích</u></string>
-    <string name="saved">Đã lưu</string>
-    <string name="percent">%</string>
-    <string name="error_save">Lỗi khi lưu trữ</string>
-    <string name="error_load">Lỗi khi tải dữ liệu</string>
-    <string name="title_activity_home">Money Tracker</string>
-    <string name="time_token">:</string>
-    <string name="dummy_data">Dummy data</string>
-    <string name="no_data">Không có dữ liệu</string>
-    <string name="file_not_exist">Tệp tin không tồn tại</string>
-    <string name="image_icon_description">Image of tab</string>
-    <string name="delete_confirm">Xóa?</string>
-    <string name="success">Thành công</string>
-    <string name="others">Khác…</string>
-    <string name="hours">tiếng</string>
-    <string name="minutes">phút</string>
-    <string name="days">ngày</string>
-    <string name="weeks">tuần</string>
-    <string name="existed_category_message">Mục này đã tồn tại</string>
-    <string name="input_dialog_title">Nhập giá trị</string>
-    <string name="ok">Đồng ý</string>
-    <string name="cancel">Hủy bỏ</string>
-    <string name="yes">Có</string>
-    <string name="no">Không</string>
-    <string name="month">Tháng</string>
-    <string name="week">Tuần</string>
-
-    <!-- These are resources for Borrowing & Lending function. -->
-    <string name="borrowing_title">Vay</string>
-    <string name="lending_tilte">Cho vay</string>
-    <string name="total_borrow_money">Tổng tiền vay:</string>
-    <string name="total_lend_money">Tổng tiền cho vay:</string>
-    <string name="total_revenue">Tổng lãi suất:</string>
-    <string name="borrow_lend_name">Tên</string>
-    <string name="borrow_lend_add_phone">Điện thoại</string>
-    <string name="borrow_lend_add_address">Địa chỉ</string>
-    <string name="borrow_lend_start_date">Ngày vay:</string>
-    <string name="borrow_lend_end_date">Ngày đáo hạn:</string>
-    <string name="borrow_lend_phone">Điện thoại:</string>
-    <string name="borrow_lend_address">Địa chỉ:</string>
-    <string name="borrow_lend_total_money">Tổng tiền:</string>
-    <string name="borrow_lend_interest">Lãi suất:</string>
-    <string name="borrow_lend_interest_type">Kiểu lãi:</string>
-    <string name="borrow_lend_borrower">Người vay:</string>
-    <string name="borrow_lend_lender">Người cho vay:</string>
-    <string name="borrow_lend_current_interest">Lãi suất hiện tại:</string>
-    <string name="borrow_add_title">Thêm khoản vay</string>
-    <string name="lend_add_title">Thêm khoản cho vay</string>
-    <string name="borrow_edit_title">Sửa khoản vay</string>
-    <string name="lend_edit_title">Sửa khoản cho vay</string>
-    <string name="borrow_view_title">Xem khoản vay</string>
-    <string name="lend_view_title">Xem khoản cho vay</string>
-    <string name="simple_interest">Lãi đơn</string>
-    <string name="compound_interest">Lãi kép</string>
-
-    <!-- These are resources for Schedule function. -->
-    <string name="schedule_start_day">Từ</string>
-    <string name="schedule_end_day">Đến</string>
-    <string name="schedule_budget">Tổng</string>
-    <string name="schedule_living_cost">Chi phí</string>
-    <string name="schedule_budget_hint">Ngân sách</string>
-    <string name="schedule_duration">Khoảng thời gian</string>
-    <string name="schedule_exist_message">Đã có kế hoạch trong thời gian này!\r\nXin vui lòng chọn lại!</string>
-    <string name="schedule_detail_budget_title">Tổng ngân sách:</string>
-    <string name="schedule_title">Kế hoạch</string>
-    <string name="schedule_please_input_total_budget">Hãy nhập tổng ngân sách</string>
-    <string name="schedule_overbudget">Đã vượt ngân sách,\r\ntăng thêm ngân sách?</string>
-    <string name="schedule_over_total_budget">Tổng ngân sách không đủ</string>
-    <string name="schedule_empty_exists">Còn bản ghi đang trống</string>
-    <string name="schedule_add_title">Kế hoạch mới</string>
-    <string name="schedule_edit_title">Sửa kế hoạch</string>
-    <string name="schedule_new_category">Mục mới</string>
-    <string name="schedule_view_detail_title">Xem kế hoạch</string>
-    <string name="schedule_detail_average_title">Trung bình/ Ngày:</string>
-    <string name="schedule_menu_title">Danh mục</string>
-
-    <!-- These are resources for Synchronization function -->
-    <string name="sync_view_title">Đồng bộ</string>
-    <string name="sync_view_setting_title">Thiết lập đồng bộ</string>
-    <string name="sync_view_auto_sync">Tự động đồng bộ</string>
-    <string name="sync_view_auto_sync_description">Dữ liệu của ứng dụng sẽ được tự động đồng bộ</string>
-    <string name="sync_view_account_management">Quản lý tài khoản</string>
-    <string name="sync_view_account_active">Bật</string>
-    <string name="sync_view_account_deactive">Tắt</string>
-    <string name="sync_view_new_account">Tạo tài khoản</string>
-    <string name="sync_success">Đồng bộ thành công</string>
-    <string name="sync_fail">Đồng bộ thất bại</string>
-    <string name="sync_waiting_synchronization">Đang đồng bộ…</string>
-    <string name="sync_no_account_message">Bạn cần tài khoản để đồng bộ.\r\nThêm mới?</string>
-
-    <!-- These are resources for Warning function -->
-    <string name="warning_title">Thiết lập cảnh báo chung</string>
-    <string name="warning_schedule_title">Kế hoạch</string>
-    <string name="warning_borrow_title">Cho vay và nợ</string>
-    <string name="warning_schedule_warn_before">Cảnh báo khi đến</string>
-    <string name="warning_borrow_warn_before">Cảnh báo trước khi đáo hạn</string>
-    <string name="warning_ring">Nhạc chuông</string>
-    <string name="warning_borrow_overbudget">Đã vượt quá {0}% so với kế hoạch!!!</string>
-    <string name="warning_remain">Nhắc lại</string>
-
-    <string-array name="warning_ring_array">
-        <item>Không có</item>
-        <item>Mặc định</item>
-        <item>Thư mục</item>
-    </string-array>
-    <string-array name="warning_remain_array">
-        <item>Không bao giờ</item>
-        <item>10 phút</item>
-        <item>30 phút</item>
-        <item>1 tiếng</item>
-        <item>Khác…</item>
-    </string-array>
-    <string-array name="warning_schedule_warn_array">
-        <item>25 %</item>
-        <item>50 %</item>
-        <item>70 %</item>
-        <item>100 %</item>
-        <item>Khác…</item>
-    </string-array>
-    <string-array name="warning_borrow_warn_array">
-        <item>1 tiếng</item>
-        <item>10 tiếng</item>
-        <item>1 ngày</item>
-        <item>1 tuần</item>
-        <item>Khác…</item>
-    </string-array>
-
-    <!-- These are resources for Entry function -->
-    <string name="entry_management_title">Quản lý chi tiêu</string>
-    <string name="entry_expense_title">Chi phí</string>
-    <string name="entry_income_title">Thu nhập</string>
-    <string name="entry_new_expense_title">Thêm chi phí</string>
-    <string name="entry_new_income_title">Thêm thu nhập</string>
-    <string name="entry_price_hint">Giá</string>
-    <string name="entry_detect_record">Phát hiện {0} bản ghi</string>
-    <string name="entry_unformated_data">Định dạng sai</string>
-    <string name="entry_view_week_item_title">Week</string>
-    <string name="entry_product_name_hint">Tên sản phẩm</string>
-    <string name="entry_daily_total_expense_title">Tổng chi phí ngày:</string>
-    <string name="entry_daily_total_income_title">Tổng thu nhập ngày:</string>
-    <string name="entry_total_budget_week">Ngân sách tuần còn lại:</string>
-    <string name="entry_total_budget_month">Ngân sách tháng còn lại:</string>
-    <string name="entry_daily_expense_title">Xem chi phí</string>
-    <string name="entry_daily_income_title">Xem thu nhập</string>
-    <string name="entry_daily_not_for_furture">Giới hạn đến thời gian hiện tại</string>
-    <string name="entry_edit_expense_title">Sửa chi phí</string>
-    <string name="entry_edit_income_title">Sửa thu nhập</string>
-    <string name="entry_edit_nfc_message">Quẹt thẻ NFC qua thiết bị…</string>
-
-    <!-- These are resources for Entry function -->
-    <string name="entry_edit_menu_title">Menu</string>
-    <string name="entry_edit_qr_code">QR Code</string>
-    <string name="entry_edit_nfc">NFC</string>
-
-    <!-- These are resources for Export/Import function -->
-    <string name="import_wrong_format">Lỗi định dạng.\r\nKhông thể nhập…</string>
-
-    <!-- These are resources for Report function -->
-    <string name="report_management_title">Báo cáo</string>
-    <string name="report_management_detail_budget">Budget</string>
-    <string name="report_management_detail_income">Income</string>
-    <string name="report_management_detail_expense">Expense</string>
-    <string name="report_management_detail_borrowing">Borrowing</string>
-    <string name="report_management_detail_lending">Lending</string>
-    <string name="report_management_custom_dialog_check_all">Chọn tất cả</string>
-    <string name="report_management_custom_dialog_uncheck_all">Bỏ chọn tất cả</string>
-    <string name="report_in_month">Thống kê trong tháng</string>
-    <string name="report_in_week">Thống kê trong tuần</string>
-    <string name="report_between_month">Thống kê giữa các tháng</string>
-    <string name="report_between_week">Thống kế giữa các tuần</string>
-    <string name="report_chart_tab_title">Biểu đồ</string>
-    <string name="report_expense_schedule_stacked_bar_chart">Thực tế/Kế hoạch: </string>
-    <string name="report_select_chart">Thống kê chi phí</string>
-    <string name="report_pie_chart_total_money">Tổng tiền:</string>
-    <string name="report_bar_chart_month_title">So sánh giữa các tháng</string>
-    <string name="report_bar_chart_week_title">So sánh giữa các tuần</string>
-    <string name="report_bar_chart_max_value">Chi Phí Cao Nhất</string>
-    <string name="report_bar_chart_expense_schedule">Kế hoạch - Thực tế</string>
-    <string name="report_no_data_compare_date">Không có dữ liệu để so sánh</string>
-
-    <!-- Others resources -->
-    <string name="title_activity_borrow_view">BorrowViewActivity</string>
-    <string name="title_activity_lend_view">LendViewActivity</string>
-    <string name="title_activity_borrow_lend_insert">BorrowLendInsertActivity</string>
-    <string name="schedule_detail_activity_path">money.Tracker.presentation.activities.ScheduleDetailViewActivity</string>
-
-    <string-array name="currency_symbol">
-        <item>VND</item>
-        <item>USD</item>
-    </string-array>
-    <string-array name="category_name">
-        <item>Sinh nhật</item>
-        <item>Thức ăn</item>
-        <item>Giải trí</item>
-        <item>Mua sắm</item>
-        <item>Khác…</item>
-    </string-array>
-    <string-array name="category_color">
-        <item>#99FF0000</item>
-        <item>#99F4A460</item>
-        <item>#99B8860B</item>
-        <item>#99F08080</item>
-        <item>#99C71585</item>
-    </string-array>
-    <string-array name="color_list">
-        <item>#99FFFF00</item>
-        <item>#99FF8C00</item>
-        <item>#99FF1493</item>
-        <item>#99A52A2A</item>
-        <item>#999ACD32</item>
-        <item>#999370D8</item>
-        <item>#998B4513</item>
-        <item>#998B008B</item>
-        <item>#998B0000</item>
-        <item>#99808000</item>
-        <item>#99800000</item>
-        <item>#997FFF00</item>
-        <item>#99708090</item>
-        <item>#994B0082</item>
-        <item>#994169E1</item>
-        <item>#9940E0D0</item>
-        <item>#9932CD32</item>
-        <item>#992E8B57</item>
-        <item>#99006400</item>
-        <item>#990000FF</item>
-        <item>#9900008B</item>
-        <item>#99000000</item>
-    </string-array>
-    <string-array name="schedule_context_menu_item">
-        <item>Sửa</item>
-        <item>Xóa</item>
-    </string-array>
-    <string-array name="entry_edit_context_menu_item">
-        <item>Get QR</item>
-        <item>Get NFC</item>
-    </string-array>
-
-    <color name="transparent">#00FFFFFF</color>
-    <color name="white_text_color">#F9000000</color>
-    <color name="white08">#80FFFFFF</color>
-    <color name="white_text_color_transparent">#605599FF</color>
-    <color name="blue_background">#432230FF</color>
-    <color name="light_gray_background">#33F8F8F8</color>
-    <color name="brown_line">#FFDDA01D</color>
-
-    <string name="title_activity_report_chart">ReportChartActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_report_view_chart">ReportViewChartActivity</string>
-    <string name="title_activity_report_main_view_chart">ReportMainViewChartActivity</string>
-    <string name="title_activity_report_view_bar_chart">ReportViewBarChartActivity</string>
-    <string name="score_symbol">-</string>
-
+    <string name="menu_settings">設定</string>
+    <string name="menu_import">のインポート…</string>
+    <string name="menu_export">のエクスポート…</string>
+    <string name="note"><u>注意</u></string>
+    <string name="saved">は 保存</string>
+    <string name="select_all"><![CDATA[は、すべて]]></string>
+    <string name="percent">％</string>
+    <string name="error_save">エラーが発生しました保存</string>
+    <string name="error_load">ローディングエラー</string>
+    <string name="title_activity_home">マネートラッカー</string>
+    <string name="time_token">：</string>
+    <string name="dummy_data">ダミーデータ</string>
+    <string name="no_data">データがありません</string>
+    <string name="file_not_exist">ファイルが見つかりません</string>
+    <string name="image_icon_description">画像</string>
+    <string name="delete_confirm">削除</string>
+    <string name="success">成功</string>
+    <string name="others">その他…</string>
+    <string name="hours">時</string>
+    <string name="minutes">分</string>
+    <string name="days">日</string>
+    <string name="weeks">週間</string>
+    <string name="existed_category_message">存在していたカテゴリ</string>
+    <string name="input_dialog_title">入力値</string>
+    <string name="choose_account_dialog_title">アカウントを選択します。</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="month">月刊</string>
+    <string name="week">ウィークリー</string>
 </resources>
