@@ -244,5 +244,9 @@ public class TabViewActivity extends Activity {
 				index++;
 			} while (category.moveToNext());
 		}
+		else{
+			mNote.setVisibility(View.GONE);
+			mChartLegend.setVisibility(View.GONE);
+		}
 	}
 }

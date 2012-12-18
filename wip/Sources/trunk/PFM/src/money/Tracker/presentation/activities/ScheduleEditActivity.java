@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
@@ -230,7 +231,8 @@ public class ScheduleEditActivity extends Activity {
 						if (item != null
 								&& getResources().getString(R.string.others)
 										.equals(item.getName())) {
-							parent.setVisibility(View.GONE);
+							((RelativeLayout) parent.getParent())
+									.setVisibility(View.GONE);
 							View text = (View) parent.getTag();
 							text.setVisibility(View.VISIBLE);
 							text.requestFocus();
