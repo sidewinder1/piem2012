@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- These are common resources for app -->
+    <string name="app_name">Money Tracker</string>
+    <string name="general_settings">一般的な設定</string>
+    <string name="updated">更新した</string>
+    <string name="update_after_close_app">アプリの再起動後に変更が更新されます</string>
+    <string name="language">言語</string>
+    <string name="menu_settings">設定</string>
+    <string name="menu_import">のインポート…</string>
+    <string name="menu_export">のエクスポート…</string>
+    <string name="note"><u>注意</u></string>
+    <string name="saved">は 保存</string>
+    <string name="select_all"><![CDATA[は、すべて]]></string>
+    <string name="percent">％</string>
+    <string name="error_save">エラーが発生しました保存</string>
+    <string name="error_load">ローディングエラー</string>
+    <string name="title_activity_home">マネートラッカー</string>
+    <string name="time_token">：</string>
+    <string name="dummy_data">ダミーデータ</string>
+    <string name="no_data">データがありません</string>
+    <string name="file_not_exist">ファイルが見つかりません</string>
+    <string name="image_icon_description">画像</string>
+    <string name="delete_confirm">削除</string>
+    <string name="success">成功</string>
+    <string name="others">その他…</string>
+    <string name="hours">時</string>
+    <string name="minutes">分</string>
+    <string name="days">日</string>
+    <string name="weeks">週間</string>
+    <string name="existed_category_message">存在していたカテゴリ</string>
+    <string name="input_dialog_title">入力値</string>
+    <string name="choose_account_dialog_title">アカウントを選択します。</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="month">月刊</string>
+    <string name="week">ウィークリー</string>
+
+    <!-- These are resources for Borrowing & Lending function. -->
+    <string name="borrowing_title">借りる</string>
+    <string name="lending_tilte">貸す</string>
+    <string name="total_borrow_money">トータルお金を借りる：</string>
+    <string name="total_lend_money">合計貸出金：</string>
+    <string name="total_revenue">利息合計：</string>
+    <string name="borrow_lend_name">名</string>
+    <string name="borrow_lend_add_phone">電話番号</string>
+    <string name="borrow_lend_add_address">アドレス</string>
+    <string name="borrow_lend_start_date">開始日</string>
+    <string name="borrow_lend_end_date">日付を期限切れ：</string>
+    <string name="borrow_lend_phone">電話番号：</string>
+    <string name="borrow_lend_address">アドレス：</string>
+    <string name="borrow_lend_total_money">合計：</string>
+    <string name="borrow_lend_interest">関係：</string>
+    <string name="borrow_lend_interest_type">インタレストタイプ：</string>
+    <string name="borrow_lend_borrower">借入を：</string>
+    <string name="borrow_lend_lender">貸し手を：</string>
+    <string name="borrow_lend_current_interest">現在関心：</string>
+    <string name="borrow_add_title">新規借入</string>
+    <string name="lend_add_title">新規貸付</string>
+    <string name="borrow_edit_title">更新借り入れ</string>
+    <string name="lend_edit_title">アップデート融資</string>
+    <string name="borrow_view_title">ビュー借り入れ</string>
+    <string name="lend_view_title">ビュー融資</string>
+    <string name="simple_interest">シンプル</string>
+    <string name="compound_interest">化合物</string>
+    <string name="borrow_lend_warning_name_total_money">は、入力名と金額の合計してください</string>
+    <string name="borrow_lend_warning_interest_rate_expired_date">を入力してくださいまたは関心の両方を無視しての日付有効期限が切れ</string>
+    <string name="borrow_lend_warning_interest_rate_0">は、金利の値は 0 をより大きくなければなりません</string>
+    <string name="borrow_lend_warning_interest_rate_100">興味値をは100％をより小さくなければなりません</string>
+
+    <!-- These are resources for Schedule function. -->
+    <string name="schedule_budget">合計</string>
+    <string name="schedule_living_cost">原価は</string>
+    <string name="schedule_budget_hint">予算</string>
+    <string name="schedule_duration">時間</string>
+    <string name="schedule_exist_message">がこの時間のスケジュールを持ちなさい！はしばらく入力再び！</string>
+    <string name="schedule_detail_budget_title">総予算：</string>
+    <string name="schedule_title">スケジュール</string>
+    <string name="schedule_please_input_total_budget">はを入力してください総予算</string>
+    <string name="schedule_overbudget">予算オーバーのは、\r\nもっと？</string>
+    <string name="schedule_over_total_budget">総予算が足りない</string>
+    <string name="schedule_empty_exists">のフィールドをは空</string>
+    <string name="schedule_add_title">新しいスケジュール</string>
+    <string name="schedule_edit_title">アップデートスケジュール</string>
+    <string name="schedule_new_category">新カテゴリ</string>
+    <string name="schedule_view_detail_title">表示スケジュール</string>
+    <string name="schedule_detail_average_title">平均/日：</string>
+    <string name="schedule_menu_title">メニュー</string>
+
+    <!-- These are resources for Synchronization function -->
+    <string name="sync_view_title">同期</string>
+    <string name="sync_view_setting_title">同期設定</string>
+    <string name="sync_view_auto_sync">オートシンク</string>
+    <string name="sync_view_auto_sync_description">アプリケーションデータは自動的に同期されます</string>
+    <string name="sync_view_account_management">アカウント管理</string>
+    <string name="sync_view_account_active">オン</string>
+    <string name="sync_view_account_deactive">オフ</string>
+    <string name="sync_view_new_account">新しいアカウントは</string>
+    <string name="sync_success">同期成功</string>
+    <string name="sync_fail">同期は失敗</string>
+    <string name="sync_waiting_synchronization">同期…</string>
+    <string name="sync_no_account_message">が同期のためのアカウントが必要です。は\r\n新しい？</string>
+    <!-- These are resources for Warning function -->
+    <string name="warning_title">全般警告設定</string>
+    <string name="warning_schedule_title">スケジュール</string>
+    <string name="warning_borrow_title">の借入と貸付</string>
+    <string name="warning_schedule_warn_before">警告を前に</string>
+    <string name="warning_borrow_warn_before">期限切れの日付を前警告</string>
+    <string name="warning_ring">リング</string>
+    <string name="warning_borrow_overbudget">総予算の{0}％以上</string>
+    <string name="warning_remain">思い出させる</string>
+
+    <string-array name="warning_ring_array">
+        <item>なし</item>
+        <item>のデフォルト</item>
+        <item>の借入</item>
+    </string-array>
+    <string-array name="warning_remain_array">
+        <item>決して</item>
+        <item>10分</item>
+        <item>30分</item>
+        <item>1時間</item>
+        <item>その他…</item>
+    </string-array>
+    <string-array name="warning_schedule_warn_array">
+        <item>25％</item>
+        <item>50％</item>
+        <item>70％</item>
+        <item>100％</item>
+        <item>その他…</item>
+    </string-array>
+    <string-array name="warning_borrow_warn_array">
+        <item>1時間</item>
+        <item>10時間</item>
+        <item>1日</item>
+        <item>1週間</item>
+        <item>その他…</item>
+    </string-array>
+    
+ <!-- These are resources for Entry function -->
+  <string name="entry_management_title">収入と支出の管理</string>
+    <string name="entry_expense_title">経費</string>
+    <string name="entry_income_title">所得</string>
+    <string name="entry_new_expense_title">新しい経費</string>
+    <string name="entry_new_income_title">新たな収入</string>
+    <string name="entry_price_hint">価格</string>
+    <string name="entry_detect_record">検出された{0}レコード</string>
+    <string name="entry_unformated_data">間違ったフォーマット</string>
+    <string name="entry_view_week_item_title">週</string>
+    <string name="entry_product_name_hint">製品名</string>
+    <string name="entry_daily_total_expense_title">日総費用：</string>
+    <string name="entry_daily_total_income_title">日総収入：</string>
+    <string name="entry_total_budget_week">週の予算は残っています：</string>
+    <string name="entry_total_budget_month">今月の予算が残っています：</string>
+    <string name="entry_daily_expense_title">費用を見る</string>
+    <string name="entry_daily_income_title">収入を見る</string>
+    <string name="entry_daily_not_for_furture">ない将来のために</string>
+    <string name="entry_edit_expense_title">費用を更新</string>
+    <string name="entry_edit_income_title">収入を更新</string>
+    <string name="entry_edit_nfc_message">お使いのデバイスによるスキャンNFCタグ…</string>
+
+    <!-- These are resources for Entry function -->
+    <string name="entry_edit_menu_title">メニュー</string>
+    <string name="entry_edit_qr_code">QRコード</string>
+
+    
+    <!-- These are resources for Export/Import function -->
+    <string name="import_wrong_format">不正なフォーマット。\r\nインポートすることはできません…</string>
+
+    <!-- These are resources for Report function -->
+    <string name="report_management_title">レポート</string>
+    <string name="report_management_detail_budget">予算</string>
+    <string name="report_management_detail_income">収入</string>
+    <string name="report_management_detail_expense">費用</string>
+    <string name="report_management_detail_borrowing">借り入れ</string>
+    <string name="report_management_detail_lending">融資</string>
+    <string name="report_management_custom_dialog_check_all">すべてを選択</string>
+    <string name="report_management_custom_dialog_uncheck_all">すべての選択を解除</string>
+    <string name="report_in_month">月報</string>
+    <string name="report_in_week">週報</string>
+    <string name="report_between_month">ヶ月間のレポート</string>
+    <string name="report_between_week">週間のレポート</string>
+    <string name="report_chart_tab_title">チャート</string>
+    <string name="report_expense_schedule_stacked_bar_chart">費用/スケジュール：</string>
+    <string name="report_select_chart">経費報告書</string>
+    <string name="report_pie_chart_total_money">合計：</string>
+    <string name="report_bar_chart_month_title">ヶ月を比較</string>
+    <string name="report_bar_chart_week_title">週を比較</string>
+    <string name="report_bar_chart_max_value">最高経費</string>
+    <string name="report_bar_chart_expense_schedule">スケジュール - 経費</string>
+    <string name="report_no_data_compare_date">比較するためのデータはありません</string>
+
+    <string-array name="category_name">
+        <item>誕生日</item>
+        <item>食べ物</item>
+        <item>エンターテインメント</item>
+        <item>買い物</item>
+        <item>その他…</item>
+    </string-array>
+    <string-array name="schedule_context_menu_item">
+        <item>編集</item>
+        <item>削除</item>
+    </string-array>
+ 
+</resources>
