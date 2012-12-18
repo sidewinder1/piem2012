@@ -111,7 +111,10 @@ public class BorrowLendViewDetailActivity extends Activity {
 		}else
 		{
 			currentInterestTitle.setText(getResources().getString(R.string.borrow_lend_total_money_plus_current_interest));
-			totalInterestTextView.setText(Converter.toString(totalMoney));
+			if (totalMoney != 0)
+				totalInterestTextView.setText(Converter.toString(totalMoney));
+			else
+				totalInterestTextView.setText(getResources().getString(R.string.borrow_lend_no_interest));
 		}
 
 		// TODO: TuanNA
