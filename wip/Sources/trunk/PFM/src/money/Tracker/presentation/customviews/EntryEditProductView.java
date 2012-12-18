@@ -1,6 +1,5 @@
 package money.Tracker.presentation.customviews;
 
-import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
@@ -147,17 +146,18 @@ public class EntryEditProductView extends LinearLayout {
 						return;
 					}
 
-					item.removeItem();
+					if (list.getTag() == null) {
+						list.setTag("");
+					}
+
+					if (item.Id != -1) {
+						list.setTag(list.getTag() + "" + item.Id + ",");
+					}
+
 					list.removeView(item);
 				}
 			}
 		});
-	}
-
-	public void removeItem() {
-		if (Id != -1) {
-			SqlHelper.instance.delete("EntryDetail", "Id = " + Id);
-		}
 	}
 
 	public String checkBeforeSave() {

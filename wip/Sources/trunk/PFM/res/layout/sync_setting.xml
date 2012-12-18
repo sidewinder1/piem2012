@@ -36,7 +36,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <TextView
+                <!-- Begin of general setting -->
+
+
+                <!--
+               <TextView
                     style="@style/normalText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -61,8 +65,8 @@
                     <RelativeLayout
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20sp"
                         android:layout_gravity="left|center_vertical"
+                        android:layout_margin="20sp"
                         android:layout_marginLeft="15dp"
                         android:layout_weight="4" >
 
@@ -83,13 +87,14 @@
                             android:textColor="@color/white_text_color"
                             android:textSize="18sp" />
                     </RelativeLayout>
-                </LinearLayout>
-
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:layout_margin="20sp"
-                    android:background="@color/brown_line" />
+                    android:background="@color/brown_line" />
+                -->
+                <!-- End of general setting -->
 
                 <TextView
                     style="@style/normalText"
@@ -307,9 +312,7 @@
                                     android:textColor="@color/white_text_color"
                                     android:textSize="18sp" />
                             </RelativeLayout>
-                        </LinearLayout
-                        -->
-
+                        </LinearLayout
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -351,7 +354,9 @@
                                     android:textColor="@color/white_text_color"
                                     android:textSize="18sp" />
                             </RelativeLayout>
-                        </LinearLayout>
+                        </LinearLayout>
+                        -->
+
                     </LinearLayout>
                 </LinearLayout>
 

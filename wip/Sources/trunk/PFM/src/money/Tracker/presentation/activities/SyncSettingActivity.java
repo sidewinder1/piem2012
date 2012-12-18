@@ -37,8 +37,8 @@ import android.widget.TextView;
 
 public class SyncSettingActivity extends Activity {
 	public static LinearLayout sAccountList;
-	private Spinner mScheduleWarn, mScheduleRemind, mBorrowWarn, mLanguage,
-			mBorrowRing, mBorrowRemind;
+	private Spinner mScheduleWarn, // mScheduleRemind, mLanguage,
+	mBorrowWarn, mBorrowRing, mBorrowRemind;
 	private CheckBox mAutoSync;
 	private ArrayList<String> mScheduleWarnArr, mScheduleRemindArr,
 			mBorrowWarnArr, mBorrowRemindArr, mLanguageArr, mBorrowRingArr;
@@ -52,22 +52,23 @@ public class SyncSettingActivity extends Activity {
 		sAccountList = (LinearLayout) findViewById(R.id.sync_view_account_list);
 		mAutoSync = (CheckBox) findViewById(R.id.sync_auto_checkbox);
 		mScheduleWarn = (Spinner) findViewById(R.id.warning_schedule_warn_before);
-		mLanguage = (Spinner) findViewById(R.id.general_setting_language);
-		mScheduleRemind = (Spinner) findViewById(R.id.warning_schedule_remain);
+		//TODO: remove language feature.
+//		mLanguage = (Spinner) findViewById(R.id.general_setting_language);
+//		mScheduleRemind = (Spinner) findViewById(R.id.warning_schedule_remain);
 		mBorrowWarn = (Spinner) findViewById(R.id.warning_borrow_warn_before);
 		mBorrowRing = (Spinner) findViewById(R.id.warning_borrow_ring);
 		mBorrowRemind = (Spinner) findViewById(R.id.warning_borrow_remain);
 
 		mScheduleWarn.setOnItemSelectedListener(itemSelected);
-		mLanguage.setOnItemSelectedListener(itemSelected);
-		mScheduleRemind.setOnItemSelectedListener(itemSelected);
+//		mLanguage.setOnItemSelectedListener(itemSelected);
+//		mScheduleRemind.setOnItemSelectedListener(itemSelected);
 		mBorrowWarn.setOnItemSelectedListener(itemSelected);
 		mBorrowRing.setOnItemSelectedListener(itemSelected);
 		mBorrowRemind.setOnItemSelectedListener(itemSelected);
 
 		mScheduleWarn.setTag(1);
-		mLanguage.setTag(2);
-		mScheduleRemind.setTag(3);
+//		mLanguage.setTag(2);
+//		mScheduleRemind.setTag(3);
 		mBorrowWarn.setTag(4);
 		mBorrowRing.setTag(5);
 		mBorrowRemind.setTag(6);
@@ -93,7 +94,7 @@ public class SyncSettingActivity extends Activity {
 				android.R.layout.simple_spinner_item, mBorrowRingArr);
 		borrowRingAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mLanguage.setAdapter(languageAdapter);
+//		mLanguage.setAdapter(languageAdapter);
 
 		mBorrowRing.setAdapter(borrowRingAdapter);
 
@@ -101,7 +102,7 @@ public class SyncSettingActivity extends Activity {
 				this, android.R.layout.simple_spinner_item, mScheduleRemindArr);
 		scheduleRemindAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mScheduleRemind.setAdapter(scheduleRemindAdapter);
+//		mScheduleRemind.setAdapter(scheduleRemindAdapter);
 
 		ArrayAdapter<String> borrowRemindAdapter = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, mBorrowRemindArr);
@@ -247,11 +248,11 @@ public class SyncSettingActivity extends Activity {
 			getIndexFromStringArray(warningSetting.getString(0), getResources()
 					.getString(R.string.percent), mScheduleWarnArr,
 					mScheduleWarn);
-			getIndexFromStringArray(warningSetting.getString(6), "",
-					mLanguageArr, mLanguage);
-			getIndexFromStringArray(warningSetting.getString(2), " "
-					+ getResources().getString(R.string.minutes),
-					mScheduleRemindArr, mScheduleRemind);
+//			getIndexFromStringArray(warningSetting.getString(6), "",
+//					mLanguageArr, mLanguage);
+//			getIndexFromStringArray(warningSetting.getString(2), " "
+//					+ getResources().getString(R.string.minutes),
+//					mScheduleRemindArr, mScheduleRemind);
 			getIndexFromStringArray(warningSetting.getString(3), " "
 					+ getResources().getString(R.string.hours), mBorrowWarnArr,
 					mBorrowWarn);
@@ -267,16 +268,17 @@ public class SyncSettingActivity extends Activity {
 			ArrayList<String> list, Spinner parentSpinner) {
 
 		int valueIndex = -1;
-		if (parentSpinner == mLanguage) {
-			valueIndex = 0;
-			for (String code : getResources().getStringArray(R.array.language_codes)){
-				if (code.equals(key)){
-					break;
-				}
-
-				valueIndex++;
-			}
-		} else {
+//		if (parentSpinner == mLanguage) {
+//			valueIndex = 0;
+//			for (String code : getResources().getStringArray(R.array.language_codes)){
+//				if (code.equals(key)){
+//					break;
+//				}
+//
+//				valueIndex++;
+//			}
+//		} else 
+		{
 			int div = getResources().getString(R.string.hours).equals(
 					unit.trim()) ? 60 : 1;
 			if (key.startsWith("#")) {
@@ -499,10 +501,10 @@ public class SyncSettingActivity extends Activity {
 			updateConfig("ScheduleWarn", value);
 			break;
 		case 3:
-			createSpinnerItem(value,
-					" " + getResources().getString(R.string.minutes),
-					mScheduleRemind, mScheduleRemindArr);
-			updateConfig("ScheduleRemind", value);
+//			createSpinnerItem(value,
+//					" " + getResources().getString(R.string.minutes),
+//					mScheduleRemind, mScheduleRemindArr);
+//			updateConfig("ScheduleRemind", value);
 			break;
 		case 4:
 			createSpinnerItem(value,
