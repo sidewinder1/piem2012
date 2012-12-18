@@ -478,8 +478,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				msgs[i] = (NdefMessage) rawMsgs[i];
 
 				for (NdefRecord record : msgs[i].getRecords()) {
-					String[] result = NfcHelper.parse(record).getTag()
-							.split("(t|T)(ê|e|E|Ê)(n|N)");
+					String[] result = NfcHelper
+							.parse(record)
+							.getTag()
+							.split("((t|T)(ê|e|E|Ê)(n|N))|(((P|p)(R|r)(o|O)(d|D)(u|U)(c|C)(t|T) )?((n|N)(a|A)(m|M)(e|E)))");
 
 					for (String string : result) {
 						if ("".equals(string.trim())) {
