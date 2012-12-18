@@ -67,4 +67,8 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
 	}
+
+	public void navigateToView() {
+			return;
+		}
 }

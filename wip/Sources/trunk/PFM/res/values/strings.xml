@@ -46,7 +46,7 @@
     <string name="borrow_lend_name">Tên</string>
     <string name="borrow_lend_add_phone">Điện thoại</string>
     <string name="borrow_lend_add_address">Địa chỉ</string>
-    <string name="borrow_lend_start_date">Ngày vay:</string>
+    <string name="borrow_lend_start_date">Ngày bắt đầu:</string>
     <string name="borrow_lend_end_date">Ngày đáo hạn:</string>
     <string name="borrow_lend_phone">Điện thoại:</string>
     <string name="borrow_lend_address">Địa chỉ:</string>

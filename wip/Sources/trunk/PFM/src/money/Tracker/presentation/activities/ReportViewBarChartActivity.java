@@ -196,4 +196,12 @@ public class ReportViewBarChartActivity extends Activity {
 			maxDate = dateString;
 		}
 	}
+
+	public void getChart() {
+			return;
+		}
+
+	public void navigateToView() {
+			return;
+		}
 }
