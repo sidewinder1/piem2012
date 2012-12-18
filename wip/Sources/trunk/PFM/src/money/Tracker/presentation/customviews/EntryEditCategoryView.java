@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -100,7 +101,7 @@ public class EntryEditCategoryView extends LinearLayout {
 						if (item != null
 								&& getResources().getString(R.string.others)
 										.equals(item.getName())) {
-							parent.setVisibility(View.GONE);
+							((RelativeLayout)parent.getParent()).setVisibility(View.GONE);
 							View text = (View) parent.getTag();
 							text.setVisibility(View.VISIBLE);
 							text.requestFocus();
@@ -252,7 +253,7 @@ public class EntryEditCategoryView extends LinearLayout {
 									R.string.existed_category_message));
 					mCategory.setSelection(CategoryRepository.getInstance()
 							.getIndex(mCategoryEdit.getText().toString()));
-					mCategory.setVisibility(View.VISIBLE);
+					((RelativeLayout)mCategory.getParent()).setVisibility(View.VISIBLE);
 					mCategoryEdit.setVisibility(View.GONE);
 					((CategoryAdapter) mCategory.getAdapter())
 							.notifyDataSetChanged();

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.EditText;
 
@@ -18,6 +19,7 @@ public class ScheduleItem extends LinearLayout {
 	private EditText mBudget;
 	public Button addBtn, removeBtn;
 	public EditText mCategoryEdit;
+	public RelativeLayout mComboBox;
 	public long Id;
 
 	public ScheduleItem(Context context, CategoryAdapter categoryAdapter,
@@ -28,6 +30,7 @@ public class ScheduleItem extends LinearLayout {
 		layoutInflater.inflate(R.layout.schedule_edit_item, this, true);
 		Id = id;
 		mCategory = (Spinner) findViewById(R.id.schedule_item_category);
+		mComboBox = (RelativeLayout) findViewById(R.id.schedule_edit_category_combobox);
 		mBudget = (EditText) findViewById(R.id.schedule_item_price);
 		addBtn = (Button) findViewById(R.id.schedule_item_add);
 		removeBtn = (Button) findViewById(R.id.schedule_item_remove);
@@ -46,7 +49,7 @@ public class ScheduleItem extends LinearLayout {
 							getResources().getString(
 									R.string.existed_category_message));
 					mCategory.setSelection(CategoryRepository.getInstance().getIndex(mCategoryEdit.getText().toString()));
-					mCategory.setVisibility(View.VISIBLE);
+					mComboBox.setVisibility(View.VISIBLE);
 					mCategoryEdit.setVisibility(View.GONE);
 					((CategoryAdapter)mCategory.getAdapter()).notifyDataSetChanged();
 				}
