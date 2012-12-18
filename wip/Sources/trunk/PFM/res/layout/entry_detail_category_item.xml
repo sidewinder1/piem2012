@@ -4,48 +4,51 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_marginTop="20sp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical" >
+        android:layout_marginTop="20sp" >
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:id="@+id/entry_detail_expanded_status"
-            android:contentDescription="@string/image_icon_description"
-            android:src="@drawable/combobox_icon" />
+            android:weightSum="4" >
 
-        <TextView
-            android:id="@+id/entry_detail_category_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_toRightOf="@+id/entry_detail_expanded_status"
-            android:text="@string/dummy_data"
-            android:textColor="@color/white_text_color" />
+            <ImageView
+                android:id="@+id/entry_detail_expanded_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:contentDescription="@string/image_icon_description"
+                android:src="@drawable/combobox_icon" />
 
-        <TextView
-            android:id="@+id/entry_detail_category_item_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_toRightOf="@+id/entry_detail_category_item_name"
-            android:text="@string/time_token"
-            android:textColor="@color/white_text_color" />
+            <TextView
+                android:id="@+id/entry_detail_category_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dummy_data"
+                android:textColor="@color/white_text_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/entry_detail_category_item_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time_token"
+                android:textColor="@color/white_text_color"
+                android:textSize="18sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/entry_detail_category_item_total"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textSize="18sp"
             android:layout_gravity="center_vertical|right"
             android:text="@string/dummy_data"
-            android:textColor="@color/white_text_color" />
-    </RelativeLayout>
+            android:textColor="@color/white_text_color"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
