@@ -26,7 +26,7 @@ public class ReportPieCategoryLegendSubItemView extends LinearLayout {
 		TextView itemValue = (TextView) findViewById(R.id.report_category_legend_sub_item_value);
 		
 		itemName.setText(name);
-		itemPercent.setText(Converter.toString(((double)value / (double)totalExpense * 100)) + "%");
+		itemPercent.setText(Converter.toString(((double)value / (double)totalExpense * 100), "0.00") + "%");
 		itemValue.setText(Converter.toString(value));
 	}
 }

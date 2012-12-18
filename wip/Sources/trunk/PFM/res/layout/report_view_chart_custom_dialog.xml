@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="10sp"
+    android:layout_margin="30sp"
     android:background="@drawable/content_dialog_background"
     android:orientation="vertical" >
 

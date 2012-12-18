@@ -37,7 +37,6 @@ public class ReportViewPieChartActivity extends Activity {
 	private List<String> entryCategoryName;
 	private List<Long> entryCategoryValue;
 	private List<String> entryCategoryColor;
-	private List<Long> entryIDList;
 	private List<Long> categoryIDList;
 	
 	@Override
@@ -53,7 +52,6 @@ public class ReportViewPieChartActivity extends Activity {
 		entryCategoryName = new ArrayList<String>();
 		entryCategoryValue = new ArrayList<Long>();
 		entryCategoryColor = new ArrayList<String>();
-		entryIDList = new ArrayList<Long>();
 		categoryIDList = new ArrayList<Long>();
 		
 		LinearLayout pieChart = (LinearLayout) findViewById(R.id.report_pie_chart);
@@ -64,7 +62,11 @@ public class ReportViewPieChartActivity extends Activity {
 		if (checkMonthly)
 			titlePieChart.setText(getResources().getString(R.string.report_in_month) + " " + Converter.toString(startDate, "MM"));
 		else
-			titlePieChart.setText(getResources().getString(R.string.report_in_week) + " " + new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
+		{
+			//titlePieChart.setText(getResources().getString(R.string.report_in_week) + " " + new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
+			titlePieChart.setText(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
+			//titlePieChart.setTextSize(15);
+		}
 
 		getData();
 		totalMoneyTextView.setText(Converter.toString(totalExpense));
@@ -76,7 +78,7 @@ public class ReportViewPieChartActivity extends Activity {
 		for(int i = 0; i < entryCategoryColor.size(); i++)
 		{
 			LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense, entryIDList.get(i), categoryIDList.get(i)), params1);
+			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense, categoryIDList.get(i), checkMonthly, startDate, endDate), params1);
 		}
 	}
 	
@@ -127,7 +129,6 @@ public class ReportViewPieChartActivity extends Activity {
 											}
 
 											if (check == false) {
-												entryIDList.add(id);
 												categoryIDList.add(categoryID);
 												entryCategoryName.add(name);
 												entryCategoryValue.add(value);
@@ -135,7 +136,6 @@ public class ReportViewPieChartActivity extends Activity {
 											}
 
 										} else {
-											entryIDList.add(id);
 											categoryIDList.add(categoryID);
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
@@ -149,17 +149,20 @@ public class ReportViewPieChartActivity extends Activity {
 							}
 						}
 					} else {
-						String entryMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate, "MM");
+						String entryMonth = Converter.toString(entryDate, "yyyy");
+						String startDateMonth = Converter.toString(startDate, "yyyy");
 						
 				        Calendar calEntry = Calendar.getInstance();
 				        calEntry.setTime(entryDate);
-				        int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+				        int entryWeek = calEntry.get(Calendar.WEEK_OF_YEAR);
 				        Calendar calStartDate = Calendar.getInstance();
 				        calStartDate.setTime(startDate);
-				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
-
+				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_YEAR);
+				        Log.d("Check entry date",String.valueOf(entryDate) + " - " + entryWeek + " - " + entryMonth);
+				        Log.d("Check start date", String.valueOf(startDate) + " - " + startDateWeek + " - " + startDateMonth);
+				        
 						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
+							Log.d("Check pie chart week", "Check 1");
 							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
 							if (entryDetailCursor != null) {
 								if (entryDetailCursor.moveToFirst()) {
@@ -180,6 +183,8 @@ public class ReportViewPieChartActivity extends Activity {
 										}
 
 										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
+										
+										Log.d("Check pie chart detail", name + " - " + color + " - " + value);
 
 										if (!entryCategoryName.isEmpty()) {
 
@@ -193,7 +198,6 @@ public class ReportViewPieChartActivity extends Activity {
 											}
 
 											if (check == false) {
-												entryIDList.add(id);
 												categoryIDList.add(categoryID);
 												entryCategoryName.add(name);
 												entryCategoryValue.add(value);
@@ -201,7 +205,6 @@ public class ReportViewPieChartActivity extends Activity {
 											}
 
 										} else {
-											entryIDList.add(id);
 											categoryIDList.add(categoryID);
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
@@ -219,13 +222,5 @@ public class ReportViewPieChartActivity extends Activity {
 			}
 		}
 	}
-
-	public void navigateToView() {
-			return;
-		}
-
-	public void navigateToview() {
-			return;
-		}
 
 }

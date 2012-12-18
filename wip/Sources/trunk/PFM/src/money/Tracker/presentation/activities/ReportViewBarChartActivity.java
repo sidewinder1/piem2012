@@ -161,15 +161,15 @@ public class ReportViewBarChartActivity extends Activity {
 							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
 					} else {
 						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
-						String startDateMonth = Converter.toString(startDate,"MM");
+						String scheduleMonth = Converter.toString(scheduleStartDate, "yyyy");
+						String startDateMonth = Converter.toString(startDate,"yyyy");
 
 						Calendar calScheduleStart = Calendar.getInstance();
 						calScheduleStart.setTime(scheduleStartDate);
-						int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_MONTH);
+						int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_YEAR);
 						Calendar calStartDate = Calendar.getInstance();
 						calStartDate.setTime(scheduleStartDate);
-						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_YEAR);
 
 						if (scheduleMonth.equals(startDateMonth) && scheduleWeek == startDateWeek)
 							budget = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Budget"));
@@ -196,12 +196,4 @@ public class ReportViewBarChartActivity extends Activity {
 			maxDate = dateString;
 		}
 	}
-
-	public void getChart() {
-			return;
-		}
-
-	public void navigateToView() {
-			return;
-		}
 }

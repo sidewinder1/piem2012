@@ -100,15 +100,15 @@ public class Chart extends AbstractChart {
 						}
 					} else {
 						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
-						String startDateMonth = Converter.toString(startDate,"MM");
+						String scheduleMonth = Converter.toString(scheduleStartDate, "yyyy");
+						String startDateMonth = Converter.toString(startDate,"yyyy");
 
 						Calendar calScheduleStart = Calendar.getInstance();
 						calScheduleStart.setTime(scheduleStartDate);
-						int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_MONTH);
+						int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_YEAR);
 						Calendar calStartDate = Calendar.getInstance();
 						calStartDate.setTime(scheduleStartDate);
-						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_YEAR);
 
 						if (scheduleMonth.equals(startDateMonth) && scheduleWeek == startDateWeek) {
 							long id = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Id"));
@@ -207,15 +207,15 @@ public class Chart extends AbstractChart {
 							}
 						}
 					} else {
-						String entryMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate, "MM");
+						String entryMonth = Converter.toString(entryDate, "yyyy");
+						String startDateMonth = Converter.toString(startDate, "yyyy");
 
 						Calendar calEntry = Calendar.getInstance();
 						calEntry.setTime(entryDate);
-						int entryWeek = calEntry.get(Calendar.WEEK_OF_MONTH);
+						int entryWeek = calEntry.get(Calendar.WEEK_OF_YEAR);
 						Calendar calStartDate = Calendar.getInstance();
 						calStartDate.setTime(startDate);
-						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_MONTH);
+						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_YEAR);
 
 						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
 							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
@@ -395,8 +395,7 @@ public class Chart extends AbstractChart {
 	}
 
 	@SuppressWarnings("deprecation")
-	public View getBarCompareIntent(Context context, boolean checkMonthly,
-			List<Date[]> dateList) {
+	public View getBarCompareIntent(Context context, boolean checkMonthly,List<Date[]> dateList) {
 		entryCategoryValue = new ArrayList<Double>();
 		scheduleCategoryValue = new ArrayList<Double>();
 		this.checkMonthly = checkMonthly;
@@ -419,27 +418,20 @@ public class Chart extends AbstractChart {
 		for (int i = 0; i < entryCategoryValue.size(); i++) {
 			entryCategoryValueArray[i] = entryCategoryValue.get(i) / 1000;
 			scheduleCategoryValueArray[i] = scheduleCategoryValue.get(i) / 1000;
-			yMax = Math.max(Math.max(entryCategoryValueArray[i],
-					scheduleCategoryValueArray[i]), yMax);
-			// if (entryCategoryValue.get(i) / 1000 > yMax)
-			// yMax = entryCategoryValue.get(i) / 1000;
-			//
-			// if (scheduleCategoryValue.get(i) / 1000 > yMax)
-			// yMax = scheduleCategoryValue.get(i) / 1000;
+			yMax = Math.max(Math.max(entryCategoryValueArray[i], scheduleCategoryValueArray[i]), yMax);
 		}
 
 		List<double[]> values = new ArrayList<double[]>();
 		values.add(entryCategoryValueArray);
 		values.add(scheduleCategoryValueArray);
 
-		String[] titles = new String[] { "Thực Chi", "Dự kiến" };
+		String[] titles = new String[] { "Kế Hoạch", "Thực Tế" };
 		int[] colors = new int[] { Color.YELLOW, Color.GREEN }; // Color.parseColor("#FFD700"),
 																// Color.parseColor("#7CFC00")
 
 		xMax = entryCategoryValueArray.length + 1;
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "", "\r\n\r\nx1000 VND", -0.5, xMax, 0,
-				yMax, Color.TRANSPARENT, Color.TRANSPARENT);
+		setChartSettings(renderer, "", "", "\r\n\r\nx1000 VND", -0.5, xMax, 0, yMax, Color.TRANSPARENT, Color.TRANSPARENT);
 		renderer.setXLabels(0);
 		renderer.setYLabels(0);
 		for (int i = 0; i < dateList.size(); i++) {
@@ -448,23 +440,16 @@ public class Chart extends AbstractChart {
 			this.endDate = compareDate[1];
 
 			if (checkMonthly)
-				renderer.addXTextLabel(i + 1,
-						Converter.toString(startDate, "MM/yyyy"));
+				renderer.addXTextLabel(i + 1,Converter.toString(startDate, "MM/yyyy"));
 			else
-				renderer.addXTextLabel(
-						i + 1,
-						Converter.toString(startDate, "  dd/MM/yyyy")
-								+ " -\r\n"
-								+ Converter.toString(endDate, "dd/MM/yyyy\r\n\r\n"));
+				renderer.addXTextLabel(i + 1,Converter.toString(startDate, "  dd/MM/yyyy") + " -\r\n" + Converter.toString(endDate, "dd/MM/yyyy\r\n\r\n"));
 
 		}
 
 		// Display value on X axis.
 		int unit = (int) yMax / 5;
 		for (int i = 0; i < 6; i++) {
-			renderer.addYTextLabel(unit * i,
-					new StringBuilder("\r\n").append(String.valueOf(unit * i))
-							.toString());
+			renderer.addYTextLabel(unit * i, new StringBuilder("\r\n").append(String.valueOf(unit * i)).toString());
 		}
 		// renderer.setXLabels(12);
 		// renderer.setYLabels(10);
@@ -480,9 +465,9 @@ public class Chart extends AbstractChart {
 
 		// renderer.setChartTitleTextSize(25);
 		renderer.setLabelsTextSize(18);
-		renderer.setLegendTextSize(18);
-		renderer.setFitLegend(true);
-		renderer.setAntialiasing(true);
+		renderer.setLegendTextSize(20);
+		//renderer.setFitLegend(true);
+		//renderer.setAntialiasing(true);
 		renderer.setZoomEnabled(true, false);
 		renderer.setChartValuesTextSize(14);
 		// renderer.setPanEnabled(false);
@@ -504,13 +489,11 @@ public class Chart extends AbstractChart {
 		// renderer.clearYTextLabels();
 		// return ChartFactory.getBarChartIntent(context,
 		// buildBarDataset(titles, values), renderer, Type.STACKED);
-		return ChartFactory.getBarChartView(context,
-				buildBarDataset(titles, values), renderer, Type.DEFAULT);
+		return ChartFactory.getBarChartView(context,buildBarDataset(titles, values), renderer, Type.DEFAULT);
 	}
 
 	@SuppressWarnings("deprecation")
-	public View getBarIntent(Context context, boolean checkMonthly, Date sDate,
-			Date eDate) {
+	public View getBarIntent(Context context, boolean checkMonthly, Date sDate,Date eDate) {
 		this.startDate = sDate;
 		this.endDate = eDate;
 		this.checkMonthly = checkMonthly;
@@ -519,15 +502,11 @@ public class Chart extends AbstractChart {
 		getEntryData();
 
 		String[] entryCategoryNameArray = new String[entryCategoryName.size()];
-		entryCategoryNameArray = entryCategoryName
-				.toArray(entryCategoryNameArray);
+		entryCategoryNameArray = entryCategoryName.toArray(entryCategoryNameArray);
 		Double[] entryCategoryValueArray = new Double[entryCategoryValue.size()];
-		entryCategoryValueArray = entryCategoryValue
-				.toArray(entryCategoryValueArray);
-		Integer[] entryCategoryColorArray = new Integer[entryCategoryColor
-				.size()];
-		entryCategoryColorArray = entryCategoryColor
-				.toArray(entryCategoryColorArray);
+		entryCategoryValueArray = entryCategoryValue.toArray(entryCategoryValueArray);
+		Integer[] entryCategoryColorArray = new Integer[entryCategoryColor.size()];
+		entryCategoryColorArray = entryCategoryColor.toArray(entryCategoryColorArray);
 
 		List<String> titlesList = new ArrayList<String>();
 		List<double[]> values = new ArrayList<double[]>();
@@ -553,20 +532,15 @@ public class Chart extends AbstractChart {
 
 				} else if (j == count + 1) {
 					if (!scheduleCategoryName.isEmpty()) {
-						String[] scheduleCategoryNameArray = new String[scheduleCategoryName
-								.size()];
-						scheduleCategoryNameArray = scheduleCategoryName
-								.toArray(scheduleCategoryNameArray);
-						Double[] scheduleCategoryValueArray = new Double[scheduleCategoryValue
-								.size()];
-						scheduleCategoryValueArray = scheduleCategoryValue
-								.toArray(scheduleCategoryValueArray);
+						String[] scheduleCategoryNameArray = new String[scheduleCategoryName.size()];
+						scheduleCategoryNameArray = scheduleCategoryName.toArray(scheduleCategoryNameArray);
+						Double[] scheduleCategoryValueArray = new Double[scheduleCategoryValue.size()];
+						scheduleCategoryValueArray = scheduleCategoryValue.toArray(scheduleCategoryValueArray);
 
 						int check = -1;
 
 						for (int k = 0; k < scheduleCategoryNameArray.length; k++) {
-							if (scheduleCategoryNameArray[k]
-									.equals(entryCategoryNameArray[i])) {
+							if (scheduleCategoryNameArray[k].equals(entryCategoryNameArray[i])) {
 								check = k;
 							}
 						}
