@@ -227,10 +227,26 @@ public class EntryEditCategoryView extends LinearLayout {
 						EntryEditProductView itemOfCategoryEdit = (EntryEditProductView) item.mCategoryList
 								.getChildAt(index);
 
-						if (itemOfCategoryEdit != null) {
-							itemOfCategoryEdit.removeItem();
+						if (item.mCategoryList.getTag() == null) {
+							item.mCategoryList.setTag("");
+						}
+
+						if (itemOfCategoryEdit != null
+								&& itemOfCategoryEdit.Id != -1) {
+							item.mCategoryList.setTag(item.mCategoryList
+									.getTag()
+									+ ""
+									+ itemOfCategoryEdit.Id
+									+ ",");
 						}
 					}
+
+					if (list.getTag() == null) {
+						list.setTag("");
+					}
+
+					list.setTag(list.getTag() + ""
+							+ item.mCategoryList.getTag());
 
 					// Insert userColor to db again.
 					SqlHelper.instance.insert("UserColor",
@@ -365,7 +381,7 @@ public class EntryEditCategoryView extends LinearLayout {
 							.append("'").toString());
 			if (oldCategory != null && oldCategory.moveToFirst()) {
 				category_id_str = oldCategory.getString(0);
-			}else{
+			} else {
 				category_id_str = String.valueOf(SqlHelper.instance.insert(
 						"Category", new String[] { "Name", "User_Color" },
 						new String[] { mCategoryEdit.getText().toString(),
@@ -378,8 +394,7 @@ public class EntryEditCategoryView extends LinearLayout {
 		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
 			EntryEditProductView product = (EntryEditProductView) mCategoryList
 					.getChildAt(index);
-			Logger.Log("Length of items: " + mCategory.getChildCount(),
-					"EntryEditCategoryView");
+
 			if (product == null || product.getMoney() == 0) {
 				continue;
 			}
@@ -394,6 +409,20 @@ public class EntryEditCategoryView extends LinearLayout {
 				SqlHelper.instance.update(subTable, columns, values, "Id="
 						+ product.Id);
 			}
+		}
+
+		if (mCategoryList.getTag() == null){
+			return;
+		}
+		
+		String removedItemList = mCategoryList.getTag() + "";
+		if (removedItemList.length() > 1) {
+			// Delete items that removed before.
+			SqlHelper.instance.delete(
+					subTable,
+					"Id IN ("
+							+ removedItemList.substring(0,
+									removedItemList.length() - 1) + ")");
 		}
 	}
 }

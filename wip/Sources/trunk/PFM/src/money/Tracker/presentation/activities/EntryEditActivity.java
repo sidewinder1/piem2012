@@ -254,6 +254,21 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 	public void doneBtnClicked(View v) {
 		if (save()) {
+			if (mEntryList.getTag() != null) {
+				String removedItemList = mEntryList.getTag() + "";
+				if (removedItemList.length() > 1) {
+					// Delete items that removed before.
+					SqlHelper.instance
+							.delete("EntryDetail",
+									"Id IN ("
+											+ removedItemList
+													.substring(
+															0,
+															removedItemList
+																	.length() - 1)
+											+ ")");
+				}
+			}
 			CategoryRepository.getInstance().updateData();
 			setResult(100);
 			try {
