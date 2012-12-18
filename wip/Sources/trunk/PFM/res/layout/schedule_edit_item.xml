@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white08"
     android:orientation="horizontal" >
 
     <Button
@@ -9,20 +10,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="5sp"
         android:layout_marginLeft="25sp"
+        android:layout_marginRight="5sp"
         android:layout_weight="0"
         android:background="@drawable/minus_icon" />
-    
-    <Spinner
-        android:id="@+id/schedule_item_category"
+
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_weight="7"
-        android:background="@drawable/spinner_bottom"
-        android:gravity="center_vertical" />
+        android:layout_weight="7" >
+
+        <Spinner
+            android:id="@+id/schedule_item_category"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/spinner_bottom"
+            android:gravity="center_vertical" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/image_icon_description"
+            android:src="@drawable/spinner_right" />
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/schedule_item_category_edit"
@@ -39,35 +54,26 @@
         android:visibility="gone" >
     </EditText>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_weight="0"
-        android:contentDescription="@string/image_icon_description"
-        android:src="@drawable/spinner_right" />
-
     <EditText
         android:id="@+id/schedule_item_price"
         style="@style/normalEditNumber"
         android:layout_width="0dp"
-        android:hint="@string/schedule_budget_hint"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="2dp"
-        android:layout_weight="6"        
-        android:gravity="bottom" />
+        android:layout_weight="6"
+        android:gravity="bottom"
+        android:hint="@string/schedule_budget_hint" />
 
     <Button
         android:id="@+id/schedule_item_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="25sp"
         android:layout_marginLeft="5sp"
+        android:layout_marginRight="25sp"
         android:layout_weight="0"
         android:background="@drawable/plus_icon" />
-    
 
 </LinearLayout>
