@@ -40,7 +40,7 @@ public class EntryDayView extends LinearLayout {
 		if (entry != null) {
 			id = entry.getId();
 			// Set content to item title:
-			setName(Converter.toString(entry.getDate(), "EEEE, dd/MM/yyyy"));
+			setName(Converter.toString(entry.getDate(), "dd/MM/yyyy"));
 
 			// Set content to budget
 			setCost(Converter.toString(entry.getTotal()));
