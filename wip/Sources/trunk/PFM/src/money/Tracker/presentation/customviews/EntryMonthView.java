@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
@@ -23,7 +24,7 @@ public class EntryMonthView extends LinearLayout {
 	private TextView cost;
 	private LinearLayout chart;
 	private LinearLayout entryDayList;
-//	private TextView count_text;
+	// private TextView count_text;
 	private boolean switcher = true;
 
 	public EntryMonthView(Context context) {
@@ -43,10 +44,10 @@ public class EntryMonthView extends LinearLayout {
 
 		setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				ImageView comboBox = (ImageView)findViewById(R.id.entry_list_item);
+				ImageView comboBox = (ImageView) findViewById(R.id.entry_list_item);
 				entryDayList.setVisibility(switcher ? View.VISIBLE : View.GONE);
-				comboBox.setImageResource(
-						switcher ? R.drawable.combobox_icon_expanded : R.drawable.combobox_icon);
+				comboBox.setImageResource(switcher ? R.drawable.combobox_icon_expanded
+						: R.drawable.combobox_icon);
 				switcher = !switcher;
 			}
 		});
@@ -54,13 +55,14 @@ public class EntryMonthView extends LinearLayout {
 		// Set content to item title:
 		setName(keyMonth);
 
-		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository.getInstance().orderedEntries.get(keyMonth);
+		ArrayList<Entry> entrySet = (ArrayList<Entry>) EntryRepository
+				.getInstance().orderedEntries.get(keyMonth);
 		HashMap<Long, Long> valueOnCategory = new HashMap<Long, Long>();
 		if (entrySet != null) {
 			long total = 0;
 			// Set count.
-//			count_text.setText(new StringBuilder("(").append(entrySet.size())
-//					.append(")"));
+			// count_text.setText(new StringBuilder("(").append(entrySet.size())
+			// .append(")"));
 
 			// Draw chart.
 			entryDayList.removeAllViews();
@@ -69,11 +71,11 @@ public class EntryMonthView extends LinearLayout {
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 
 				for (EntryDetail entryDetail : entry.getEntryDetails()) {
-					long currentValue =  entryDetail.getMoney();
+					long currentValue = entryDetail.getMoney();
 					if (valueOnCategory.containsKey(entryDetail
 							.getCategory_id())) {
 						currentValue = valueOnCategory.get(entryDetail
-								.getCategory_id())+ currentValue;
+								.getCategory_id()) + currentValue;
 
 						valueOnCategory.remove(entryDetail.getCategory_id());
 					}
@@ -91,19 +93,21 @@ public class EntryMonthView extends LinearLayout {
 			// Prepare and display stacked bar chart:
 			for (long value : valueOnCategory.keySet()) {
 				View stackItem = new View(getContext());
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						0, LayoutParams.FILL_PARENT,
 						Float.parseFloat(valueOnCategory.get(value) + ""));
-				Cursor categoryCursor = SqlHelper.instance.select(
-						"Category",
+				Cursor categoryCursor = SqlHelper.instance.select("Category",
 						"Id, User_Color",
-						new StringBuilder("Id = ").append(
-								value).toString());
-
-				if (categoryCursor != null && categoryCursor.moveToFirst()) {
-					stackItem.setBackgroundColor(Color
-							.parseColor(categoryCursor.getString(1)));
+						new StringBuilder("Id = ").append(value).toString());
+				try {
+					if (categoryCursor != null && categoryCursor.moveToFirst()) {
+						stackItem.setBackgroundColor(Color
+								.parseColor(categoryCursor.getString(1)));
+					}
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), "EntryMonthView");
 				}
-
+				
 				getChart().addView(stackItem, params);
 			}
 		}
