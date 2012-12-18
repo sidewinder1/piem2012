@@ -2,6 +2,7 @@ package money.Tracker.presentation.customviews;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.activities.EntryDetailViewActivity;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.model.Entry;
@@ -57,12 +58,14 @@ public class EntryDayView extends LinearLayout {
 						"Id, User_Color",
 						new StringBuilder("Id = ").append(
 								entryDetail.getCategory_id()).toString());
-
-				if (categoryCursor != null && categoryCursor.moveToFirst()) {
-					stackItem.setBackgroundColor(Color
-							.parseColor(categoryCursor.getString(1)));
+				try {
+					if (categoryCursor != null && categoryCursor.moveToFirst()) {
+						stackItem.setBackgroundColor(Color
+								.parseColor(categoryCursor.getString(1)));
+					}
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), "EntryDayView");
 				}
-
 				getChart().addView(stackItem, params);
 			}
 
