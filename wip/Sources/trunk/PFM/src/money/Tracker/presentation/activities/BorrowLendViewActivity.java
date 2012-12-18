@@ -234,7 +234,7 @@ public class BorrowLendViewActivity extends Activity {
 			} else {
 				totalMoney += 1;
 				
-				for (long i = 0; i < leftDate; i++) {
+				for (long i = 1; i < caculateInterestDate; i++) {
 					totalMoney = totalMoney * (1 + interestRate);
 				}
 				
@@ -281,4 +281,8 @@ public class BorrowLendViewActivity extends Activity {
 		else
 			return false;
 	}
+
+	public void navigateToView() {
+			return;
+		}
 }

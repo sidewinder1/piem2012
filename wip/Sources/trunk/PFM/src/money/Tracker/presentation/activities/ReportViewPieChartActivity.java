@@ -220,4 +220,12 @@ public class ReportViewPieChartActivity extends Activity {
 		}
 	}
 
+	public void navigateToView() {
+			return;
+		}
+
+	public void navigateToview() {
+			return;
+		}
+
 }

@@ -28,9 +28,9 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class BorrowLendViewDetailActivity extends Activity {
 
-	private double totalInterestCaculate = 0;
-	private double totalMoney = 0;
-	private long leftDate = 0;
+	private double totalInterestCaculate;
+	private double totalMoney;
+	private long leftDate;
 	private BorrowLend values;
 
 	@Override
@@ -57,6 +57,10 @@ public class BorrowLendViewDetailActivity extends Activity {
 		TextView startDate = (TextView) findViewById(R.id.borrow_lend_detail_view_start_date);
 		TextView expriedDate = (TextView) findViewById(R.id.borrow_lend_detail_view_expired_date);
 		*/
+		
+		totalInterestCaculate = 0;
+		totalMoney = 0;
+		leftDate = 0;
 		
 		TextView borrowLendDetailTitle = (TextView) findViewById(R.id.borrow_lend_detail_title);
 		LinearLayout listViewDetail = (LinearLayout) findViewById(R.id.borrow_lend_list_view_detail);
@@ -95,9 +99,9 @@ public class BorrowLendViewDetailActivity extends Activity {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		
 		if (values.getDebtType().equals("Borrowing"))
-			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_borrower), values.getPersonName()), params);
-		else
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_lender), values.getPersonName()), params);
+		else
+			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_borrower), values.getPersonName()), params);
 		
 		if (!values.getPersonPhone().equals(""))
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_phone), values.getPersonPhone()), params);
@@ -129,7 +133,7 @@ public class BorrowLendViewDetailActivity extends Activity {
 		//TODO: TuanNA
 		//TextView leftDayTextView = (TextView) findViewById(R.id.borrow_lend_detail_view_left_day);
 
-		totalMoneyTextView.setText(Converter.toString(totalMoney));
+		totalMoneyTextView.setText(Converter.toString(values.getMoney()));
 		totalInterestTextView.setText(Converter.toString(totalInterestCaculate));
 
 		//TODO: TuanNA
@@ -173,7 +177,7 @@ public class BorrowLendViewDetailActivity extends Activity {
 			} else {
 				totalMoney += 1;
 				
-				for (long i = 0; i < leftDate; i++) {
+				for (long i = 1; i < caculateInterestDate; i++) {
 					totalMoney = totalMoney * (1 + interestRate);
 				}
 				
@@ -221,4 +225,8 @@ public class BorrowLendViewDetailActivity extends Activity {
 		else
 			return false;
 	}
+
+	public void navigateToView() {
+			return;
+		}
 }

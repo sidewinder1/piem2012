@@ -704,5 +704,4 @@ public class Chart extends AbstractChart {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 }

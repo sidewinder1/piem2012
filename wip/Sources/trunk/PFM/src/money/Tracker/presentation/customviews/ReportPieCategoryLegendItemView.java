@@ -82,4 +82,8 @@ public class ReportPieCategoryLegendItemView extends LinearLayout {
 			} while (entryDetailCursor.moveToNext());
 		}
 	}
+
+	public void getChartLegend() {
+			return;
+		}
 }
