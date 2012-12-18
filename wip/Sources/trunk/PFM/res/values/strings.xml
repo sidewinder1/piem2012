@@ -162,6 +162,8 @@
     <string name="entry_daily_not_for_furture">Giới hạn đến thời gian hiện tại</string>
     <string name="entry_edit_expense_title">Sửa chi phí</string>
     <string name="entry_edit_income_title">Sửa thu nhập</string>
+    <string name="entry_edit_price_empty">Nhập giá tiền</string>
+    <string name="entry_edit_category_empty">Nhập tên sản phẩm</string>
     <string name="entry_edit_nfc_message">Quẹt thẻ NFC qua thiết bị…</string>
 
     <!-- These are resources for Entry function -->
