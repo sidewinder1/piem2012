@@ -215,45 +215,107 @@ public class BorrowLendViewActivity extends Activity {
 		double interestRate = 0;
 		double totalInterestCaculate = 0;
 		double totalMoney = 0;
-		
-		if (daysBetween(startDate, expiredDate) != 0)
-			interestRate = (double)interestRateData / 360 /100;
+				
+			if (daysBetween(startDate, expiredDate) != 0)
+				interestRate = (double)interestRateData / 360 /100;
 			
 			if (compareDate(currentDate, expiredDate)) {
 				caculateInterestDate = daysBetween(startDate, currentDate);
-				leftDate = daysBetween(currentDate, expiredDate);
 			} else {
 				caculateInterestDate = daysBetween(startDate, expiredDate);
 			}
 			
-			Log.d("Check caculate interest Date", leftDate + " - " + caculateInterestDate);
-			
 			if (interestType.equals("Simple")) {
+				Log.d("Check caculate interest Date", money + " - " + interestRate + " - " + caculateInterestDate);
 				totalInterestCaculate = money * interestRate * caculateInterestDate;
 				totalMoney = money + totalInterestCaculate;
 			} else {
-				totalMoney += 1;
-				
-				for (long i = 1; i < caculateInterestDate; i++) {
-					totalMoney = totalMoney * (1 + interestRate);
+				if(daysBetween(startDate, expiredDate) > 360)
+				{
+					if(daysBetween(startDate, currentDate) > 360)
+					{
+						totalMoney = money;
+						int numberYear = 0;
+						
+						if (currentDate.compareTo(expiredDate) < 0)
+						{
+							numberYear = daysBetween(startDate, currentDate ) / 360; 
+						} else
+						{
+							if (daysBetween(startDate, currentDate ) % 360 == 0)
+							{
+								numberYear = daysBetween(startDate, currentDate ) / 360;
+							} else
+							{
+								numberYear = (daysBetween(startDate, currentDate ) / 360) + 1;
+							}
+						}
+						
+						for (int i = 0; i < numberYear; i++)
+						{
+							totalInterestCaculate = totalMoney * interestRate * 360;
+							totalMoney = totalMoney + totalInterestCaculate;
+						}
+					}
+					
+				} else if (daysBetween(startDate, expiredDate) > 30 && daysBetween(startDate, expiredDate) < 360)
+				{
+					if(daysBetween(startDate, currentDate) > 30)
+					{
+						totalMoney = money;
+						int numberMonth = 0;
+						
+						if (currentDate.compareTo(expiredDate) < 0)
+						{
+							numberMonth = daysBetween(startDate, currentDate ) / 30; 
+						} else
+						{
+							if (daysBetween(startDate, currentDate ) % 30 == 0)
+							{
+								numberMonth = daysBetween(startDate, currentDate ) / 30;
+							} else
+							{
+								numberMonth = (daysBetween(startDate, currentDate ) / 30) + 1;
+							}
+						}
+						
+						for (int i = 0; i < numberMonth; i++)
+						{
+							totalInterestCaculate = totalMoney * interestRate * 30;
+							totalMoney = totalMoney + totalInterestCaculate;
+						}
+					}
+				} else
+				{
+					totalMoney = money;
+					int numberDay = 0;
+					
+					if (currentDate.compareTo(startDate) == 0)
+						numberDay = 0;
+					else if(currentDate.compareTo(expiredDate) < 0)
+						numberDay = daysBetween(startDate, currentDate) - 1;
+					else
+						numberDay = daysBetween(startDate, currentDate);
+					
+					for (int i = 0; i < numberDay; i++)
+					{
+						totalInterestCaculate = totalMoney * interestRate;
+						totalMoney = totalMoney + totalInterestCaculate;
+					}
 				}
-				
-				totalMoney = money * totalMoney;
-
-				totalInterestCaculate += totalMoney - money;
 			}
 			
-			return totalInterestCaculate;
+		return totalInterestCaculate;
 	}
 
 	/**
 	 * This method also assumes endDate >= startDate
 	 **/
-	private long daysBetween(Date startDate, Date endDate) {
+	private int daysBetween(Date startDate, Date endDate) {
 		Calendar sDate = getDatePart(startDate);
 		Calendar eDate = getDatePart(endDate);
 
-		long daysBetween = 0;
+		int daysBetween = 0;
 		while (sDate.before(eDate)) {
 			sDate.add(Calendar.DAY_OF_MONTH, 1);
 			daysBetween++;

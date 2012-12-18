@@ -57,6 +57,7 @@
     <string name="borrow_lend_borrower">Người vay:</string>
     <string name="borrow_lend_lender">Người cho vay:</string>
     <string name="borrow_lend_current_interest">Lãi suất hiện tại:</string>
+    <string name="borrow_lend_total_money_plus_current_interest">Tổng tiền (có lãi):</string>
     <string name="borrow_add_title">Thêm khoản vay</string>
     <string name="lend_add_title">Thêm khoản cho vay</string>
     <string name="borrow_edit_title">Sửa khoản vay</string>

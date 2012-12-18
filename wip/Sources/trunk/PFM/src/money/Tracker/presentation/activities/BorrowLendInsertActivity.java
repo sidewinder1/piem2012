@@ -107,15 +107,12 @@ public class BorrowLendInsertActivity extends Activity {
 			phoneEditText.setText(String.valueOf(values.getPersonPhone()));
 			addressEditText.setText(String.valueOf(values.getPersonAddress()));
 			moneyEditText.setText(Converter.toString(values.getMoney()).replaceAll(",", ""));
-			Log.d("Check interest type", values.getInterestType());
 			if (values.getInterestType().equals("Simple"))
 			{
-				Log.d("Check interest type", "Check 1");
 				interestType.setChecked(true);
 			}
 			else
 			{
-				Log.d("Check interest type", "Check 2");
 				interestType.setChecked(false);
 			}
 			
@@ -123,10 +120,31 @@ public class BorrowLendInsertActivity extends Activity {
 				interestRate.setText(String.valueOf(values.getInterestRate()));
 			
 			startDateEditText.setText(Converter.toString(values.getStartDate(),"dd/MM/yyyy"));
-				
+			
+			String [] startDate = Converter.toString(values.getStartDate(),"dd/MM/yyyy").split("/");
+			startDate_Day = Integer.parseInt(startDate[0]);
+			startDate_Month = Integer.parseInt(startDate[1]) - 1;
+			startDate_Year = Integer.parseInt(startDate[2]);
+			Log.d("Check edit borrow lend dialog picker", startDate_Day + " - " + startDate_Month + " - " + startDate_Year);
+			
 			if (values.getExpiredDate() != null)
+			{
 				expiredDateEditText.setText(Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
-
+				Log.d("Check edit borrow lend", Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
+				String [] expiredDate = Converter.toString(values.getExpiredDate(), "dd/MM/yyyy").split("/");
+				expiredDate_Day = Integer.parseInt(expiredDate[0]);
+				expiredDate_Month = Integer.parseInt(expiredDate[1]) - 1;
+				expiredDate_Year = Integer.parseInt(expiredDate[2]);
+			}else
+			{
+				Calendar c = Calendar.getInstance();
+				expiredDate_Year = c.get(Calendar.YEAR);
+				expiredDate_Month = c.get(Calendar.MONTH);
+				expiredDate_Day = c.get(Calendar.DAY_OF_MONTH);
+			}
+			
+			Log.d("Check edit borrow lend dialog picker", expiredDate_Day + " - " + expiredDate_Month + " - " + expiredDate_Year);
+			
 			column = new ArrayList<String>();
 			valuesChanged = new ArrayList<String>();
 
@@ -294,14 +312,17 @@ public class BorrowLendInsertActivity extends Activity {
 		});
 
 		// get the current date
-		final Calendar c = Calendar.getInstance();
-		expiredDate_Year = startDate_Year = c.get(Calendar.YEAR);
-		expiredDate_Month = startDate_Month = c.get(Calendar.MONTH);
-		expiredDate_Day = startDate_Day = c.get(Calendar.DAY_OF_MONTH);
-
-		// display the current date (this method is below)
-		updateDisplayStartDate();
-		// updateDisplayExpiredDate();
+		if (borrow_lend_id == -1)
+		{
+			final Calendar c = Calendar.getInstance();
+			expiredDate_Year = startDate_Year = c.get(Calendar.YEAR);
+			expiredDate_Month = startDate_Month = c.get(Calendar.MONTH);
+			expiredDate_Day = startDate_Day = c.get(Calendar.DAY_OF_MONTH);
+	
+			// display the current date (this method is below)
+			updateDisplayStartDate();
+			// updateDisplayExpiredDate();
+		}
 
 		// make dialog for start date
 		EditText startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
