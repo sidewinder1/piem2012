@@ -162,9 +162,11 @@ public class EntryEditProductView extends LinearLayout {
 
 	public String checkBeforeSave() {
 		if ("".equals(getCost())) {
-			return "A price is empty!";
+			price.requestFocus();
+			return getResources().getString(R.string.entry_edit_price_empty);
 		} else if ("".equals(getName())) {
-			return "A product is empty!";
+			product.requestFocus();
+			return getResources().getString(R.string.entry_edit_category_empty);
 		}
 
 		return null;
