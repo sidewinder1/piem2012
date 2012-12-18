@@ -51,10 +51,10 @@ public class AccountProvider {
 			SqlHelper.instance.insert("AppInfo", new String[] {
 					"UserName", "LastSync", "Status", "ScheduleWarn",
 					"ScheduleRing", "ScheduleRemind", "BorrowWarn",
-					"BorrowRing", "BorrowRemind" }, new String[] {
+					"BorrowRing", "BorrowRemind", "Language" }, new String[] {
 					"LocalAccount", "1990-01-20 00:00:00", "0",
 					"50", "#DEFAULT", "10",
-					"168", "#DEFAULT", "10" });
+					"168", "#DEFAULT", "10", "vn" });
 		}
 		
 		setDefaultLocalAccount();
@@ -90,10 +90,10 @@ public class AccountProvider {
 					SqlHelper.instance.insert("AppInfo", new String[] {
 							"UserName", "LastSync", "Status", "ScheduleWarn",
 							"ScheduleRing", "ScheduleRemind", "BorrowWarn",
-							"BorrowRing", "BorrowRemind" }, new String[] {
+							"BorrowRing", "BorrowRemind", "Language" }, new String[] {
 							account.name, "1990-01-20 00:00:00", "0",
 							"50", "#DEFAULT", "10",
-							"168", "#DEFAULT", "10" });
+							"168", "#DEFAULT", "10", "vn" });
 				}
 			}
 		}

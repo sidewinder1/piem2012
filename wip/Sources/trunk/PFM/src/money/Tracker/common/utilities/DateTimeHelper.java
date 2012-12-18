@@ -63,6 +63,11 @@ public class DateTimeHelper {
 		calendar = Calendar.getInstance(TimeZone.getDefault(),
 				Locale.getDefault());
 		calendar.setTime(date);
+		// Hot fix with current day is sunday.
+		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+			return calendar.getTime();
+		}
+		
 		calendar.add(Calendar.DATE, 8 - calendar.get(Calendar.DAY_OF_WEEK));
 		return calendar.getTime();
 	}
