@@ -86,13 +86,6 @@ public class HomeActivity extends TabActivity {
 	}
 
 	@Override
-	public void onConfigurationChanged(android.content.res.Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-	};
-	
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_settings:

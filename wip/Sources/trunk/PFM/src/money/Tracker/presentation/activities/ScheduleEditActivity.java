@@ -599,13 +599,26 @@ public class ScheduleEditActivity extends Activity {
 
 			long category_id = detailItem.getCategory();
 			if (detailItem.mCategoryEdit.getVisibility() == View.VISIBLE) {
-				category_id = SqlHelper.instance.insert(
+				// Check duplicate.
+				Cursor oldCategory = SqlHelper.instance.select(
 						"Category",
-						new String[] { "Name", "User_Color" },
-						new String[] {
-								detailItem.mCategoryEdit.getText().toString(),
-								String.valueOf(detailItem.mCategoryEdit
-										.getTag()) });
+						"Id",
+						new StringBuilder("Name = '")
+								.append(detailItem.mCategoryEdit.getText().toString())
+								.append("'").toString());
+				if (oldCategory != null && oldCategory.moveToFirst()) {
+					category_id = oldCategory.getLong(0);
+				}
+				else {
+					category_id = SqlHelper.instance.insert(
+							"Category",
+							new String[] { "Name", "User_Color" },
+							new String[] {
+									detailItem.mCategoryEdit.getText()
+											.toString(),
+									String.valueOf(detailItem.mCategoryEdit
+											.getTag()) });
+				}
 			}
 
 			long budget = detailItem.getBudget();

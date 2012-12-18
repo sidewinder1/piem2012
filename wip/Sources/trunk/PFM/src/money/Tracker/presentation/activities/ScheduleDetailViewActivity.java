@@ -1,23 +1,20 @@
 package money.Tracker.presentation.activities;
 
-import java.util.ArrayList;
 import java.util.Date;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
-import money.Tracker.common.utilities.DateTimeHelper;
-import money.Tracker.presentation.adapters.ScheduleDetailViewAdapter;
-import money.Tracker.presentation.model.DetailSchedule;
+import money.Tracker.presentation.customviews.ScheduleDetailViewItem;
+import money.Tracker.repository.CategoryRepository;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ScheduleDetailViewActivity extends Activity {
-	ScheduleDetailViewAdapter detailAdapter;
 	long schedule_id;
 
 	@Override
@@ -30,7 +27,7 @@ public class ScheduleDetailViewActivity extends Activity {
 		if (extras != null && extras.containsKey("schedule_id")) {
 			schedule_id = extras.getLong("schedule_id");
 		}
-		
+
 		bindData();
 	}
 
@@ -60,31 +57,31 @@ public class ScheduleDetailViewActivity extends Activity {
 			budget_value.setText(Converter.toString(schedule.getLong(1)));
 
 			// bind data to list item
-			ListView list = (ListView) findViewById(R.id.schedule_detail_item_list);
-			ArrayList<DetailSchedule> data = new ArrayList<DetailSchedule>();
+			LinearLayout list = (LinearLayout) findViewById(R.id.schedule_detail_item_list);
 			Cursor detail_schedule = SqlHelper.instance.select(
 					"ScheduleDetail", "category_id, budget, schedule_id, Id",
 					"schedule_id = " + schedule_id);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 			if (detail_schedule != null && detail_schedule.moveToFirst()) {
+				list.removeAllViews();
+
 				do {
-					data.add(new DetailSchedule(detail_schedule.getLong(3),
-							detail_schedule.getLong(0), detail_schedule
-									.getLong(1), detail_schedule.getLong(2)));
+					list.addView(
+							new ScheduleDetailViewItem(getBaseContext(),
+							CategoryRepository.getInstance().getName(
+									detail_schedule.getLong(0)),
+									detail_schedule.getString(1)), params);
 				} while (detail_schedule.moveToNext());
-
-				detailAdapter = new ScheduleDetailViewAdapter(this,
-						R.layout.schedule_edit_item, data);
-
-				detailAdapter.notifyDataSetChanged();
-				list.setAdapter(detailAdapter);
 			}
 
 			Date end_date = Converter.toDate(schedule.getString(3));
-			average.setText(new StringBuilder(Converter.toString(schedule
-					.getLong(1)
-					/ DateTimeHelper.getDayOfMonth(end_date.getYear(),
-							end_date.getMonth()))).toString());
+			Date start_date = Converter.toDate(schedule.getString(2));
+			average.setText(new StringBuilder(
+					Converter.toString(schedule.getLong(1)
+							/ (((end_date.getTime() - start_date.getTime()) / 86400000) + 1)))
+					.toString());
 		}
 	}
 

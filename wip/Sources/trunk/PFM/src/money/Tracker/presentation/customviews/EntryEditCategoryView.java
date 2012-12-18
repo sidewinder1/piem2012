@@ -101,7 +101,8 @@ public class EntryEditCategoryView extends LinearLayout {
 						if (item != null
 								&& getResources().getString(R.string.others)
 										.equals(item.getName())) {
-							((RelativeLayout)parent.getParent()).setVisibility(View.GONE);
+							((RelativeLayout) parent.getParent())
+									.setVisibility(View.GONE);
 							View text = (View) parent.getTag();
 							text.setVisibility(View.VISIBLE);
 							text.requestFocus();
@@ -159,9 +160,9 @@ public class EntryEditCategoryView extends LinearLayout {
 				parent.addView(item, addedIndex, params);
 
 				// Get first item.
-				EntryEditProductView firstItem = (EntryEditProductView) item.mCategoryList.getChildAt(0);
-				if (firstItem != null)
-				{
+				EntryEditProductView firstItem = (EntryEditProductView) item.mCategoryList
+						.getChildAt(0);
+				if (firstItem != null) {
 					firstItem.setFocus();
 				}
 			}
@@ -253,7 +254,8 @@ public class EntryEditCategoryView extends LinearLayout {
 									R.string.existed_category_message));
 					mCategory.setSelection(CategoryRepository.getInstance()
 							.getIndex(mCategoryEdit.getText().toString()));
-					((RelativeLayout)mCategory.getParent()).setVisibility(View.VISIBLE);
+					((RelativeLayout) mCategory.getParent())
+							.setVisibility(View.VISIBLE);
 					mCategoryEdit.setVisibility(View.GONE);
 					((CategoryAdapter) mCategory.getAdapter())
 							.notifyDataSetChanged();
@@ -354,19 +356,28 @@ public class EntryEditCategoryView extends LinearLayout {
 				.getInstance().getId(mCategory.getSelectedItemPosition()));
 		// Save custom category
 		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
-			category_id_str = String.valueOf(SqlHelper.instance.insert(
+			// Check duplicate.
+			Cursor oldCategory = SqlHelper.instance.select(
 					"Category",
-					new String[] { "Name", "User_Color" },
-					new String[] { mCategoryEdit.getText().toString(),
-							String.valueOf(mCategoryEdit.getTag()) }));
+					"Id",
+					new StringBuilder("Name = '")
+							.append(mCategoryEdit.getText().toString())
+							.append("'").toString());
+			if (oldCategory != null && oldCategory.moveToFirst()) {
+				category_id_str = oldCategory.getString(0);
+			}else{
+				category_id_str = String.valueOf(SqlHelper.instance.insert(
+						"Category", new String[] { "Name", "User_Color" },
+						new String[] { mCategoryEdit.getText().toString(),
+								String.valueOf(mCategoryEdit.getTag()) }));
 
-			CategoryRepository.getInstance().updateData();
+				CategoryRepository.getInstance().updateData();
+			}
 		}
 
 		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
 			EntryEditProductView product = (EntryEditProductView) mCategoryList
 					.getChildAt(index);
-
 			Logger.Log("Length of items: " + mCategory.getChildCount(),
 					"EntryEditCategoryView");
 			if (product == null || product.getMoney() == 0) {

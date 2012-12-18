@@ -11,7 +11,17 @@ public class ScheduleDetailViewItem extends LinearLayout {
 
 	public ScheduleDetailViewItem(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		initializeComponent();
+	}
+	
+	public ScheduleDetailViewItem(Context context, String name, String detailBudget) {
+		super(context);
+		initializeComponent();
+		title.setText(name);
+		budget.setText(detailBudget);
+	}
+
+	private void initializeComponent() {
 		LayoutInflater layoutInflater = (LayoutInflater) this.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.schedule_detail_item, this, true);

@@ -309,7 +309,7 @@ public class SqlHelper {
 		createTable(
 				"Category",
 				new StringBuilder(
-						"Id LONG PRIMARY KEY,Name TEXT, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,")
+						"Id LONG PRIMARY KEY,Name TEXT COLLATE NOCASE, CreatedDate DATE, ModifiedDate DATE, IsDeleted INTEGER,  UserName TEXT,")
 						.append("User_Color TEXT").toString());
 		String[] names = PfmApplication.getAppResources().getStringArray(
 				R.array.category_name);
