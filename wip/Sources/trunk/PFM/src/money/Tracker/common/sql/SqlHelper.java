@@ -262,17 +262,7 @@ public class SqlHelper {
 		drop("UserColor");
 	}
 
-	public void initializeTable() {
-		// Create table for application configuration.
-		createTable(
-				"AppInfo",
-				new StringBuilder("Id LONG PRIMARY KEY, UserName TEXT, ")
-						.append("ScheduleWarn INTEGER, ScheduleRing TEXT, ScheduleRemind LONG, ")
-						.append("BorrowWarn LONG, BorrowRing TEXT, BorrowRemind LONG, ")
-						.append("LastSync DATE, Status INTEGER, CreatedDate DATE, ")
-						.append("ModifiedDate DATE, IsDeleted INTEGER")
-						.toString());
-
+	public void initializeTable() {		
 		// Create table for Schedule.
 		createTable(
 				"Schedule",

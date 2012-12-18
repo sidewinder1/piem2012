@@ -47,7 +47,7 @@ public class ScheduleEditActivity extends Activity {
 	private EditText mEndDateEdit;
 	private Button mPeriodic;
 	private boolean mIsWeek;
-	private EditText mTotalBudget;
+	private EditText mTotalBudget, mFocusedText;
 	private long mPassedScheduleId = -1;
 	private LinearLayout mList;
 	private int mLastAddedItem;
@@ -209,6 +209,8 @@ public class ScheduleEditActivity extends Activity {
 					int after) {
 				if (!"".equals(s.toString())) {
 					sValue = Converter.toLong(s.toString());
+				} else {
+					sValue = 0;
 				}
 			}
 
@@ -334,11 +336,16 @@ public class ScheduleEditActivity extends Activity {
 		}
 
 		private void completeAfterMove(View v, boolean hasFocus) {
+			// TODO: should format text correctly.
 			if (!hasFocus) {
 				String str = ((EditText) v).getText().toString();
 				if (!"".equals(str)) {
 					((EditText) v).setText(Converter.toString(
 							Converter.toLong(str), "####"));
+				}
+			} else {
+				if (v != mTotalBudget) {
+					mFocusedText = (EditText) v;
 				}
 			}
 		}
@@ -412,6 +419,10 @@ public class ScheduleEditActivity extends Activity {
 
 							public void onClick(DialogInterface dialog,
 									int which) {
+								if (mFocusedText != null) {
+									mFocusedText.setText("");
+								}
+
 								dialog.cancel();
 							}
 						});
@@ -532,7 +543,8 @@ public class ScheduleEditActivity extends Activity {
 		// "Schedule_Id = ").append(passed_schedule_id).toString());
 		// Insert new.
 		saveDetailSchedule(mPassedScheduleId);
-		Alert.getInstance().show(this, "Updated 1 record sucessfully");
+		Alert.getInstance().show(this,
+				getResources().getString(R.string.updated));
 	}
 
 	private void addSchedule(String Time_id) {

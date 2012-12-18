@@ -2,12 +2,15 @@
 
     <!-- These are common resources for app -->
     <string name="app_name">Money Tracker</string>
+    <string name="general_settings">General setting</string>
+    <string name="updated">Updated</string>
+    <string name="language">Language</string>
     <string name="menu_settings">Setting</string>
     <string name="menu_import">Import…</string>
     <string name="menu_export">Export…</string>
     <string name="note"><u>Note</u></string>
     <string name="saved">Saved</string>
-	<string name="select_all">Select all</string>
+    <string name="select_all">Select all</string>
     <string name="percent">%</string>
     <string name="error_save">Saving Error</string>
     <string name="error_load">Loading Error</string>
@@ -26,7 +29,7 @@
     <string name="weeks">weeks</string>
     <string name="existed_category_message">Existed category</string>
     <string name="input_dialog_title">Input value</string>
-	<string name="choose_account_dialog_title">Choose an account</string>
+    <string name="choose_account_dialog_title">Choose an account</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
@@ -61,7 +64,7 @@
     <string name="lend_view_title">View lending</string>
     <string name="simple_interest">Simple</string>
     <string name="compound_interest">Compound</string>
-	<string name="borrow_lend_warning_name_total_money">Please input name and total of money</string>
+    <string name="borrow_lend_warning_name_total_money">Please input name and total of money</string>
     <string name="borrow_lend_warning_interest_rate_expired_date">Please input or ignore both of interest and expired date</string>
     <string name="borrow_lend_warning_interest_rate_0">The interest value must be larger than 0</string>
     <string name="borrow_lend_warning_interest_rate_100">The interest value must be smaller than 100%</string>
@@ -196,9 +199,9 @@
         <item>Shopping</item>
         <item>Others…</item>
     </string-array>
-   
     <string-array name="schedule_context_menu_item">
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
+
 </resources>

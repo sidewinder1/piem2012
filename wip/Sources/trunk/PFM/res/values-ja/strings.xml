@@ -2,6 +2,10 @@
 <resources>
 
     <!-- These are common resources for app -->
+    <string name="app_name">Money Tracker</string>
+    <string name="general_settings">一般的な設定</string>
+    <string name="updated">更新した</string>
+    <string name="language">言語</string>
     <string name="menu_settings">設定</string>
     <string name="menu_import">のインポート…</string>
     <string name="menu_export">のエクスポート…</string>
@@ -107,7 +111,7 @@
     <string name="warning_ring">リング</string>
     <string name="warning_borrow_overbudget">総予算の{0}％以上</string>
     <string name="warning_remain">思い出させる</string>
- <!--
+    <!--
     <string-array name="warning_ring_array">
         <item>なし</item>
         <item>のデフォルト</item>
@@ -134,7 +138,7 @@ string-array name="warning_remain_array">
         <item>の1日</ item>は、
         <item>の1週間</ item>は、
         の<item>その他... </ item>は
-    </文字列配列>
+    </文字列配列>
     -->
 
 </resources>

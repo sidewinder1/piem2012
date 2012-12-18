@@ -83,10 +83,10 @@ public class PfmApplication extends Application {
 	public static long getTotalEntry() {
 		EntryRepository.getInstance().updateData(
 				new StringBuilder("Type = 1").toString());
-		if (EntryRepository.getInstance().orderedEntries == null){
+		if (EntryRepository.getInstance().orderedEntries == null) {
 			return 0;
 		}
-		
+
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
 				.get(Converter.toString(DateTimeHelper.now(false), "MM/yyyy"));
 		long total_entry = 0;
@@ -190,10 +190,36 @@ public class PfmApplication extends Application {
 						CONFIG_FILE,
 						"<config><autoSync>false</autoSync><serverConfig><namespace>http://pfm.org/</namespace><url>http://54.251.59.102:83/PFMService.asmx</url></serverConfig></config>");
 
-		setDefaultLanguage("vn");
-		
 		// Create DB connector.
 		SqlHelper.instance = new SqlHelper(this);
+
+		// Create table for application configuration.
+		SqlHelper.instance
+				.createTable(
+						"AppInfo",
+						new StringBuilder(
+								"Id LONG PRIMARY KEY, UserName TEXT, ")
+								.append("ScheduleWarn INTEGER, ScheduleRing TEXT, ScheduleRemind LONG, ")
+								.append("BorrowWarn LONG, BorrowRing TEXT, BorrowRemind LONG, ")
+								.append("LastSync DATE, Status INTEGER, CreatedDate DATE, ")
+								.append("ModifiedDate DATE, IsDeleted INTEGER, ")
+								.append("Language TEXT").toString());
+
+		Cursor languageCursor = SqlHelper.instance.select(
+				"AppInfo",
+				"Language",
+				new StringBuilder("UserName = '")
+						.append(AccountProvider.getInstance()
+								.getCurrentAccount().name).append("'")
+						.toString());
+		String lang = "vn";
+		if (languageCursor != null && languageCursor.moveToFirst()
+				&& languageCursor.getString(0) != null) {
+			lang = languageCursor.getString(0);
+		}
+
+		setDefaultLanguage(lang);
+
 		SqlHelper.instance.initializeTable();
 
 		warningTimer.start();
@@ -207,8 +233,7 @@ public class PfmApplication extends Application {
 	}
 
 	public static void setDefaultLanguage(String lang) {
-		Configuration config = sBaseContext.getResources()
-				.getConfiguration();
+		Configuration config = sBaseContext.getResources().getConfiguration();
 		if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
 			sLocale = new Locale(lang);
 			Locale.setDefault(sLocale);

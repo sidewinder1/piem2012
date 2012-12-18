@@ -3,6 +3,7 @@
     <!-- These are common resources for app -->
     <string name="app_name">Money Tracker</string>
     <string name="general_settings">Thiết lập chung</string>
+    <string name="updated">Đã cập nhật</string>
     <string name="language">Ngôn ngữ</string>
     <string name="menu_settings">Thiết lập</string>
     <string name="menu_import">Nhập…</string>
@@ -191,10 +192,18 @@
     <string name="report_bar_chart_expense_schedule">Kế hoạch - Thực tế</string>
     <string name="report_no_data_compare_date">Không có dữ liệu để so sánh</string>
 
-    <string-array name="currency_symbol">
-        <item>VND</item>
-        <item>USD</item>
+    <!-- Language Functioon -->
+     <string-array name="languages">
+        <item>English</item>
+        <item>日本語</item>
+        <item>Việt Nam</item>
     </string-array>
+    <string-array name="language_codes">
+        <item>en</item>
+        <item>ja</item>
+        <item>vn</item>
+    </string-array>
+    
     <string-array name="category_name">
         <item>Sinh nhật</item>
         <item>Thức ăn</item>
