@@ -313,16 +313,20 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				"Id",
 				new StringBuilder("Date = '").append(date).append("'")
 						.append(" AND Type = ").append(type).toString());
-		if (oldEntry != null && oldEntry.moveToFirst()) {
-			if (mPassedEntryId != -1 && mPassedEntryId != oldEntry.getLong(0)) {
-				SqlHelper.instance.delete(table, new StringBuilder("Id = ")
-						.append(mPassedEntryId).toString());
-				EntryDetailViewActivity.sEntryId = oldEntry.getLong(0);
+		try {
+			if (oldEntry != null && oldEntry.moveToFirst()) {
+				if (mPassedEntryId != -1
+						&& mPassedEntryId != oldEntry.getLong(0)) {
+					SqlHelper.instance.delete(table, new StringBuilder("Id = ")
+							.append(mPassedEntryId).toString());
+					EntryDetailViewActivity.sEntryId = oldEntry.getLong(0);
+				}
+
+				mPassedEntryId = oldEntry.getLong(0);
 			}
-
-			mPassedEntryId = oldEntry.getLong(0);
+		} catch (Exception e) {
+			Logger.Log(e.getMessage(), "EntryEditActivity");
 		}
-
 		long id = mPassedEntryId;
 
 		Logger.Log("Entry Id: " + mPassedEntryId, "EntryEditActivity");
@@ -478,10 +482,21 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				msgs[i] = (NdefMessage) rawMsgs[i];
 
 				for (NdefRecord record : msgs[i].getRecords()) {
-					String[] result = NfcHelper
-							.parse(record)
-							.getTag()
-							.split("((t|T)(ê|e|E|Ê)(n|N))|(((P|p)(R|r)(o|O)(d|D)(u|U)(c|C)(t|T) )?((n|N)(a|A)(m|M)(e|E)))");
+					String[] result = null;
+					try {
+						result = NfcHelper
+								.parse(record)
+								.getTag()
+								.split("((t|T)(ê|e|E|Ê)(n|N))|(((P|p)(R|r)(o|O)(d|D)(u|U)(c|C)(t|T) )?((n|N)(a|A)(m|M)(e|E)))");
+					} catch (Exception e) {
+						Alert.getInstance().show(getBaseContext(),
+								getResources().getString(R.string.error_load));
+						Logger.Log(e.getMessage(), "EntryEditActivity");
+					}
+
+					if (result == null) {
+						continue;
+					}
 
 					for (String string : result) {
 						if ("".equals(string.trim())) {

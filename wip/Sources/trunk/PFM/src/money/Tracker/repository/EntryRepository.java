@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import android.database.Cursor;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.IModelBase;
 
@@ -73,34 +74,40 @@ public class EntryRepository implements IDataRepository {
 		if (!"".equals(param)) {
 			param = new StringBuilder(" WHERE ").append(param).toString();
 		}
+		try {
+			Cursor entryCursor = SqlHelper.instance.query(new StringBuilder(
+					"SELECT * FROM Entry ").append(param)
+					.append(" ORDER BY Date DESC,Id ASC").toString());
+			if (entryCursor != null && entryCursor.moveToFirst()) {
+				orderedEntries = new LinkedHashMap<String, ArrayList<Entry>>();
 
-		Cursor entryCursor = SqlHelper.instance.query(new StringBuilder(
-				"SELECT * FROM Entry ").append(param)
-				.append(" ORDER BY Date DESC,Id ASC").toString());
-		if (entryCursor != null && entryCursor.moveToFirst()) {
-			orderedEntries = new LinkedHashMap<String, ArrayList<Entry>>();
+				do {
+					long id = entryCursor.getLong(entryCursor
+							.getColumnIndex("Id"));
+					String keyMonth = Converter.toString(Converter
+							.toDate(entryCursor.getString(entryCursor
+									.getColumnIndex("Date"))), "MM/yyyy");
 
-			do {
-				long id = entryCursor.getLong(entryCursor.getColumnIndex("Id"));
-				String keyMonth = Converter.toString(Converter
-						.toDate(entryCursor.getString(entryCursor
-								.getColumnIndex("Date"))), "MM/yyyy");
+					if (!orderedEntries.containsKey(keyMonth)) {
+						orderedEntries.put(keyMonth, new ArrayList<Entry>());
+					}
+					EntryDetailRepository.getInstance().updateData(
+							new StringBuilder("Entry_Id = " + id).toString(),
+							"Entry_Id");
+					Entry entry = new Entry(id, entryCursor.getInt(entryCursor
+							.getColumnIndex("Type")),
+							Converter.toDate(entryCursor.getString(entryCursor
+									.getColumnIndex("Date"))),
+							EntryDetailRepository.getInstance().entryDetails);
+					orderedEntries.get(keyMonth).add(entry);
+					iEntries.add(entry);
+				} while (entryCursor.moveToNext());
+			}
 
-				if (!orderedEntries.containsKey(keyMonth)) {
-					orderedEntries.put(keyMonth, new ArrayList<Entry>());
-				}
-				EntryDetailRepository.getInstance().updateData(
-						new StringBuilder("Entry_Id = " + id).toString(),
-						"Entry_Id");
-				Entry entry = new Entry(id, entryCursor.getInt(entryCursor
-						.getColumnIndex("Type")), Converter.toDate(entryCursor
-						.getString(entryCursor.getColumnIndex("Date"))),
-						EntryDetailRepository.getInstance().entryDetails);
-				orderedEntries.get(keyMonth).add(entry);
-				iEntries.add(entry);
-			} while (entryCursor.moveToNext());
+			entryCursor.close();
+		} catch (Exception e) {
+			Logger.Log(e.getMessage(), "EntryRepository");
 		}
-
 		sort();
 		return iEntries;
 	}
