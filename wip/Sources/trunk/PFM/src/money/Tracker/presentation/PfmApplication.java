@@ -168,16 +168,16 @@ public class PfmApplication extends Application {
 		}
 	});
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		if (sLocale != null) {
-			newConfig.locale = sLocale;
-			Locale.setDefault(sLocale);
-			getBaseContext().getResources().updateConfiguration(newConfig,
-					getBaseContext().getResources().getDisplayMetrics());			
-		}
-	}
+//	@Override
+//	public void onConfigurationChanged(Configuration newConfig) {
+//		super.onConfigurationChanged(newConfig);
+//		if (sLocale != null) {
+//			newConfig.locale = sLocale;
+//			Locale.setDefault(sLocale);
+//			getBaseContext().getResources().updateConfiguration(newConfig,
+//					getBaseContext().getResources().getDisplayMetrics());			
+//		}
+//	}
 
 	public void onCreate() {
 		super.onCreate();
@@ -205,20 +205,20 @@ public class PfmApplication extends Application {
 								.append("ModifiedDate DATE, IsDeleted INTEGER, ")
 								.append("Language TEXT").toString());
 
-		Cursor languageCursor = SqlHelper.instance.select(
-				"AppInfo",
-				"Language",
-				new StringBuilder("UserName = '")
-						.append(AccountProvider.getInstance()
-								.getCurrentAccount().name).append("'")
-						.toString());
-		String lang = "vn";
-		if (languageCursor != null && languageCursor.moveToFirst()
-				&& languageCursor.getString(0) != null) {
-			lang = languageCursor.getString(0);
-		}
-
-		setDefaultLanguage(lang);
+//		Cursor languageCursor = SqlHelper.instance.select(
+//				"AppInfo",
+//				"Language",
+//				new StringBuilder("UserName = '")
+//						.append(AccountProvider.getInstance()
+//								.getCurrentAccount().name).append("'")
+//						.toString());
+//		String lang = "vn";
+//		if (languageCursor != null && languageCursor.moveToFirst()
+//				&& languageCursor.getString(0) != null) {
+//			lang = languageCursor.getString(0);
+//		}
+//
+//		setDefaultLanguage(lang);
 
 		SqlHelper.instance.initializeTable();
 
