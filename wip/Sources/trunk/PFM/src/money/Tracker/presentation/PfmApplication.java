@@ -175,7 +175,7 @@ public class PfmApplication extends Application {
 			newConfig.locale = sLocale;
 			Locale.setDefault(sLocale);
 			getBaseContext().getResources().updateConfiguration(newConfig,
-					getBaseContext().getResources().getDisplayMetrics());
+					getBaseContext().getResources().getDisplayMetrics());			
 		}
 	}
 

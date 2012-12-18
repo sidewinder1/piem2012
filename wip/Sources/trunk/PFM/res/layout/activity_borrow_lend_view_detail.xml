@@ -54,24 +54,23 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
+                    android:layout_weight="5"
                     android:textSize="18sp"
                     android:text="@string/borrow_lend_total_money"
                     android:textColor="@color/white_text_color" />
 
                 <TextView
                     android:id="@+id/borrow_lend_detail_view_total_money"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:textSize="18sp"
                     android:layout_marginRight="15dp"
-                    android:layout_weight="1"
+                    android:layout_weight="6"
                     android:text="@string/dummy_data"
                     android:textColor="@color/white_text_color" />
             </LinearLayout>
@@ -82,25 +81,24 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
+                    android:layout_weight="5"
                     android:textSize="18sp"
-                    android:layout_marginRight="15dp"
                     android:text="@string/borrow_lend_current_interest"
                     android:textColor="@color/white_text_color" />
 
                 <TextView
                     android:id="@+id/borrow_lend_detail_view_total_interest"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:textSize="18sp"
                     android:layout_marginRight="15dp"
                     android:text="@string/dummy_data"
-                    android:layout_weight="1"
+                    android:layout_weight="6"
                     android:textColor="@color/white_text_color" />
             </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +85,13 @@ public class HomeActivity extends TabActivity {
 		// IOHelper.getInstance().writeFile(CONFIG_FILE, content);
 	}
 
+	@Override
+	public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+	};
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
