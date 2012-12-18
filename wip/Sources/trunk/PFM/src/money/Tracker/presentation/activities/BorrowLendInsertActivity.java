@@ -222,9 +222,7 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void afterTextChanged(Editable s) {
 					column.add("Start_date");
-					valuesChanged.add(Converter.toString(Converter.toDate(
-							startDateEditText.getText().toString(),
-							"dd/MM/yyyy")));
+					valuesChanged.add(Converter.toString(Converter.toDate(startDateEditText.getText().toString(),"dd/MM/yyyy")));
 				}
 			});
 
@@ -240,9 +238,7 @@ public class BorrowLendInsertActivity extends Activity {
 
 				public void afterTextChanged(Editable s) {
 					column.add("Expired_date");
-					valuesChanged.add(Converter.toString(Converter.toDate(
-							expiredDateEditText.getText().toString(),
-							"dd/MM/yyyy")));
+					valuesChanged.add(Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(),"dd/MM/yyyy")));
 				}
 			});
 		}
@@ -445,9 +441,6 @@ public class BorrowLendInsertActivity extends Activity {
 					if (Integer.parseInt(interestRate.getText().toString().trim()) == 0)
 					{
 						alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
-					} else if (Integer.parseInt(interestRate.getText().toString().trim()) > 100)
-					{
-						alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_100));
 					} else
 					{
 						int check = SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
@@ -505,10 +498,7 @@ public class BorrowLendInsertActivity extends Activity {
 					if (Integer.parseInt(interestRate.getText().toString().trim()) == 0)
 					{
 						alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
-					} else if (Integer.parseInt(interestRate.getText().toString().trim()) > 100)
-					{
-						alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_100));
-					} else
+					}else
 					{
 						if (mIsBorrow) {
 							debtType = "Borrowing";

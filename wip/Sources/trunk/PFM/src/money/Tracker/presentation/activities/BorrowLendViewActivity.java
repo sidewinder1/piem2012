@@ -164,7 +164,7 @@ public class BorrowLendViewActivity extends Activity {
 			break;
 		case 1: // Delete
 			String debtType = borrowLend.getDebtType();
-			Alert.getInstance().showDialog(getParent(), "Delete selected " + debtType + "?", new OnClickListener() {
+			Alert.getInstance().showDialog(getParent(), "Xóa ?", new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							SqlHelper.instance.delete("BorrowLend", "Id = " + borrowLend.getId());
 							bindData();
