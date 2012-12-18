@@ -4,6 +4,7 @@
     <string name="app_name">Money Tracker</string>
     <string name="general_settings">General setting</string>
     <string name="updated">Updated</string>
+    <string name="update_after_close_app">Changes will be updated after app is restarted</string>
     <string name="language">Language</string>
     <string name="menu_settings">Setting</string>
     <string name="menu_import">Import…</string>

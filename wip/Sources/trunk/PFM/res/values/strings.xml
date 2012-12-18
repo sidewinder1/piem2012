@@ -4,6 +4,7 @@
     <string name="app_name">Money Tracker</string>
     <string name="general_settings">Thiết lập chung</string>
     <string name="updated">Đã cập nhật</string>
+    <string name="update_after_close_app">Sẽ cập nhật thay đổi sau khi khởi động lại</string>
     <string name="language">Ngôn ngữ</string>
     <string name="menu_settings">Thiết lập</string>
     <string name="menu_import">Nhập…</string>

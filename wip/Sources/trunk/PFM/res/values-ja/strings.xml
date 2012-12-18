@@ -5,6 +5,7 @@
     <string name="app_name">Money Tracker</string>
     <string name="general_settings">一般的な設定</string>
     <string name="updated">更新した</string>
+    <string name="update_after_close_app">アプリの再起動後に変更が更新されます</string>
     <string name="language">言語</string>
     <string name="menu_settings">設定</string>
     <string name="menu_import">のインポート…</string>
@@ -111,34 +112,97 @@
     <string name="warning_ring">リング</string>
     <string name="warning_borrow_overbudget">総予算の{0}％以上</string>
     <string name="warning_remain">思い出させる</string>
-    <!--
+
     <string-array name="warning_ring_array">
         <item>なし</item>
         <item>のデフォルト</item>
         <item>の借入</item>
     </string-array>
-       
-string-array name="warning_remain_array">
-        の<item>決して</ item>は、
-        <item>の10分</ item>は、
-        <item>の30分</ item>は、
-        <item>の1時間</ item>は、
-        の<item>その他... </ item>は
-    </文字列配列>
-    <string-array name="warning_schedule_warn_array">
-        <item>の25％</ item>は
-        <item>の50％</ item>は
-        <item>の70％</ item>は
-        <item>の100％</ item>は
-        の<item>その他... </ item>は
-    </文字列配列>
-    <string-array name="warning_borrow_warn_array">
-        <item>の1時間</ item>は、
-        <item>の10時間</ item>は、
-        <item>の1日</ item>は、
-        <item>の1週間</ item>は、
-        の<item>その他... </ item>は
-    </文字列配列>
-    -->
+    <string-array name="warning_remain_array">
+        <item>決して</item>
+        <item>10分</item>
+        <item>30分</item>
+        <item>1時間</item>
+        <item>その他…</item>
+    </string-array>
+    <string-array name="warning_schedule_warn_array">
+        <item>25％</item>
+        <item>50％</item>
+        <item>70％</item>
+        <item>100％</item>
+        <item>その他…</item>
+    </string-array>
+    <string-array name="warning_borrow_warn_array">
+        <item>1時間</item>
+        <item>10時間</item>
+        <item>1日</item>
+        <item>1週間</item>
+        <item>その他…</item>
+    </string-array>
+    
+ <!-- These are resources for Entry function -->
+  <string name="entry_management_title">収入と支出の管理</string>
+    <string name="entry_expense_title">経費</string>
+    <string name="entry_income_title">所得</string>
+    <string name="entry_new_expense_title">新しい経費</string>
+    <string name="entry_new_income_title">新たな収入</string>
+    <string name="entry_price_hint">価格</string>
+    <string name="entry_detect_record">検出された{0}レコード</string>
+    <string name="entry_unformated_data">間違ったフォーマット</string>
+    <string name="entry_view_week_item_title">週</string>
+    <string name="entry_product_name_hint">製品名</string>
+    <string name="entry_daily_total_expense_title">日総費用：</string>
+    <string name="entry_daily_total_income_title">日総収入：</string>
+    <string name="entry_total_budget_week">週の予算は残っています：</string>
+    <string name="entry_total_budget_month">今月の予算が残っています：</string>
+    <string name="entry_daily_expense_title">費用を見る</string>
+    <string name="entry_daily_income_title">収入を見る</string>
+    <string name="entry_daily_not_for_furture">ない将来のために</string>
+    <string name="entry_edit_expense_title">費用を更新</string>
+    <string name="entry_edit_income_title">収入を更新</string>
+    <string name="entry_edit_nfc_message">お使いのデバイスによるスキャンNFCタグ…</string>
 
+    <!-- These are resources for Entry function -->
+    <string name="entry_edit_menu_title">メニュー</string>
+    <string name="entry_edit_qr_code">QRコード</string>
+
+    
+    <!-- These are resources for Export/Import function -->
+    <string name="import_wrong_format">不正なフォーマット。\r\nインポートすることはできません…</string>
+
+    <!-- These are resources for Report function -->
+    <string name="report_management_title">レポート</string>
+    <string name="report_management_detail_budget">予算</string>
+    <string name="report_management_detail_income">収入</string>
+    <string name="report_management_detail_expense">費用</string>
+    <string name="report_management_detail_borrowing">借り入れ</string>
+    <string name="report_management_detail_lending">融資</string>
+    <string name="report_management_custom_dialog_check_all">すべてを選択</string>
+    <string name="report_management_custom_dialog_uncheck_all">すべての選択を解除</string>
+    <string name="report_in_month">月報</string>
+    <string name="report_in_week">週報</string>
+    <string name="report_between_month">ヶ月間のレポート</string>
+    <string name="report_between_week">週間のレポート</string>
+    <string name="report_chart_tab_title">チャート</string>
+    <string name="report_expense_schedule_stacked_bar_chart">費用/スケジュール：</string>
+    <string name="report_select_chart">経費報告書</string>
+    <string name="report_pie_chart_total_money">合計：</string>
+    <string name="report_bar_chart_month_title">ヶ月を比較</string>
+    <string name="report_bar_chart_week_title">週を比較</string>
+    <string name="report_bar_chart_max_value">最高経費</string>
+    <string name="report_bar_chart_expense_schedule">スケジュール - 経費</string>
+    <string name="report_no_data_compare_date">比較するためのデータはありません</string>
+
+    <string-array name="category_name">
+        <item>誕生日</item>
+        <item>食べ物</item>
+        <item>エンターテインメント</item>
+        <item>買い物</item>
+        <item>その他…</item>
+    </string-array>
+    <string-array name="schedule_context_menu_item">
+        <item>編集</item>
+        <item>削除</item>
+    </string-array>
+ 
 </resources>

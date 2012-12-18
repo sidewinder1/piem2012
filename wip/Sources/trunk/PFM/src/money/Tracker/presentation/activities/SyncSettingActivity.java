@@ -15,7 +15,6 @@ import money.Tracker.presentation.customviews.EmailAccountCustomView;
 import money.Tracker.presentation.customviews.SyncSettingInputDialogView;
 import android.accounts.Account;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -269,7 +268,14 @@ public class SyncSettingActivity extends Activity {
 
 		int valueIndex = -1;
 		if (parentSpinner == mLanguage) {
+			valueIndex = 0;
+			for (String code : getResources().getStringArray(R.array.language_codes)){
+				if (code.equals(key)){
+					break;
+				}
 
+				valueIndex++;
+			}
 		} else {
 			int div = getResources().getString(R.string.hours).equals(
 					unit.trim()) ? 60 : 1;
@@ -375,6 +381,10 @@ public class SyncSettingActivity extends Activity {
 							"Language",
 							getResources().getStringArray(
 									R.array.language_codes)[position]);
+					Alert.getInstance().show(
+							view.getContext(),
+							getResources().getString(
+									R.string.update_after_close_app));
 					break;
 				case 3:
 					updateConfig("ScheduleRemind",
