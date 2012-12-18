@@ -13,19 +13,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_weight="0"
             android:background="@drawable/minus_icon" />
-
-        <Spinner
-            android:id="@+id/entry_item_category"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="7"
-            android:background="@drawable/spinner_bottom"
-            android:gravity="center_vertical" />
 
         <EditText
             android:id="@+id/entry_item_category_edit"
@@ -42,12 +33,28 @@
             android:visibility="gone" >
         </EditText>
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:contentDescription="@string/image_icon_description"
-            android:src="@drawable/spinner_right" />
+            android:layout_weight="7" >
+
+            <Spinner
+                android:id="@+id/entry_item_category"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="bottom"
+                android:background="@drawable/spinner_bottom"
+                android:gravity="center_vertical" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="bottom"
+                android:contentDescription="@string/image_icon_description"
+                android:src="@drawable/spinner_right" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/entry_item_price"
@@ -65,8 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_weight="0"
             android:background="@drawable/plus_icon" />
     </LinearLayout>
