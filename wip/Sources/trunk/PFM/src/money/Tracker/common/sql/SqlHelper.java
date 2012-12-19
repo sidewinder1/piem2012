@@ -79,8 +79,7 @@ public class SqlHelper {
 		}
 	}
 
-	public int update(String tableName, String[] columns, String[] newValues,
-			String whereCondition) {
+	public int update(String tableName, String[] columns, String[] newValues,String whereCondition) {
 		String whereForAppInfo = "1=1";
 		if (!"AppInfo".equals(tableName)
 				&& !whereCondition.contains("UserName")) {

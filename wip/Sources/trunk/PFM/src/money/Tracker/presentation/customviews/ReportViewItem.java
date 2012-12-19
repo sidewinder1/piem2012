@@ -62,7 +62,8 @@ public class ReportViewItem extends LinearLayout {
 				do {
 					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
-
+					
+					Log.d("Check spent", String.valueOf(entryDate) + " - " + String.valueOf(startDate) + " - " + String.valueOf(endDate));
 					if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
 							|| entryDate.compareTo(endDate) == 0) {

@@ -153,115 +153,52 @@ public class Chart extends AbstractChart {
 				do {
 					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
-					if (checkMonthly) {
-						String entryDateMonth = Converter.toString(entryDate, "MM");
-						String startDateMonth = Converter.toString(startDate, "MM");
-						String entryDateYear = Converter.toString(entryDate, "yyyy");
-						String startDateYear = Converter.toString(startDate, "yyyy");
+					if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
+							|| entryDate.compareTo(startDate) == 0
+							|| entryDate.compareTo(endDate) == 0) {
+						Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
+						if (entryDetailCursor != null) {
+							if (entryDetailCursor.moveToFirst()) {
+								do {
+									String name = "";
+									double value = 0;
+									int color = 0;
 
-						if (entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear)) {
-							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
-							if (entryDetailCursor != null) {
-								if (entryDetailCursor.moveToFirst()) {
-									do {
-										String name = "";
-										double value = 0;
-										int color = 0;
+									long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
+									Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id=" + categoryID);
+									if (categoryCursor != null) {
+										if (categoryCursor.moveToFirst()) {
+											do {
+												name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+												color = Color.parseColor(categoryCursor.getString(categoryCursor.getColumnIndex("User_Color")));
+											} while (categoryCursor.moveToNext());
+										}
+									}
 
-										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
-										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id=" + categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
-													color = Color.parseColor(categoryCursor.getString(categoryCursor.getColumnIndex("User_Color")));
-												} while (categoryCursor.moveToNext());
+									value = entryDetailCursor.getDouble(entryDetailCursor.getColumnIndex("Total"));
+
+									if (!entryCategoryName.isEmpty()) {
+
+										boolean check = false;
+
+										for (int i = 0; i < entryCategoryName.size(); i++) {
+											if (entryCategoryName.get(i).equals(name)) {
+												check = true;
 											}
 										}
 
-										value = entryDetailCursor.getDouble(entryDetailCursor.getColumnIndex("Total"));
-
-										if (!entryCategoryName.isEmpty()) {
-
-											boolean check = false;
-
-											for (int i = 0; i < entryCategoryName.size(); i++) {
-												if (entryCategoryName.get(i).equals(name)) {
-													check = true;
-												}
-											}
-
-											if (check == false) {
-												entryCategoryName.add(name);
-												entryCategoryValue.add(value);
-												entryCategoryColor.add(color);
-											}
-
-										} else {
+										if (check == false) {
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
 											entryCategoryColor.add(color);
 										}
-									} while (entryDetailCursor.moveToNext());
-								}
-							}
-						}
-					} else {
-						String entryMonth = Converter.toString(entryDate, "yyyy");
-						String startDateMonth = Converter.toString(startDate, "yyyy");
 
-						Calendar calEntry = Calendar.getInstance();
-						calEntry.setTime(entryDate);
-						int entryWeek = calEntry.get(Calendar.WEEK_OF_YEAR);
-						Calendar calStartDate = Calendar.getInstance();
-						calStartDate.setTime(startDate);
-						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_YEAR);
-
-						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
-							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
-							if (entryDetailCursor != null) {
-								if (entryDetailCursor.moveToFirst()) {
-									do {
-										String name = "";
-										double value = 0;
-										int color = 0;
-
-										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
-										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
-													color = Color.parseColor(categoryCursor.getString(categoryCursor.getColumnIndex("User_Color")));
-												} while (categoryCursor.moveToNext());
-											}
-										}
-
-										value = entryDetailCursor.getDouble(entryDetailCursor.getColumnIndex("Total"));
-
-										if (!entryCategoryName.isEmpty()) {
-
-											boolean check = false;
-
-											for (int i = 0; i < entryCategoryName.size(); i++) {
-												if (entryCategoryName.get(i).equals(name)) {
-													check = true;
-												}
-											}
-
-											if (check == false) {
-												entryCategoryName.add(name);
-												entryCategoryValue.add(value);
-												entryCategoryColor.add(color);
-											}
-
-										} else {
-											entryCategoryName.add(name);
-											entryCategoryValue.add(value);
-											entryCategoryColor.add(color);
-										}
-									} while (entryDetailCursor.moveToNext());
-								}
+									} else {
+										entryCategoryName.add(name);
+										entryCategoryValue.add(value);
+										entryCategoryColor.add(color);
+									}
+								} while (entryDetailCursor.moveToNext());
 							}
 						}
 					}
@@ -280,8 +217,7 @@ public class Chart extends AbstractChart {
 				do {
 					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
-					if (entryDate.compareTo(startDate) > 0
-							&& entryDate.compareTo(endDate) < 0
+					if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
 							|| entryDate.compareTo(startDate) == 0
 							|| entryDate.compareTo(endDate) == 0) {
 						Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "*", "Entry_Id=" + id);
@@ -339,8 +275,7 @@ public class Chart extends AbstractChart {
 		scheduleCategoryValue.add((double) budget);
 	}
 
-	protected XYMultipleSeriesDataset buildBarDataset(String[] titles,
-			List<double[]> values) {
+	protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List<double[]> values) {
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		int length = titles.length;
 		for (int i = 0; i < length; i++) {
@@ -378,10 +313,7 @@ public class Chart extends AbstractChart {
 		return renderer;
 	}
 
-	protected void setChartSettings(XYMultipleSeriesRenderer renderer,
-			String title, String xTitle, String yTitle, double xMin,
-			double xMax, double yMin, double yMax, int axesColor,
-			int labelsColor) {
+	protected void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax, int axesColor, int labelsColor) {
 		Log.v("abstract", "555" + title + xMin + yMin);
 		renderer.setChartTitle(title);
 		renderer.setXTitle(xTitle);

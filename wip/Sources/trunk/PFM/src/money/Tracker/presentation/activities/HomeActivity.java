@@ -32,25 +32,20 @@ public class HomeActivity extends TabActivity {
 		// Create Expense & income tab.
 		Intent managementIntent = new Intent(this, MainViewActivity.class);
 		managementIntent.putExtra(typeTabPathId, 0);
-		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost,
-				R.drawable.tab_bg_selector_entry);
+		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost, R.drawable.tab_bg_selector_entry);
 
 		// Create tab and intent for schedule.
 		Intent scheduleIntent = new Intent(this, MainViewActivity.class);
 		scheduleIntent.putExtra(typeTabPathId, 1);
-		setupTab(scheduleIntent, "Schedule", mTabHost,
-				R.drawable.tab_bg_selector_schedule);
+		setupTab(scheduleIntent, "Schedule", mTabHost, R.drawable.tab_bg_selector_schedule);
 
 		// Create tab and intent for Borrowing and Lending.
-		Intent borrowAndLendIntent = new Intent(this,
-				BorrowLendMainViewActivity.class);
-		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost,
-				R.drawable.tab_bg_selector_borrow);
+		Intent borrowAndLendIntent = new Intent(this, BorrowLendMainViewActivity.class);
+		setupTab(borrowAndLendIntent, "Borrowing\n& Lending", mTabHost, R.drawable.tab_bg_selector_borrow);
 
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
-		setupTab(reportIntent, "Báo cáo", mTabHost,
-				R.drawable.tab_bg_selector_report);
+		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.tab_bg_selector_report);
 	}
 
 	public static void setupTab(final Intent intent, final String tag,
@@ -102,13 +97,10 @@ public class HomeActivity extends TabActivity {
 			}
 			break;
 		case R.id.menu_import:
-			Intent explorerIntent = new Intent(PfmApplication.getAppContext(),
-					FileExplorerActivity.class);
+			Intent explorerIntent = new Intent(PfmApplication.getAppContext(), FileExplorerActivity.class);
 			explorerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			explorerIntent.putExtra("FileExplorerActivity.allowedExtension",
-					new String[] { ".xls" });
-			explorerIntent.putExtra("FileExplorerActivity.file_icon",
-					R.drawable.xls_file_icon);
+			explorerIntent.putExtra("FileExplorerActivity.allowedExtension", new String[] { ".xls" });
+			explorerIntent.putExtra("FileExplorerActivity.file_icon", R.drawable.xls_file_icon);
 			PfmApplication.getAppContext().startActivity(explorerIntent);
 			break;
 		}
