@@ -54,7 +54,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="0dip"
+                    android:layout_width="60dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="5"
@@ -82,7 +82,7 @@
 
                 <TextView
                     android:id="@+id/borrow_lend_detail_view_total_interest_title"
-                    android:layout_width="0dip"
+                    android:layout_width="60dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="5"

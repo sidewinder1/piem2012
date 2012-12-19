@@ -214,6 +214,7 @@ public class BorrowLendViewActivity extends Activity {
 		long leftDate = 0;
 		double interestRate = 0;
 		double totalInterestCaculate = 0;
+		double totalInterest = 0;
 		double totalMoney = 0;
 				
 			if (daysBetween(startDate, expiredDate) != 0)
@@ -253,8 +254,9 @@ public class BorrowLendViewActivity extends Activity {
 						
 						for (int i = 0; i < numberYear; i++)
 						{
-							totalInterestCaculate = totalMoney * interestRate * 360;
-							totalMoney = totalMoney + totalInterestCaculate;
+							totalInterest = totalMoney * interestRate * 360;
+							totalMoney = totalMoney + totalInterest;
+							totalInterestCaculate += totalInterest;
 						}
 					}
 					
@@ -281,8 +283,9 @@ public class BorrowLendViewActivity extends Activity {
 						
 						for (int i = 0; i < numberMonth; i++)
 						{
-							totalInterestCaculate = totalMoney * interestRate * 30;
-							totalMoney = totalMoney + totalInterestCaculate;
+							totalInterest = totalMoney * interestRate * 30;
+							totalMoney = totalMoney + totalInterest;
+							totalInterestCaculate += totalInterest;
 						}
 					}
 				} else
@@ -293,14 +296,15 @@ public class BorrowLendViewActivity extends Activity {
 					if (currentDate.compareTo(startDate) == 0)
 						numberDay = 0;
 					else if(currentDate.compareTo(expiredDate) < 0)
-						numberDay = daysBetween(startDate, currentDate) - 1;
-					else
 						numberDay = daysBetween(startDate, currentDate);
+					else
+						numberDay = daysBetween(startDate, expiredDate);
 					
 					for (int i = 0; i < numberDay; i++)
 					{
-						totalInterestCaculate = totalMoney * interestRate;
-						totalMoney = totalMoney + totalInterestCaculate;
+						totalInterest = totalMoney * interestRate;
+						totalMoney = totalMoney + totalInterest;
+						totalInterestCaculate += totalInterest;
 					}
 				}
 			}

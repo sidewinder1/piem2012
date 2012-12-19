@@ -219,25 +219,17 @@ public class BorrowLendViewDetailActivity extends Activity {
 					if (currentDate.compareTo(startDate) == 0)
 						numberDay = 0;
 					else if(currentDate.compareTo(expiredDate) < 0)
-						numberDay = daysBetween(startDate, currentDate) - 1;
-					else
 						numberDay = daysBetween(startDate, currentDate);
+					else
+						numberDay = daysBetween(startDate, expiredDate);
 					
 					for (int i = 0; i < numberDay; i++)
 					{
 						totalInterestCaculate = totalMoney * interestRate;
 						totalMoney = totalMoney + totalInterestCaculate;
 					}
-				totalMoney += 1;
-
-				for (long i = 1; i < caculateInterestDate; i++) {
-					totalMoney = totalMoney * (1 + interestRate);
 				}
-				totalMoney = money * totalMoney;
-
-				totalInterestCaculate += totalMoney - money;
 			}
-		}
 		} else {
 			totalMoney = values.getMoney();
 		}
