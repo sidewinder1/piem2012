@@ -78,143 +78,79 @@ public class ReportViewPieChartActivity extends Activity {
 		for(int i = 0; i < entryCategoryColor.size(); i++)
 		{
 			LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense, categoryIDList.get(i), checkMonthly, startDate, endDate), params1);
+			Log.d("Check pie chart legend detail", entryCategoryColor.get(i));
+			Log.d("Check pie chart legend detail", entryCategoryName.get(i));
+			Log.d("Check pie chart legend detail", "" + entryCategoryValue.get(i));
+			Log.d("Check pie chart legend detail", "" + totalExpense); 
+			Log.d("Check pie chart legend detail", "" + categoryIDList.get(i));
+			Log.d("Check pie chart legend detail", String.valueOf(startDate));
+			Log.d("Check pie chart legend detail", String.valueOf(endDate));
+			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense, categoryIDList.get(i), startDate, endDate), params1);
 		}
 	}
 	
 	private void getData() {
-		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*","Type=1");
+		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*", "Type=1");
 		if (entryExpenseCursor != null) {
 			if (entryExpenseCursor.moveToFirst()) {
 				do {
 					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
-					if (checkMonthly) {
-						String entryDateMonth = Converter.toString(entryDate,"MM");
-						String startDateMonth = Converter.toString(startDate,"MM");
-						String entryDateYear = Converter.toString(entryDate,"yyyy");
-						String startDateYear = Converter.toString(startDate,"yyyy");
+					
+					Log.d("Check pie chart legend", String.valueOf(entryDate) + " - " + String.valueOf(startDate) + " - " + String.valueOf(endDate));
+					if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
+							|| entryDate.compareTo(startDate) == 0
+							|| entryDate.compareTo(endDate) == 0) {
+						Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
+						if (entryDetailCursor != null) {
+							if (entryDetailCursor.moveToFirst()) {
+								do {
+									String name = "";
+									long value = 0;
+									String color = "";
 
-						if (entryDateMonth.equals(startDateMonth) && entryDateYear.equals(startDateYear)) {
-							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail","Category_Id, sum(Money) as Total","Entry_Id=" + id + " group by Category_Id");
-							if (entryDetailCursor != null) {
-								if (entryDetailCursor.moveToFirst()) {
-									do {
-										String name = "";
-										long value = 0;
-										String color = "";
+									long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
+									Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
+									if (categoryCursor != null) {
+										if (categoryCursor.moveToFirst()) {
+											do {
+												name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
+												color = categoryCursor.getString(categoryCursor.getColumnIndex("User_Color"));
+											} while (categoryCursor.moveToNext());
+										}
+									}
 
-										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
-										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
-													color = categoryCursor.getString(categoryCursor.getColumnIndex("User_Color"));
-												} while (categoryCursor.moveToNext());
+									value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
+									
+									Log.d("Check pie chart legend", categoryID + " - " + name + " - " + value + " - " + color);
+									if (!entryCategoryName.isEmpty()) {
+
+										boolean check = false;
+
+										for (int i = 0; i < entryCategoryName.size(); i++) {
+											if (entryCategoryName.get(i).equals(name)) {
+												entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
+												check = true;
 											}
 										}
 
-										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
-
-										if (!entryCategoryName.isEmpty()) {
-
-											boolean check = false;
-
-											for (int i = 0; i < entryCategoryName.size(); i++) {
-												if (entryCategoryName.get(i).equals(name)) {
-													entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
-													check = true;
-												}
-											}
-
-											if (check == false) {
-												categoryIDList.add(categoryID);
-												entryCategoryName.add(name);
-												entryCategoryValue.add(value);
-												entryCategoryColor.add(color);
-											}
-
-										} else {
+										if (check == false) {
 											categoryIDList.add(categoryID);
 											entryCategoryName.add(name);
 											entryCategoryValue.add(value);
 											entryCategoryColor.add(color);
 										}
-										
-										totalExpense += value;
-										
-									} while (entryDetailCursor.moveToNext());
-								}
-							}
-						}
-					} else {
-						String entryMonth = Converter.toString(entryDate, "yyyy");
-						String startDateMonth = Converter.toString(startDate, "yyyy");
-						
-				        Calendar calEntry = Calendar.getInstance();
-				        calEntry.setTime(entryDate);
-				        int entryWeek = calEntry.get(Calendar.WEEK_OF_YEAR);
-				        Calendar calStartDate = Calendar.getInstance();
-				        calStartDate.setTime(startDate);
-				        int startDateWeek = calStartDate.get(Calendar.WEEK_OF_YEAR);
-				        Log.d("Check entry date",String.valueOf(entryDate) + " - " + entryWeek + " - " + entryMonth);
-				        Log.d("Check start date", String.valueOf(startDate) + " - " + startDateWeek + " - " + startDateMonth);
-				        
-						if (entryMonth.equals(startDateMonth) && entryWeek == startDateWeek) {
-							Log.d("Check pie chart week", "Check 1");
-							Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
-							if (entryDetailCursor != null) {
-								if (entryDetailCursor.moveToFirst()) {
-									do {
-										String name = "";
-										long value = 0;										
-										String color = "";
 
-										long categoryID = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Category_Id"));
-										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id="+ categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
-													color = categoryCursor.getString(categoryCursor.getColumnIndex("User_Color"));
-												} while (categoryCursor.moveToNext());
-											}
-										}
+									} else {
+										categoryIDList.add(categoryID);
+										entryCategoryName.add(name);
+										entryCategoryValue.add(value);
+										entryCategoryColor.add(color);
+									}
+									
+									totalExpense += value;
 
-										value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
-										
-										Log.d("Check pie chart detail", name + " - " + color + " - " + value);
-
-										if (!entryCategoryName.isEmpty()) {
-
-											boolean check = false;
-
-											for (int i = 0; i < entryCategoryName.size(); i++) {
-												if (entryCategoryName.get(i).equals(name)) {
-													entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
-													check = true;
-												}
-											}
-
-											if (check == false) {
-												categoryIDList.add(categoryID);
-												entryCategoryName.add(name);
-												entryCategoryValue.add(value);
-												entryCategoryColor.add(color);
-											}
-
-										} else {
-											categoryIDList.add(categoryID);
-											entryCategoryName.add(name);
-											entryCategoryValue.add(value);
-											entryCategoryColor.add(color);
-										}
-										
-										totalExpense += value;
-										
-									} while (entryDetailCursor.moveToNext());
-								}
+								} while (entryDetailCursor.moveToNext());
 							}
 						}
 					}
@@ -222,5 +158,4 @@ public class ReportViewPieChartActivity extends Activity {
 			}
 		}
 	}
-
 }
