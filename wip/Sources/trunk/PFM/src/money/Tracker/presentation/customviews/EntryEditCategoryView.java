@@ -110,14 +110,21 @@ public class EntryEditCategoryView extends LinearLayout {
 							// Change color for new category.
 							Cursor color = SqlHelper.instance.select(
 									"UserColor", "User_Color", null);
-							if (color != null && color.moveToFirst()) {
-								text.setBackgroundColor(Color.parseColor(color
-										.getString(0)));
-								text.setTag(color.getString(0));
-								SqlHelper.instance.delete("UserColor",
-										new StringBuilder("User_Color = '")
-												.append(color.getString(0))
-												.append("'").toString());
+							try {
+								if (color != null && color.moveToFirst()) {
+									text.setBackgroundColor(Color
+											.parseColor(color.getString(0)));
+									text.setTag(color.getString(0));
+									SqlHelper.instance.delete("UserColor",
+											new StringBuilder("User_Color = '")
+													.append(color.getString(0))
+													.append("'").toString());
+								}
+							} catch (Exception e) {
+								Logger.Log(e.getMessage(),
+										"EditEntryCategoryView");
+							} finally {
+								color.close();
 							}
 						}
 					}
@@ -411,10 +418,10 @@ public class EntryEditCategoryView extends LinearLayout {
 			}
 		}
 
-		if (mCategoryList.getTag() == null){
+		if (mCategoryList.getTag() == null) {
 			return;
 		}
-		
+
 		String removedItemList = mCategoryList.getTag() + "";
 		if (removedItemList.length() > 1) {
 			// Delete items that removed before.
