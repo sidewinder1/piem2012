@@ -14,6 +14,7 @@ import money.Tracker.common.utilities.Logger;
 import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.activities.HomeActivity;
+import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.activities.SyncSettingActivity;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
 import money.Tracker.presentation.model.Entry;
@@ -27,6 +28,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 public class PfmApplication extends Application {
@@ -58,12 +60,18 @@ public class PfmApplication extends Application {
 							if (email != null) {
 								if (email.getActive()) {
 									sync_data = email.getButton();
-									((AnimationDrawable) sync_data
-											.getBackground()).start();
+									// ((AnimationDrawable) sync_data
+									// .getBackground()).start();
+									sync_data.startAnimation(AnimationUtils
+											.loadAnimation(sContext,
+													R.anim.sync_background));
 									sync_data.setVisibility(View.VISIBLE);
 								} else {
-									((AnimationDrawable) email.getButton()
-											.getBackground()).stop();
+//									((AnimationDrawable) email.getButton()
+//											.getBackground()).stop();
+									sync_data.getAnimation().cancel();
+									sync_data.getAnimation().reset();
+									sync_data.clearAnimation();
 								}
 							}
 						}
@@ -168,16 +176,16 @@ public class PfmApplication extends Application {
 		}
 	});
 
-//	@Override
-//	public void onConfigurationChanged(Configuration newConfig) {
-//		super.onConfigurationChanged(newConfig);
-//		if (sLocale != null) {
-//			newConfig.locale = sLocale;
-//			Locale.setDefault(sLocale);
-//			getBaseContext().getResources().updateConfiguration(newConfig,
-//					getBaseContext().getResources().getDisplayMetrics());			
-//		}
-//	}
+	// @Override
+	// public void onConfigurationChanged(Configuration newConfig) {
+	// super.onConfigurationChanged(newConfig);
+	// if (sLocale != null) {
+	// newConfig.locale = sLocale;
+	// Locale.setDefault(sLocale);
+	// getBaseContext().getResources().updateConfiguration(newConfig,
+	// getBaseContext().getResources().getDisplayMetrics());
+	// }
+	// }
 
 	public void onCreate() {
 		super.onCreate();
@@ -205,20 +213,20 @@ public class PfmApplication extends Application {
 								.append("ModifiedDate DATE, IsDeleted INTEGER, ")
 								.append("Language TEXT").toString());
 
-//		Cursor languageCursor = SqlHelper.instance.select(
-//				"AppInfo",
-//				"Language",
-//				new StringBuilder("UserName = '")
-//						.append(AccountProvider.getInstance()
-//								.getCurrentAccount().name).append("'")
-//						.toString());
-//		String lang = "vn";
-//		if (languageCursor != null && languageCursor.moveToFirst()
-//				&& languageCursor.getString(0) != null) {
-//			lang = languageCursor.getString(0);
-//		}
-//
-//		setDefaultLanguage(lang);
+		// Cursor languageCursor = SqlHelper.instance.select(
+		// "AppInfo",
+		// "Language",
+		// new StringBuilder("UserName = '")
+		// .append(AccountProvider.getInstance()
+		// .getCurrentAccount().name).append("'")
+		// .toString());
+		// String lang = "vn";
+		// if (languageCursor != null && languageCursor.moveToFirst()
+		// && languageCursor.getString(0) != null) {
+		// lang = languageCursor.getString(0);
+		// }
+		//
+		// setDefaultLanguage(lang);
 
 		SqlHelper.instance.initializeTable();
 

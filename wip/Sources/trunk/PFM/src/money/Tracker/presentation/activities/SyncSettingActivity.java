@@ -578,6 +578,7 @@ public class SyncSettingActivity extends Activity {
 			EmailAccountCustomView email = new EmailAccountCustomView(this,
 					isSubList);
 			email.setEmailAccount(account.name);
+			email.setAutoSync(mAutoSync.isChecked());
 			email.setActive(AccountProvider.getInstance().getCurrentAccount() != null
 					&& account.name.equals(AccountProvider.getInstance()
 							.getCurrentAccount().name));

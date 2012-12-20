@@ -31,6 +31,14 @@ public class AccountProvider {
 
 	public void setCurrentAccount(String email) {
 		currentAccount = findAccountByEmail(email);
+
+		SqlHelper.instance.update("AppInfo", new String[] { "Status" },
+				new String[] { "0" }, "Status = 1");
+		if (currentAccount != null) {
+			SqlHelper.instance.update("AppInfo", new String[] { "Status" },
+					new String[] { "1" }, "UserName = '" + currentAccount.name
+							+ "'");
+		}
 	}
 
 	public Account getCurrentAccount() {
@@ -45,18 +53,17 @@ public class AccountProvider {
 			return;
 		}
 
-		Cursor accountCheck = SqlHelper.instance.select("AppInfo",
-				"UserName", "UserName = 'LocalAccount'");
+		Cursor accountCheck = SqlHelper.instance.select("AppInfo", "UserName",
+				"UserName = 'LocalAccount'");
 		if (accountCheck == null || !accountCheck.moveToFirst()) {
-			SqlHelper.instance.insert("AppInfo", new String[] {
-					"UserName", "LastSync", "Status", "ScheduleWarn",
-					"ScheduleRing", "ScheduleRemind", "BorrowWarn",
-					"BorrowRing", "BorrowRemind", "Language" }, new String[] {
-					"LocalAccount", "1990-01-20 00:00:00", "0",
-					"50", "#DEFAULT", "10",
-					"168", "#DEFAULT", "10", "vn" });
+			SqlHelper.instance.insert("AppInfo", new String[] { "UserName",
+					"LastSync", "Status", "ScheduleWarn", "ScheduleRing",
+					"ScheduleRemind", "BorrowWarn", "BorrowRing",
+					"BorrowRemind", "Language" }, new String[] {
+					"LocalAccount", "1990-01-20 00:00:00", "0", "50",
+					"#DEFAULT", "10", "168", "#DEFAULT", "10", "vn" });
 		}
-		
+
 		setDefaultLocalAccount();
 	}
 
@@ -90,16 +97,17 @@ public class AccountProvider {
 					SqlHelper.instance.insert("AppInfo", new String[] {
 							"UserName", "LastSync", "Status", "ScheduleWarn",
 							"ScheduleRing", "ScheduleRemind", "BorrowWarn",
-							"BorrowRing", "BorrowRemind", "Language" }, new String[] {
-							account.name, "1990-01-20 00:00:00", "0",
-							"50", "#DEFAULT", "10",
-							"168", "#DEFAULT", "10", "vn" });
+							"BorrowRing", "BorrowRemind", "Language" },
+							new String[] { account.name, "1990-01-20 00:00:00",
+									"0", "50", "#DEFAULT", "10", "168",
+									"#DEFAULT", "10", "vn" });
 				}
 			}
 		}
 
 		if (mAccountList.size() == 0) {
-			mAccountList.add(new Account("cinderella.hn90@gmail.com", "debug.com"));
+			mAccountList.add(new Account("cinderella.hn90@gmail.com",
+					"debug.com"));
 			mAccountList.add(new Account("DebugAccount1", "debug.com"));
 			mAccountList.add(new Account("DebugAccount3", "debug.com"));
 		}
