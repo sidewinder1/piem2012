@@ -38,62 +38,8 @@
 
                 <!-- Begin of general setting -->
 
+                <!--  -->
 
-                <!--
-               <TextView
-                    style="@style/normalText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/general_settings"
-                    android:textSize="21sp" />
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        style="@style/normalText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="5"
-                        android:gravity="center_vertical"
-                        android:text="@string/language" />
-
-                    <RelativeLayout
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:layout_margin="20sp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="4" >
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_gravity="bottom"
-                            android:contentDescription="@string/image_icon_description"
-                            android:src="@drawable/spinner_right" />
-
-                        <Spinner
-                            android:id="@+id/general_setting_language"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:background="@drawable/spinner_bottom"
-                            android:textColor="@color/white_text_color"
-                            android:textSize="18sp" />
-                    </RelativeLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="20sp"
-                    android:background="@color/brown_line" />
-                -->
                 <!-- End of general setting -->
 
                 <TextView
@@ -228,135 +174,43 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:baselineAligned="false"
-                        android:orientation="vertical" >
+                        android:baselineAligned="false" >
 
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content" >
-
-                            <TextView
-                                style="@style/normalText"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:layout_marginLeft="15dp"
-                                android:layout_weight="5"
-                                android:gravity="center_vertical"
-                                android:text="@string/warning_schedule_warn_before" />
-
-                            <RelativeLayout
-                                android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:layout_marginLeft="15dp"
-                                android:layout_weight="4" >
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_gravity="bottom"
-                                    android:contentDescription="@string/image_icon_description"
-                                    android:src="@drawable/spinner_right" />
-
-                                <Spinner
-                                    android:id="@+id/warning_schedule_warn_before"
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:background="@drawable/spinner_bottom"
-                                    android:textColor="@color/white_text_color"
-                                    android:textSize="18sp" />
-                            </RelativeLayout>
-                        </LinearLayout>
-
-                        <!--
-                        LinearLayout
-                            android:layout_width="fill_parent"
+                        <TextView
+                            style="@style/normalText"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal" >
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginLeft="15dp"
+                            android:layout_weight="5"
+                            android:gravity="center_vertical"
+                            android:text="@string/warning_schedule_warn_before" />
 
-                            <TextView
-                                style="@style/normalText"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:layout_marginLeft="15dp"
-                                android:layout_weight="5"
-                                android:gravity="center_vertical"
-                                android:text="@string/warning_ring" />
-
-                            <RelativeLayout
-                                android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:layout_marginLeft="15dp"
-                                android:layout_weight="4" >
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_gravity="bottom"
-                                    android:contentDescription="@string/image_icon_description"
-                                    android:src="@drawable/spinner_right" />
-
-                                <Spinner
-                                    android:id="@+id/warning_schedule_ring"
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left|bottom"
-                                    android:layout_marginLeft="15dp"
-                                    android:background="@drawable/spinner_bottom"
-                                    android:textColor="@color/white_text_color"
-                                    android:textSize="18sp" />
-                            </RelativeLayout>
-                        </LinearLayout
-                        <LinearLayout
-                            android:layout_width="fill_parent"
+                        <RelativeLayout
+                            android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="20sp"
-                            android:orientation="horizontal" >
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginLeft="15dp"
+                            android:layout_weight="4" >
 
-                            <TextView
-                                style="@style/normalText"
-                                android:layout_width="0dp"
+                            <ImageView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:layout_marginLeft="15dp"
-                                android:layout_weight="5"
-                                android:gravity="center_vertical"
-                                android:text="@string/warning_remain" />
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="bottom"
+                                android:contentDescription="@string/image_icon_description"
+                                android:src="@drawable/spinner_right" />
 
-                            <RelativeLayout
-                                android:layout_width="0dip"
+                            <Spinner
+                                android:id="@+id/warning_schedule_warn_before"
+                                android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:layout_marginLeft="15dp"
-                                android:layout_weight="4" >
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_gravity="bottom"
-                                    android:contentDescription="@string/image_icon_description"
-                                    android:src="@drawable/spinner_right" />
-
-                                <Spinner
-                                    android:id="@+id/warning_schedule_remain"
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:layout_marginLeft="15dp"
-                                    android:background="@drawable/spinner_bottom"
-                                    android:textColor="@color/white_text_color"
-                                    android:textSize="18sp" />
-                            </RelativeLayout>
-                        </LinearLayout>
-                        -->
-
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/spinner_bottom"
+                                android:textColor="@color/white_text_color"
+                                android:textSize="18sp" />
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -419,7 +273,7 @@
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom"
-                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginLeft="10dp"
                                     android:background="@drawable/spinner_bottom"
                                     android:textColor="@color/white_text_color"
                                     android:textSize="18sp" />
@@ -461,7 +315,7 @@
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom"
-                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginLeft="10dp"
                                     android:background="@drawable/spinner_bottom"
                                     android:textColor="@color/white_text_color"
                                     android:textSize="18sp" />
@@ -503,7 +357,7 @@
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom"
-                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginLeft="10dp"
                                     android:background="@drawable/spinner_bottom"
                                     android:textColor="@color/white_text_color"
                                     android:textSize="18sp" />
