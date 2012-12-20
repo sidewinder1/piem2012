@@ -108,7 +108,7 @@
     <!-- These are resources for Warning function -->
     <string name="warning_title">Thiết lập cảnh báo chung</string>
     <string name="warning_schedule_title">Kế hoạch</string>
-    <string name="warning_borrow_title">Cho vay và nợ</string>
+    <string name="warning_borrow_title">Vay và cho vay</string>
     <string name="warning_schedule_warn_before">Cảnh báo khi đến</string>
     <string name="warning_borrow_warn_before">Cảnh báo trước khi đáo hạn</string>
     <string name="warning_ring">Nhạc chuông</string>

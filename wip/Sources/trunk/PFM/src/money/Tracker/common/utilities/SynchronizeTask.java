@@ -2,7 +2,6 @@ package money.Tracker.common.utilities;
 
 import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.TabViewActivity;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +35,11 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		if (sButton != null) {
-			((AnimationDrawable) sButton.getBackground()).stop();
+//			((AnimationDrawable) sButton.getBackground()).stop();
+			sButton.getAnimation().cancel();
+			sButton.getAnimation().reset();
+			sButton.clearAnimation();
+			
 			sButton.setVisibility(Boolean.parseBoolean(String.valueOf(sButton
 					.getTag())) ? View.VISIBLE : View.GONE);
 		}

@@ -7,10 +7,9 @@ import money.Tracker.common.utilities.SynchronizeTask;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.activities.SyncSettingActivity;
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,14 +55,21 @@ public class EmailAccountCustomView extends LinearLayout {
 							EmailAccountCustomView email = (EmailAccountCustomView) parentList
 									.getChildAt(index);
 							if (email != null) {
-								email.setActive(false);
-								email.setIconVisibility(View.GONE);
+								if (email.getText().equals(
+										AccountProvider.getInstance()
+												.getCurrentAccount().name)) {
+									email.setActive(true);
+									email.setTag(true);
+									email.setIconVisibility(View.VISIBLE);
+								} else {
+									email.setActive(false);
+									email.setTag(false);
+									email.setIconVisibility(View.GONE);
+								}
 							}
 						}
 					}
 
-					setActive(true);
-					sync_data.setVisibility(View.VISIBLE);
 					if (mIsSublist) {
 						for (int index = 0; index < parentList.getChildCount(); index++) {
 							EmailAccountCustomView email = (EmailAccountCustomView) parentList
@@ -78,10 +84,15 @@ public class EmailAccountCustomView extends LinearLayout {
 							}
 						}
 					} else {
-						RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
-								true);
-						spinner.execute((AnimationDrawable) sync_data
-								.getBackground());
+						// RefreshIconSpinAsyncTask spinner = new
+						// RefreshIconSpinAsyncTask(
+						// true);
+						// spinner.execute((AnimationDrawable) sync_data
+						// .getBackground());
+						sync_data.startAnimation(AnimationUtils.loadAnimation(
+								getContext(), R.anim.sync_background));
+
+						sync_data.setTag(mAutoSync);
 						// ((AnimationDrawable)
 						// sync_data.getBackground()).start();
 						SynchronizeTask syncTask = new SynchronizeTask(
@@ -120,40 +131,49 @@ public class EmailAccountCustomView extends LinearLayout {
 	}
 
 	public void setActive(boolean isActive) {
-		boolean animating = !mIsSublist
-				&& (sync_data.getVisibility() == View.VISIBLE && ((AnimationDrawable) sync_data
-						.getBackground()).isRunning());
+		// boolean animating = !mIsSublist
+		// && (sync_data.getVisibility() == View.VISIBLE && ((AnimationDrawable)
+		// sync_data
+		// .getBackground()).isRunning());
 
-//		if (animating) {
-//			((AnimationDrawable) sync_data.getBackground()).stop();
-//		}
-
-		sync_data.setBackgroundResource(mIsSublist ? R.drawable.syn_icon_1
-				: (mAutoSync ? R.drawable.refresh_animation
-						: R.drawable.refresh_animation2));
-		// if (sync_data.getVisibility() != View.VISIBLE) {
-		sync_data
-				.setVisibility(isActive || animating ? View.VISIBLE
-						: View.GONE);
+		// if (animating) {
+		// ((AnimationDrawable) sync_data.getBackground()).stop();
 		// }
 
-		if (!mIsSublist) {
-			if (((isActive || animating) && SynchronizeTask.isSynchronizing())) {
-				RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
-						true);
-				spinner.execute((AnimationDrawable) sync_data.getBackground());
+		// sync_data.setBackgroundResource(mIsSublist ? R.drawable.syn_icon_1
+		// : (mAutoSync ? R.drawable.refresh_animation
+		// : R.drawable.refresh_animation2));
+		// // if (sync_data.getVisibility() != View.VISIBLE) {
+		// sync_data.setVisibility(isActive || animating ? View.VISIBLE
+		// : View.GONE);
+		// // }
+
+		if (!mIsSublist && sync_data.getAnimation() != null) {
+			if (((isActive || (sync_data.getAnimation().hasStarted())) && SynchronizeTask
+					.isSynchronizing())) {
+				// RefreshIconSpinAsyncTask spinner = new
+				// RefreshIconSpinAsyncTask(
+				// true);
+				// spinner.execute((AnimationDrawable)
+				// sync_data.getBackground());
+				sync_data.startAnimation(AnimationUtils.loadAnimation(
+						getContext(), R.anim.sync_background));
 				// ((AnimationDrawable) sync_data.getBackground()).start();
 			} else {
-//				RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
-//						false);
-//				spinner.execute((AnimationDrawable) sync_data.getBackground());
-				 ((AnimationDrawable) sync_data.getBackground()).stop();
+				// RefreshIconSpinAsyncTask spinner = new
+				// RefreshIconSpinAsyncTask(
+				// false);
+				// spinner.execute((AnimationDrawable)
+				// sync_data.getBackground());
+				// ((AnimationDrawable) sync_data.getBackground()).stop();
+				sync_data.getAnimation().cancel();
+				sync_data.getAnimation().reset();
+				sync_data.clearAnimation();
 			}
 		}
 
 		mIsActive = isActive && mAutoSync;
 
-		sync_data.setTag(mIsActive);
 		mStatus.setText(getResources().getString(
 				mIsActive ? R.string.sync_view_account_active
 						: R.string.sync_view_account_deactive));
@@ -165,11 +185,13 @@ public class EmailAccountCustomView extends LinearLayout {
 		}
 
 		mAutoSync = isAuto;
-
+		sync_data.setBackgroundResource(mAutoSync ? R.drawable.syn_icon_1
+				: R.drawable.unsyn_icon_1);
 		// ((AnimationDrawable) sync_data.getBackground()).stop();
 		// sync_data.setBackgroundResource(isAuto ? R.drawable.refresh_animation
 		// : R.drawable.refresh_animation2);
 
+		sync_data.setTag(mAutoSync);
 		setActive(mAutoSync && mIsActive);
 
 		// RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
@@ -178,11 +200,21 @@ public class EmailAccountCustomView extends LinearLayout {
 		//
 		if (sync_data.getVisibility() == View.VISIBLE
 				&& SynchronizeTask.isSynchronizing()) {
-			RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
-					true);
-			spinner.execute((AnimationDrawable) sync_data.getBackground());
+
+			sync_data.startAnimation(AnimationUtils.loadAnimation(getContext(),
+					R.anim.sync_background));
+			// RefreshIconSpinAsyncTask spinner = new RefreshIconSpinAsyncTask(
+			// true);
+			// spinner.execute((AnimationDrawable) sync_data.getBackground());
 		} else {
-			((AnimationDrawable) sync_data.getBackground()).stop();
+			// ((AnimationDrawable) sync_data.getBackground()).stop();
+			if (sync_data.getAnimation() != null) {
+				sync_data.getAnimation().cancel();
+				sync_data.getAnimation().reset();
+			}
+
+			sync_data.clearAnimation();
+
 		}
 	}
 
@@ -196,31 +228,5 @@ public class EmailAccountCustomView extends LinearLayout {
 
 	public Button getButton() {
 		return sync_data;
-	}
-
-	class RefreshIconSpinAsyncTask extends
-			AsyncTask<AnimationDrawable, Void, Void> {
-		private boolean mIsStart;
-
-		public RefreshIconSpinAsyncTask(boolean isStart) {
-			super();
-			mIsStart = isStart;
-		}
-
-		@Override
-		protected Void doInBackground(AnimationDrawable... arg0) {
-			if (mIsStart) {
-				arg0[0].start();
-			} else {
-				arg0[0].stop();
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-		}
 	}
 }
