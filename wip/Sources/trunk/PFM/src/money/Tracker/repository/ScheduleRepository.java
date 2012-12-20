@@ -9,7 +9,7 @@ import money.Tracker.presentation.model.DetailSchedule;
 import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.presentation.model.Schedule;
 
-public class ScheduleRepository implements IDataRepository {
+public class ScheduleRepository extends IDataRepository {
 	public static ScheduleRepository instance;
 
 	public ScheduleRepository() {

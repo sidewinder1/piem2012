@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import money.Tracker.presentation.model.IModelBase;
 
-public interface IDataRepository {
+public abstract class IDataRepository {
 	// public static IDataRepository instance = null;
-	public ArrayList<IModelBase> getData(String param);
+	public ArrayList<IModelBase> getData(String param){
+		return null;
+	}
 }

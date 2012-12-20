@@ -9,7 +9,7 @@ import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.IModelBase;
 
-public class EntryRepository implements IDataRepository {
+public class EntryRepository extends IDataRepository {
 	private static EntryRepository instance;
 
 	public ArrayList<Entry> entries;
@@ -57,6 +57,7 @@ public class EntryRepository implements IDataRepository {
 			} while (entryCursor.moveToNext());
 		}
 
+		entryCursor.close();
 		sort();
 		return entries;
 	}

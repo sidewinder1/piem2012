@@ -51,6 +51,7 @@ public class EntryDetailRepository {
 			} while (entryCursor.moveToNext());
 		}
 
+		entryCursor.close();
 		sort();
 		return entries;
 	}

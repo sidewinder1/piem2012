@@ -1,5 +1,7 @@
 package money.Tracker.common.sql;
 
+import java.util.Locale;
+
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
@@ -11,19 +13,45 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+/**
+ * @author Kaminari.hp
+ * This class provides methods to interact with database easily and simply.
+ */
+/**
+ * @author Kaminari.hp
+ *
+ */
+/**
+ * @author Kaminari.hp
+ *
+ */
+/**
+ * @author Kaminari.hp
+ *
+ */
 public class SqlHelper {
 	public static SqlHelper instance;
 	private static SQLiteDatabase currentDb;
 	private static SqlConnector openHelper;
 
+	/**
+	 * The constructor of class
+	 * @param context
+	 */
 	public SqlHelper(Context context) {
 		openHelper = new SqlConnector(context);
 		currentDb = openHelper.getWritableDatabase();
 	}
 
-	/*
-	 * This method is used to create a table with specified name and column
-	 * information if this table doesn’t exist.
+	/**
+	 * This method is used to create a table with specified name and
+	 * column information if this table doesn’t exist.
+	 * @param tableName
+	 * The name of table that is created.
+	 * @param columnsInfo
+	 * The information of columns including
+	 * @return
+	 * A boolean that whether creation is successful or not.
 	 */
 	public boolean createTable(String tableName, String columnsInfo) {
 		try {
@@ -38,6 +66,12 @@ public class SqlHelper {
 		return true;
 	}
 
+	/**
+	 * @param tableName
+	 * @param columnNames
+	 * @param columnValues
+	 * @return
+	 */
 	public long insert(String tableName, String[] columnNames,
 			String[] columnValues) {
 		ContentValues contentValues = new ContentValues();
@@ -79,7 +113,21 @@ public class SqlHelper {
 		}
 	}
 
-	public int update(String tableName, String[] columns, String[] newValues,String whereCondition) {
+	/**
+	 * Update a record to database with:
+	 * @param tableName
+	 * The name of table that has the record needs to update data.
+	 * @param columns
+	 * The name of columns need to update data.
+	 * @param newValues
+	 * New values match name of above columns.
+	 * @param whereCondition
+	 * Where condition to select satisfied record.
+	 * @return
+	 * The number of rows affected. 
+	 */
+	public int update(String tableName, String[] columns, String[] newValues,
+			String whereCondition) {
 		String whereForAppInfo = "1=1";
 		if (!"AppInfo".equals(tableName)
 				&& !whereCondition.contains("UserName")) {
@@ -115,6 +163,16 @@ public class SqlHelper {
 		}
 	}
 
+	
+	/**
+	 * Mark a record as deleted.
+	 * @param tableName
+	 * The table name contains record need to delete.
+	 * @param whereCondition
+	 * Where condition.
+	 * @return
+	 * True if marking is successful, else return false.
+	 */
 	public boolean delete(String tableName, String whereCondition) {
 		ContentValues newValueContent = new ContentValues();
 		String whereForAppInfo = "";
@@ -149,6 +207,16 @@ public class SqlHelper {
 		return true;
 	}
 
+	
+	/**
+	 * Completely delete a record in table.
+	 * @param tableName
+	 * The table name contains record need to delete.
+	 * @param whereCondition
+	 * Where condition.
+	 * @return
+	 * True if deleting is successful, else return false.
+	 */
 	public boolean deepDelete(String tableName, String whereCondition) {
 		StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName)
 				.append(" WHERE ").append(whereCondition);
@@ -161,6 +229,14 @@ public class SqlHelper {
 		return true;
 	}
 
+	
+	/**
+	 * Delete a table
+	 * @param tableName
+	 * Table name that is deleted.
+	 * @return
+	 * True if marking is successful, else return false.
+	 */
 	public boolean drop(String tableName) {
 		try {
 			currentDb.execSQL("DROP TABLE IF EXISTS " + tableName);
@@ -171,11 +247,18 @@ public class SqlHelper {
 		}
 	}
 
+	/**
+	 * Run a SQL statement.
+	 * @param sqlStatement
+	 * The SQL statement.
+	 * @return
+	 * A Cursor for read data from database.
+	 */
 	public Cursor query(String sqlStatement) {
 		Cursor cursor = null;
-		int whereIndex = sqlStatement.toLowerCase().indexOf(" where ") + 6;
+		int whereIndex = sqlStatement.toLowerCase(Locale.US).indexOf(" where ") + 6;
 
-		int fromIndex = sqlStatement.toLowerCase().indexOf(" from ") + 5;
+		int fromIndex = sqlStatement.toLowerCase(Locale.US).indexOf(" from ") + 5;
 		String tableName = sqlStatement.substring(fromIndex).trim().split(" ")[0];
 
 		if (whereIndex >= 6) {
@@ -212,11 +295,35 @@ public class SqlHelper {
 		return cursor;
 	}
 
+	/**
+	 * Select a record in a table with specified condition.
+	 * @param tableName
+	 * Name of table contains records.
+	 * @param selectedColumns
+	 * Name of columns that are selected.
+	 * @param whereCondition
+	 * Condition for selecting.
+	 * @return
+	 * A Cursor to read data from database.
+	 */
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
 		return select(tableName, selectedColumns, whereCondition, false);
 	}
 
+	/**
+	 * Select a record in a table with specified condition.
+	 * @param tableName
+	 * Name of table contains records.
+	 * @param selectedColumns
+	 * Name of columns that are selected.
+	 * @param whereCondition
+	 * Condition for selecting.
+	 * @param includeDeletedRecords
+	 * Select all records or ignore records that are marked as deleted.
+	 * @return
+	 * A Cursor to read data from database.
+	 */
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition, boolean includeDeletedRecords) {
 		String whereForAppInfo = "";
@@ -250,6 +357,10 @@ public class SqlHelper {
 		return cursor;
 	}
 
+	
+	/**
+	 * Delete all tables in database.
+	 */
 	public void dropAllTables() {
 		drop("AppInfo");
 		drop("Schedule");
@@ -261,7 +372,10 @@ public class SqlHelper {
 		drop("UserColor");
 	}
 
-	public void initializeTable() {		
+	/**
+	 * Initialize tables of application.
+	 */
+	public void initializeTable() {
 		// Create table for Schedule.
 		createTable(
 				"Schedule",

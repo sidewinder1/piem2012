@@ -29,7 +29,8 @@ public class CategoryRepository {
 								.getString(categoryCursor
 										.getColumnIndex("User_Color"))));
 			} while (categoryCursor.moveToNext());
-
+			
+			categoryCursor.close();
 			sort();
 		}
 	}
@@ -48,16 +49,17 @@ public class CategoryRepository {
 		return 1;
 	}
 
-	public boolean isExisted(String nameOfCategory){
+	public boolean isExisted(String nameOfCategory) {
 		for (Category category : categories) {
-			if (nameOfCategory.toLowerCase().equals(category.getName().toLowerCase())) {
+			if (nameOfCategory.toLowerCase().equals(
+					category.getName().toLowerCase())) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public String getName(long id) {
 		for (Category category : categories) {
 			if (category.getId() == id) {
@@ -98,10 +100,11 @@ public class CategoryRepository {
 
 		return 0;
 	}
-	
+
 	public int getIndex(String name) {
 		for (int index = 0; index < categories.size(); index++) {
-			if (name.toLowerCase().equals(categories.get(index).getName().toLowerCase())) {
+			if (name.toLowerCase().equals(
+					categories.get(index).getName().toLowerCase())) {
 				return index;
 			}
 		}

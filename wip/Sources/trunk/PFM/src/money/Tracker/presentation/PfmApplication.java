@@ -30,6 +30,10 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+/**
+ * @author Kaminari.hp This application class. This class will be called
+ *         firstly.
+ */
 public class PfmApplication extends Application {
 	private static Context sContext;
 	public static Context sCurrentContext;
@@ -38,6 +42,10 @@ public class PfmApplication extends Application {
 	private static Context sBaseContext;
 	private static SynchronizeTask syncTask = new SynchronizeTask(null);
 
+	/**
+	 * This thread is used for synchronization. After each 60 seconds, it makes
+	 * a request to server to synchronize.
+	 */
 	private static Thread runBackground = new Thread(new Runnable() {
 		public void run() {
 			// Looper.prepare();
@@ -66,8 +74,8 @@ public class PfmApplication extends Application {
 													R.anim.sync_background));
 									sync_data.setVisibility(View.VISIBLE);
 								} else {
-//									((AnimationDrawable) email.getButton()
-//											.getBackground()).stop();
+									// ((AnimationDrawable) email.getButton()
+									// .getBackground()).stop();
 									sync_data.getAnimation().cancel();
 									sync_data.getAnimation().reset();
 									sync_data.clearAnimation();
@@ -87,6 +95,11 @@ public class PfmApplication extends Application {
 		}
 	});
 
+	/**
+	 * This method gets data from database and calculate total of expenses.
+	 * 
+	 * @return A long type that is total of expense.
+	 */
 	public static long getTotalEntry() {
 		EntryRepository.getInstance().updateData(
 				new StringBuilder("Type = 1").toString());
@@ -104,6 +117,12 @@ public class PfmApplication extends Application {
 		return total_entry;
 	}
 
+	/**
+	 * This method gets data from database and calculate total of budget of
+	 * current time.
+	 * 
+	 * @return A long type that is total of budget.
+	 */
 	public static long getTotalBudget() {
 		Date currentDate = DateTimeHelper.now(false);
 		Cursor totalBudgetCursor = SqlHelper.instance.select(
@@ -119,12 +138,18 @@ public class PfmApplication extends Application {
 										currentDate.getMonth()))).append("')")
 						.toString());
 		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
-			return totalBudgetCursor.getLong(0);
+			long returnValue = totalBudgetCursor.getLong(0);
+			totalBudgetCursor.close();
+			return returnValue;
 		}
 
 		return 0;
 	}
 
+	/**
+	 * This thread is used for warning function. After each 1 second, this
+	 * thread will check whether a record is expired or not.
+	 */
 	private static Thread warningTimer = new Thread(new Runnable() {
 		public void run() {
 			// Looper.prepare();
@@ -166,7 +191,11 @@ public class PfmApplication extends Application {
 									time.getString(1).startsWith("#") ? null
 											: Uri.parse(time.getString(1)));
 						}
+
+						checkBorrow.close();
 					}
+
+					time.close();
 					Thread.sleep(1 * 1000);
 				}
 			} catch (Exception e) {
@@ -187,6 +216,11 @@ public class PfmApplication extends Application {
 	// }
 	// }
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Application#onCreate()
+	 */
 	public void onCreate() {
 		super.onCreate();
 		PfmApplication.sContext = getApplicationContext();
@@ -240,6 +274,12 @@ public class PfmApplication extends Application {
 		}
 	}
 
+	/**
+	 * This is used to change default language that is displayed to user.
+	 * 
+	 * @param lang
+	 *            A specified language will set as default display language.
+	 */
 	public static void setDefaultLanguage(String lang) {
 		Configuration config = sBaseContext.getResources().getConfiguration();
 		if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
@@ -254,18 +294,35 @@ public class PfmApplication extends Application {
 
 	private static boolean runThread;
 
+	/**
+	 * Get context of application.
+	 * 
+	 * @return A Context type is context of application.
+	 */
 	public static Context getAppContext() {
 		return PfmApplication.sContext;
 	}
 
+	/**
+	 * Get resources of application. This includes images, strings is used to
+	 * displayed to user.
+	 * 
+	 * @return A application resources.
+	 */
 	public static Resources getAppResources() {
 		return sBaseContext.getResources();
 	}
 
+	/**
+	 * Set runThread condition to start synchronization function.
+	 */
 	public static void startSynchronize() {
 		runThread = true;
 	}
 
+	/**
+	 * Set runThread condition to stop synchronization function.
+	 */
 	public static void stopSynchronize() {
 		runThread = false;
 	}

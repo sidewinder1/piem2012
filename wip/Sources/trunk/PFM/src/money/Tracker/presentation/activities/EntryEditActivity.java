@@ -19,6 +19,7 @@ import money.Tracker.common.utilities.XmlParser;
 import money.Tracker.presentation.customviews.EntryEditCategoryView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.EntryDetail;
+import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.repository.CategoryRepository;
 import money.Tracker.repository.EntryDetailRepository;
 import money.Tracker.repository.EntryRepository;
@@ -41,16 +42,20 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * @author Kaminari.hp
+ * Control flow when user edit a record of expenses and incomes function.
+ */
 public class EntryEditActivity extends NfcDetectorActivity {
+	private static final int DATE_DIALOG_ID = 0;
 	private int mYear;
 	private int mMonth;
 	private int mDay;
 	private TextView mTitle;
-	private static final int DATE_DIALOG_ID = 0;
 	private TextView mDateEdit;
 	private long mPassedEntryId = -1;
 	private LinearLayout mEntryList;
-	private NdefMessage[] msgs;
+	private NdefMessage[] mMessages;
 	private boolean mBlocked;
 	private boolean mIsIncome;
 	private Button mTypeCheck;
@@ -58,6 +63,9 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
+	/* (non-Javadoc)
+	 * @see money.Tracker.presentation.activities.NfcDetectorActivity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,8 +102,14 @@ public class EntryEditActivity extends NfcDetectorActivity {
 						mParams);
 			}
 		} else { // Edit mode
-			Entry entry = (Entry) EntryRepository.getInstance()
-					.getData("Id = " + mPassedEntryId).get(0);
+			ArrayList<IModelBase> arraylist = EntryRepository.getInstance()
+			.getData("Id = " + mPassedEntryId);
+			if (arraylist == null || arraylist.size() == 0)
+			{
+				return;
+			}
+			
+			Entry entry = (Entry) arraylist.get(0);
 			if (entry != null) {
 				mMonth = entry.getDate().getMonth();
 				mDay = entry.getDate().getDate();
@@ -119,6 +133,11 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		updateTitle();
 	}
 
+	/**
+	 * Set value of record is income or not.
+	 * @param isIncome
+	 * True: if this record is income, else is expense.
+	 */
 	private void setChecked(boolean isIncome) {
 		mIsIncome = isIncome;
 		mTypeCheck.setBackgroundResource(isIncome ? R.drawable.income_icon
@@ -339,9 +358,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 				mPassedEntryId = oldEntry.getLong(0);
 			}
+			
+			oldEntry.close();
 		} catch (Exception e) {
+			oldEntry.close();
 			Logger.Log(e.getMessage(), "EntryEditActivity");
 		}
+		
 		long id = mPassedEntryId;
 
 		Logger.Log("Entry Id: " + mPassedEntryId, "EntryEditActivity");
@@ -491,12 +514,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				NfcAdapter.EXTRA_NDEF_MESSAGES);
 
 		if (rawMsgs != null) {
-			msgs = new NdefMessage[rawMsgs.length];
+			mMessages = new NdefMessage[rawMsgs.length];
 			int count = 0;
 			for (int i = 0; i < rawMsgs.length; i++) {
-				msgs[i] = (NdefMessage) rawMsgs[i];
+				mMessages[i] = (NdefMessage) rawMsgs[i];
 
-				for (NdefRecord record : msgs[i].getRecords()) {
+				for (NdefRecord record : mMessages[i].getRecords()) {
 					String[] result = null;
 					try {
 						result = NfcHelper
