@@ -20,6 +20,7 @@
         android:id="@+id/compare_report_dialog_select_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10sp"
         android:button="@drawable/checkbox_selector"
         android:text="@string/select_all"
         android:textColor="@color/white_text_color"
@@ -29,6 +30,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
+        android:layout_marginLeft="25sp"
         android:clipChildren="false" >
 
         <LinearLayout
