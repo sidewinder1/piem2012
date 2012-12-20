@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -93,6 +94,11 @@ public class ReportViewBarChartActivity extends Activity {
 			getData();
 		}
 		
+		LinearLayout reportExpenseLegendColor = (LinearLayout) findViewById(R.id.report_bar_chart_expense_legend_color);
+		LinearLayout reportScheduleLegendColor = (LinearLayout) findViewById(R.id.report_bar_chart_schedule_legend_color);
+		
+		reportExpenseLegendColor.setBackgroundColor(Color.YELLOW);
+		reportScheduleLegendColor.setBackgroundColor(Color.GREEN);
 		
 		LinearLayout barViewDetail = (LinearLayout) findViewById(R.id.report_bar_chart_detail);
 		barViewDetail.removeAllViews();

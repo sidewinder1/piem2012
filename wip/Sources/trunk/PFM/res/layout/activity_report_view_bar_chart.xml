@@ -30,8 +30,44 @@
         <LinearLayout
             android:id="@+id/report_bar_chart"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7" >
+            android:layout_height="30dp"
+            android:layout_weight="6" >
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            
+            <LinearLayout
+                android:id="@+id/report_bar_chart_expense_legend_color"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="40dp"/>
+
+            <TextView
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="@string/report_bar_chart_expense_legend_title"
+                android:textSize="15dp" />
+            
+            <LinearLayout
+            	android:layout_width="50dp"
+            	android:layout_height="30dp"/>
+            
+           <LinearLayout
+               android:id="@+id/report_bar_chart_schedule_legend_color"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="@string/report_bar_chart_schedule_legend_title"
+                android:textSize="15dp" />
         </LinearLayout>
 
         <ScrollView
