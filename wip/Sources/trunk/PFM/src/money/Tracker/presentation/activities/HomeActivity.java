@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +18,8 @@ import android.widget.TabHost.TabSpec;
 
 public class HomeActivity extends TabActivity {
 	private final String typeTabPathId = "type.tab.path.id";
-
+	public static int sCurrentTab = 0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +46,8 @@ public class HomeActivity extends TabActivity {
 		// Create tab and intent for report
 		Intent reportIntent = new Intent(this, ReportMainViewActivity.class);
 		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.tab_bg_selector_report);
+		
+		mTabHost.setCurrentTab(sCurrentTab);
 	}
 
 	public static void setupTab(final Intent intent, final String tag,

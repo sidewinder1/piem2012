@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.view.View;
@@ -157,6 +156,7 @@ public class PfmApplication extends Application {
 														.now(false), longTime))
 										+ "'");
 						if (checkBorrow != null && checkBorrow.moveToFirst()) {
+							HomeActivity.sCurrentTab = 2;
 							Alert.getInstance().notify(
 									HomeActivity.class,
 									"Expired date",
