@@ -308,14 +308,11 @@ public class ReportViewActivity extends Activity {
 						title.setText(getResources().getString(
 								R.string.report_bar_chart_week_title));
 
-					barChartListDate = (LinearLayout) compareDialog
-							.findViewById(R.id.report_compare_custom_dialog_list_date_view);
+					barChartListDate = (LinearLayout) compareDialog.findViewById(R.id.report_compare_custom_dialog_list_date_view);
 					barChartListDate.removeAllViews();
 					bindDataCustomItemView(false, sDate, eDate);
-					Button okButton = (Button) compareDialog
-							.findViewById(R.id.report_compare_custom_dialog_ok_button);
-					Button cancelButton = (Button) compareDialog
-							.findViewById(R.id.report_compare_custom_dialog_cancel_button);
+					Button okButton = (Button) compareDialog.findViewById(R.id.report_compare_custom_dialog_ok_button);
+					Button cancelButton = (Button) compareDialog.findViewById(R.id.report_compare_custom_dialog_cancel_button);
 
 					cancelButton.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
@@ -331,27 +328,15 @@ public class ReportViewActivity extends Activity {
 					okButton.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							Intent barChartIntent = new Intent(
-									ReportViewActivity.this,
-									ReportViewBarChartActivity.class);
+							Intent barChartIntent = new Intent(ReportViewActivity.this, ReportViewBarChartActivity.class);
 
 							int size = dateList.size();
 							barChartIntent.putExtra("Size_List", size);
 							barChartIntent.putExtra("checkMonthly", checkMonth);
 							for (int i = 0; i < size; i++) {
 								Date[] compareDate = dateList.get(i);
-								barChartIntent.putExtra("start_date_" + i,
-										Converter.toString(compareDate[0]));
-								barChartIntent.putExtra("end_date_" + i,
-										Converter.toString(compareDate[1]));
-								Log.d("Check list extra",
-										i
-												+ " - "
-												+ Converter
-														.toString(compareDate[0])
-												+ " - "
-												+ Converter
-														.toString(compareDate[1]));
+								barChartIntent.putExtra("start_date_" + i, Converter.toString(compareDate[0]));
+								barChartIntent.putExtra("end_date_" + i, Converter.toString(compareDate[1]));
 							}
 							for (int i = 1; i < size; i++) {
 								dateList.remove(1);
@@ -362,13 +347,9 @@ public class ReportViewActivity extends Activity {
 						}
 					});
 
-					final CheckBox checkAllCheckBox = (CheckBox) compareDialog
-							.findViewById(R.id.compare_report_dialog_select_all);
-					checkAllCheckBox
-							.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-								public void onCheckedChanged(
-										CompoundButton buttonView,
-										boolean isChecked) {
+					final CheckBox checkAllCheckBox = (CheckBox) compareDialog.findViewById(R.id.compare_report_dialog_select_all);
+					checkAllCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+								public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 									int size = dateList.size();
 
 									for (int i = 1; i < size; i++) {
@@ -376,8 +357,7 @@ public class ReportViewActivity extends Activity {
 									}
 
 									barChartListDate.removeAllViews();
-									bindDataCustomItemView(isChecked, sDate,
-											eDate);
+									bindDataCustomItemView(isChecked, sDate,eDate);
 								}
 							});
 
@@ -387,8 +367,7 @@ public class ReportViewActivity extends Activity {
 						Alert alert = new Alert();
 						alert.show(
 								ReportViewActivity.this,
-								getResources().getString(
-										R.string.report_no_data_compare_date));
+								getResources().getString(R.string.report_no_data_compare_date));
 					}
 
 					checked = 0;
@@ -408,10 +387,7 @@ public class ReportViewActivity extends Activity {
 
 	private void bindDataCustomItemView(boolean check, Date _startDate, Date _endDate) {
 		if (checkMonthly) {
-			Cursor monthlyEntry = SqlHelper.instance
-					.select("Entry",
-							"DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry",
-							"1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
+			Cursor monthlyEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
 			if (monthlyEntry != null) {
 				if (monthlyEntry.moveToFirst()) {
 					do {
@@ -428,8 +404,7 @@ public class ReportViewActivity extends Activity {
 									String entryMonth = entry.getString(entry.getColumnIndex("monthEntry"));
 									String entryYear = entry.getString(entry.getColumnIndex("yearEntry"));
 
-									if (!entryDate.equals(_startDate) && !entryDate.equals(_endDate)) {
-
+									if (entryDate.compareTo(_startDate) < 0 || entryDate.compareTo(_endDate) > 0) {
 										if (entryMonth.equals(month) && entryYear.equals(year)) {
 											if (startDate == null) {
 												startDate = entryDate;
@@ -441,14 +416,15 @@ public class ReportViewActivity extends Activity {
 													startDate = entryDate;
 												}
 											} else {
-												if (startDate.compareTo(entryDate) < 0) {
-													endDate = entryDate;
-												} else {
-													endDate = startDate;
+												if (startDate.compareTo(entryDate) > 0) {
 													startDate = entryDate;
+												} else if (endDate.compareTo(entryDate) < 0)  {
+													endDate = entryDate;
 												}
 											}
 										}
+										
+										
 									}
 								} while (entry.moveToNext());
 							}
@@ -483,26 +459,25 @@ public class ReportViewActivity extends Activity {
 								Date entryDate = Converter.toDate(entry.getString(entry.getColumnIndex("Date")));
 								String entryWeek = entry.getString(entry.getColumnIndex("weekEntry"));
 								String entryYear = entry.getString(entry.getColumnIndex("yearEntry"));
-								if (!entryDate.equals(_startDate) && !entryDate.equals(_endDate)) {
-								if (entryWeek.equals(week) && entryYear.equals(year)) {
-									if (startDate == null) {
-										startDate = entryDate;
-									} else if (endDate == null) {
-										if (startDate.compareTo(entryDate) < 0) {
-											endDate = entryDate;
-										} else {
-											endDate = startDate;
+								if (entryDate.compareTo(_startDate) < 0 || entryDate.compareTo(_endDate) > 0) {
+									if (entryWeek.equals(week) && entryYear.equals(year)) {
+										if (startDate == null) {
 											startDate = entryDate;
-										}
-									} else {
-										if (startDate.compareTo(entryDate) < 0) {
-											endDate = entryDate;
+										} else if (endDate == null) {
+											if (startDate.compareTo(entryDate) < 0) {
+												endDate = entryDate;
+											} else {
+												endDate = startDate;
+												startDate = entryDate;
+											}
 										} else {
-											endDate = startDate;
-											startDate = entryDate;
+											if (startDate.compareTo(entryDate) > 0) {
+												startDate = entryDate;
+											} else if (endDate.compareTo(entryDate) < 0)  {
+												endDate = entryDate;
+											}
 										}
 									}
-								}
 							}
 							} while (entry.moveToNext());
 						}

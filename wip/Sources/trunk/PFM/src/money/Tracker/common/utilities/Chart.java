@@ -389,23 +389,22 @@ public class Chart extends AbstractChart {
 		renderer.setApplyBackgroundColor(true);
 		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
 		renderer.setDisplayChartValues(true);
-
 		renderer.setOrientation(Orientation.VERTICAL);
 		renderer.setXLabelsAlign(!checkMonthly ? Align.CENTER : Align.RIGHT);
 		renderer.setYLabelsAlign(Align.CENTER);
 		renderer.setShowAxes(true);
 
 		// renderer.setChartTitleTextSize(25);
+		renderer.setChartValuesTextSize(20);
 		renderer.setLabelsTextSize(18);
 		renderer.setLegendTextSize(20);
 		//renderer.setFitLegend(true);
 		//renderer.setAntialiasing(true);
 		renderer.setZoomEnabled(true, false);
-		renderer.setChartValuesTextSize(14);
 		// renderer.setPanEnabled(false);
 		// renderer.setZoomEnabled(false);
 		// renderer.setZoomRate(1.1f);
-		renderer.setMargins(new int[] { 60, -10, 120, 0 });
+		renderer.setMargins(new int[] { 60, -10, 100, 0 });
 		// renderer.setInitialRange(new double[]{0, 100, 0, yMax}, 1);
 		renderer.setBarSpacing(0.6f);
 		// renderer.setShowLabels(false);
@@ -416,6 +415,7 @@ public class Chart extends AbstractChart {
 		renderer.setAxisTitleTextSize(13);										// 0x01)
 		renderer.setYLabelsColor(0, Color.BLACK);
 		renderer.setAxesColor(Color.BLACK);
+		renderer.setShowLegend(false);
 		// renderer.setYLabelsColor(Color.BLACK);
 		// renderer.clearXTextLabels();
 		// renderer.clearYTextLabels();

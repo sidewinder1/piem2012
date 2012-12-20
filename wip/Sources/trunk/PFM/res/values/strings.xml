@@ -189,6 +189,8 @@
     <string name="report_between_week">Thống kế giữa các tuần</string>
     <string name="report_chart_tab_title">Biểu đồ</string>
     <string name="report_expense_schedule_stacked_bar_chart">Thực tế/Kế hoạch: </string>
+    <string name="report_bar_chart_expense_legend_title">Thực tế</string>
+    <string name="report_bar_chart_schedule_legend_title">Kế hoạch</string>
     <string name="report_select_chart">Thống kê chi phí</string>
     <string name="report_pie_chart_total_money">Tổng tiền:</string>
     <string name="report_bar_chart_month_title">So sánh giữa các tháng</string>
