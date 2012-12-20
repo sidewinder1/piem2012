@@ -20,69 +20,81 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+/**
+ * @author Kaminari.hp Control flows of display detail expenses and incomes
+ *         management function.
+ */
 public class EntryDetailViewActivity extends Activity {
 	public static long sEntryId;
-	LinearLayout entry_list;
-	TextView entry_title;
+	LinearLayout mEntryList;
+	TextView mEntryTitle;
 	TextView mDateView;
-	TextView total_entry_title, total_entry_value, remain_budget_title,
-			remain_budget_value;
+	TextView mTotalEntryTitle, mTotalEntryValue, mRemainBudgetTitle,
+			mRemainBudgetValue;
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry_detail_view);
 
 		Bundle extras = getIntent().getExtras();
 		sEntryId = extras.getLong("entry_id");
-		entry_list = (LinearLayout) findViewById(R.id.entry_detail_list_item);
-		entry_title = (TextView) findViewById(R.id.entry_detail_view_title);
-		total_entry_title = (TextView) findViewById(R.id.entry_detail_day_total_entry_title);
-		total_entry_value = (TextView) findViewById(R.id.entry_detail_day_total_entry_value);
-		remain_budget_title = (TextView) findViewById(R.id.entry_detail_total_budget_title);
+		mEntryList = (LinearLayout) findViewById(R.id.entry_detail_list_item);
+		mEntryTitle = (TextView) findViewById(R.id.entry_detail_view_title);
+		mTotalEntryTitle = (TextView) findViewById(R.id.entry_detail_day_total_entry_title);
+		mTotalEntryValue = (TextView) findViewById(R.id.entry_detail_day_total_entry_value);
+		mRemainBudgetTitle = (TextView) findViewById(R.id.entry_detail_total_budget_title);
 		mDateView = (TextView) findViewById(R.id.entry_detail_display_date);
-				
-		remain_budget_value = (TextView) findViewById(R.id.entry_detail_total_budget_value);
+
+		mRemainBudgetValue = (TextView) findViewById(R.id.entry_detail_total_budget_value);
 		bindData();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onRestart()
+	 */
 	@Override
 	protected void onRestart() {
 		bindData();
 		super.onRestart();
 	}
 
+	/**
+	 * Bind data to view for displaying.
+	 */
 	private void bindData() {
 		ArrayList<IModelBase> allEntries = EntryRepository.getInstance()
-		.getData(new StringBuilder("Id=").append(sEntryId).toString());
-		if (allEntries == null || allEntries.size() == 0){
+				.getData(new StringBuilder("Id=").append(sEntryId).toString());
+		if (allEntries == null || allEntries.size() == 0) {
 			return;
 		}
-		
-		Entry entry = (Entry)allEntries.get(0);
-		entry_title.setText(getResources().getString(
+
+		Entry entry = (Entry) allEntries.get(0);
+		mEntryTitle.setText(getResources().getString(
 				(entry.getType() == 1 ? R.string.entry_daily_expense_title
 						: R.string.entry_daily_income_title)));
-		
+
 		mDateView.setText(Converter.toString(entry.getDate(), "dd/MM/yyyy"));
-				
+
 		EntryDetailRepository.getInstance().updateData(
 				new StringBuilder("Entry_Id = ").append(sEntryId).toString(),
 				"Category_Id");
-		total_entry_title
+		mTotalEntryTitle
 				.setText(getResources()
 						.getString(
 								(entry.getType() == 1 ? R.string.entry_daily_total_expense_title
 										: R.string.entry_daily_total_income_title)));
 
-		entry_list.removeAllViews();
+		mEntryList.removeAllViews();
 		for (ArrayList<EntryDetail> array : EntryDetailRepository.getInstance().entries
 				.values()) {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-			entry_list
+			mEntryList
 					.addView(new EntryDetailCategoryView(this, array), params);
 		}
 
@@ -95,14 +107,14 @@ public class EntryDetailViewActivity extends Activity {
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
 				.get(Converter.toString(entry.getDate(), "MM/yyyy"));
 		double total_entry = 0;
-		total_entry_value.setText(Converter.toString(entry.getTotal()));
+		mTotalEntryValue.setText(Converter.toString(entry.getTotal()));
 		for (Entry entryItem : entries) {
 			total_entry += entryItem.getTotal();
 		}
 
 		if (entry.getType() == 0) {
-			remain_budget_title.setVisibility(View.GONE);
-			remain_budget_value.setVisibility(View.GONE);
+			mRemainBudgetTitle.setVisibility(View.GONE);
+			mRemainBudgetValue.setVisibility(View.GONE);
 			return;
 		}
 
@@ -121,10 +133,10 @@ public class EntryDetailViewActivity extends Activity {
 						.append("'").toString());
 		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
 			do {
-				remain_budget_value
+				mRemainBudgetValue
 						.setText(Converter.toString(totalBudgetCursor
 								.getDouble(0) - total_entry));
-				remain_budget_title
+				mRemainBudgetTitle
 						.setText(getResources()
 								.getString(
 										totalBudgetCursor.getInt(1) == 1 ? R.string.entry_total_budget_month
@@ -133,14 +145,21 @@ public class EntryDetailViewActivity extends Activity {
 					break;
 				}
 			} while (totalBudgetCursor.moveToNext());
-			remain_budget_title.setVisibility(View.VISIBLE);
-			remain_budget_value.setVisibility(View.VISIBLE);
+			mRemainBudgetTitle.setVisibility(View.VISIBLE);
+			mRemainBudgetValue.setVisibility(View.VISIBLE);
 		} else {
-			remain_budget_title.setVisibility(View.GONE);
-			remain_budget_value.setVisibility(View.GONE);
+			mRemainBudgetTitle.setVisibility(View.GONE);
+			mRemainBudgetValue.setVisibility(View.GONE);
 		}
+		
+		totalBudgetCursor.close();
 	}
 
+	/**
+	 * Handle when user clicks edit button.
+	 * @param v
+	 * Edit button.
+	 */
 	public void editBtnClicked(View v) {
 		Intent edit = new Intent(this, EntryEditActivity.class);
 		edit.putExtra("entry_id", sEntryId);
