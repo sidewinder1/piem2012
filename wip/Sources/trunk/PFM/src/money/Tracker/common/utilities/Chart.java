@@ -348,8 +348,8 @@ public class Chart extends AbstractChart {
 				.size()];
 
 		for (int i = 0; i < entryCategoryValue.size(); i++) {
-			entryCategoryValueArray[i] = entryCategoryValue.get(i) / 1000;
-			scheduleCategoryValueArray[i] = scheduleCategoryValue.get(i) / 1000;
+			entryCategoryValueArray[i] = entryCategoryValue.get(i) / 10000;
+			scheduleCategoryValueArray[i] = scheduleCategoryValue.get(i) / 10000;
 			yMax = Math.max(Math.max(entryCategoryValueArray[i], scheduleCategoryValueArray[i]), yMax);
 		}
 
@@ -363,7 +363,7 @@ public class Chart extends AbstractChart {
 
 		xMax = entryCategoryValueArray.length + 1;
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "", "\r\n\r\nx1000 VND", -0.5, xMax, 0, yMax, Color.TRANSPARENT, Color.TRANSPARENT);
+		setChartSettings(renderer, "", "", "\r\n\r\nx10000 VND", -0.5, xMax, 0, yMax, Color.TRANSPARENT, Color.TRANSPARENT);
 		renderer.setXLabels(0);
 		renderer.setYLabels(0);
 		for (int i = 0; i < dateList.size(); i++) {
@@ -375,8 +375,9 @@ public class Chart extends AbstractChart {
 				renderer.addXTextLabel(i + 1,Converter.toString(startDate, "MM/yyyy"));
 			else
 				renderer.addXTextLabel(i + 1,Converter.toString(startDate, "  dd/MM/yyyy") + " -\r\n" + Converter.toString(endDate, "dd/MM/yyyy\r\n\r\n"));
-
 		}
+		
+		renderer.getSeriesRendererAt(0).setChartValuesTextAlign(Align.LEFT);
 
 		// Display value on X axis.
 		int unit = (int) yMax / 5;

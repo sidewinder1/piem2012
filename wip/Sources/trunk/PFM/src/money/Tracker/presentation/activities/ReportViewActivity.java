@@ -1,8 +1,11 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
@@ -85,10 +88,7 @@ public class ReportViewActivity extends Activity {
 		reportListView.removeAllViews();
 		displayNoReportDataText.setVisibility(View.VISIBLE);
 		if (checkMonthly) {
-			Cursor monthlyEntry = SqlHelper.instance
-					.select("Entry",
-							"DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry",
-							"1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
+			Cursor monthlyEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
 			if (monthlyEntry != null && monthlyEntry.moveToFirst()) {
 				displayNoReportDataText.setVisibility(View.GONE);
 				do {
@@ -189,9 +189,8 @@ public class ReportViewActivity extends Activity {
 						}
 					}
 					
-					if (endDate == null) {
-						endDate = startDate;
-					}
+					startDate = DateTimeHelper.getFirstDayOfWeek(startDate);
+					endDate = DateTimeHelper.getLastDayOfWeek(startDate);
 
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 					ReportViewItem weekReportViewItem = new ReportViewItem(this, startDate, endDate, checkMonthly);
@@ -279,8 +278,7 @@ public class ReportViewActivity extends Activity {
 				// TODO Auto-generated method stub
 				switch (checked) {
 				case 1:
-					Intent pieChart = new Intent(getParent(),
-							ReportViewPieChartActivity.class);
+					Intent pieChart = new Intent(getParent(), ReportViewPieChartActivity.class);
 					pieChart.putExtra("checkMonthly", checkMonth);
 					pieChart.putExtra("start_date", Converter.toString(sDate));
 					pieChart.putExtra("end_date", Converter.toString(eDate));
@@ -295,18 +293,13 @@ public class ReportViewActivity extends Activity {
 					dateList = new ArrayList<Date[]>();
 					dateList.add(new Date[] { sDate, eDate });
 
-					final Dialog compareDialog = new Dialog(getParent(),
-							R.style.CustomDialogTheme);
-					compareDialog
-							.setContentView(R.layout.report_view_chart_compare_custom_dialog);
-					TextView title = (TextView) compareDialog
-							.findViewById(R.id.compare_report_dialog_title);
+					final Dialog compareDialog = new Dialog(getParent(),R.style.CustomDialogTheme);
+					compareDialog.setContentView(R.layout.report_view_chart_compare_custom_dialog);
+					TextView title = (TextView) compareDialog.findViewById(R.id.compare_report_dialog_title);
 					if (checkMonth)
-						title.setText(getResources().getString(
-								R.string.report_bar_chart_month_title));
+						title.setText(getResources().getString(R.string.report_bar_chart_month_title));
 					else
-						title.setText(getResources().getString(
-								R.string.report_bar_chart_week_title));
+						title.setText(getResources().getString(R.string.report_bar_chart_week_title));
 
 					barChartListDate = (LinearLayout) compareDialog.findViewById(R.id.report_compare_custom_dialog_list_date_view);
 					barChartListDate.removeAllViews();
@@ -365,9 +358,7 @@ public class ReportViewActivity extends Activity {
 						compareDialog.show();
 					else {
 						Alert alert = new Alert();
-						alert.show(
-								ReportViewActivity.this,
-								getResources().getString(R.string.report_no_data_compare_date));
+						alert.show(ReportViewActivity.this, getResources().getString(R.string.report_no_data_compare_date));
 					}
 
 					checked = 0;
@@ -492,9 +483,8 @@ public class ReportViewActivity extends Activity {
 
 					if (startDate != null) {
 						// TODO: Locnd hotfix for case: endDate = null
-						if (endDate == null) {
-							endDate = DateTimeHelper.getLastDayOfWeek(startDate);
-						}
+						startDate = DateTimeHelper.getFirstDayOfWeek(startDate);
+						endDate = DateTimeHelper.getLastDayOfWeek(startDate);						
 
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 						barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonthly, startDate, endDate, dateList, check), params);

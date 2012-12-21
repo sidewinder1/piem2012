@@ -37,11 +37,11 @@
             <TextView
                 android:id="@+id/report_category_legend_sub_item_value"
                 style="@style/normalText"
+                android:layout_gravity="center_vertical|right"
+                android:gravity="center_vertical"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="center_vertical"
                 android:text="@string/dummy_data" />
         </RelativeLayout>
     </LinearLayout>

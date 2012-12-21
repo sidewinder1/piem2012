@@ -75,24 +75,24 @@ public class BorrowLendViewDetailActivity extends Activity {
 		else
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_borrower), values.getPersonName()), params);
 
-		if (!values.getPersonPhone().equals(""))
+		//if (!values.getPersonPhone().equals(""))
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_phone), values.getPersonPhone()), params);
 
-		if (!values.getPersonPhone().equals(""))
+		//if (!values.getPersonPhone().equals(""))
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_address), values.getPersonAddress()), params);
 
-		if (values.getInterestRate() != 0) {
+		//if (values.getInterestRate() != 0) {
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest),new StringBuilder(String.valueOf(values.getInterestRate())).append(" ").append(getResources().getString(R.string.percent)).toString()), params);
 
 			if (values.getInterestType().equals("Simple"))
 				listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest_type),getResources().getString(R.string.simple_interest)), params);
 			else
 				listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest_type),getResources().getString(R.string.compound_interest)), params);
-		}
+		//}
 
 		listViewDetail.addView(new BorrowLendViewDetailViewItem(this,getResources().getString(R.string.borrow_lend_start_date), Converter.toString(values.getStartDate(), "dd/MM/yyyy")), params);
 
-		if (values.getExpiredDate() != null)
+		//if (values.getExpiredDate() != null)
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_end_date), Converter.toString(values.getExpiredDate(), "dd/MM/yyyy")), params);
 
 		caculateInterest();
@@ -269,9 +269,5 @@ public class BorrowLendViewDetailActivity extends Activity {
 			return true;
 		else
 			return false;
-	}
-
-	public void navigateToView() {
-		return;
 	}
 }

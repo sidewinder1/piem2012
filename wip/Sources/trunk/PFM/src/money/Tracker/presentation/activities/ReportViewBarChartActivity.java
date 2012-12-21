@@ -187,13 +187,10 @@ public class ReportViewBarChartActivity extends Activity {
 		entryCategoryValue.add((double) spent);
 		scheduleCategoryValue.add((double) budget);
 		String dateString = "";
-		if (checkMonthly)
-		{
 			if (checkMonthly)
 				dateString = Converter.toString(startDate, "MM/ yyyy");
 			else
 				dateString = String.valueOf(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
-		}
 		dateListString.add(dateString);
 		
 		if (spent > maxValue)

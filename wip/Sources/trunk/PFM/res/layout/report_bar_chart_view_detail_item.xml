@@ -9,24 +9,28 @@
         android:orientation="horizontal">
 	    <TextView 
 	        android:layout_width="140dp"
-	        android:layout_height="30dp"
+	        android:layout_height="wrap_content"
 	        android:gravity="center_vertical"
 	        android:id="@+id/report_bar_chart_view_detail_item_name"
 	        android:text="@string/dummy_data"
 	        android:textColor="@color/white_text_color"
 	        android:textSize="15dp"/>
 	    <TextView 
-	        android:layout_width="80dp"
-	        android:layout_height="30dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:maxLines="60" 
 	        android:gravity="center_vertical"
 	        android:id="@+id/report_bar_chart_view_detail_item_value"
 	        android:text="@string/dummy_data"
 	        android:textColor="@color/white_text_color"
 	        android:textSize="15dp"/>
 	    <TextView 
-	        android:layout_width="100dp"
-	        android:layout_height="30dp"
-	        android:gravity="center_vertical"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:maxLines="100" 
+	        android:layout_gravity="center_vertical|right"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
 	        android:id="@+id/report_bar_chart_view_detail_item_date"
 	        android:text="@string/dummy_data"
 	        android:textColor="@color/white_text_color"
