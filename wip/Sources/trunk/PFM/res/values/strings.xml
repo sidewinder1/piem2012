@@ -200,7 +200,7 @@
     <string name="report_no_data_compare_date">Không có dữ liệu để so sánh</string>
 
     <!-- Language Functioon -->
-     <string-array name="languages">
+    <string-array name="languages">
         <item>English</item>
         <item>日本語</item>
         <item>Việt Nam</item>
@@ -210,7 +210,6 @@
         <item>ja</item>
         <item>vn</item>
     </string-array>
-    
     <string-array name="category_name">
         <item>Sinh nhật</item>
         <item>Thức ăn</item>
@@ -226,29 +225,41 @@
         <item>#99C71585</item>
     </string-array>
     <string-array name="color_list">
-        <item>#99FFFF00</item>
-        <item>#99FF8C00</item>
-        <item>#99FF1493</item>
-        <item>#99A52A2A</item>
-        <item>#999ACD32</item>
-        <item>#999370D8</item>
-        <item>#998B4513</item>
-        <item>#998B008B</item>
-        <item>#998B0000</item>
-        <item>#99808000</item>
-        <item>#99800000</item>
-        <item>#997FFF00</item>
-        <item>#99708090</item>
-        <item>#994B0082</item>
-        <item>#994169E1</item>
-        <item>#9940E0D0</item>
-        <item>#9932CD32</item>
-        <item>#992E8B57</item>
-        <item>#99006400</item>
-        <item>#990000FF</item>
-        <item>#9900008B</item>
-        <item>#99000000</item>
+        <item>#99FF5159</item>
+        <item>#9974DCAA</item>
+        <item>#99A85000</item>
+        <item>#990055A8</item>
+        <item>#99FF5187</item>
+        <item>#99A80002</item>
+        <item>#99FFF900</item>
+        <item>#99FFBA51</item>
+        <item>#9900FF82</item>
+        <item>#99C7D6DF</item>
+        <item>#995D2286</item>
+        <item>#99753354</item>
+        <item>#995154FF</item>
+        <item>#99CA86A8</item>
+        <item>#99D329D6</item>
+        <item>#993E5C6A</item>
+        <item>#994D3E6A</item>
+        <item>#9900A855</item>
+        <item>#99EA9415</item>
+        <item>#99866122</item>
+        <item>#99EACC15</item>
+        <item>#9951FFFF</item>
+        <item>#99FF9751</item>
+        <item>#99A8EDFF</item>
+        <item>#99A86500</item>
+        <item>#99F1885F</item>
+        <item>#99FFE8A8</item>
+        <item>#99753354</item>
+        <item>#99A8A400</item>
+        <item>#999A970E</item>
+        <item>#99FF2700</item>
+        <item>#99FFFCA8</item>
+        <item>#99EDD4BA</item>
     </string-array>
+    
     <string-array name="schedule_context_menu_item">
         <item>Sửa</item>
         <item>Xóa</item>
@@ -268,5 +279,4 @@
     <color name="transparent_dark_03">#70000000</color>
 
     <string name="score_symbol">-</string>
-
 </resources>

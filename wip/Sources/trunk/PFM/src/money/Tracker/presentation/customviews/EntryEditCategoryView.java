@@ -375,8 +375,8 @@ public class EntryEditCategoryView extends LinearLayout {
 		String[] values;
 		String subTable = "EntryDetail";
 
-		String category_id_str = String.valueOf(CategoryRepository
-				.getInstance().getId(mCategory.getSelectedItemPosition()));
+		String category_id_str = String.valueOf(mCategoryAdapter.mCategories
+				.get((mCategory.getSelectedItemPosition())).getId());
 		// Save custom category
 		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
 			// Check duplicate.
