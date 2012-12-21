@@ -19,13 +19,17 @@ import money.Tracker.presentation.activities.SyncSettingActivity;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.repository.EntryRepository;
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -65,8 +69,8 @@ public class PfmApplication extends Application {
 							EmailAccountCustomView email = (EmailAccountCustomView) SyncSettingActivity.sAccountList
 									.getChildAt(index);
 							if (email != null) {
+								sync_data = email.getButton();
 								if (email.getActive()) {
-									sync_data = email.getButton();
 									// ((AnimationDrawable) sync_data
 									// .getBackground()).start();
 									sync_data.startAnimation(AnimationUtils
@@ -76,9 +80,11 @@ public class PfmApplication extends Application {
 								} else {
 									// ((AnimationDrawable) email.getButton()
 									// .getBackground()).stop();
-									sync_data.getAnimation().cancel();
-									sync_data.getAnimation().reset();
-									sync_data.clearAnimation();
+									if (sync_data.getAnimation() != null){
+										sync_data.getAnimation().cancel();
+										sync_data.getAnimation().reset();
+										sync_data.clearAnimation();
+									}
 								}
 							}
 						}
@@ -190,6 +196,12 @@ public class PfmApplication extends Application {
 									"#DEFAULT".equals(time.getString(1)),
 									time.getString(1).startsWith("#") ? null
 											: Uri.parse(time.getString(1)));
+							long PERIOD = 1000;
+							AlarmManager mgr = (AlarmManager) sContext.getSystemService(Context.ALARM_SERVICE);
+							Intent i = new Intent(sContext, HomeActivity.class);
+							PendingIntent pi = PendingIntent.getBroadcast(sContext, 0, i, 0);
+							mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 
+							SystemClock.elapsedRealtime(), PERIOD, pi);
 						}
 
 						checkBorrow.close();

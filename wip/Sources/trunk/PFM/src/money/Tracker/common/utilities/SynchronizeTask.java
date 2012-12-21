@@ -18,15 +18,16 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 		super();
 	}
 
-	public static boolean isSynchronizing(){
+	public static boolean isSynchronizing() {
 		return isRunning;
-	} 
+	}
+
 	@Override
 	protected Void doInBackground(Void... arg0) {
-		if (isRunning){
+		if (isRunning) {
 			return null;
 		}
-		
+
 		isRunning = true;
 		SyncHelper.getInstance().synchronize();
 		return null;
@@ -35,20 +36,22 @@ public class SynchronizeTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		if (sButton != null) {
-//			((AnimationDrawable) sButton.getBackground()).stop();
-			sButton.getAnimation().cancel();
-			sButton.getAnimation().reset();
-			sButton.clearAnimation();
+			// ((AnimationDrawable) sButton.getBackground()).stop();
+			if (sButton.getAnimation() != null) {
+				sButton.getAnimation().cancel();
+				sButton.getAnimation().reset();
+				sButton.clearAnimation();
+			}
 			
 			sButton.setVisibility(Boolean.parseBoolean(String.valueOf(sButton
 					.getTag())) ? View.VISIBLE : View.GONE);
 		}
 
-		if (PfmApplication.sCurrentContext != null &&
-				PfmApplication.sCurrentContext.getClass() == TabViewActivity.class){
-			((TabViewActivity)PfmApplication.sCurrentContext).bindData();
+		if (PfmApplication.sCurrentContext != null
+				&& PfmApplication.sCurrentContext.getClass() == TabViewActivity.class) {
+			((TabViewActivity) PfmApplication.sCurrentContext).bindData();
 		}
-		
+
 		super.onPostExecute(result);
 		isRunning = false;
 	}

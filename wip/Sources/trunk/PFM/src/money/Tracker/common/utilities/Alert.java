@@ -33,8 +33,8 @@ public class Alert {
 	public void notify(final Class<?> activity, final String title,
 			final String message, final long timeRemind,
 			final boolean useDefaultRing, final Uri notifyRing) {
-		new Thread(new Runnable() {
-			public void run() {
+//		new Thread(new Runnable() {
+//			public void run() {
 				Context context = PfmApplication.getAppContext();
 				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 						context).setSmallIcon(R.drawable.report).setAutoCancel(true)
@@ -72,8 +72,8 @@ public class Alert {
 				}
 				// mId allows you to update the notification later on.
 				mNotificationManager.notify(mId, mBuilder.build());
-			};
-		}).start();
+		// };
+		// }).start();
 	}
 
 	public void showDialog(Context context, String message,
