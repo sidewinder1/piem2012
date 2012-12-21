@@ -144,9 +144,12 @@ public class EmailAccountCustomView extends LinearLayout {
 		// : (mAutoSync ? R.drawable.refresh_animation
 		// : R.drawable.refresh_animation2));
 		// // if (sync_data.getVisibility() != View.VISIBLE) {
-		// sync_data.setVisibility(isActive || animating ? View.VISIBLE
-		// : View.GONE);
-		// // }
+		sync_data
+				.setVisibility(mAutoSync
+						&& getText().equals(
+								AccountProvider.getInstance()
+										.getCurrentAccount().name) ? View.VISIBLE
+						: View.GONE);
 
 		if (!mIsSublist && sync_data.getAnimation() != null) {
 			if (((isActive || (sync_data.getAnimation().hasStarted())) && SynchronizeTask

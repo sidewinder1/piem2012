@@ -108,14 +108,14 @@ public class EntryEditProductView extends LinearLayout {
 					if (entryEdit != null) {
 						if ("".equals(entryEdit.product.getText().toString())) {
 							Alert.getInstance().show(getContext(),
-									"A product field is empty");
+									getResources().getString(R.string.entry_edit_category_empty));
 							entryEdit.product.requestFocus();
 							return;
 						}
 
 						if ("".equals(entryEdit.price.getText().toString())) {
 							Alert.getInstance().show(getContext(),
-									"A price field is empty");
+									getResources().getString(R.string.entry_edit_price_empty));
 							entryEdit.price.requestFocus();
 							return;
 						}
