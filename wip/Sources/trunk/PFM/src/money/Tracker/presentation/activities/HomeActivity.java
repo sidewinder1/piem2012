@@ -8,6 +8,8 @@ import money.Tracker.common.utilities.ExcelHelper;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.PfmApplication;
 import android.os.Bundle;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +22,10 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
+/**
+ * @author Kaminari.hp
+ *
+ */
 public class HomeActivity extends TabActivity {
 	private final String typeTabPathId = "type.tab.path.id";
 	public static int sCurrentTab = 0;
@@ -54,6 +60,33 @@ public class HomeActivity extends TabActivity {
 		mTabHost.setCurrentTab(sCurrentTab);
 	}
 
+	
+	/**
+	 * Remind user when he has a debt is expired.
+	 * @param context
+	 * Parent data context.
+	 * @param intent
+	 * Parent intent.
+	 */
+	public void onReceive(Context context, Intent intent) {
+	    NotificationManager nm = (NotificationManager)
+	    context.getSystemService(Context.NOTIFICATION_SERVICE);
+	    Notification notification = new Notification();
+	    notification.tickerText = "10 Minutes past";
+	    nm.notify(0, notification);
+	}
+	
+	/**
+	 * Initialize tabs for activity tab.
+	 * @param intent
+	 * Type of intent of tab.
+	 * @param tag
+	 * The name of tabs that should be displayed on tab.
+	 * @param mTabHost
+	 * The tab host parent that contains tabs.
+	 * @param resourceId
+	 * Resource id of image on tab.
+	 */
 	public static void setupTab(final Intent intent, final String tag,
 			TabHost mTabHost, final int resourceId) {
 		View tabview = createTabView(mTabHost.getContext(), resourceId);
@@ -62,7 +95,15 @@ public class HomeActivity extends TabActivity {
 		mTabHost.addTab(setContent);
 	}
 
-	// Create tab view.
+	/**
+	 * Create a tab view with specified resource id image.
+	 * @param context
+	 * Parent data context.
+	 * @param id
+	 * Resource id image.
+	 * @return
+	 * The view that is displayed on tab.
+	 */
 	private static View createTabView(final Context context, final int id) {
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.main_tab_background, null);
@@ -73,19 +114,18 @@ public class HomeActivity extends TabActivity {
 		return view;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
 	}
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		// String content =
-		// IOHelper.getInstance().writeFile(CONFIG_FILE, content);
-	}
-
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
