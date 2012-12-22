@@ -14,7 +14,6 @@ import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.customviews.EmailAccountCustomView;
 import money.Tracker.presentation.customviews.SyncSettingInputDialogView;
 import android.accounts.Account;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;

@@ -5,7 +5,6 @@ import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.customviews.ScheduleDetailViewItem;
 import money.Tracker.repository.CategoryRepository;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;

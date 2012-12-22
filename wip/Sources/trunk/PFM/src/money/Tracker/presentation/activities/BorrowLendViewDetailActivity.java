@@ -1,7 +1,5 @@
 package money.Tracker.presentation.activities;
 
-//import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.Date;
 import money.Tracker.common.utilities.Converter;
@@ -10,7 +8,6 @@ import money.Tracker.presentation.model.BorrowLend;
 import money.Tracker.repository.BorrowLendRepository;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
-public class BorrowLendViewDetailActivity extends Activity {
+public class BorrowLendViewDetailActivity extends BaseActivity {
 
 	private double totalInterestCaculate;
 	private double totalMoney;

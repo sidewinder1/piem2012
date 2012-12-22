@@ -15,7 +15,6 @@ import money.Tracker.presentation.model.BorrowLend;
 import money.Tracker.repository.*;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.database.Cursor;
@@ -31,7 +30,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-public class BorrowLendInsertActivity extends Activity {
+public class BorrowLendInsertActivity extends BaseActivity {
 	private int startDate_Year;
 	private int startDate_Month;
 	private int startDate_Day;

@@ -2,7 +2,6 @@ package money.Tracker.presentation.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Entry implements IModelBase {
 	private long id;
