@@ -55,6 +55,7 @@ public class PfmApplication extends Application {
 			// Looper.prepare();
 			while (true) {
 				try {
+					Thread.sleep(1 * 60000);
 					if ("pfm.com".equals(AccountProvider.getInstance()
 							.getCurrentAccount().type)
 							|| syncTask.getStatus() == Status.RUNNING
@@ -72,7 +73,6 @@ public class PfmApplication extends Application {
 								sync_data = email.getButton();
 								if (email.getActive()) {
 									// ((AnimationDrawable) sync_data
-									// .getBackground()).start();
 									sync_data.startAnimation(AnimationUtils
 											.loadAnimation(sContext,
 													R.anim.sync_background));
@@ -80,7 +80,7 @@ public class PfmApplication extends Application {
 								} else {
 									// ((AnimationDrawable) email.getButton()
 									// .getBackground()).stop();
-									if (sync_data.getAnimation() != null){
+									if (sync_data.getAnimation() != null) {
 										sync_data.getAnimation().cancel();
 										sync_data.getAnimation().reset();
 										sync_data.clearAnimation();
@@ -91,8 +91,7 @@ public class PfmApplication extends Application {
 					}
 
 					syncTask = new SynchronizeTask(sync_data);
-					syncTask.execute();
-					Thread.sleep(1 * 60000);
+					syncTask.execute();					
 				} catch (Exception e) {
 					Logger.Log(e.getMessage(), "PfmApplication");
 				}
@@ -161,16 +160,9 @@ public class PfmApplication extends Application {
 			// Looper.prepare();
 			try {
 				while (true) {
-					// if ("pfm.com".equals(AccountProvider.getInstance()
-					// .getCurrentAccount().type)
-					// || syncTask.getStatus() == Status.RUNNING
-					// || !runThread || SynchronizeTask.isSynchronizing()) {
-					// continue;
-					// }
-
 					Cursor time = SqlHelper.instance.select(
 							"AppInfo",
-							"BorrowWarn, BorrowRing",
+							"BorrowWarn, BorrowRing, BorrowRemind",
 							new StringBuilder("UserName='")
 									.append(AccountProvider.getInstance()
 											.getCurrentAccount().name)
@@ -180,7 +172,7 @@ public class PfmApplication extends Application {
 
 						Cursor checkBorrow = SqlHelper.instance.select(
 								"BorrowLend",
-								"Expired_date, Person_name",
+								"Expired_date, Person_name, Id",
 								"Expired_date='"
 										+ Converter.toString(DateTimeHelper
 												.addHours(DateTimeHelper
@@ -190,18 +182,12 @@ public class PfmApplication extends Application {
 							HomeActivity.sCurrentTab = 2;
 							Alert.getInstance().notify(
 									HomeActivity.class,
-									"Expired date",
+									getAppResources().getString(R.string.warning_expired_date),
 									checkBorrow.getString(1),
-									0,
+									time.getLong(2) * 60,
 									"#DEFAULT".equals(time.getString(1)),
 									time.getString(1).startsWith("#") ? null
-											: Uri.parse(time.getString(1)));
-							long PERIOD = 1000;
-							AlarmManager mgr = (AlarmManager) sContext.getSystemService(Context.ALARM_SERVICE);
-							Intent i = new Intent(sContext, HomeActivity.class);
-							PendingIntent pi = PendingIntent.getBroadcast(sContext, 0, i, 0);
-							mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 
-							SystemClock.elapsedRealtime(), PERIOD, pi);
+											: Uri.parse(time.getString(1)), (int)checkBorrow.getInt(2));
 						}
 
 						checkBorrow.close();
@@ -213,7 +199,6 @@ public class PfmApplication extends Application {
 			} catch (Exception e) {
 				Logger.Log(e.getMessage(), "PfmApplication");
 			}
-			// Looper.loop();
 		}
 	});
 

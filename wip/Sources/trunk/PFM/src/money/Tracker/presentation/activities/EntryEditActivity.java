@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
+
 import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
 import jim.h.common.android.lib.zxing.integrator.IntentResult;
@@ -34,7 +36,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -438,43 +439,43 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.entry_edit_menu, menu);
+		inflater.inflate(R.menu.home_activity, menu);
 		return true;
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-		case R.id.entry_edit_get_QR_Code:
-			getQRCode();
-			return true;
-		case R.id.entry_edit_get_NFC:
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// Handle item selection
+//		switch (item.getItemId()) {
+//		case R.id.entry_edit_get_QR_Code:
+//			getQRCode();
+//			return true;
+//		case R.id.entry_edit_get_NFC:
+//			return true;
+//		default:
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
 
 	private EntryDetail getEntryDetail(String tag) {
 		String[] strs = tag.split("\n");
 		EntryDetail value = new EntryDetail();
 		try {
 			for (String str : strs) {
-				if (str.toLowerCase().contains("name")
-						|| str.toLowerCase().contains("ten")
-						|| str.toLowerCase().contains("tên")) {
+				if (str.toLowerCase(Locale.US).contains("name")
+						|| str.toLowerCase(Locale.US).contains("ten")
+						|| str.toLowerCase(Locale.US).contains("tên")) {
 					value.setName(str.split(":")[1].trim());
 				} else {
-					if (str.toLowerCase().contains("price")
-							|| str.toLowerCase().contains("gia")
-							|| str.toLowerCase().contains("giá")) {
+					if (str.toLowerCase(Locale.US).contains("price")
+							|| str.toLowerCase(Locale.US).contains("gia")
+							|| str.toLowerCase(Locale.US).contains("giá")) {
 						String money = str.split(":")[1];
 						money = money.replace(".", "").replace(",", ".").trim();
 						value.setMoney(Long.parseLong(money));
 					} else {
-						if (str.toLowerCase().contains("category")
-								|| str.toLowerCase().contains("loai")) {
+						if (str.toLowerCase(Locale.US).contains("category")
+								|| str.toLowerCase(Locale.US).contains("loai")) {
 							value.setCategory_id(CategoryRepository
 									.getInstance().getId(
 											str.split(":")[1].trim()));

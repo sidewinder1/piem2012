@@ -36,7 +36,7 @@ import android.widget.Spinner;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-public class SyncSettingActivity extends Activity {
+public class SyncSettingActivity extends BaseActivity {
 	public static LinearLayout sAccountList;
 	private Spinner mScheduleWarn, // mScheduleRemind, mLanguage,
 			mBorrowWarn, mBorrowRing, mBorrowRemind;

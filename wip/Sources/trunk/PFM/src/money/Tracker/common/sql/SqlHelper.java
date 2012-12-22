@@ -15,18 +15,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 /**
  * @author Kaminari.hp
- * This class provides methods to interact with database easily and simply.
- */
-/**
- * @author Kaminari.hp
- *
- */
-/**
- * @author Kaminari.hp
- *
- */
-/**
- * @author Kaminari.hp
  *
  */
 public class SqlHelper {

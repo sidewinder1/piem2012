@@ -39,7 +39,7 @@ import money.Tracker.repository.CategoryRepository;
 import money.Tracker.repository.DetailScheduleRepository;
 import money.Tracker.repository.ScheduleRepository;
 
-public class ScheduleEditActivity extends Activity {
+public class ScheduleEditActivity extends BaseActivity {
 	private int mYear;
 	private int mMonth;
 	private int mDay;
