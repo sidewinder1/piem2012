@@ -1,9 +1,6 @@
 package money.Tracker.presentation.activities;
 
-import java.util.Date;
-
 import money.Tracker.common.utilities.Alert;
-import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.ExcelHelper;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.PfmApplication;
@@ -13,7 +10,6 @@ import android.app.NotificationManager;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +23,7 @@ import android.widget.TabHost.TabSpec;
  *
  */
 public class HomeActivity extends TabActivity {
-	private final String typeTabPathId = "type.tab.path.id";
+	private final String mTypeTabPathId = "type.tab.path.id";
 	public static int sCurrentTab = 0;
 	
 	@Override
@@ -41,12 +37,12 @@ public class HomeActivity extends TabActivity {
 
 		// Create Expense & income tab.
 		Intent managementIntent = new Intent(this, MainViewActivity.class);
-		managementIntent.putExtra(typeTabPathId, 0);
+		managementIntent.putExtra(mTypeTabPathId, 0);
 		setupTab(managementIntent, "Expenses\n& Incomes", mTabHost, R.drawable.tab_bg_selector_entry);
 
 		// Create tab and intent for schedule.
 		Intent scheduleIntent = new Intent(this, MainViewActivity.class);
-		scheduleIntent.putExtra(typeTabPathId, 1);
+		scheduleIntent.putExtra(mTypeTabPathId, 1);
 		setupTab(scheduleIntent, "Schedule", mTabHost, R.drawable.tab_bg_selector_schedule);
 
 		// Create tab and intent for Borrowing and Lending.
@@ -58,6 +54,7 @@ public class HomeActivity extends TabActivity {
 		setupTab(reportIntent, "Báo cáo", mTabHost, R.drawable.tab_bg_selector_report);
 		
 		mTabHost.setCurrentTab(sCurrentTab);
+		Alert.getInstance().stopNotify();
 	}
 
 	

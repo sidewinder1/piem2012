@@ -114,6 +114,7 @@
     <string name="warning_ring">Nhạc chuông</string>
     <string name="warning_borrow_overbudget">Đã vượt quá {0}% so với kế hoạch!!!</string>
     <string name="warning_remain">Nhắc lại</string>
+    <string name="warning_expired_date">Đến ngày đáo hạn</string>
 
     <string-array name="warning_ring_array">
         <item>Không có</item>

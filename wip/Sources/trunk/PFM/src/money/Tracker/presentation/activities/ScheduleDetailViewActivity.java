@@ -14,7 +14,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ScheduleDetailViewActivity extends Activity {
+public class ScheduleDetailViewActivity extends BaseActivity {
 	long schedule_id;
 
 	@Override

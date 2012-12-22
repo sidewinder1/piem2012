@@ -11,7 +11,6 @@ import money.Tracker.presentation.model.EntryDetail;
 import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.repository.EntryDetailRepository;
 import money.Tracker.repository.EntryRepository;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,7 +23,7 @@ import android.widget.TextView;
  * @author Kaminari.hp Control flows of display detail expenses and incomes
  *         management function.
  */
-public class EntryDetailViewActivity extends Activity {
+public class EntryDetailViewActivity extends BaseActivity {
 	public static long sEntryId;
 	LinearLayout mEntryList;
 	TextView mEntryTitle;

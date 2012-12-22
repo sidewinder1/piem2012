@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
-public abstract class NfcDetectorActivity extends Activity implements NfcDetector.NfcIntentListener {
+public abstract class NfcDetectorActivity extends BaseActivity implements NfcDetector.NfcIntentListener {
     private static final String TAG = NfcDetectorActivity.class.getSimpleName();
 
     protected NfcDetector detector;
