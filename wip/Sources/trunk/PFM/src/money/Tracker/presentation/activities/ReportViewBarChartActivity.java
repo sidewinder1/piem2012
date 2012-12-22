@@ -9,7 +9,6 @@ import money.Tracker.common.utilities.Chart;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.customviews.ReportBarChartViewDetailItemView;
 import android.os.Bundle;
-import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
@@ -17,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
-public class ReportViewBarChartActivity extends Activity {
+public class ReportViewBarChartActivity extends BaseActivity {
 
 	private Date startDate;
 	private Date endDate;

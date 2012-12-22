@@ -3,7 +3,6 @@ package money.Tracker.presentation.customviews;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;

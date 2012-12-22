@@ -9,10 +9,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.model.BorrowLend;
 
 public class BorrowLendRepository {
-	private BorrowLendRepository instance;
-
 	public BorrowLendRepository() {
-		// TODO Auto-generated constructor stub
 		createTable();
 	}
 
