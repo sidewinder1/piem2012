@@ -1,18 +1,12 @@
 package money.Tracker.presentation.customviews;
 
-import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class ReportBarChartViewDetailItemView extends LinearLayout {
 

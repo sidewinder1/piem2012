@@ -464,7 +464,7 @@ public class BorrowLendInsertActivity extends Activity {
 						alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
 					} else
 					{
-						int check = SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
+						SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
 						setResult(100);
 						try {
 							if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance() .getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
@@ -481,7 +481,7 @@ public class BorrowLendInsertActivity extends Activity {
 					}
 				} else
 				{
-					int check = SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
+					SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
 					setResult(100);
 					try {
 						if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance() .getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
@@ -532,7 +532,7 @@ public class BorrowLendInsertActivity extends Activity {
 						if (!expiredDateEditText.getText().toString().equals(""))
 							expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
 						
-						long check = SqlHelper.instance.insert("BorrowLend",
+						SqlHelper.instance.insert("BorrowLend",
 										new String[] { "Debt_type", "Money",
 												"Interest_type", "Interest_rate",
 												"Start_date", "Expired_date",
@@ -576,7 +576,7 @@ public class BorrowLendInsertActivity extends Activity {
 					if (!expiredDateEditText.getText().toString().equals(""))
 						expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
 					
-					long check = SqlHelper.instance.insert("BorrowLend",
+					SqlHelper.instance.insert("BorrowLend",
 									new String[] { "Debt_type", "Money",
 											"Interest_type", "Interest_rate",
 											"Start_date", "Expired_date",

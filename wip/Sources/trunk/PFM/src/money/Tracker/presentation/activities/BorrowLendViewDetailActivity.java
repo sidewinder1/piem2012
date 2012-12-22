@@ -4,9 +4,6 @@ package money.Tracker.presentation.activities;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import money.Tracker.common.sql.SqlHelper;
-//import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.customviews.BorrowLendViewDetailViewItem;
 import money.Tracker.presentation.model.BorrowLend;
@@ -14,12 +11,8 @@ import money.Tracker.repository.BorrowLendRepository;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-//import android.content.DialogInterface.OnClickListener;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -75,24 +68,24 @@ public class BorrowLendViewDetailActivity extends Activity {
 		else
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_borrower), values.getPersonName()), params);
 
-		//if (!values.getPersonPhone().equals(""))
+		if (!values.getPersonPhone().equals(""))
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_phone), values.getPersonPhone()), params);
 
-		//if (!values.getPersonPhone().equals(""))
+		if (!values.getPersonPhone().equals(""))
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_address), values.getPersonAddress()), params);
 
-		//if (values.getInterestRate() != 0) {
+		if (values.getInterestRate() != 0) {
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest),new StringBuilder(String.valueOf(values.getInterestRate())).append(" ").append(getResources().getString(R.string.percent)).toString()), params);
 
 			if (values.getInterestType().equals("Simple"))
 				listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest_type),getResources().getString(R.string.simple_interest)), params);
 			else
 				listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_interest_type),getResources().getString(R.string.compound_interest)), params);
-		//}
+		}
 
 		listViewDetail.addView(new BorrowLendViewDetailViewItem(this,getResources().getString(R.string.borrow_lend_start_date), Converter.toString(values.getStartDate(), "dd/MM/yyyy")), params);
 
-		//if (values.getExpiredDate() != null)
+		if (values.getExpiredDate() != null)
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_end_date), Converter.toString(values.getExpiredDate(), "dd/MM/yyyy")), params);
 
 		caculateInterest();

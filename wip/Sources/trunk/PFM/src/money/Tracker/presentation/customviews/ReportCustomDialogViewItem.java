@@ -2,13 +2,13 @@ package money.Tracker.presentation.customviews;
 
 import java.util.Date;
 import java.util.List;
-
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -22,7 +22,7 @@ public class ReportCustomDialogViewItem extends LinearLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReportCustomDialogViewItem(Context context, boolean checkMonthly, final Date startDate, final Date endDate, final List<Date[]> dateList, boolean check) {
+	public ReportCustomDialogViewItem(Context context, boolean checkMonthly, final Date startDate, final Date endDate, final List<Date[]> dateList, boolean check, final Button okButton) {
 		// TODO Auto-generated constructor stub
 		super(context);
 
@@ -57,6 +57,7 @@ public class ReportCustomDialogViewItem extends LinearLayout {
 				{
 					Date[] addDate = {startDate, endDate};
 					dateList.add(addDate);
+					okButton.setVisibility(View.VISIBLE);
 				}else
 				{
 					for (int i = 0; i < dateList.size(); i++)
@@ -66,6 +67,11 @@ public class ReportCustomDialogViewItem extends LinearLayout {
 						{
 							dateList.remove(i);
 						}
+					}
+					
+					if (dateList.size() == 1)
+					{
+						okButton.setVisibility(View.GONE);
 					}
 				}
 			}

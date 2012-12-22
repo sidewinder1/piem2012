@@ -1,30 +1,17 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Chart;
 import money.Tracker.common.utilities.Converter;
-import money.Tracker.presentation.customviews.ReportCustomDialogViewItem;
 import money.Tracker.presentation.customviews.ReportPieCategoryLegendItemView;
-import money.Tracker.presentation.customviews.ReportViewItem;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.Dialog;
 import android.database.Cursor;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
