@@ -163,7 +163,6 @@ public class BorrowLendViewActivity extends Activity {
 			startActivity(borrowLendDetail);
 			break;
 		case 1: // Delete
-			String debtType = borrowLend.getDebtType();
 			Alert.getInstance().showDialog(getParent(), "Xóa ?", new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							SqlHelper.instance.delete("BorrowLend", "Id = " + borrowLend.getId());
@@ -211,7 +210,6 @@ public class BorrowLendViewActivity extends Activity {
 	private double caculateInterest(double money, String interestType, long interestRateData, Date startDate, Date expiredDate) {		
 		Date currentDate = new Date();
 		long caculateInterestDate = 0;
-		long leftDate = 0;
 		double interestRate = 0;
 		double totalInterestCaculate = 0;
 		double totalInterest = 0;
@@ -347,8 +345,4 @@ public class BorrowLendViewActivity extends Activity {
 		else
 			return false;
 	}
-
-	public void navigateToView() {
-			return;
-		}
 }

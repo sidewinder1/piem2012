@@ -1,28 +1,15 @@
 package money.Tracker.presentation.activities;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
-import money.Tracker.presentation.adapters.BorrowLendAdapter;
-import money.Tracker.presentation.adapters.ScheduleViewAdapter;
-import money.Tracker.presentation.customviews.CategoryLegendItemView;
 import money.Tracker.presentation.customviews.ReportCustomDialogViewItem;
 import money.Tracker.presentation.customviews.ReportViewItem;
-import money.Tracker.presentation.model.Entry;
-import money.Tracker.presentation.model.IModelBase;
-import money.Tracker.presentation.model.Schedule;
-import money.Tracker.repository.BorrowLendRepository;
-import money.Tracker.repository.EntryRepository;
-import money.Tracker.repository.ScheduleRepository;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Dialog;
@@ -30,25 +17,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.content.Context;
-import android.app.Dialog;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -57,7 +32,6 @@ public class ReportViewActivity extends Activity {
 	private boolean checkMonthly;
 	private TextView displayNoReportDataText;
 	private LinearLayout reportListView;
-	private Context myContext = this;
 	private int checked = 0;
 	private List<Date[]> dateList;
 	private LinearLayout barChartListDate;
@@ -303,8 +277,9 @@ public class ReportViewActivity extends Activity {
 
 					barChartListDate = (LinearLayout) compareDialog.findViewById(R.id.report_compare_custom_dialog_list_date_view);
 					barChartListDate.removeAllViews();
-					bindDataCustomItemView(false, sDate, eDate);
-					Button okButton = (Button) compareDialog.findViewById(R.id.report_compare_custom_dialog_ok_button);
+					final Button okButton = (Button) compareDialog.findViewById(R.id.report_compare_custom_dialog_ok_button);
+					okButton.setVisibility(View.GONE);
+					bindDataCustomItemView(false, sDate, eDate, okButton);
 					Button cancelButton = (Button) compareDialog.findViewById(R.id.report_compare_custom_dialog_cancel_button);
 
 					cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -350,7 +325,15 @@ public class ReportViewActivity extends Activity {
 									}
 
 									barChartListDate.removeAllViews();
-									bindDataCustomItemView(isChecked, sDate,eDate);
+									bindDataCustomItemView(isChecked, sDate,eDate, okButton);
+									
+									if (isChecked)
+									{
+										okButton.setVisibility(View.VISIBLE);
+									} else
+									{
+										okButton.setVisibility(View.GONE);
+									}
 								}
 							});
 
@@ -376,7 +359,7 @@ public class ReportViewActivity extends Activity {
 
 	}
 
-	private void bindDataCustomItemView(boolean check, Date _startDate, Date _endDate) {
+	private void bindDataCustomItemView(boolean check, Date _startDate, Date _endDate, Button okButton) {
 		if (checkMonthly) {
 			Cursor monthlyEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
 			if (monthlyEntry != null) {
@@ -426,7 +409,7 @@ public class ReportViewActivity extends Activity {
 
 						if (startDate != null) {
 							LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-							barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonthly, startDate, endDate, dateList, check), params);
+							barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonthly, startDate, endDate, dateList, check, okButton), params);
 							hasData = true;
 						}
 
@@ -487,7 +470,7 @@ public class ReportViewActivity extends Activity {
 						endDate = DateTimeHelper.getLastDayOfWeek(startDate);						
 
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-						barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonthly, startDate, endDate, dateList, check), params);
+						barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonthly, startDate, endDate, dateList, check, okButton), params);
 						hasData = true;
 					}
 				} while (weekEntry.moveToNext());

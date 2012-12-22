@@ -1,42 +1,29 @@
 package money.Tracker.common.utilities;
 
 import java.util.ArrayList;
-
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-
 import money.Tracker.common.sql.SqlHelper;
-import money.Tracker.presentation.activities.R;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.AbstractChart;
 import org.achartengine.chart.BarChart.Type;
-import org.achartengine.chart.PointStyle;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer.Orientation;
-import org.achartengine.renderer.XYSeriesRenderer;
-
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.YuvImage;
 import android.graphics.Paint.Align;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
+@SuppressWarnings("serial")
 public class Chart extends AbstractChart {
 	private Date startDate = null;
 	private Date endDate = null;
@@ -46,6 +33,7 @@ public class Chart extends AbstractChart {
 	private List<Integer> entryCategoryColor;
 	private List<String> scheduleCategoryName;
 	private List<Double> scheduleCategoryValue;
+	private List<Date []> dateList;
 
 	public Chart() {
 	}
@@ -325,13 +313,41 @@ public class Chart extends AbstractChart {
 		renderer.setAxesColor(axesColor);
 		renderer.setLabelsColor(labelsColor);
 	}
+	
+	private void sort()
+	{
+		int i, j;
+		int length = dateList.size();
+		Date[] t = new Date[2];
+		for (i = 0; i < length; i++) {
+			for (j = 1; j < (length - i); j++) {
+				Date j1StartedDate;
+				Date jStartedDate;
+				
+				Date[] compareDate = dateList.get(j);
+				jStartedDate = compareDate[0];
+				
+				compareDate = dateList.get(j - 1);
+				j1StartedDate = compareDate[0];
+				
+				if (j1StartedDate.compareTo(jStartedDate) < 0) {
+					t = dateList.get(j - 1);
+					dateList.set(j - 1 , dateList.get(j));
+					dateList.set(j, t);
+				}
+			}
+		}
+	}
 
 	@SuppressWarnings("deprecation")
 	public View getBarCompareIntent(Context context, boolean checkMonthly,List<Date[]> dateList) {
 		entryCategoryValue = new ArrayList<Double>();
 		scheduleCategoryValue = new ArrayList<Double>();
 		this.checkMonthly = checkMonthly;
-
+		this.dateList = dateList;
+		
+		sort();
+		
 		for (int i = 0; i < dateList.size(); i++) {
 			Date[] compareDate = dateList.get(i);
 			this.startDate = compareDate[0];
@@ -410,7 +426,7 @@ public class Chart extends AbstractChart {
 		renderer.setBarSpacing(0.6f);
 		// renderer.setShowLabels(false);
 		renderer.setXLabelsAngle(checkMonthly ? 0 : -90);
-		renderer.setPanEnabled(false, false);
+		renderer.setPanEnabled(false, true);
 		renderer.setLabelsColor(Color.BLACK);
 		renderer.setXLabelsColor(Color.BLACK); // Color.argb(0x00, 0x01, 0x01,
 		renderer.setAxisTitleTextSize(13);										// 0x01)

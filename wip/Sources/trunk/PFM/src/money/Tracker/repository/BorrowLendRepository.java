@@ -1,15 +1,7 @@
 package money.Tracker.repository;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import android.content.ContentResolver;
-import android.database.CharArrayBuffer;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 
 import money.Tracker.common.sql.SqlHelper;

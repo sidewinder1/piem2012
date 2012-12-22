@@ -1,8 +1,6 @@
 package money.Tracker.presentation.customviews;
 
-import java.util.Calendar;
 import java.util.Date;
-
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.presentation.activities.R;

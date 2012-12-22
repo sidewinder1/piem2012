@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
-import android.widget.EditText;
 
 public class ContactInfoRepository {
 	private Context ctx;
