@@ -426,7 +426,7 @@ public class Chart extends AbstractChart {
 		renderer.setBarSpacing(0.6f);
 		// renderer.setShowLabels(false);
 		renderer.setXLabelsAngle(checkMonthly ? 0 : -90);
-		renderer.setPanEnabled(false, true);
+		renderer.setPanEnabled(false, false);
 		renderer.setLabelsColor(Color.BLACK);
 		renderer.setXLabelsColor(Color.BLACK); // Color.argb(0x00, 0x01, 0x01,
 		renderer.setAxisTitleTextSize(13);										// 0x01)
