@@ -159,7 +159,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private void getQRCode() {
 		ZXingLibConfig zxingLibConfig = new ZXingLibConfig();
 		zxingLibConfig.useFrontLight = true;
-
 		IntentIntegrator.initiateScan(EntryEditActivity.this, zxingLibConfig);
 	}
 
@@ -173,6 +172,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			if (scanResult == null) {
 				return;
 			}
+			
 			final String result = scanResult.getContents();
 			if (result != null) {
 

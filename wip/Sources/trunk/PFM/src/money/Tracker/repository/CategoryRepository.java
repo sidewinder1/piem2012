@@ -1,6 +1,7 @@
 package money.Tracker.repository;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.database.Cursor;
 
@@ -41,7 +42,7 @@ public class CategoryRepository {
 
 	public long getId(String name) {
 		for (Category category : categories) {
-			if (category.getName() == name) {
+			if (category.getName().toLowerCase(Locale.US).equals(name.toLowerCase(Locale.US))) {
 				return category.getId();
 			}
 		}
@@ -51,8 +52,8 @@ public class CategoryRepository {
 
 	public boolean isExisted(String nameOfCategory) {
 		for (Category category : categories) {
-			if (nameOfCategory.toLowerCase().equals(
-					category.getName().toLowerCase())) {
+			if (nameOfCategory.toLowerCase(Locale.US).equals(
+					category.getName().toLowerCase(Locale.US))) {
 				return true;
 			}
 		}
@@ -103,8 +104,8 @@ public class CategoryRepository {
 
 	public int getIndex(String name) {
 		for (int index = 0; index < categories.size(); index++) {
-			if (name.toLowerCase().equals(
-					categories.get(index).getName().toLowerCase())) {
+			if (name.toLowerCase(Locale.US).equals(
+					categories.get(index).getName().toLowerCase(Locale.US))) {
 				return index;
 			}
 		}

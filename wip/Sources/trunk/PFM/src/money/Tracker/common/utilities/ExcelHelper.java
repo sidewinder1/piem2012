@@ -119,7 +119,8 @@ public class ExcelHelper {
 		Workbook workbook = null;
 
 		try {
-			workbook = Workbook.getWorkbook(new File(filePath));
+			File pifFile = new File(filePath);
+			workbook = Workbook.getWorkbook(pifFile);
 		} catch (BiffException e) {
 			Logger.Log(e.getMessage(), "ExcelHelper");
 		} catch (IOException e) {
@@ -131,7 +132,7 @@ public class ExcelHelper {
 		}
 
 		workbook.close();
-
+		
 		Alert.getInstance().show(PfmApplication.getAppContext(),
 				PfmApplication.getAppResources().getString(R.string.success));
 		return true;
@@ -366,7 +367,7 @@ public class ExcelHelper {
 
 		if (selector != null && selector.moveToFirst()) {
 			String[] columnInfos = tableInfo[2].split(",");
-			DateFormat customDateFormat = new DateFormat("dd/MM/yyyy hh:mm:ss");
+			DateFormat customDateFormat = new DateFormat("dd/MM/yyyy" + (tableInfo.length == 3 ? " hh:mm:ss" : ""));
 			WritableCellFormat dateFormat = new WritableCellFormat(
 					customDateFormat);
 

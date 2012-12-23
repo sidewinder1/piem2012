@@ -58,7 +58,7 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".EntryEditActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustPan" >

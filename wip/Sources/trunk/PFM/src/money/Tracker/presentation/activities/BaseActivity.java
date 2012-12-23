@@ -52,7 +52,6 @@ public abstract class BaseActivity extends Activity {
 				button.setEnabled(false);
 				inputDialog.mIsExcel
 						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-							@Override
 							public void onCheckedChanged(
 									CompoundButton buttonView, boolean isChecked) {
 								View button = dialog
@@ -72,7 +71,6 @@ public abstract class BaseActivity extends Activity {
 
 				inputDialog.mIsImport
 						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-							@Override
 							public void onCheckedChanged(
 									CompoundButton buttonView, boolean isChecked) {
 								View button = dialog
@@ -92,17 +90,14 @@ public abstract class BaseActivity extends Activity {
 
 				inputDialog.mNameValue
 						.addTextChangedListener(new TextWatcher() {
-							@Override
 							public void onTextChanged(CharSequence s,
 									int start, int before, int count) {
 							}
 
-							@Override
 							public void beforeTextChanged(CharSequence s,
 									int start, int count, int after) {
 							}
 
-							@Override
 							public void afterTextChanged(Editable s) {
 								View button = dialog
 										.findViewById(R.id.app_dialog_doneBtn);
@@ -119,7 +114,6 @@ public abstract class BaseActivity extends Activity {
 						});
 
 				ViewHelper.attachAction(dialog, new View.OnClickListener() {
-					@Override
 					public void onClick(View arg0) {
 						if (inputDialog.mIsExcel.isChecked()) {
 							ExcelHelper.getInstance()
@@ -139,7 +133,6 @@ public abstract class BaseActivity extends Activity {
 						dialog.dismiss();
 					}
 				}, new View.OnClickListener() {
-					@Override
 					public void onClick(View arg0) {
 						dialog.dismiss();
 					}

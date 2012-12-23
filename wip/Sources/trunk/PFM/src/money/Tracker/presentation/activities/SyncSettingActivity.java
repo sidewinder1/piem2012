@@ -246,9 +246,9 @@ public class SyncSettingActivity extends BaseActivity {
 								.toString());
 
 		if (warningSetting != null && warningSetting.moveToFirst()) {
-			getIndexFromStringArray(warningSetting.getString(0), getResources()
-					.getString(R.string.percent), mScheduleWarnArr,
-					mScheduleWarn);
+			getIndexFromStringArray(warningSetting.getString(0), " "
+					+ getResources().getString(R.string.percent),
+					mScheduleWarnArr, mScheduleWarn);
 			// getIndexFromStringArray(warningSetting.getString(6), "",
 			// mLanguageArr, mLanguage);
 			// getIndexFromStringArray(warningSetting.getString(2), " "
@@ -363,7 +363,7 @@ public class SyncSettingActivity extends BaseActivity {
 						initializeWarningSetting();
 					}
 				});
-				
+
 				dialog.setContentView(dialogView);
 				dialogView.setPositiveButton(new View.OnClickListener() {
 					public void onClick(View v) {
@@ -382,8 +382,8 @@ public class SyncSettingActivity extends BaseActivity {
 			} else {
 				switch (currentAdapterIndex) {
 				case 1:
-					updateConfig("ScheduleWarn", mScheduleWarnArr.get(position)
-							.split(" ")[0]);
+					updateConfig("ScheduleWarn", mScheduleWarnArr.get(position).split(" ")[0]
+							.replace("%", ""));
 					break;
 				case 2:
 					// Localization.
@@ -505,7 +505,7 @@ public class SyncSettingActivity extends BaseActivity {
 		String value = input.getText().toString();
 		switch (currentAdapterIndex) {
 		case 1:
-			createSpinnerItem(value, " %", mScheduleWarn, mScheduleWarnArr);
+			// createSpinnerItem(value, "%", mScheduleWarn, mScheduleWarnArr);
 			updateConfig("ScheduleWarn", value);
 			break;
 		case 3:
@@ -515,18 +515,20 @@ public class SyncSettingActivity extends BaseActivity {
 			// updateConfig("ScheduleRemind", value);
 			break;
 		case 4:
-			createSpinnerItem(value,
-					" " + getResources().getString(R.string.hours),
-					mBorrowWarn, mBorrowWarnArr);
+			// createSpinnerItem(value,
+			// " " + getResources().getString(R.string.hours),
+			// mBorrowWarn, mBorrowWarnArr);
 			updateConfig("BorrowWarn", value);
 			break;
 		case 6:
-			createSpinnerItem(value,
-					" " + getResources().getString(R.string.minutes),
-					mBorrowRemind, mBorrowRemindArr);
+			// createSpinnerItem(value,
+			// " " + getResources().getString(R.string.minutes),
+			// mBorrowRemind, mBorrowRemindArr);
 			updateConfig("BorrowRemind", value);
 			break;
 		}
+
+		initializeWarningSetting();
 	}
 
 	@Override
