@@ -9,6 +9,9 @@
     <string name="menu_settings">Thiết lập</string>
     <string name="menu_import">Nhập…</string>
     <string name="menu_export">Xuất…</string>
+    <string name="input_file_name">Nhập tên tệp tin</string>
+    <string name="choose_excel_type">Dữ liệu dạng excel</string>
+    <string name="choose_import_data_type">Dữ liệu dạng lưu trữ (.pif)</string>
     <string name="note"><u>Chú thích</u></string>
     <string name="saved">Đã lưu</string>
     <string name="select_all">Chọn tất cả</string>
@@ -29,6 +32,9 @@
     <string name="days">ngày</string>
     <string name="weeks">tuần</string>
     <string name="existed_category_message">Mục này đã tồn tại</string>
+    <string name="export_schedule_table_info">Tổng ngân sách, Khoảng thời gian, Từ ngày, Đến ngày, Tiền từng mục, Tên mục</string>
+    <string name="export_entry_table_info">Ngày, Loại thu chi, Tên khoản thu chi, Tiền, Tên mục</string>
+    <string name="export_borrow_lend_table_info">Tên, Số điện thoại, Địa chỉ, Loại vay - cho vay, Số tiền, Kiểu lãi suất, Lãi suất (%), Ngày bắt đầu, Ngày đáo hạn</string>
     <string name="input_dialog_title">Nhập giá trị</string>
     <string name="choose_account_dialog_title">Chọn tài khoản</string>
     <string name="ok">Đồng ý</string>
@@ -260,7 +266,6 @@
         <item>#99FFFCA8</item>
         <item>#99EDD4BA</item>
     </string-array>
-    
     <string-array name="schedule_context_menu_item">
         <item>Sửa</item>
         <item>Xóa</item>
@@ -280,4 +285,5 @@
     <color name="transparent_dark_03">#70000000</color>
 
     <string name="score_symbol">-</string>
+
 </resources>

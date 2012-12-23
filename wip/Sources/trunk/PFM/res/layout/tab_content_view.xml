@@ -14,18 +14,11 @@
         android:layout_marginLeft="25sp"
         android:text="@string/no_data" />
 
-    <ListView
-        android:id="@+id/tab_content_view_list"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_marginLeft="25sp"
-        android:layout_marginRight="25sp"
-        android:layout_weight="1" />
-
     <ScrollView
         android:id="@+id/entry_view_scroll"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
+        android:layout_gravity="fill_horizontal"
         android:layout_weight="1"
         android:clipChildren="false" >
 
@@ -33,6 +26,7 @@
             android:id="@+id/entry_tab_content_view_list"
             android:layout_width="fill_parent"
             android:layout_marginLeft="15sp"
+            android:gravity="center_horizontal"
             android:layout_marginRight="15sp"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

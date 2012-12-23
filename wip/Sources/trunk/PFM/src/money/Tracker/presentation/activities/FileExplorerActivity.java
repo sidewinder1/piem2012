@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
-import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.ExcelHelper;
 import money.Tracker.common.utilities.Logger;
 import android.app.Activity;
@@ -49,12 +48,12 @@ public class FileExplorerActivity extends Activity {
 				.getStringArray("FileExplorerActivity.allowedExtension");
 		file_icon = extras.getInt("FileExplorerActivity.file_icon");
 		if (isSdPresent()) {
-			Alert.getInstance().show(FileExplorerActivity.this, "Unmounted");
+//			Alert.getInstance().show(FileExplorerActivity.this, "Unmounted");
 			loadFileList();
 			listFileAdaptor = new ListFile(FileExplorerActivity.this, fileList);
 			listViewDir.setAdapter(listFileAdaptor);
-		} else {
-			Alert.getInstance().show(FileExplorerActivity.this, "Mounted");
+//		} else {
+//			Alert.getInstance().show(FileExplorerActivity.this, "Mounted");
 		}
 
 		listViewDir.setOnItemClickListener(new OnItemClickListener() {

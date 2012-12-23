@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/file_name_value"
+        style="@style/normalEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:hint="@string/input_file_name" />
+
+    <CheckBox
+        android:id="@+id/export_choose_excel"
+        style="@style/normalText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:button="@drawable/checkbox_selector"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:text="@string/choose_excel_type" >
+    </CheckBox>
+
+    <CheckBox
+        android:id="@+id/export_choose_import"
+        style="@style/normalText"
+         android:button="@drawable/checkbox_selector"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:text="@string/choose_import_data_type" >
+    </CheckBox>
+
+</LinearLayout>
