@@ -130,10 +130,11 @@ public class ScheduleEditActivity extends BaseActivity {
 			Schedule schedule = (Schedule) ScheduleRepository.getInstance()
 					.getData("Id = " + mPassedScheduleId).get(0);
 			if (schedule != null) {
-				setChecked(schedule.type == 0);
 				mMonth = schedule.start_date.getMonth();
 				mDay = schedule.start_date.getDate();
 				mYear = schedule.start_date.getYear() + 1900;
+				setChecked(schedule.type == 0);
+				
 				mStartDateEdit.setText(Converter.toString(schedule.start_date,
 						"dd/MM/yyyy"));
 				mEndDateEdit.setText(Converter.toString(schedule.end_date,
@@ -177,7 +178,9 @@ public class ScheduleEditActivity extends BaseActivity {
 				&& checkExist.getLong(0) != mPassedScheduleId) {
 			Alert.getInstance().show(getBaseContext(),
 					getResources().getString(R.string.schedule_exist_message));
-			setChecked(!isWeek);
+			mIsWeek = !isWeek;
+			mPeriodic.setBackgroundResource(mIsWeek ? R.drawable.calendar_week_icon
+					: R.drawable.calendar_month_icon);
 			mEndDateEdit.setText(lastDate);
 		}
 	}

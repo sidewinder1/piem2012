@@ -1,10 +1,13 @@
 package money.Tracker.presentation.customviews;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.common.utilities.Converter;
+import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.R;
@@ -34,7 +37,9 @@ public class EntryEditCategoryView extends LinearLayout {
 	private LinearLayout mCategoryList;
 	private CategoryAdapter mCategoryAdapter;
 	public EditText mCategoryEdit;
-
+	private Date mCurrentDate = DateTimeHelper.now(false);
+	private int mType = 1;
+	
 	public EntryEditCategoryView(Context context) {
 		super(context);
 	}
@@ -186,6 +191,10 @@ public class EntryEditCategoryView extends LinearLayout {
 
 			public void afterTextChanged(Editable arg0) {
 				try {
+					if (mType == 0){
+						return;
+					}
+					
 					Cursor checkOverBudget = SqlHelper.instance.select(
 							"AppInfo",
 							"ScheduleWarn",
@@ -193,12 +202,12 @@ public class EntryEditCategoryView extends LinearLayout {
 									.append(AccountProvider.getInstance()
 											.getCurrentAccount().name)
 									.append("'").toString());
-					long budget = PfmApplication.getTotalBudget();
+					long budget = PfmApplication.getTotalBudget(mCurrentDate);
 					if (checkOverBudget != null
 							&& checkOverBudget.moveToFirst() && budget != 0) {
 						double percent = checkOverBudget.getLong(0) / 100d;
 
-						if (budget * percent <= PfmApplication.getTotalEntry()
+						if (budget * percent <= PfmApplication.getTotalEntry(mCurrentDate)
 								+ Converter.toLong(arg0.toString())) {
 							Alert.getInstance().show(
 									getContext(),
@@ -300,6 +309,14 @@ public class EntryEditCategoryView extends LinearLayout {
 		return mCategoryList.getChildCount() == 0;
 	}
 
+	public void updateDate(Date date){
+		mCurrentDate = date;
+	}
+	
+	public void updateType(int type){
+		mType = type;
+	}
+	
 	public boolean removeEmptyCatagory() {
 		boolean check = false;
 

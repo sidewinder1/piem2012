@@ -101,7 +101,7 @@ public class PfmApplication extends Application {
 	 * 
 	 * @return A long type that is total of expense.
 	 */
-	public static long getTotalEntry() {
+	public static long getTotalEntry(Date currentDate) {
 		EntryRepository.getInstance().updateData(
 				new StringBuilder("Type = 1").toString());
 		if (EntryRepository.getInstance().orderedEntries == null) {
@@ -109,8 +109,13 @@ public class PfmApplication extends Application {
 		}
 
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
-				.get(Converter.toString(DateTimeHelper.now(false), "MM/yyyy"));
+				.get(Converter.toString(currentDate, "MM/yyyy"));
 		long total_entry = 0;
+		
+		if (entries == null) {
+			return 0;
+		}
+		
 		for (Entry entryItem : entries) {
 			total_entry += entryItem.getTotal();
 		}
@@ -124,8 +129,7 @@ public class PfmApplication extends Application {
 	 * 
 	 * @return A long type that is total of budget.
 	 */
-	public static long getTotalBudget() {
-		Date currentDate = DateTimeHelper.now(false);
+	public static long getTotalBudget(Date currentDate) {
 		Cursor totalBudgetCursor = SqlHelper.instance.select(
 				"Schedule",
 				"Budget, Type",
