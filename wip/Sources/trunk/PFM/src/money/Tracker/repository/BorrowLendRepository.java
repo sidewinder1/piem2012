@@ -10,10 +10,6 @@ import money.Tracker.presentation.model.BorrowLend;
 
 public class BorrowLendRepository {
 	public BorrowLendRepository() {
-		createTable();
-	}
-
-	private void createTable() {
 	}
 
 	public ArrayList<Object> getData(String condition) {
@@ -45,12 +41,17 @@ public class BorrowLendRepository {
 				} while (borrowLendData.moveToNext());
 			}
 		}
+		
+		borrowLendData.close();
+		
 		return returnValues;
 	}
 	
 	public BorrowLend getDetailData(String condition) {
 		BorrowLend bole = new BorrowLend();
+		
 		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*", condition);
+		
 		if (borrowLendData != null) {
 			if (borrowLendData.moveToFirst()) {
 				do {
@@ -66,11 +67,13 @@ public class BorrowLendRepository {
 						bole.setExpiredDate(null);
 					}
 					bole.setPersonName(borrowLendData.getString(borrowLendData.getColumnIndex("Person_name")));
-					bole.setPersonPhone(borrowLendData.getString(borrowLendData.getColumnIndex("Person_phone")));
-					bole.setPersonAddress(borrowLendData.getString(borrowLendData.getColumnIndex("Person_address")));
+					bole.setPersonPhone(borrowLendData.getString(borrowLendData.getColumnIndex("Person_phone")).trim());
+					bole.setPersonAddress(borrowLendData.getString(borrowLendData.getColumnIndex("Person_address")).trim());
 				} while (borrowLendData.moveToNext());
 			}
 		}
+		
+		borrowLendData.close();
 		return bole;
 	}
 }
