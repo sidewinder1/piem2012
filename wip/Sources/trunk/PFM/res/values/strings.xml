@@ -73,10 +73,16 @@
     <string name="simple_interest">Lãi đơn</string>
     <string name="compound_interest">Lãi kép</string>
     <string name="borrow_lend_no_interest">Chưa có</string>
-    <string name="borrow_lend_warning_name_total_money">Bạn phải nhập tên và tổng số tiền</string>
+    <string name="borrow_lend_warning_name_lender_total_money">Bạn phải nhập tên người cho vay và tổng số tiền</string>
+    <string name="borrow_lend_warning_name_borrower_total_money">Bạn phải nhập tên người vay và tổng số tiền</string>
+    <string name="borrow_lend_warning_name_lender">Bạn phải nhập tên người cho vay</string>
+    <string name="borrow_lend_warning_name_borrower">Bạn phải nhập tên người vay</string>
+    <string name="borrow_lend_warning_total_money">Bạn phải nhập tổng số tiền</string>
+    <string name="borrow_lend_warning_total_money_0">Tổng tiền phải lớn hơn 0</string>
     <string name="borrow_lend_warning_interest_rate_expired_date">Hãy nhập ngày đáo hạn!</string>
     <string name="borrow_lend_warning_interest_rate_0">Lãi suất phải lớn hơn 0</string>
     <string name="borrow_lend_warning_interest_rate_100">Lãi suất phải lớn hơn 0 và nhỏ hơn 100</string>
+    <string name="borrow_lend_expired_date_less_than_start_date">Ngày đáo hạn không hợp lệ</string>
 
     <!-- These are resources for Schedule function. -->
     <string name="schedule_budget">Tổng</string>

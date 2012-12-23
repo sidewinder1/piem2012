@@ -20,7 +20,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.util.Log;
 import android.view.View;
 
 @SuppressWarnings("serial")
@@ -31,104 +30,10 @@ public class Chart extends AbstractChart {
 	private List<String> entryCategoryName;
 	private List<Double> entryCategoryValue;
 	private List<Integer> entryCategoryColor;
-	private List<String> scheduleCategoryName;
 	private List<Double> scheduleCategoryValue;
 	private List<Date []> dateList;
 
 	public Chart() {
-	}
-
-	private void getScheduleData() {
-		scheduleCategoryName = new ArrayList<String>();
-		scheduleCategoryValue = new ArrayList<Double>();
-
-		String whereCondition = "";
-		if (checkMonthly)
-			whereCondition = "Type = 1";
-		else
-			whereCondition = "Type = 0";
-
-		Cursor scheduleCursor = SqlHelper.instance.select("Schedule", "*", whereCondition);
-		if (scheduleCursor != null) {
-			if (scheduleCursor.moveToFirst()) {
-				do {
-					if (checkMonthly) {
-						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						String scheduleMonth = Converter.toString(scheduleStartDate, "MM");
-						String scheduleYear = Converter.toString(scheduleStartDate, "yyy");
-						String startDateMonth = Converter.toString(startDate, "MM");
-						String startDateYear = Converter.toString(startDate, "yyyy");
-
-						if (scheduleMonth.equals(startDateMonth) && scheduleYear.equals(startDateYear)) {
-							long id = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Id"));
-
-							Cursor scheduleDetailCursor = SqlHelper.instance.select("ScheduleDetail", "*", "Schedule_Id=" + id);
-
-							if (scheduleDetailCursor != null) {
-								if (scheduleDetailCursor.moveToFirst()) {
-									do {
-										String name = "";
-										long categoryID = scheduleDetailCursor.getLong(scheduleDetailCursor.getColumnIndex("Category_Id"));
-										double categoryValue = scheduleDetailCursor.getDouble(scheduleDetailCursor.getColumnIndex("Budget"));
-
-										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id=" + categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
-												} while (categoryCursor.moveToNext());
-											}
-										}
-
-										scheduleCategoryName.add(name);
-										scheduleCategoryValue.add(categoryValue);
-									} while (scheduleDetailCursor.moveToNext());
-								}
-							}
-						}
-					} else {
-						Date scheduleStartDate = Converter.toDate(scheduleCursor.getString(scheduleCursor.getColumnIndex("Start_date")));
-						String scheduleMonth = Converter.toString(scheduleStartDate, "yyyy");
-						String startDateMonth = Converter.toString(startDate,"yyyy");
-
-						Calendar calScheduleStart = Calendar.getInstance();
-						calScheduleStart.setTime(scheduleStartDate);
-						int scheduleWeek = calScheduleStart.get(Calendar.WEEK_OF_YEAR);
-						Calendar calStartDate = Calendar.getInstance();
-						calStartDate.setTime(scheduleStartDate);
-						int startDateWeek = calStartDate.get(Calendar.WEEK_OF_YEAR);
-
-						if (scheduleMonth.equals(startDateMonth) && scheduleWeek == startDateWeek) {
-							long id = scheduleCursor.getLong(scheduleCursor.getColumnIndex("Id"));
-
-							Cursor scheduleDetailCursor = SqlHelper.instance.select("ScheduleDetail", "*", "Schedule_Id=" + id);
-
-							if (scheduleDetailCursor != null) {
-								if (scheduleDetailCursor.moveToFirst()) {
-									do {
-										String name = "";
-										long categoryID = scheduleDetailCursor.getLong(scheduleDetailCursor.getColumnIndex("Category_Id"));
-										double categoryValue = scheduleDetailCursor.getDouble(scheduleDetailCursor.getColumnIndex("Budget"));
-
-										Cursor categoryCursor = SqlHelper.instance.select("Category", "*", "Id=" + categoryID);
-										if (categoryCursor != null) {
-											if (categoryCursor.moveToFirst()) {
-												do {
-													name = categoryCursor.getString(categoryCursor.getColumnIndex("Name"));
-												} while (categoryCursor.moveToNext());
-											}
-										}
-
-										scheduleCategoryName.add(name);
-										scheduleCategoryValue.add(categoryValue);
-									} while (scheduleDetailCursor.moveToNext());
-								}
-							}
-						}
-					}
-				} while (scheduleCursor.moveToNext());
-			}
-		}
 	}
 
 	private void getEntryData() {
@@ -200,6 +105,7 @@ public class Chart extends AbstractChart {
 		long spent = 0;
 
 		Cursor entryExpenseCursor = SqlHelper.instance.select("Entry", "*", "Type=1");
+		
 		if (entryExpenseCursor != null) {
 			if (entryExpenseCursor.moveToFirst()) {
 				do {
@@ -220,6 +126,7 @@ public class Chart extends AbstractChart {
 				} while (entryExpenseCursor.moveToNext());
 			}
 		}
+		
 
 		// get budget
 		long budget = 0;
@@ -270,9 +177,7 @@ public class Chart extends AbstractChart {
 			CategorySeries series = new CategorySeries(titles[i]);
 			double[] v = values.get(i);
 			int seriesLength = v.length;
-			Log.d("Check chart", "" + seriesLength + " " + titles[i]);
 			for (int k = 0; k < seriesLength; k++) {
-				Log.d("Check chart", "" + v[k]);
 				series.add(v[k]);
 			}
 			dataset.addSeries(series.toXYSeries());
@@ -281,7 +186,6 @@ public class Chart extends AbstractChart {
 	}
 
 	protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) {
-		Log.v("abstract", "bbb");
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
 		renderer.setAxisTitleTextSize(16);
 		renderer.setChartTitleTextSize(20);
@@ -302,7 +206,6 @@ public class Chart extends AbstractChart {
 	}
 
 	protected void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax, int axesColor, int labelsColor) {
-		Log.v("abstract", "555" + title + xMin + yMin);
 		renderer.setChartTitle(title);
 		renderer.setXTitle(xTitle);
 		renderer.setYTitle(yTitle);
@@ -439,134 +342,6 @@ public class Chart extends AbstractChart {
 		// return ChartFactory.getBarChartIntent(context,
 		// buildBarDataset(titles, values), renderer, Type.STACKED);
 		return ChartFactory.getBarChartView(context,buildBarDataset(titles, values), renderer, Type.DEFAULT);
-	}
-
-	@SuppressWarnings("deprecation")
-	public View getBarIntent(Context context, boolean checkMonthly, Date sDate,Date eDate) {
-		this.startDate = sDate;
-		this.endDate = eDate;
-		this.checkMonthly = checkMonthly;
-
-		getScheduleData();
-		getEntryData();
-
-		String[] entryCategoryNameArray = new String[entryCategoryName.size()];
-		entryCategoryNameArray = entryCategoryName.toArray(entryCategoryNameArray);
-		Double[] entryCategoryValueArray = new Double[entryCategoryValue.size()];
-		entryCategoryValueArray = entryCategoryValue.toArray(entryCategoryValueArray);
-		Integer[] entryCategoryColorArray = new Integer[entryCategoryColor.size()];
-		entryCategoryColorArray = entryCategoryColor.toArray(entryCategoryColorArray);
-
-		List<String> titlesList = new ArrayList<String>();
-		List<double[]> values = new ArrayList<double[]>();
-		List<Integer> colorList = new ArrayList<Integer>();
-
-		double xMax = 0;
-		double yMax = 0;
-
-		int count = 0;
-
-		for (int i = 0; i < entryCategoryNameArray.length; i++) {
-			titlesList.add(entryCategoryNameArray[i]);
-			colorList.add(entryCategoryColorArray[i]);
-
-			double[] value = new double[entryCategoryNameArray.length * 2
-					+ (entryCategoryNameArray.length - 1)];
-			xMax = value.length;
-			Log.d("Check bar chart value", "" + value.length);
-
-			for (int j = 0; j < value.length; j++) {
-				if (j == count) {
-					value[j] = entryCategoryValueArray[i] / 1000;
-
-				} else if (j == count + 1) {
-					if (!scheduleCategoryName.isEmpty()) {
-						String[] scheduleCategoryNameArray = new String[scheduleCategoryName.size()];
-						scheduleCategoryNameArray = scheduleCategoryName.toArray(scheduleCategoryNameArray);
-						Double[] scheduleCategoryValueArray = new Double[scheduleCategoryValue.size()];
-						scheduleCategoryValueArray = scheduleCategoryValue.toArray(scheduleCategoryValueArray);
-
-						int check = -1;
-
-						for (int k = 0; k < scheduleCategoryNameArray.length; k++) {
-							if (scheduleCategoryNameArray[k].equals(entryCategoryNameArray[i])) {
-								check = k;
-							}
-						}
-
-						if (check == -1) {
-							value[j] = 0;
-						} else {
-							value[j] = scheduleCategoryValueArray[check] / 1000;
-						}
-
-					} else {
-						value[j] = 0;
-					}
-				} else {
-					value[j] = 0;
-				}
-
-				if (value[j] > yMax) {
-					yMax = value[j];
-				}
-			}
-
-			count = count + 3;
-
-			values.add(value);
-		}
-
-		/*
-		 * String[] titles = new String[] { "a", "b", "c", "d", "e" };
-		 * values.add(new double[] { 10, 5, 0, 0, 0, 0, 0, 0, 0, 0 });
-		 * values.add(new double[] { 0, 0, 20, 15, 0, 0, 0, 0, 0, 0 });
-		 * values.add(new double[] { 0, 0, 0, 0, 30, 25, 0, 0, 0, 0 });
-		 * values.add(new double[] { 0, 0, 0, 0, 0, 0, 40, 30, 0, 0 });
-		 * values.add(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 50, 60 }); int[]
-		 * colors = new int[] { Color.BLUE, Color.CYAN, Color.GREEN,Color.RED,
-		 * Color.GRAY };
-		 */
-
-		String[] titles = new String[titlesList.size()];
-		titles = titlesList.toArray(titles);
-		int[] colors = new int[colorList.size()];
-		for (int i = 0; i < colorList.size(); i++) {
-			colors[i] = colorList.get(i);
-		}
-
-		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-		setChartSettings(renderer, "", "Thực tế / Kế hoạch",
-				"Giá trị bằng số tiền", 0, xMax + 1, 0, yMax, Color.GRAY,
-				Color.LTGRAY);
-		// renderer.setXLabels(12);
-		// renderer.setYLabels(10);
-		// renderer.clearTextLabels();
-		renderer.setYTitle("(x1000) VND");
-		renderer.setApplyBackgroundColor(true);
-		renderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
-		renderer.setDisplayChartValues(false);
-		renderer.setOrientation(Orientation.VERTICAL);
-		renderer.setXLabelsAlign(Align.LEFT);
-		renderer.setYLabelsAlign(Align.LEFT);
-		// renderer.setChartTitleTextSize(25);
-		renderer.setLabelsTextSize(15);
-		renderer.setLegendTextSize(20);
-		// renderer.setPanEnabled(false);
-		// renderer.setZoomEnabled(false);
-		// renderer.setZoomRate(1.1f);
-		renderer.setBarSpacing(0f);
-		// renderer.setShowLabels(false);
-		renderer.setPanEnabled(false, false);
-		// renderer.setLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
-		renderer.setXLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
-		// renderer.setYLabelsColor(Color.argb(0x00, 0x01, 0x01, 0x01));
-		// renderer.clearXTextLabels();
-		// renderer.clearYTextLabels();
-		// return ChartFactory.getBarChartIntent(context,
-		// buildBarDataset(titles, values), renderer, Type.STACKED);
-		return ChartFactory.getBarChartView(context,
-				buildBarDataset(titles, values), renderer, Type.STACKED);
 	}
 
 	public View getPieIntent(Context context, boolean checkMonthly, Date sDate,

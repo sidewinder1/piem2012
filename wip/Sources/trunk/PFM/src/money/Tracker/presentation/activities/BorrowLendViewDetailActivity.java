@@ -68,7 +68,7 @@ public class BorrowLendViewDetailActivity extends BaseActivity {
 		if (!values.getPersonPhone().equals(""))
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_phone), values.getPersonPhone()), params);
 
-		if (!values.getPersonPhone().equals(""))
+		if (!values.getPersonAddress().equals(""))
 			listViewDetail.addView(new BorrowLendViewDetailViewItem(this, getResources().getString(R.string.borrow_lend_address), values.getPersonAddress()), params);
 
 		if (values.getInterestRate() != 0) {

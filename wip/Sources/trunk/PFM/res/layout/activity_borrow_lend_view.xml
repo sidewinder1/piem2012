@@ -22,7 +22,8 @@
         android:layout_marginLeft="20sp"
         android:layout_marginRight="10sp"
         android:layout_weight="6"
-        android:focusable="false" >
+        android:focusable="false"
+        android:cacheColorHint="@android:color/transparent" >
     </ListView>
 
     <LinearLayout

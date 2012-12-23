@@ -52,11 +52,9 @@ public class BorrowLendInsertActivity extends BaseActivity {
 	private EditText moneyEditText;
 	private ToggleButton interestType;
 	private EditText interestRate;
-	private String interestTypeString;
 	private ArrayList<String> column;
 	private ArrayList<String> valuesChanged;
 	private long borrow_lend_id = -1;
-	private String debtType = "";
 	private boolean mIsBorrow = true;
 
 	@Override
@@ -397,7 +395,7 @@ public class BorrowLendInsertActivity extends BaseActivity {
 			if (expiredDate > startDate || (expiredDate - startDate) == 0) {
 				updateDisplayExpiredDate();
 			} else {
-				alert.show(getApplicationContext(), "Wrong input. Try again");
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_expired_date_less_than_start_date));
 				// get the current date
 				final Calendar c = Calendar.getInstance();
 				expiredDate_Year = c.get(Calendar.YEAR);
@@ -432,6 +430,10 @@ public class BorrowLendInsertActivity extends BaseActivity {
 	}
 
 	private void updateData() {
+		String interestTypeString = "";
+		String debtType = "";
+		boolean checkCondition = false;
+		
 		if (interestType.isChecked())
 			interestTypeString = "Simple";
 		else
@@ -454,164 +456,172 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		String[] valusChangedUpdate = new String[valuesChanged.size()];
 		valusChangedUpdate = valuesChanged.toArray(valusChangedUpdate);
 		
-		if (!nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals("")) {
-			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText.getText().toString().equals("")) || interestRate.getText().toString().equals("")) {
-				if (!interestRate.getText().toString().equals(""))
-				{
-					if (Integer.parseInt(interestRate.getText().toString().trim()) == 0)
-					{
-						alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
-					} else
-					{
-						SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
-						setResult(100);
-						try {
-							if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance() .getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
-								SynchronizeTask task = new SynchronizeTask();
-								task.execute();
-							}
-						} catch (Exception e) {
-							Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
-						}
-						
-						alert.show(getApplicationContext(), getResources().getString(R.string.saved));
-						
-						BorrowLendInsertActivity.this.finish();
-					}
-				} else
-				{
-					SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
-					setResult(100);
-					try {
-						if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance() .getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
-							SynchronizeTask task = new SynchronizeTask();
-							task.execute();
-						}
-					} catch (Exception e) {
-						Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
-					}
-					
-					alert.show(getApplicationContext(), getResources().getString(R.string.saved));
-					
-					BorrowLendInsertActivity.this.finish();
+		if (nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+		{
+			if(debtType.equals("Borrowing"))
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender_total_money));
+			else
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower_total_money));
+		} else if (nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals(""))
+		{
+			if(debtType.equals("Borrowing"))
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender));
+			else
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower));
+		} else if(!nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+		{
+			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_total_money));
+		} else if (!interestRate.getText().toString().equals("") && expiredDateEditText.getText().toString().equals(""))
+		{
+			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
+		} else
+		{
+			checkCondition = true;
+		}
+		
+		if (checkCondition) 
+		{
+			if (Integer.parseInt(interestRate.getText().toString().trim()) == 0) 
+			{
+				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_interest_rate_0));
+				checkCondition = false;
+			} else {
+				checkCondition = true;
+			}
+		}
+		
+		if (checkCondition)
+		{
+			if (Integer.parseInt(moneyEditText.getText().toString().trim()) == 0)
+			{
+				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
+				checkCondition = false;
+			} else {
+				checkCondition = true;
+			}
+		}
+		
+		if (checkCondition)
+		{
+			SqlHelper.instance.update("BorrowLend", columnUpdate, valusChangedUpdate, "ID = " + borrow_lend_id);
+			setResult(100);
+			try {
+				if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance() .getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
+					SynchronizeTask task = new SynchronizeTask();
+					task.execute();
 				}
-				} else {
-					alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
-				}
-		} else {
-			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_total_money));
+			} catch (Exception e) {
+				Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
+			}
+			
+			alert.show(getApplicationContext(), getResources().getString(R.string.saved));
+			
+			BorrowLendInsertActivity.this.finish();
 		}
 	}
 
 	private void insertData() {
+		String interestTypeString = "";
+		String debtType = "";
+		boolean checkCondition = false;
+		
 		if (interestType.isChecked()) {
 			interestTypeString = "Simple";
 		} else {
 			interestTypeString = "Compound";
 		}
-
-		if (!nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals("")) {
-			if ((!interestRate.getText().toString().equals("") && !expiredDateEditText.getText().toString().equals("")) || interestRate.getText().toString().equals("")) {
-				Log.d("Check interest rate", interestRate.getText().toString());
-				if(!interestRate.getText().toString().equals(""))
-				{
-					if (Integer.parseInt(interestRate.getText().toString().trim()) == 0)
-					{
-						alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
-					}else
-					{
-						if (mIsBorrow) {
-							debtType = "Borrowing";
-						} else {
-							debtType = "Lending";
-						}
-						
-						String expiredDateString = "";
-						
-						if (!expiredDateEditText.getText().toString().equals(""))
-							expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
-						
-						SqlHelper.instance.insert("BorrowLend",
-										new String[] { "Debt_type", "Money",
-												"Interest_type", "Interest_rate",
-												"Start_date", "Expired_date",
-												"Person_name", "Person_phone",
-												"Person_address" },
-										new String[] {
-												debtType,
-												moneyEditText.getText().toString(),
-												interestTypeString,
-												interestRate.getText().toString(),
-												Converter.toString(Converter.toDate(startDateEditText.getText().toString(), "dd/MM/yyyy")),
-												expiredDateString,
-												nameEditText.getText().toString(),
-												phoneEditText.getText().toString(),
-												addressEditText.getText().toString() });
-						setResult(100);
-
-						try {
-							if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance().getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
-								SynchronizeTask task = new SynchronizeTask();
-								task.execute();
-							}
-						} catch (Exception e) {
-							Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
-						}
-						
-						alert.show(getApplicationContext(), getResources().getString(R.string.saved));
-						
-						BorrowLendInsertActivity.this.finish();
-					}
-				} else
-				{
-					if (mIsBorrow) {
-						debtType = "Borrowing";
-					} else {
-						debtType = "Lending";
-					}
-					
-					String expiredDateString = "";
-					
-					if (!expiredDateEditText.getText().toString().equals(""))
-						expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
-					
-					SqlHelper.instance.insert("BorrowLend",
-									new String[] { "Debt_type", "Money",
-											"Interest_type", "Interest_rate",
-											"Start_date", "Expired_date",
-											"Person_name", "Person_phone",
-											"Person_address" },
-									new String[] {
-											debtType,
-											moneyEditText.getText().toString(),
-											interestTypeString,
-											interestRate.getText().toString(),
-											Converter.toString(Converter.toDate(startDateEditText.getText().toString(), "dd/MM/yyyy")),
-											expiredDateString,
-											nameEditText.getText().toString(),
-											phoneEditText.getText().toString(),
-											addressEditText.getText().toString() });
-					setResult(100);
-
-					try {
-						if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance().getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
-							SynchronizeTask task = new SynchronizeTask();
-							task.execute();
-						}
-					} catch (Exception e) {
-						Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
-					}
-					
-					alert.show(getApplicationContext(), getResources().getString(R.string.saved));
-					
-					BorrowLendInsertActivity.this.finish();
-				}
-							
-			} else {
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
-			}
+		
+		if (mIsBorrow) {
+			debtType = "Borrowing";
 		} else {
-			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_total_money));
+			debtType = "Lending";
+		}
+		
+		if (nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+		{
+			if(debtType.equals("Borrowing"))
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender_total_money));
+			else
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower_total_money));
+		} else if (nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals(""))
+		{
+			if(debtType.equals("Borrowing"))
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender));
+			else
+				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower));
+		} else if(!nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+		{
+			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_total_money));
+		} else if (!interestRate.getText().toString().equals("") && expiredDateEditText.getText().toString().equals(""))
+		{
+			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
+		} else
+		{
+			checkCondition = true;
+		}
+		
+		if (checkCondition) 
+		{
+			if(!interestRate.getText().toString().trim().equals(""))
+			{
+				if (Integer.parseInt(interestRate.getText().toString().trim()) == 0) 
+				{
+					alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_interest_rate_0));
+					checkCondition = false;
+				} else {
+					checkCondition = true;
+				}
+			}
+		}
+		
+		if (checkCondition)
+		{
+			if (Integer.parseInt(moneyEditText.getText().toString().trim()) == 0)
+			{
+				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
+				checkCondition = false;
+			} else {
+				checkCondition = true;
+			}
+		}
+		
+		if (checkCondition)
+		{
+			String expiredDateString = "";
+			
+			if (!expiredDateEditText.getText().toString().equals(""))
+				expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
+			
+			SqlHelper.instance.insert("BorrowLend",
+							new String[] { "Debt_type", "Money",
+									"Interest_type", "Interest_rate",
+									"Start_date", "Expired_date",
+									"Person_name", "Person_phone",
+									"Person_address" },
+							new String[] {
+									debtType,
+									moneyEditText.getText().toString(),
+									interestTypeString,
+									interestRate.getText().toString(),
+									Converter.toString(Converter.toDate(startDateEditText.getText().toString(), "dd/MM/yyyy")),
+									expiredDateString,
+									nameEditText.getText().toString(),
+									phoneEditText.getText().toString(),
+									addressEditText.getText().toString() });
+			setResult(100);
+
+			try {
+				if (!SynchronizeTask.isSynchronizing() && Boolean.parseBoolean(XmlParser.getInstance().getConfigContent("autoSync")) && !"pfm.com".equals(AccountProvider.getInstance().getCurrentAccount().type)) {
+					SynchronizeTask task = new SynchronizeTask();
+					task.execute();
+				}
+			} catch (Exception e) {
+				Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
+			}
+			
+			alert.show(getApplicationContext(), getResources().getString(R.string.saved));
+			
+			BorrowLendInsertActivity.this.finish();
 		}
 	}
 }
