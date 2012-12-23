@@ -577,7 +577,7 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		
 		if (checkCondition)
 		{
-			if (Integer.parseInt(moneyEditText.getText().toString().trim()) == 0)
+			if (Long.parseLong(moneyEditText.getText().toString().trim()) == 0)
 			{
 				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
 				checkCondition = false;
