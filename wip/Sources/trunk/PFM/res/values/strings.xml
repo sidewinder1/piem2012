@@ -20,6 +20,7 @@
     <string name="error_load">Lỗi khi tải dữ liệu</string>
     <string name="title_activity_home">Money Tracker</string>
     <string name="time_token">:</string>
+    <string name="limited_category_message">Chương trình chỉ hỗ trợ 25 mục tự tạo</string>
     <string name="dummy_data">Dummy data</string>
     <string name="no_data">Không có dữ liệu</string>
     <string name="file_not_exist">Tệp tin không tồn tại</string>
@@ -224,23 +225,24 @@
         <item>vn</item>
     </string-array>
     <string-array name="category_name">
+        <item>Ăn uống</item>
+        <item>Điện</item>
+        <item>Nước</item>
         <item>Sinh nhật</item>
-        <item>Thức ăn</item>
         <item>Giải trí</item>
-        <item>Mua sắm</item>
+        <item>Nhà</item>
         <item>Khác…</item>
     </string-array>
     <string-array name="category_color">
         <item>#99FF0000</item>
         <item>#99F4A460</item>
-        <item>#99B8860B</item>
+        <item>#99FF5159</item>
+        <item>#9974DCAA</item>
+        <item>#99A85000</item>
         <item>#99F08080</item>
         <item>#99C71585</item>
     </string-array>
     <string-array name="color_list">
-        <item>#99FF5159</item>
-        <item>#9974DCAA</item>
-        <item>#99A85000</item>
         <item>#990055A8</item>
         <item>#99FF5187</item>
         <item>#99A80002</item>

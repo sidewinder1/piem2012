@@ -160,7 +160,6 @@ public class HomeActivity extends TabActivity {
 				button.setEnabled(false);
 				inputDialog.mIsExcel
 						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-							@Override
 							public void onCheckedChanged(
 									CompoundButton buttonView, boolean isChecked) {
 								View button = dialog
@@ -180,7 +179,6 @@ public class HomeActivity extends TabActivity {
 
 				inputDialog.mIsImport
 						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-							@Override
 							public void onCheckedChanged(
 									CompoundButton buttonView, boolean isChecked) {
 								View button = dialog
@@ -200,17 +198,14 @@ public class HomeActivity extends TabActivity {
 
 				inputDialog.mNameValue
 						.addTextChangedListener(new TextWatcher() {
-							@Override
 							public void onTextChanged(CharSequence s,
 									int start, int before, int count) {
 							}
 
-							@Override
 							public void beforeTextChanged(CharSequence s,
 									int start, int count, int after) {
 							}
 
-							@Override
 							public void afterTextChanged(Editable s) {
 								View button = dialog
 										.findViewById(R.id.app_dialog_doneBtn);
@@ -227,7 +222,6 @@ public class HomeActivity extends TabActivity {
 						});
 
 				ViewHelper.attachAction(dialog, new View.OnClickListener() {
-					@Override
 					public void onClick(View arg0) {
 						if (inputDialog.mIsExcel.isChecked()) {
 							ExcelHelper.getInstance()
@@ -247,7 +241,6 @@ public class HomeActivity extends TabActivity {
 						dialog.dismiss();
 					}
 				}, new View.OnClickListener() {
-					@Override
 					public void onClick(View arg0) {
 						dialog.dismiss();
 					}

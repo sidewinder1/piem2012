@@ -39,7 +39,7 @@ public class EntryEditCategoryView extends LinearLayout {
 	public EditText mCategoryEdit;
 	private Date mCurrentDate = DateTimeHelper.now(false);
 	private int mType = 1;
-	
+
 	public EntryEditCategoryView(Context context) {
 		super(context);
 	}
@@ -106,32 +106,46 @@ public class EntryEditCategoryView extends LinearLayout {
 						if (item != null
 								&& getResources().getString(R.string.others)
 										.equals(item.getName())) {
-							((RelativeLayout) parent.getParent())
-									.setVisibility(View.GONE);
-							View text = (View) parent.getTag();
-							text.setVisibility(View.VISIBLE);
-							text.requestFocus();
+							if (CategoryRepository.getInstance().categories
+									.size() <= 25) {
+								((RelativeLayout) parent.getParent())
+										.setVisibility(View.GONE);
+								View text = (View) parent.getTag();
+								text.setVisibility(View.VISIBLE);
+								text.requestFocus();
 
-							// Change color for new category.
-							Cursor color = SqlHelper.instance.select(
-									"UserColor", "User_Color", null);
-							try {
-								if (color != null && color.moveToFirst()) {
-									text.setBackgroundColor(Color
-											.parseColor(color.getString(0)));
-									text.setTag(color.getString(0));
-									SqlHelper.instance.delete("UserColor",
-											new StringBuilder("User_Color = '")
-													.append(color.getString(0))
-													.append("'").toString());
+								// Change color for new category.
+								Cursor color = SqlHelper.instance.select(
+										"UserColor", "User_Color", null);
+								try {
+									if (color != null && color.moveToFirst()) {
+										text.setBackgroundColor(Color
+												.parseColor(color.getString(0)));
+										text.setTag(color.getString(0));
+										SqlHelper.instance
+												.delete("UserColor",
+														new StringBuilder(
+																"User_Color = '")
+																.append(color
+																		.getString(0))
+																.append("'")
+																.toString());
+									}
+								} catch (Exception e) {
+									Logger.Log(e.getMessage(),
+											"EditEntryCategoryView");
+								} finally {
+									color.close();
 								}
-							} catch (Exception e) {
-								Logger.Log(e.getMessage(),
-										"EditEntryCategoryView");
-							} finally {
-								color.close();
+							} else {
+								Alert.getInstance()
+										.show(getContext(),
+												getResources()
+														.getString(
+																R.string.limited_category_message));
 							}
 						}
+
 					}
 
 					public void onNothingSelected(AdapterView<?> arg0) {
@@ -191,10 +205,10 @@ public class EntryEditCategoryView extends LinearLayout {
 
 			public void afterTextChanged(Editable arg0) {
 				try {
-					if (mType == 0){
+					if (mType == 0) {
 						return;
 					}
-					
+
 					Cursor checkOverBudget = SqlHelper.instance.select(
 							"AppInfo",
 							"ScheduleWarn",
@@ -207,7 +221,8 @@ public class EntryEditCategoryView extends LinearLayout {
 							&& checkOverBudget.moveToFirst() && budget != 0) {
 						double percent = checkOverBudget.getLong(0) / 100d;
 
-						if (budget * percent <= PfmApplication.getTotalEntry(mCurrentDate)
+						if (budget * percent <= PfmApplication
+								.getTotalEntry(mCurrentDate)
 								+ Converter.toLong(arg0.toString())) {
 							Alert.getInstance().show(
 									getContext(),
@@ -309,14 +324,14 @@ public class EntryEditCategoryView extends LinearLayout {
 		return mCategoryList.getChildCount() == 0;
 	}
 
-	public void updateDate(Date date){
+	public void updateDate(Date date) {
 		mCurrentDate = date;
 	}
-	
-	public void updateType(int type){
+
+	public void updateType(int type) {
 		mType = type;
 	}
-	
+
 	public boolean removeEmptyCatagory() {
 		boolean check = false;
 
@@ -397,14 +412,11 @@ public class EntryEditCategoryView extends LinearLayout {
 		// Save custom category
 		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
 			// Check duplicate.
-			Cursor oldCategory = SqlHelper.instance.select(
-					"Category",
-					"Id",
-					new StringBuilder("Name = '")
-							.append(mCategoryEdit.getText().toString())
-							.append("'").toString());
-			if (oldCategory != null && oldCategory.moveToFirst()) {
-				category_id_str = oldCategory.getString(0);
+			if (CategoryRepository.getInstance().isExisted(
+					mCategoryEdit.getText().toString())) {
+				category_id_str = String.valueOf(CategoryRepository
+						.getInstance()
+						.getId(mCategoryEdit.getText().toString()));
 			} else {
 				category_id_str = String.valueOf(SqlHelper.instance.insert(
 						"Category", new String[] { "Name", "User_Color" },

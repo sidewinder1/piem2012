@@ -134,7 +134,7 @@ public class ScheduleEditActivity extends BaseActivity {
 				mDay = schedule.start_date.getDate();
 				mYear = schedule.start_date.getYear() + 1900;
 				setChecked(schedule.type == 0);
-				
+
 				mStartDateEdit.setText(Converter.toString(schedule.start_date,
 						"dd/MM/yyyy"));
 				mEndDateEdit.setText(Converter.toString(schedule.end_date,
@@ -179,8 +179,9 @@ public class ScheduleEditActivity extends BaseActivity {
 			Alert.getInstance().show(getBaseContext(),
 					getResources().getString(R.string.schedule_exist_message));
 			mIsWeek = !isWeek;
-			mPeriodic.setBackgroundResource(mIsWeek ? R.drawable.calendar_week_icon
-					: R.drawable.calendar_month_icon);
+			mPeriodic
+					.setBackgroundResource(mIsWeek ? R.drawable.calendar_week_icon
+							: R.drawable.calendar_month_icon);
 			mEndDateEdit.setText(lastDate);
 		}
 	}
@@ -233,23 +234,32 @@ public class ScheduleEditActivity extends BaseActivity {
 						if (item != null
 								&& getResources().getString(R.string.others)
 										.equals(item.getName())) {
-							((RelativeLayout) parent.getParent())
-									.setVisibility(View.GONE);
-							View text = (View) parent.getTag();
-							text.setVisibility(View.VISIBLE);
-							text.requestFocus();
+							if (CategoryRepository.getInstance().categories
+									.size() <= 25) {
+								((RelativeLayout) parent.getParent())
+										.setVisibility(View.GONE);
+								View text = (View) parent.getTag();
+								text.setVisibility(View.VISIBLE);
+								text.requestFocus();
 
-							// Change color for new category.
-							Cursor color = SqlHelper.instance.select(
-									"UserColor", "User_Color", null);
-							if (color != null && color.moveToFirst()) {
-								text.setBackgroundColor(Color.parseColor(color
-										.getString(0)));
-								text.setTag(color.getString(0));
-								SqlHelper.instance.delete("UserColor",
-										new StringBuilder("User_Color = '")
-												.append(color.getString(0))
-												.append("'").toString());
+								// Change color for new category.
+								Cursor color = SqlHelper.instance.select(
+										"UserColor", "User_Color", null);
+								if (color != null && color.moveToFirst()) {
+									text.setBackgroundColor(Color
+											.parseColor(color.getString(0)));
+									text.setTag(color.getString(0));
+									SqlHelper.instance.delete("UserColor",
+											new StringBuilder("User_Color = '")
+													.append(color.getString(0))
+													.append("'").toString());
+								}
+							} else {
+								Alert.getInstance()
+										.show(parent.getContext(),
+												getResources()
+														.getString(
+																R.string.limited_category_message));
 							}
 						}
 					}
@@ -606,12 +616,11 @@ public class ScheduleEditActivity extends BaseActivity {
 						"Category",
 						"Id",
 						new StringBuilder("Name = '")
-								.append(detailItem.mCategoryEdit.getText().toString())
-								.append("'").toString());
+								.append(detailItem.mCategoryEdit.getText()
+										.toString()).append("'").toString());
 				if (oldCategory != null && oldCategory.moveToFirst()) {
 					category_id = oldCategory.getLong(0);
-				}
-				else {
+				} else {
 					category_id = SqlHelper.instance.insert(
 							"Category",
 							new String[] { "Name", "User_Color" },
