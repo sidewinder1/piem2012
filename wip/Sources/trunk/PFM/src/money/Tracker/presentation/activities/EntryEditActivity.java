@@ -289,6 +289,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 											+ ")");
 				}
 			}
+			
 			CategoryRepository.getInstance().updateData();
 			setResult(100);
 			try {
@@ -368,7 +369,6 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		
 		long id = mPassedEntryId;
 
-		Logger.Log("Entry Id: " + mPassedEntryId, "EntryEditActivity");
 		if (mPassedEntryId == -1) {
 			id = SqlHelper.instance.insert(table,
 					new String[] { "Date", "Type" }, new String[] { date,
@@ -389,7 +389,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 
 		Alert.getInstance()
-				.show(this, getResources().getString(R.string.saved));
+				.show(getBaseContext(), getResources().getString(R.string.saved));
 		return true;
 	}
 

@@ -2,6 +2,8 @@ package money.Tracker.common.utilities;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.R;
@@ -30,7 +32,7 @@ public class ExcelHelper {
 	private String mDefaultPath = Environment.getExternalStorageDirectory()
 			.getAbsolutePath() + File.separator + "PFMData" + File.separator;
 
-	private String[][] mTableInfos = {
+	private String[][] mImportTableInfos = {
 			{
 					"Category",
 					"Id, CreatedDate, ModifiedDate, Name, IsDeleted,User_Color",
@@ -54,8 +56,59 @@ public class ExcelHelper {
 					"ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address",
 					"LONG, DATE, DATE, INT, TEXT, LONG, TEXT, INT, DATE, DATE, TEXT, TEXT, TEXT" } };
 
-	public ExcelHelper() {
+	private String[][] mViewTableInfos = {
+			{
+					PfmApplication.getAppResources().getString(
+							R.string.warning_schedule_title),
+					PfmApplication.getAppResources().getString(
+							R.string.export_schedule_table_info),
+					"LONG, TEXT, DATE, DATE, LONG, TEXT",
+					"SELECT Schedule.Budget, CASE WHEN Schedule.Type = 1 THEN '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.month)
+							+ "' ELSE '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.week)
+							+ "' END, Schedule.Start_date, Schedule.End_date, ScheduleDetail.Budget, Category.Name "
+							+ "FROM Schedule 	INNER JOIN ScheduleDetail ON Schedule.Id = ScheduleDetail.Schedule_Id "
+							+ "				INNER JOIN Category ON ScheduleDetail.Category_Id = Category.Id  WHERE 1=1" },
+			{
+					PfmApplication.getAppResources().getString(
+							R.string.entry_management_title),
+					PfmApplication.getAppResources().getString(
+							R.string.export_entry_table_info),
+					"DATE, TEXT, TEXT, LONG, TEXT",
+					"SELECT Entry.Date, CASE WHEN Entry.Type = 1 THEN '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.entry_expense_title)
+							+ "' ELSE '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.entry_income_title)
+							+ "' END, EntryDetail.Name, EntryDetail.Money, Category.Name "
+							+ "FROM Entry INNER JOIN EntryDetail ON Entry.Id = EntryDetail.Entry_Id "
+							+ "			INNER JOIN Category ON EntryDetail.Category_Id = Category.Id WHERE 1=1" },
+			{
+					PfmApplication.getAppResources().getString(
+							R.string.warning_borrow_title),
+					PfmApplication.getAppResources().getString(
+							R.string.export_borrow_lend_table_info),
+					"TEXT, TEXT, TEXT, TEXT, LONG, TEXT, INT, DATE, DATE",
+					"SELECT Person_name, Person_phone, Person_address, CASE WHEN Debt_type = 'Borrowing' THEN '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.borrowing_title)
+							+ "' ELSE '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.lending_tilte)
+							+ "' END, Money, CASE WHEN Interest_type = 'Simple' THEN '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.simple_interest)
+							+ "' ELSE '"
+							+ PfmApplication.getAppResources().getString(
+									R.string.compound_interest)
+							+ "' END, Interest_rate, Start_date, Expired_date "
+							+ "FROM BorrowLend WHERE 1=1" } };
 
+	public ExcelHelper() {
 	}
 
 	public static ExcelHelper getInstance() {
@@ -78,7 +131,7 @@ public class ExcelHelper {
 		}
 
 		workbook.close();
-	
+
 		Alert.getInstance().show(PfmApplication.getAppContext(),
 				PfmApplication.getAppResources().getString(R.string.success));
 		return true;
@@ -126,8 +179,14 @@ public class ExcelHelper {
 		return rowData;
 	}
 
-	// / Get header of table.
-	// / Return: columnName and columnInfo (index of Id and ModifiedDate column)
+	/**
+	 * Get header of table.
+	 * 
+	 * @param sheet
+	 *            Sheet of file.
+	 * @return A string array contains columnName and columnInfo (index of Id
+	 *         and ModifiedDate column)
+	 */
 	private String[] getColumnInfo(Sheet sheet) {
 		Cell cell = sheet.getCell(0, 0);
 		if ("".equals(cell.getContents())) {
@@ -144,11 +203,11 @@ public class ExcelHelper {
 		for (int col = 0; col < columns.length; col++) {
 			columnName += new StringBuilder(col == 0 ? "" : ",").append(
 					columns[col].getContents()).toString();
-			if ("ID".equals(columns[col].getContents().toUpperCase())) {
+			if ("ID".equals(columns[col].getContents().toUpperCase(Locale.US))) {
 				columnInfo = new StringBuilder().append(col).append(columnInfo)
 						.toString();
 			} else if ("MODIFIEDDATE".equals(columns[col].getContents()
-					.toUpperCase())) {
+					.toUpperCase(Locale.US))) {
 				columnInfo = new StringBuilder(columnInfo).append(",")
 						.append(col).toString();
 			}
@@ -157,14 +216,15 @@ public class ExcelHelper {
 		return new String[] { columnName, columnInfo };
 	}
 
-	public boolean exportData(String fileName) {
+	public boolean exportFile(String fileName, boolean forImport) {
 		// Check file exists.
+		fileName = fileName.trim() + (forImport ? ".pif" : ".xls");
 		if (new File(mDefaultPath + fileName).exists()) {
 			fileName = new StringBuilder(fileName.split("[.]")[0])
 					.append("_")
 					.append(Converter.toString(DateTimeHelper.now(false),
-							"yyyyMMddHHmmss")).append(".")
-					.append(fileName.split("[.]")[1]).toString();
+							"yyyyMMddkkmmss")).append(".")
+					.append(forImport ? "pif" : "xls").toString();
 		}
 
 		WritableWorkbook workbook = null;
@@ -175,8 +235,16 @@ public class ExcelHelper {
 			Logger.Log(e.getMessage(), "ExcelHelper");
 		}
 
-		for (int sheetIndex = 0; sheetIndex < mTableInfos.length; sheetIndex++) {
-			createSheetData(workbook, mTableInfos[sheetIndex], sheetIndex);
+		if (forImport) {
+			for (int sheetIndex = 0; sheetIndex < mImportTableInfos.length; sheetIndex++) {
+				createSheetForImport(workbook, mImportTableInfos[sheetIndex],
+						sheetIndex);
+			}
+		} else {
+			for (int sheetIndex = 0; sheetIndex < mViewTableInfos.length; sheetIndex++) {
+				createSheetForView(workbook, mViewTableInfos[sheetIndex],
+						sheetIndex);
+			}
 		}
 
 		try {
@@ -195,8 +263,17 @@ public class ExcelHelper {
 		return true;
 	}
 
-	private void createHeader(WritableSheet sheet, String[] headerInfo,
-			int row, String[] headerType) {
+	/**
+	 * Create header of sheet that displays name of columns.
+	 * 
+	 * @param sheet
+	 *            Sheet of .XLS or .PIF file.
+	 * @param headerInfo
+	 *            A string array contains name of columns.
+	 * @param row
+	 *            Index of row.
+	 */
+	private void createHeader(WritableSheet sheet, String[] headerInfo, int row) {
 		WritableFont arial10font = new WritableFont(WritableFont.ARIAL, 13);
 		WritableCellFormat arial10format = new WritableCellFormat(arial10font);
 		try {
@@ -219,17 +296,73 @@ public class ExcelHelper {
 		}
 	}
 
-	private void createSheetData(WritableWorkbook workbook, String[] tableInfo,
-			int sheetIndex) {
+	/**
+	 * Export data to file with an array of string that contains information of
+	 * columns for importing of application.
+	 * 
+	 * @param workbook
+	 *            The workbook is used to write .XLS or .PIF file.
+	 * @param tableInfo
+	 *            A string array contains information of table. First element of
+	 *            array is table name. Second element is name of columns. The
+	 *            third element is type of columns.
+	 * @param sheetIndex
+	 *            The index of sheet.
+	 */
+	private void createSheetForImport(WritableWorkbook workbook,
+			String[] tableInfo, int sheetIndex) {
 		WritableSheet sheet = workbook.createSheet(tableInfo[0], sheetIndex);
 
 		Cursor selector = SqlHelper.instance.select(tableInfo[0], tableInfo[1],
 				null, true);
 
+		exportData(tableInfo, sheet, selector);
+
+		selector.close();
+	}
+
+	/**
+	 * Export data to file with an array of string that contains information of
+	 * columns for viewing of user.
+	 * 
+	 * @param workbook
+	 *            The workbook is used to write .XLS or .PIF file.
+	 * @param tableInfo
+	 *            A string array contains information of table. First element of
+	 *            array is table name. Second element is name of columns. The
+	 *            third element is type of columns. The last element is SQL
+	 *            statement.
+	 * @param sheetIndex
+	 *            The index of sheet.
+	 */
+	private void createSheetForView(WritableWorkbook workbook,
+			String[] tableInfo, int sheetIndex) {
+		WritableSheet sheet = workbook.createSheet(tableInfo[0], sheetIndex);
+
+		Cursor selector = SqlHelper.instance.query(tableInfo[3]);
+
+		exportData(tableInfo, sheet, selector);
+
+		selector.close();
+	}
+
+	/**
+	 * Export data to file with a cursor.
+	 * 
+	 * @param tableInfo
+	 *            A string array contains information of table. First element of
+	 *            array is table name. Second element is name of columns. The
+	 *            last element is type of columns.
+	 * @param sheet
+	 *            The sheet of .PIF or .XLS file.
+	 * @param selector
+	 *            The Cursor contains data that got from database.
+	 */
+	private void exportData(String[] tableInfo, WritableSheet sheet,
+			Cursor selector) {
 		// Create table header.
 		int row = 0;
-		createHeader(sheet, tableInfo[1].split(","), row,
-				tableInfo[2].split(","));
+		createHeader(sheet, tableInfo[1].split(","), row);
 
 		if (selector != null && selector.moveToFirst()) {
 			String[] columnInfos = tableInfo[2].split(",");
@@ -254,18 +387,18 @@ public class ExcelHelper {
 				for (int col = 0; col < selector.getColumnCount(); col++) {
 					try {
 						if ("LONG INT".contains(columnInfos[col].trim()
-								.toUpperCase())) {
+								.toUpperCase(Locale.US))) {
 							jxl.write.Number number = new jxl.write.Number(col,
 									row, selector.getLong(col), numberFormat);
 
 							sheet.addCell(number);
 						} else if ("TEXT".equals(columnInfos[col].trim()
-								.toUpperCase())) {
+								.toUpperCase(Locale.US))) {
 							Label label = new Label(col, row,
 									selector.getString(col), textFormat);
 							sheet.addCell(label);
 						} else if ("DATE".equals(columnInfos[col].trim()
-								.toUpperCase())) {
+								.toUpperCase(Locale.US))) {
 							DateTime dateCell = new DateTime(col, row,
 									Converter.toDate(selector.getString(col)),
 									dateFormat);

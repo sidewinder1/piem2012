@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import money.Tracker.common.sql.SqlHelper;
 import money.Tracker.common.utilities.Alert;
 import money.Tracker.presentation.PfmApplication;
-import money.Tracker.presentation.adapters.ScheduleViewAdapter;
 import money.Tracker.presentation.customviews.CategoryLegendItemView;
 import money.Tracker.presentation.customviews.EntryDayView;
 import money.Tracker.presentation.customviews.EntryMonthView;
+import money.Tracker.presentation.customviews.ScheduleViewItem;
 import money.Tracker.presentation.model.Entry;
 import money.Tracker.presentation.model.IModelBase;
 import money.Tracker.presentation.model.Schedule;
@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -38,7 +37,6 @@ public class TabViewActivity extends Activity {
 
 	TextView mDisplayText, mNote;
 	LinearLayout mChartLegend;
-	ListView mList;
 	LinearLayout mEntryList;
 	ArrayList<IModelBase> mValues;
 	ScrollView mEntryScroll;
@@ -57,31 +55,8 @@ public class TabViewActivity extends Activity {
 		mEntryScroll = (ScrollView) findViewById(R.id.entry_view_scroll);
 		mNote = (TextView) findViewById(R.id.tab_content_view_note);
 		mChartLegend = (LinearLayout) findViewById(R.id.chart_legend);
-		mList = (ListView) findViewById(R.id.tab_content_view_list);
-		mList.setOnItemClickListener(onListClick);
 
-		registerForContextMenu(mList);
 	}
-
-	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
-		public void onItemClick(AdapterView<?> listView, View view,
-				int position, long id) {
-			long data_id = -1;
-			if (mIsEntry) {
-				Entry entry = (Entry) listView.getAdapter().getItem(position);
-				data_id = entry.getId();
-			} else {
-				Schedule schedule = (Schedule) listView.getAdapter().getItem(
-						position);
-				data_id = schedule.id;
-			}
-
-			Intent scheduleDetail = new Intent(TabViewActivity.this,
-					ScheduleDetailViewActivity.class);
-			scheduleDetail.putExtra("schedule_id", data_id);
-			startActivity(scheduleDetail);
-		}
-	};
 
 	@Override
 	protected void onResume() {
@@ -91,6 +66,7 @@ public class TabViewActivity extends Activity {
 	}
 
 	EntryDayView selectedEntryItem = null;
+	ScheduleViewItem selectedScheduleItem = null;
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -100,9 +76,14 @@ public class TabViewActivity extends Activity {
 		} else {
 			selectedEntryItem = null;
 		}
+		
+		if (v.getClass() == ScheduleViewItem.class) {
+			selectedScheduleItem = (ScheduleViewItem) v;
+		} else {
+			selectedScheduleItem = null;
+		}
 
-		if (v.getId() == R.id.tab_content_view_list
-				|| selectedEntryItem != null) {
+		if (selectedScheduleItem != null || selectedEntryItem != null) {
 			menu.setHeaderTitle(getResources().getString(
 					R.string.schedule_menu_title));
 			String[] menuItems = getResources().getStringArray(
@@ -123,7 +104,11 @@ public class TabViewActivity extends Activity {
 
 		if (selectedEntryItem != null) {
 			id = selectedEntryItem.id;
-		} else {
+		}
+		else if(selectedScheduleItem != null){
+			id = selectedScheduleItem.mId;
+		}
+		else {
 			if (mIsEntry) {
 				id = ((Entry) mValues.get(info.position)).getId();
 			} else {
@@ -171,7 +156,7 @@ public class TabViewActivity extends Activity {
 		}
 
 		mValues = mIsEntry ? EntryRepository.getInstance().getData(
-				whereCondition ) : ScheduleRepository.getInstance().getData(
+				whereCondition) : ScheduleRepository.getInstance().getData(
 				whereCondition);
 
 		if (mValues.size() == 0) {
@@ -189,19 +174,17 @@ public class TabViewActivity extends Activity {
 				mEntryList.addView(new EntryMonthView(this, key));
 			}
 		} else {
-			ScheduleViewAdapter scheduleAdapter = new ScheduleViewAdapter(this,
-					R.layout.schedule_edit_item, mValues);
-
-			scheduleAdapter.notifyDataSetChanged();
-			mList.setAdapter(scheduleAdapter);
+			mEntryList.removeAllViews();
+			for (IModelBase schedule : mValues) {
+				mEntryList.addView(new ScheduleViewItem(this, schedule));
+			}
 		}
 
 		bindChartLegend();
 	}
 
 	private void hasData(boolean hasData) {
-		mList.setVisibility(hasData && !mIsEntry ? View.VISIBLE : View.GONE);
-		mEntryScroll.setVisibility(hasData && mIsEntry ? View.VISIBLE
+		mEntryScroll.setVisibility(hasData ? View.VISIBLE
 				: View.GONE);
 		mNote.setVisibility(hasData ? View.VISIBLE : View.GONE);
 		mDisplayText.setVisibility(!hasData ? View.VISIBLE : View.GONE);
@@ -243,8 +226,7 @@ public class TabViewActivity extends Activity {
 
 				index++;
 			} while (category.moveToNext());
-		}
-		else{
+		} else {
 			mNote.setVisibility(View.GONE);
 			mChartLegend.setVisibility(View.GONE);
 		}

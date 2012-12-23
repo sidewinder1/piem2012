@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -11,10 +13,9 @@
         android:baselineAligned="false" >
 
         <ImageView
+            android:id="@+id/entry_list_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/entry_list_item"
             android:layout_gravity="bottom"
             android:contentDescription="@string/image_icon_description"
             android:src="@drawable/combobox_icon" />
@@ -23,7 +24,6 @@
             android:id="@+id/entry_view_month_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_weight="2"
             android:gravity="bottom|left"
             android:text="@string/dummy_data"
@@ -34,9 +34,8 @@
             android:id="@+id/entry_view_month_item_cost"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="2"
             android:layout_gravity="bottom"
+            android:layout_weight="2"
             android:gravity="right|bottom"
             android:text="@string/dummy_data"
             android:textColor="@color/white_text_color"
@@ -47,17 +46,14 @@
         android:id="@+id/entry_view_month_stacked_bar_chart"
         android:layout_width="fill_parent"
         android:layout_height="12sp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:background="#7991" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="20dp"
         android:background="@color/brown_line" />
 
     <LinearLayout
