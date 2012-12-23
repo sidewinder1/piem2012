@@ -44,8 +44,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * @author Kaminari.hp
- * Control flow when user edit a record of expenses and incomes function.
+ * @author Kaminari.hp Control flow when user edit a record of expenses and
+ *         incomes function.
  */
 public class EntryEditActivity extends NfcDetectorActivity {
 	private static final int DATE_DIALOG_ID = 0;
@@ -64,8 +64,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private final LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-	/* (non-Javadoc)
-	 * @see money.Tracker.presentation.activities.NfcDetectorActivity#onCreate(android.os.Bundle)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * money.Tracker.presentation.activities.NfcDetectorActivity#onCreate(android
+	 * .os.Bundle)
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +100,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 		// New Mode
 		if (mPassedEntryId == -1) {
-			updateDisplay();
+			updateDateDisplay();
 
 			if (mEntryList.getChildCount() == 0) {
 				mEntryList.addView(new EntryEditCategoryView(this, null),
@@ -104,12 +108,11 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 		} else { // Edit mode
 			ArrayList<IModelBase> arraylist = EntryRepository.getInstance()
-			.getData("Id = " + mPassedEntryId);
-			if (arraylist == null || arraylist.size() == 0)
-			{
+					.getData("Id = " + mPassedEntryId);
+			if (arraylist == null || arraylist.size() == 0) {
 				return;
 			}
-			
+
 			Entry entry = (Entry) arraylist.get(0);
 			if (entry != null) {
 				mMonth = entry.getDate().getMonth();
@@ -136,14 +139,21 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 	/**
 	 * Set value of record is income or not.
+	 * 
 	 * @param isIncome
-	 * True: if this record is income, else is expense.
+	 *            True: if this record is income, else is expense.
 	 */
 	private void setChecked(boolean isIncome) {
 		mIsIncome = isIncome;
+
 		mTypeCheck.setBackgroundResource(isIncome ? R.drawable.income_icon
 				: R.drawable.expense_icon);
 		updateTitle();
+		
+		for (int index = 0; index < mEntryList.getChildCount(); index++) {
+			((EntryEditCategoryView) mEntryList.getChildAt(index))
+					.updateType(isIncome ? 0 : 1);
+		}
 	}
 
 	private void getQRCode() {
@@ -255,8 +265,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		getQRCode();
 	}
 
-	/*
-	 * The method will handle event when user clicks on NFC button.
+	/**
+	 * The method will handle event when user clicks on toggle button.
+	 * @param view
+	 * The toggle button.
 	 */
 	public void toggleTypeClicked(View view) {
 		setChecked(!mIsIncome);
@@ -289,7 +301,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 											+ ")");
 				}
 			}
-			
+
 			CategoryRepository.getInstance().updateData();
 			setResult(100);
 			try {
@@ -360,13 +372,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 				mPassedEntryId = oldEntry.getLong(0);
 			}
-			
+
 			oldEntry.close();
 		} catch (Exception e) {
 			oldEntry.close();
 			Logger.Log(e.getMessage(), "EntryEditActivity");
 		}
-		
+
 		long id = mPassedEntryId;
 
 		if (mPassedEntryId == -1) {
@@ -388,8 +400,8 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 		}
 
-		Alert.getInstance()
-				.show(getBaseContext(), getResources().getString(R.string.saved));
+		Alert.getInstance().show(getBaseContext(),
+				getResources().getString(R.string.saved));
 		return true;
 	}
 
@@ -399,8 +411,14 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	}
 
 	// updates the date in the TextView
-	private void updateDisplay() {
+	private void updateDateDisplay() {
 		Date startDate = DateTimeHelper.getDate(mYear, mMonth, mDay);
+
+		for (int index = 0; index < mEntryList.getChildCount(); index++) {
+			((EntryEditCategoryView) mEntryList.getChildAt(index))
+					.updateDate(startDate);
+		}
+		
 		mDateEdit.setText(Converter.toString(startDate, "dd/MM/yyyy"));
 		updateTitle();
 	}
@@ -413,7 +431,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			mYear = year;
 			mMonth = monthOfYear;
 			mDay = dayOfMonth;
-			updateDisplay();
+			updateDateDisplay();
 		}
 	};
 
@@ -442,20 +460,21 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		inflater.inflate(R.menu.home_activity, menu);
 		return true;
 	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		// Handle item selection
-//		switch (item.getItemId()) {
-//		case R.id.entry_edit_get_QR_Code:
-//			getQRCode();
-//			return true;
-//		case R.id.entry_edit_get_NFC:
-//			return true;
-//		default:
-//			return super.onOptionsItemSelected(item);
-//		}
-//	}
+
+	//
+	// @Override
+	// public boolean onOptionsItemSelected(MenuItem item) {
+	// // Handle item selection
+	// switch (item.getItemId()) {
+	// case R.id.entry_edit_get_QR_Code:
+	// getQRCode();
+	// return true;
+	// case R.id.entry_edit_get_NFC:
+	// return true;
+	// default:
+	// return super.onOptionsItemSelected(item);
+	// }
+	// }
 
 	private EntryDetail getEntryDetail(String tag) {
 		String[] strs = tag.split("\n");
