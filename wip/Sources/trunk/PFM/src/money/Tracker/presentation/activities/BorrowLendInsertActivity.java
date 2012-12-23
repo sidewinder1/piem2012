@@ -481,12 +481,13 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		
 		if (checkCondition) 
 		{
-			if (Integer.parseInt(interestRate.getText().toString().trim()) == 0) 
-			{
-				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_interest_rate_0));
-				checkCondition = false;
-			} else {
-				checkCondition = true;
+			if (!interestRate.getText().toString().trim().equals("")) {
+				if (Integer.parseInt(interestRate.getText().toString().trim()) == 0) {
+					alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
+					checkCondition = false;
+				} else {
+					checkCondition = true;
+				}
 			}
 		}
 		
