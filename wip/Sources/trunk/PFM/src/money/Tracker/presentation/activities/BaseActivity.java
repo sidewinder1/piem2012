@@ -60,7 +60,7 @@ public abstract class BaseActivity extends Activity {
 			try {
 				final ExportInputDialogView inputDialog = new ExportInputDialogView(
 						getBaseContext());
-				final Dialog dialog = ViewHelper.createAppDialog(getParent(),
+				final Dialog dialog = ViewHelper.createAppDialog(this,
 						R.string.input_dialog_title, inputDialog);
 				View button = dialog.findViewById(R.id.app_dialog_doneBtn);
 				button.setBackgroundResource(R.drawable.save_icon_disabled);
