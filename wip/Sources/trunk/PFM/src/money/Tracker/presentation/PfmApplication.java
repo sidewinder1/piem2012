@@ -146,6 +146,11 @@ public class PfmApplication extends Application {
 		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
 			long returnValue = totalBudgetCursor.getLong(0);
 			long typeValue = totalBudgetCursor.getLong(1);
+			if (typeValue == 1 && totalBudgetCursor.moveToNext()){
+				returnValue = totalBudgetCursor.getLong(0);
+				typeValue = totalBudgetCursor.getLong(1);
+			}
+			
 			totalBudgetCursor.close();
 			return new long[] { returnValue, typeValue};
 		}

@@ -138,11 +138,11 @@ public class HomeActivity extends TabActivity {
 			}
 
 			// Swiped up
-			if (deltaX > 10) {
+			if (deltaX > 70) {
 				// make your object/character move left
 				sCurrentTab = Math.max(sCurrentTab - 1, 0);
 				mTabHost.setCurrentTab(sCurrentTab);
-			} else if (deltaX < -10) {
+			} else if (deltaX < -70) {
 				// make your object/character move right
 				sCurrentTab = Math.min(sCurrentTab + 1, 3);
 				mTabHost.setCurrentTab(sCurrentTab);

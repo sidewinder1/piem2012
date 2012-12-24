@@ -10,6 +10,7 @@
     <string name="menu_import">Nhập…</string>
     <string name="menu_export">Xuất…</string>
     <string name="input_file_name">Nhập tên tệp tin</string>
+    <string name="overbudget">Đã vượt quá ngân sách!!!</string>
     <string name="choose_excel_type">Dữ liệu dạng excel</string>
     <string name="choose_import_data_type">Dữ liệu dạng lưu trữ (.pif)</string>
     <string name="note"><u>Chú thích</u></string>
