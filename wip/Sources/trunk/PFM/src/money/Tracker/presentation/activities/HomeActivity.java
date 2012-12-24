@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -31,6 +32,11 @@ public class HomeActivity extends TabActivity {
 	private final String mTypeTabPathId = "type.tab.path.id";
 	public static int sCurrentTab = 0;
 	private static Context sContext;
+	private float initialX = 0;
+	private float initialY = 0;
+	private float deltaX = 0;
+	private float deltaY = 0;
+	private TabHost mTabHost;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,7 @@ public class HomeActivity extends TabActivity {
 		setContentView(R.layout.home_activity);
 
 		// All of code blocks for initialize view should be placed here.
-		TabHost mTabHost = getTabHost();
+		mTabHost = getTabHost();
 		sContext = mTabHost.getContext();
 		// mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
@@ -107,6 +113,38 @@ public class HomeActivity extends TabActivity {
 		imageView.setImageResource(id);
 		return view;
 	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// reset deltaX and deltaY
+			deltaX = deltaY = 0;
+
+			// get initial positions
+			initialX = event.getRawX();
+			initialY = event.getRawY();
+		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			deltaX = event.getRawX() - initialX;
+			deltaY = event.getRawY() - initialY;
+
+			if (Math.abs(deltaX) < Math.abs(deltaY)){
+				return true;
+			}
+			
+			// Swiped up
+			if (deltaX > 120) {
+				// make your object/character move left
+				sCurrentTab = Math.max(sCurrentTab - 1, 0);
+				mTabHost.setCurrentTab(sCurrentTab);
+			} else if (deltaX < -120) {
+				// make your object/character move right
+				sCurrentTab = Math.min(sCurrentTab + 1, 3);
+				mTabHost.setCurrentTab(sCurrentTab);
+			}
+		}
+
+		return true;
+	};
 
 	/*
 	 * (non-Javadoc)
