@@ -17,8 +17,8 @@
     <ScrollView
         android:id="@+id/entry_view_scroll"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="0dip"
+        android:layout_weight="7"
         android:clipChildren="false" >
     
     <LinearLayout
@@ -28,5 +28,12 @@
         android:orientation="vertical" />
     
 	</ScrollView>
+	
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+    </LinearLayout>
     
 </LinearLayout>

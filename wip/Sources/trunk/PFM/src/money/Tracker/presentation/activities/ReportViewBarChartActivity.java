@@ -90,19 +90,14 @@ public class ReportViewBarChartActivity extends BaseActivity {
 		LinearLayout barViewDetail = (LinearLayout) findViewById(R.id.report_bar_chart_detail);
 		barViewDetail.removeAllViews();
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		barViewDetail.addView(new ReportBarChartViewDetailItemView(this, getResources().getString(R.string.report_bar_chart_max_value), maxValue, maxDate), params);
-		
+		barViewDetail.addView(new ReportBarChartViewDetailItemView(this, getResources().getString(R.string.report_bar_chart_max_value), ""), params);
+		barViewDetail.addView(new ReportBarChartViewDetailItemView(this, Converter.toString(maxValue), maxDate), params);
+		barViewDetail.addView(new ReportBarChartViewDetailItemView(this, "", ""), params);
+		barViewDetail.addView(new ReportBarChartViewDetailItemView(this.getApplicationContext(), getResources().getString(R.string.report_bar_chart_expense_schedule), ""), params);
 		
 		for (int i = 0; i < dateList.size(); i++)
 		{
-			String name = "";
-			if (i == 0)
-			{
-				name += getResources().getString(R.string.report_bar_chart_expense_schedule);
-			}
-			Log.d("Check bind view detail", name + " - " + entryCategoryValue.get(i) + " - " + scheduleCategoryValue.get(i) + " - " + dateListString.get(i));
-			barViewDetail.addView(new ReportBarChartViewDetailItemView(this.getApplicationContext(), name, (scheduleCategoryValue.get(i) - entryCategoryValue.get(i)), dateListString.get(i)), params);
-			Log.d("Check bind view detail", "Check finish");
+			barViewDetail.addView(new ReportBarChartViewDetailItemView(this.getApplicationContext(), Converter.toString(scheduleCategoryValue.get(i) - entryCategoryValue.get(i)), dateListString.get(i)), params);
 		}
 	}
 	
@@ -177,7 +172,7 @@ public class ReportViewBarChartActivity extends BaseActivity {
 			if (checkMonthly)
 				dateString = Converter.toString(startDate, "MM/ yyyy");
 			else
-				dateString = String.valueOf(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
+				dateString = String.valueOf(new StringBuilder(Converter.toString(startDate, "dd")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
 		dateListString.add(dateString);
 		
 		if (spent > maxValue)
