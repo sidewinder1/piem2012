@@ -133,9 +133,9 @@ public class PfmApplication extends Application {
 		Cursor totalBudgetCursor = SqlHelper.instance.select(
 				"Schedule",
 				"Budget, Type",
-				new StringBuilder("Type = 1 AND (End_date = '")
+				new StringBuilder("(End_date = '")
 						.append(Converter.toString(DateTimeHelper
-								.getLastDayOfWeek(currentDate)))
+								.getLastDayOfWeek(currentDate), "yyyy-MM-dd 00:00:00"))
 						.append("' OR End_date = '")
 						.append(Converter.toString(DateTimeHelper
 								.getLastDateOfMonth(

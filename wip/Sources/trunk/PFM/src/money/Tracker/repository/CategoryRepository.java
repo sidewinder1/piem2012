@@ -120,7 +120,7 @@ public class CategoryRepository {
 		return instance;
 	}
 
-	public void sort() {
+	private void sort() {
 		int i, j;
 
 		int length = categories.size();
