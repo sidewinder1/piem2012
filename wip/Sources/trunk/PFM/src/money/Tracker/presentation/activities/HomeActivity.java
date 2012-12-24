@@ -41,6 +41,7 @@ public class HomeActivity extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setWindowAnimations(2);
 		setContentView(R.layout.home_activity);
 
 		// All of code blocks for initialize view should be placed here.
@@ -115,11 +116,11 @@ public class HomeActivity extends TabActivity {
 	}
 
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// reset deltaX and deltaY
 			deltaX = deltaY = 0;
-
+			sCurrentTab = mTabHost.getCurrentTab();
 			// get initial positions
 			initialX = event.getRawX();
 			initialY = event.getRawY();
@@ -127,23 +128,23 @@ public class HomeActivity extends TabActivity {
 			deltaX = event.getRawX() - initialX;
 			deltaY = event.getRawY() - initialY;
 
-			if (Math.abs(deltaX) < Math.abs(deltaY)){
-				return true;
+			if (Math.abs(deltaX) <= Math.abs(deltaY)) {
+				return false;
 			}
-			
+
 			// Swiped up
-			if (deltaX > 120) {
+			if (deltaX > 10) {
 				// make your object/character move left
 				sCurrentTab = Math.max(sCurrentTab - 1, 0);
 				mTabHost.setCurrentTab(sCurrentTab);
-			} else if (deltaX < -120) {
+			} else if (deltaX < -10) {
 				// make your object/character move right
 				sCurrentTab = Math.min(sCurrentTab + 1, 3);
 				mTabHost.setCurrentTab(sCurrentTab);
 			}
 		}
 
-		return true;
+		return false;
 	};
 
 	/*
