@@ -222,10 +222,15 @@ public class EntryEditCategoryView extends LinearLayout {
 							&& checkOverBudget.moveToFirst()
 							&& budgetInfo[0] != 0) {
 						double percent = checkOverBudget.getLong(0) / 100d;
-
-						if (budgetInfo[0] * percent <= PfmApplication
+						long expense = PfmApplication
 								.getTotalEntry(mCurrentDate)
-								+ Converter.toLong(arg0.toString())) {
+								+ Converter.toLong(arg0.toString());
+						if (budgetInfo[0] <= expense) {
+							Alert.getInstance().show(
+									getContext(),
+									getResources().getString(
+											R.string.overbudget));
+						} else if (budgetInfo[0] * percent <= expense) {
 							Alert.getInstance()
 									.show(getContext(),
 											getResources()
@@ -424,7 +429,8 @@ public class EntryEditCategoryView extends LinearLayout {
 			} else {
 				category_id_str = String.valueOf(SqlHelper.instance.insert(
 						"Category", new String[] { "Name", "User_Color" },
-						new String[] { mCategoryEdit.getText().toString(),
+						new String[] {
+								mCategoryEdit.getText().toString().trim(),
 								String.valueOf(mCategoryEdit.getTag()) }));
 
 				CategoryRepository.getInstance().updateData();

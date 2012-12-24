@@ -42,7 +42,7 @@ public class CategoryRepository {
 
 	public long getId(String name) {
 		for (Category category : categories) {
-			if (category.getName().toLowerCase(Locale.US).equals(name.toLowerCase(Locale.US))) {
+			if (category.getName().toLowerCase(Locale.US).trim().equals(name.toLowerCase(Locale.US).trim())) {
 				return category.getId();
 			}
 		}
@@ -52,8 +52,8 @@ public class CategoryRepository {
 
 	public boolean isExisted(String nameOfCategory) {
 		for (Category category : categories) {
-			if (nameOfCategory.toLowerCase(Locale.US).equals(
-					category.getName().toLowerCase(Locale.US))) {
+			if (nameOfCategory.toLowerCase(Locale.US).trim().equals(
+					category.getName().toLowerCase(Locale.US).trim())) {
 				return true;
 			}
 		}
@@ -104,8 +104,8 @@ public class CategoryRepository {
 
 	public int getIndex(String name) {
 		for (int index = 0; index < categories.size(); index++) {
-			if (name.toLowerCase(Locale.US).equals(
-					categories.get(index).getName().toLowerCase(Locale.US))) {
+			if (name.toLowerCase(Locale.US).trim().equals(
+					categories.get(index).getName().toLowerCase(Locale.US).trim())) {
 				return index;
 			}
 		}
