@@ -87,7 +87,7 @@ public class PfmApplication extends Application {
 					}
 
 					syncTask = new SynchronizeTask(sync_data);
-					syncTask.execute();					
+					syncTask.execute();
 				} catch (Exception e) {
 					Logger.Log(e.getMessage(), "PfmApplication");
 				}
@@ -111,11 +111,11 @@ public class PfmApplication extends Application {
 		ArrayList<Entry> entries = EntryRepository.getInstance().orderedEntries
 				.get(Converter.toString(currentDate, "MM/yyyy"));
 		long total_entry = 0;
-		
+
 		if (entries == null) {
 			return 0;
 		}
-		
+
 		for (Entry entryItem : entries) {
 			total_entry += entryItem.getTotal();
 		}
@@ -129,13 +129,14 @@ public class PfmApplication extends Application {
 	 * 
 	 * @return A long type that is total of budget.
 	 */
-	public static long getTotalBudget(Date currentDate) {
+	public static long[] getTotalBudget(Date currentDate) {
 		Cursor totalBudgetCursor = SqlHelper.instance.select(
 				"Schedule",
 				"Budget, Type",
 				new StringBuilder("(End_date = '")
-						.append(Converter.toString(DateTimeHelper
-								.getLastDayOfWeek(currentDate), "yyyy-MM-dd 00:00:00"))
+						.append(Converter.toString(
+								DateTimeHelper.getLastDayOfWeek(currentDate),
+								"yyyy-MM-dd 00:00:00"))
 						.append("' OR End_date = '")
 						.append(Converter.toString(DateTimeHelper
 								.getLastDateOfMonth(
@@ -144,11 +145,12 @@ public class PfmApplication extends Application {
 						.toString());
 		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
 			long returnValue = totalBudgetCursor.getLong(0);
+			long typeValue = totalBudgetCursor.getLong(1);
 			totalBudgetCursor.close();
-			return returnValue;
+			return new long[] { returnValue, typeValue};
 		}
 
-		return 0;
+		return new long[] { 0, 0 };
 	}
 
 	/**
@@ -182,12 +184,14 @@ public class PfmApplication extends Application {
 							HomeActivity.sCurrentTab = 2;
 							Alert.getInstance().notify(
 									HomeActivity.class,
-									getAppResources().getString(R.string.warning_expired_date),
+									getAppResources().getString(
+											R.string.warning_expired_date),
 									checkBorrow.getString(1),
 									time.getLong(2) * 60,
 									"#DEFAULT".equals(time.getString(1)),
 									time.getString(1).startsWith("#") ? null
-											: Uri.parse(time.getString(1)), (int)checkBorrow.getInt(2));
+											: Uri.parse(time.getString(1)),
+									(int) checkBorrow.getInt(2));
 						}
 
 						checkBorrow.close();

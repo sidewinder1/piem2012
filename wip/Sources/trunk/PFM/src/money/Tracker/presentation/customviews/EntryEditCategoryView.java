@@ -216,22 +216,26 @@ public class EntryEditCategoryView extends LinearLayout {
 									.append(AccountProvider.getInstance()
 											.getCurrentAccount().name)
 									.append("'").toString());
-					long budget = PfmApplication.getTotalBudget(mCurrentDate);
+					long[] budgetInfo = PfmApplication
+							.getTotalBudget(mCurrentDate);
 					if (checkOverBudget != null
-							&& checkOverBudget.moveToFirst() && budget != 0) {
+							&& checkOverBudget.moveToFirst()
+							&& budgetInfo[0] != 0) {
 						double percent = checkOverBudget.getLong(0) / 100d;
 
-						if (budget * percent <= PfmApplication
+						if (budgetInfo[0] * percent <= PfmApplication
 								.getTotalEntry(mCurrentDate)
 								+ Converter.toLong(arg0.toString())) {
-							Alert.getInstance().show(
-									getContext(),
-									getResources().getString(
-											R.string.warning_borrow_overbudget)
-											.replace(
-													"{0}",
-													checkOverBudget
-															.getString(0)));
+							Alert.getInstance()
+									.show(getContext(),
+											getResources()
+													.getString(
+															budgetInfo[1] == 1 ? R.string.warning_month_borrow_overbudget
+																	: R.string.warning_week_borrow_overbudget)
+													.replace(
+															"{0}",
+															checkOverBudget
+																	.getString(0)));
 						}
 					}
 				} catch (Exception e) {
