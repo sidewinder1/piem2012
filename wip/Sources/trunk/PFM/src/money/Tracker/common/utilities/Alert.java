@@ -1,5 +1,7 @@
 package money.Tracker.common.utilities;
 
+import java.io.IOException;
+
 import money.Tracker.presentation.PfmApplication;
 import money.Tracker.presentation.activities.HomeActivity;
 import money.Tracker.presentation.activities.R;
@@ -12,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -90,8 +93,20 @@ public class Alert {
 					mNotificationManager.notify(notifyId, mBuilder.build());
 
 					try {
-						Thread.sleep(timeRemindInSeconds * 1000);
+						MediaPlayer player = new MediaPlayer();
+						player.setDataSource(PfmApplication.getAppContext(), notifyRing);
+						player.prepare();
+						
+						Thread.sleep(timeRemindInSeconds * 1000 + player.getDuration());
 					} catch (InterruptedException e) {
+						Logger.Log(e.getMessage(), "Alert");
+					} catch (IllegalArgumentException e) {
+						Logger.Log(e.getMessage(), "Alert");
+					} catch (SecurityException e) {
+						Logger.Log(e.getMessage(), "Alert");
+					} catch (IllegalStateException e) {
+						Logger.Log(e.getMessage(), "Alert");
+					} catch (IOException e) {
 						Logger.Log(e.getMessage(), "Alert");
 					}
 				}
