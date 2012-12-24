@@ -132,90 +132,121 @@ public class ExcelHelper {
 		}
 
 		workbook.close();
-		
+
 		Alert.getInstance().show(PfmApplication.getAppContext(),
 				PfmApplication.getAppResources().getString(R.string.success));
 		return true;
 	}
 
-	private void importToLocalDB(Sheet sheet) {
-		String[] columnInfo = getColumnInfo(sheet);
-		if (columnInfo == null) {
-			return;
+	public String[] getImportColumnInfo(String sheetName) {
+		for (String[] columnInfo : mImportTableInfos) {
+			if (sheetName.equals(columnInfo[0])) {
+				return columnInfo;
+			}
 		}
 
-		int idIndex = Integer.parseInt(columnInfo[1].split(",")[0]);
-		int modifiedDateIndex = Integer.parseInt(columnInfo[1].split(",")[1]);
+		return null;
+	}
 
+	private void importToLocalDB(Sheet sheet) {
+		// String[] columnInfo = getColumnInfo(sheet);
+		// if (columnInfo == null) {
+		// return;
+		// }
+		//
+		// int idIndex = Integer.parseInt(columnInfo[1].split(",")[0]);
+		// int modifiedDateIndex =
+		// Integer.parseInt(columnInfo[1].split(",")[1]);
+		int ID_INDEX = 0;
+		int MODIFIED_INDEX = 2;
+		String[] columnsInfo = getImportColumnInfo(sheet.getName());
 		for (int row = 1; row < sheet.getRows(); row++) {
 			String condition = new StringBuilder("Id=").append(
-					sheet.getCell(idIndex, row).getContents()).toString();
+					sheet.getCell(ID_INDEX, row).getContents()).toString();
 			Cursor checkExistedId = SqlHelper.instance.select(sheet.getName(),
 					"ModifiedDate", condition);
 			if (checkExistedId != null && checkExistedId.moveToFirst()) {
 				// This record exists.
 				// Check modifiedDate.
 				if (checkExistedId.getString(0).compareTo(
-						sheet.getCell(modifiedDateIndex, row).getContents()) < 0) {
+						sheet.getCell(MODIFIED_INDEX, row).getContents()) < 0) {
 					SqlHelper.instance.update(sheet.getName(),
-							columnInfo[0].split(","), getRowData(sheet, row),
+							columnsInfo[1].split(","),
+							getRowData(sheet, row, columnsInfo[2].split(",")),
 							condition);
 				}
 			} else {
 				// If this record doesn't exist, then insert it into database.
 				SqlHelper.instance.insert(sheet.getName(),
-						columnInfo[0].split(","), getRowData(sheet, row));
+						columnsInfo[1].split(","),
+						getRowData(sheet, row, columnsInfo[2].split(",")));
 			}
 		}
 
 	}
 
-	private String[] getRowData(Sheet sheet, int rowIndex) {
+	/**
+	 * Get data from a row of sheet.
+	 * 
+	 * @param sheet
+	 *            Sheet that contains data.
+	 * @param rowIndex
+	 *            Specified row index that will be got data from.
+	 * @param columnTypes
+	 *            A string array that contains type of columns.
+	 * @return
+	 */
+	private String[] getRowData(Sheet sheet, int rowIndex, String[] columnTypes) {
 		String[] rowData = new String[sheet.getColumns()];
 		int col = 0;
 		for (Cell row : sheet.getRow(rowIndex)) {
-			rowData[col++] = row.getContents();
+			if ("DATE".equals(columnTypes[col].toUpperCase(Locale.US).trim())) {
+				rowData[col++] = Converter.toString(Converter.toDate(
+						row.getContents(), "dd/MM/yyyy kk:mm:ss"));
+			} else {
+				rowData[col++] = row.getContents();
+			}
 		}
 
 		return rowData;
 	}
 
-	/**
-	 * Get header of table.
-	 * 
-	 * @param sheet
-	 *            Sheet of file.
-	 * @return A string array contains columnName and columnInfo (index of Id
-	 *         and ModifiedDate column)
-	 */
-	private String[] getColumnInfo(Sheet sheet) {
-		Cell cell = sheet.getCell(0, 0);
-		if ("".equals(cell.getContents())) {
-			Alert.getInstance().show(
-					PfmApplication.getAppContext(),
-					PfmApplication.getAppResources().getString(
-							R.string.import_wrong_format));
-			return null;
-		}
-
-		String columnName = "";
-		String columnInfo = "";
-		Cell[] columns = sheet.getRow(0);
-		for (int col = 0; col < columns.length; col++) {
-			columnName += new StringBuilder(col == 0 ? "" : ",").append(
-					columns[col].getContents()).toString();
-			if ("ID".equals(columns[col].getContents().toUpperCase(Locale.US))) {
-				columnInfo = new StringBuilder().append(col).append(columnInfo)
-						.toString();
-			} else if ("MODIFIEDDATE".equals(columns[col].getContents()
-					.toUpperCase(Locale.US))) {
-				columnInfo = new StringBuilder(columnInfo).append(",")
-						.append(col).toString();
-			}
-		}
-
-		return new String[] { columnName, columnInfo };
-	}
+	// /**
+	// * Get header of table.
+	// *
+	// * @param sheet
+	// * Sheet of file.
+	// * @return A string array contains columnName and columnInfo (index of Id
+	// * and ModifiedDate column)
+	// */
+	// private String[] getColumnInfo(Sheet sheet) {
+	// Cell cell = sheet.getCell(0, 0);
+	// if ("".equals(cell.getContents())) {
+	// Alert.getInstance().show(
+	// PfmApplication.getAppContext(),
+	// PfmApplication.getAppResources().getString(
+	// R.string.import_wrong_format));
+	// return null;
+	// }
+	//
+	// String columnName = "";
+	// String columnInfo = "";
+	// Cell[] columns = sheet.getRow(0);
+	// for (int col = 0; col < columns.length; col++) {
+	// columnName += new StringBuilder(col == 0 ? "" : ",").append(
+	// columns[col].getContents()).toString();
+	// if ("ID".equals(columns[col].getContents().toUpperCase(Locale.US))) {
+	// columnInfo = new StringBuilder().append(col).append(columnInfo)
+	// .toString();
+	// } else if ("MODIFIEDDATE".equals(columns[col].getContents()
+	// .toUpperCase(Locale.US))) {
+	// columnInfo = new StringBuilder(columnInfo).append(",")
+	// .append(col).toString();
+	// }
+	// }
+	//
+	// return new String[] { columnName, columnInfo };
+	// }
 
 	public boolean exportFile(String fileName, boolean forImport) {
 		// Check file exists.
@@ -367,7 +398,8 @@ public class ExcelHelper {
 
 		if (selector != null && selector.moveToFirst()) {
 			String[] columnInfos = tableInfo[2].split(",");
-			DateFormat customDateFormat = new DateFormat("dd/MM/yyyy" + (tableInfo.length == 3 ? " hh:mm:ss" : ""));
+			DateFormat customDateFormat = new DateFormat("dd/MM/yyyy"
+					+ (tableInfo.length == 3 ? " hh:mm:ss" : ""));
 			WritableCellFormat dateFormat = new WritableCellFormat(
 					customDateFormat);
 

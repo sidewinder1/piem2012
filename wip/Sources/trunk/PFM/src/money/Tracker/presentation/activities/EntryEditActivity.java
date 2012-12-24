@@ -149,7 +149,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		mTypeCheck.setBackgroundResource(isIncome ? R.drawable.income_icon
 				: R.drawable.expense_icon);
 		updateTitle();
-		
+
 		for (int index = 0; index < mEntryList.getChildCount(); index++) {
 			((EntryEditCategoryView) mEntryList.getChildAt(index))
 					.updateType(isIncome ? 0 : 1);
@@ -172,7 +172,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			if (scanResult == null) {
 				return;
 			}
-			
+
 			final String result = scanResult.getContents();
 			if (result != null) {
 
@@ -206,7 +206,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 								price = _result[1].substring(5)
 										.replace(".", "");
 						} else {
-							price = _result[1].substring(7).replace(".", "");
+							price = _result[1]
+									.substring(7)
+									.replace(".", "")
+									.replaceAll(
+											"(V|v)(N|n)(D|d)|(u|U)(S|s)(D|d)",
+											"");
 						}
 					}
 
@@ -267,8 +272,9 @@ public class EntryEditActivity extends NfcDetectorActivity {
 
 	/**
 	 * The method will handle event when user clicks on toggle button.
+	 * 
 	 * @param view
-	 * The toggle button.
+	 *            The toggle button.
 	 */
 	public void toggleTypeClicked(View view) {
 		setChecked(!mIsIncome);
@@ -418,7 +424,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			((EntryEditCategoryView) mEntryList.getChildAt(index))
 					.updateDate(startDate);
 		}
-		
+
 		mDateEdit.setText(Converter.toString(startDate, "dd/MM/yyyy"));
 		updateTitle();
 	}

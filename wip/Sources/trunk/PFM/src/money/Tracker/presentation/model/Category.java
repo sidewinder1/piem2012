@@ -52,6 +52,14 @@ public class Category {
 			return -1;
 		}
 
-		return name.compareToIgnoreCase(category.name);
+		return getSimpleString(name).compareToIgnoreCase(getSimpleString(category.name));
 	}
+	
+	private String getSimpleString(String str){
+		return str.replaceAll(PfmApplication.getAppResources().getString(R.string.o_character), "o")
+				.replaceAll(PfmApplication.getAppResources().getString(R.string.a_character), "a")
+				.replaceAll(PfmApplication.getAppResources().getString(R.string.e_character), "e")
+				.replaceAll(PfmApplication.getAppResources().getString(R.string.u_character), "u")
+				.replaceAll(PfmApplication.getAppResources().getString(R.string.d_character), "d");
+	} 
 }

@@ -27,6 +27,13 @@
     <string name="image_icon_description">Image of tab</string>
     <string name="delete_confirm">Xóa?</string>
     <string name="success">Thành công</string>
+    
+    <string name="a_character">â|ấ|ẫ|ẩ|ậ|Ấ|Ẩ|Ẫ|Ậ|Â|ă|ắ|ẵ|ặ|ẳ|Ă|Ắ|Ẵ|Ặ|Ẳ</string>
+    <string name="o_character">ô|ố|ỗ|ổ|ộ|Ố|Ổ|Ỗ|Ộ|Ô|ơ|ớ|ỡ|ợ|ở|Ở|Ỡ|Ợ|Ớ|Ơ</string>
+    <string name="e_character">ê|ế|ễ|ể|ệ|Ê|Ể|Ễ|Ệ|Ê</string>
+    <string name="u_character">ư|ử|ứ|ự|ữ|Ữ|Ử|Ứ|Ự|Ư</string>
+    <string name="d_character">Đ|đ</string>
+    
     <string name="others">Khác…</string>
     <string name="hours">tiếng</string>
     <string name="minutes">phút</string>
