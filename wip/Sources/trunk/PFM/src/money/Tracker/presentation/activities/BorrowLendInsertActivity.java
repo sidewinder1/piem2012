@@ -103,7 +103,7 @@ public class BorrowLendInsertActivity extends BaseActivity {
 			nameEditText.setText(String.valueOf(values.getPersonName()));
 			phoneEditText.setText(String.valueOf(values.getPersonPhone()));
 			addressEditText.setText(String.valueOf(values.getPersonAddress()));
-			moneyEditText.setText(Converter.toString(values.getMoney()).replaceAll(",", ""));
+			moneyEditText.setText(String.valueOf(values.getMoney()));
 			if (values.getInterestType().equals("Simple"))
 			{
 				interestType.setChecked(true);
@@ -493,7 +493,7 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		
 		if (checkCondition)
 		{
-			if (Integer.parseInt(moneyEditText.getText().toString().trim()) == 0)
+			if (Long.parseLong(moneyEditText.getText().toString().trim()) == 0)
 			{
 				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
 				checkCondition = false;
