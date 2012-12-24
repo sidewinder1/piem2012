@@ -129,8 +129,12 @@ public class EntryEditActivity extends NfcDetectorActivity {
 					.getInstance().updateData("Entry_Id = " + mPassedEntryId,
 							"Category_Id");
 			for (ArrayList<EntryDetail> entryDetail : values.values()) {
-				mEntryList.addView(
-						new EntryEditCategoryView(this, entryDetail), mParams);
+				EntryEditCategoryView categoryItem = new EntryEditCategoryView(
+						this, entryDetail);
+				categoryItem.updateDate(DateTimeHelper.getDate(mYear, mMonth,
+						mDay));
+				categoryItem.updateType(mIsIncome ? 0 : 1);
+				mEntryList.addView(categoryItem, mParams);
 			}
 		}
 
