@@ -38,10 +38,15 @@ public class HomeActivity extends TabActivity {
 	private float deltaY = 0;
 	private TabHost mTabHost;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.ActivityGroup#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().setWindowAnimations(2);
+		overridePendingTransition(R.anim.fadein, R.anim.slide_right);
 		setContentView(R.layout.home_activity);
 
 		// All of code blocks for initialize view should be placed here.
@@ -116,7 +121,7 @@ public class HomeActivity extends TabActivity {
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean dispatchTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// reset deltaX and deltaY
 			deltaX = deltaY = 0;
@@ -129,7 +134,7 @@ public class HomeActivity extends TabActivity {
 			deltaY = event.getRawY() - initialY;
 
 			if (Math.abs(deltaX) <= Math.abs(deltaY)) {
-				return false;
+				return super.dispatchTouchEvent(event);
 			}
 
 			// Swiped up
@@ -144,7 +149,7 @@ public class HomeActivity extends TabActivity {
 			}
 		}
 
-		return false;
+		return super.dispatchTouchEvent(event);
 	};
 
 	/*

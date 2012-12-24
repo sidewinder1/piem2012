@@ -107,15 +107,20 @@ public class EntryEditProductView extends LinearLayout {
 							.getChildAt(index);
 					if (entryEdit != null) {
 						if ("".equals(entryEdit.product.getText().toString())) {
-							Alert.getInstance().show(getContext(),
-									getResources().getString(R.string.entry_edit_category_empty));
+							Alert.getInstance()
+									.show(getContext(),
+											getResources()
+													.getString(
+															R.string.entry_edit_category_empty));
 							entryEdit.product.requestFocus();
 							return;
 						}
 
 						if ("".equals(entryEdit.price.getText().toString())) {
-							Alert.getInstance().show(getContext(),
-									getResources().getString(R.string.entry_edit_price_empty));
+							Alert.getInstance().show(
+									getContext(),
+									getResources().getString(
+											R.string.entry_edit_price_empty));
 							entryEdit.price.requestFocus();
 							return;
 						}
@@ -154,6 +159,10 @@ public class EntryEditProductView extends LinearLayout {
 						list.setTag(list.getTag() + "" + item.Id + ",");
 					}
 
+					long total = Converter.toLong(total_text_view.getText()
+							.toString().replaceAll("[.]|,", ""));
+					total_text_view.setText(Converter.toString((total - item
+							.getMoney())));
 					list.removeView(item);
 				}
 			}
