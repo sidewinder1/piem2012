@@ -101,7 +101,7 @@ public class BorrowLendViewDetailActivity extends BaseActivity {
 		}else
 		{
 			currentInterestTitle.setText(getResources().getString(R.string.borrow_lend_total_money_plus_current_interest));
-			if (totalMoney != 0)
+			if (totalMoney != values.getMoney())
 				totalInterestTextView.setText(Converter.toString(totalMoney));
 			else
 				totalInterestTextView.setText(getResources().getString(R.string.borrow_lend_no_interest));
@@ -114,9 +114,7 @@ public class BorrowLendViewDetailActivity extends BaseActivity {
 		editButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent borrowLendEdit = new Intent(
-						BorrowLendViewDetailActivity.this,
-						BorrowLendInsertActivity.class);
+				Intent borrowLendEdit = new Intent(BorrowLendViewDetailActivity.this, BorrowLendInsertActivity.class);
 				borrowLendEdit.putExtra("borrowLendID", borrow_lend_id);
 				startActivity(borrowLendEdit);
 			}

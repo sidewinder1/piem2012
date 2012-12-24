@@ -263,13 +263,17 @@ public class Chart extends AbstractChart {
 		double yMax = 0;
 
 		double[] entryCategoryValueArray = new double[entryCategoryValue.size()];
-		double[] scheduleCategoryValueArray = new double[entryCategoryValue
-				.size()];
+		double[] scheduleCategoryValueArray = new double[entryCategoryValue.size()];
 
 		for (int i = 0; i < entryCategoryValue.size(); i++) {
 			entryCategoryValueArray[i] = entryCategoryValue.get(i) / 10000;
 			scheduleCategoryValueArray[i] = scheduleCategoryValue.get(i) / 10000;
 			yMax = Math.max(Math.max(entryCategoryValueArray[i], scheduleCategoryValueArray[i]), yMax);
+		}
+		
+		if(yMax > 1000 || yMax == 1000)
+		{
+			yMax = yMax + yMax / 10;
 		}
 
 		List<double[]> values = new ArrayList<double[]>();
@@ -293,7 +297,7 @@ public class Chart extends AbstractChart {
 			if (checkMonthly)
 				renderer.addXTextLabel(i + 1,Converter.toString(startDate, "MM/yyyy"));
 			else
-				renderer.addXTextLabel(i + 1,Converter.toString(startDate, "  dd/MM/yyyy") + " -\r\n" + Converter.toString(endDate, "dd/MM/yyyy\r\n\r\n"));
+				renderer.addXTextLabel(i + 1,Converter.toString(startDate, "dd") + " - " + Converter.toString(endDate, "dd\r\n\r\n") + Converter.toString(endDate, "MM/yyyy\r\n\r\n"));
 		}
 		
 		renderer.getSeriesRendererAt(0).setChartValuesTextAlign(Align.LEFT);
