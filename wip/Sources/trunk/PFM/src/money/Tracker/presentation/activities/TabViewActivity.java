@@ -45,6 +45,7 @@ public class TabViewActivity extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setWindowAnimations(4);
 		setContentView(R.layout.tab_content_view);
 		mContext = this;
 		Bundle extras = getIntent().getExtras();

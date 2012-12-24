@@ -18,6 +18,12 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public abstract class BaseActivity extends Activity {
+	@Override
+	protected void onCreate(android.os.Bundle savedInstanceState) {
+		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+		super.onCreate(savedInstanceState);
+	};
+
 	/*
 	 * (non-Javadoc)
 	 * 
