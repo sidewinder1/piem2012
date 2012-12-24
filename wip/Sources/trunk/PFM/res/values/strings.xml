@@ -27,13 +27,11 @@
     <string name="image_icon_description">Image of tab</string>
     <string name="delete_confirm">Xóa?</string>
     <string name="success">Thành công</string>
-    
     <string name="a_character">â|ấ|ẫ|ẩ|ậ|Ấ|Ẩ|Ẫ|Ậ|Â|ă|ắ|ẵ|ặ|ẳ|Ă|Ắ|Ẵ|Ặ|Ẳ</string>
     <string name="o_character">ô|ố|ỗ|ổ|ộ|Ố|Ổ|Ỗ|Ộ|Ô|ơ|ớ|ỡ|ợ|ở|Ở|Ỡ|Ợ|Ớ|Ơ</string>
     <string name="e_character">ê|ế|ễ|ể|ệ|Ê|Ể|Ễ|Ệ|Ê</string>
     <string name="u_character">ư|ử|ứ|ự|ữ|Ữ|Ử|Ứ|Ự|Ư</string>
     <string name="d_character">Đ|đ</string>
-    
     <string name="others">Khác…</string>
     <string name="hours">tiếng</string>
     <string name="minutes">phút</string>
@@ -132,7 +130,8 @@
     <string name="warning_schedule_warn_before">Cảnh báo khi đến</string>
     <string name="warning_borrow_warn_before">Cảnh báo trước khi đáo hạn</string>
     <string name="warning_ring">Nhạc chuông</string>
-    <string name="warning_borrow_overbudget">Đã vượt quá {0}% so với kế hoạch!!!</string>
+    <string name="warning_week_borrow_overbudget">Đã vượt quá {0}% so với kế hoạch tuần!!!</string>
+    <string name="warning_month_borrow_overbudget">Đã vượt quá {0}% so với kế hoạch tháng!!!</string>
     <string name="warning_remain">Nhắc lại</string>
     <string name="warning_expired_date">Đến ngày đáo hạn</string>
 
@@ -234,6 +233,7 @@
     <string-array name="category_name">
         <item>Ăn uống</item>
         <item>Điện</item>
+        <item>Mua sắm</item>
         <item>Nước</item>
         <item>Sinh nhật</item>
         <item>Giải trí</item>
@@ -244,13 +244,13 @@
         <item>#99FF0000</item>
         <item>#99F4A460</item>
         <item>#99FF5159</item>
+        <item>#990055A8</item>
         <item>#9974DCAA</item>
         <item>#99A85000</item>
         <item>#99F08080</item>
         <item>#99C71585</item>
     </string-array>
     <string-array name="color_list">
-        <item>#990055A8</item>
         <item>#99FF5187</item>
         <item>#99A80002</item>
         <item>#99FFF900</item>
