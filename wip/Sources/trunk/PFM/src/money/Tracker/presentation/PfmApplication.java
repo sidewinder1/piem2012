@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -186,6 +187,7 @@ public class PfmApplication extends Application {
 												.addHours(DateTimeHelper
 														.now(false), longTime))
 										+ "'");
+
 						if (checkBorrow != null && checkBorrow.moveToFirst()) {
 							HomeActivity.sCurrentTab = 2;
 							Alert.getInstance().notify(
@@ -198,13 +200,14 @@ public class PfmApplication extends Application {
 									time.getString(1).startsWith("#") ? null
 											: Uri.parse(time.getString(1)),
 									(int) checkBorrow.getInt(2));
+							Thread.sleep(510);
 						}
 
 						checkBorrow.close();
 					}
 
 					time.close();
-					Thread.sleep(1 * 1000);
+					Thread.sleep(1 * 500);
 				}
 			} catch (Exception e) {
 				Logger.Log(e.getMessage(), "PfmApplication");
