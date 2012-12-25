@@ -39,6 +39,7 @@ public class EntryEditCategoryView extends LinearLayout {
 	public EditText mCategoryEdit;
 	private Date mCurrentDate = DateTimeHelper.now(false);
 	private int mType = 1;
+	private ArrayList<Long> ignoreList = new ArrayList<Long>();
 
 	public EntryEditCategoryView(Context context) {
 		super(context);
@@ -88,7 +89,7 @@ public class EntryEditCategoryView extends LinearLayout {
 				mCategory.setSelection(CategoryRepository.getInstance()
 						.getIndex(entryDetail.getCategory_id()));
 				total += entryDetail.getMoney();
-
+				ignoreList.add(entryDetail.getId());
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 				mCategoryList.addView(item, params);
@@ -222,14 +223,16 @@ public class EntryEditCategoryView extends LinearLayout {
 							&& checkOverBudget.moveToFirst()
 							&& budgetInfo[0] != 0) {
 						double percent = checkOverBudget.getLong(0) / 100d;
-						long expense = PfmApplication
-								.getTotalEntry(mCurrentDate)
+						long expense = PfmApplication.getTotalEntry(
+								mCurrentDate, ignoreList)
 								+ Converter.toLong(arg0.toString());
 						if (budgetInfo[0] <= expense) {
-							Alert.getInstance().show(
-									getContext(),
-									getResources().getString(
-											R.string.overbudget));
+							Alert.getInstance()
+									.show(getContext(),
+											getResources()
+													.getString(
+															budgetInfo[1] == 0 ? R.string.week_overbudget
+																	: R.string.month_overbudget));
 						} else if (budgetInfo[0] * percent <= expense) {
 							Alert.getInstance()
 									.show(getContext(),

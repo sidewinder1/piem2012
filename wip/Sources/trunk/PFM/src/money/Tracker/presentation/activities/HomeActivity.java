@@ -46,7 +46,7 @@ public class HomeActivity extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.fadein, R.anim.slide_right);
+		overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 		setContentView(R.layout.home_activity);
 
 		// All of code blocks for initialize view should be placed here.

@@ -101,7 +101,8 @@ public class PfmApplication extends Application {
 	 * 
 	 * @return A long type that is total of expense.
 	 */
-	public static long getTotalEntry(Date currentDate) {
+	public static long getTotalEntry(Date currentDate,
+			ArrayList<Long> ignoreList) {
 		EntryRepository.getInstance().updateData(
 				new StringBuilder("Type = 1").toString());
 		if (EntryRepository.getInstance().orderedEntries == null) {
@@ -117,7 +118,7 @@ public class PfmApplication extends Application {
 		}
 
 		for (Entry entryItem : entries) {
-			total_entry += entryItem.getTotal();
+			total_entry += entryItem.getTotal(ignoreList);
 		}
 
 		return total_entry;
@@ -146,13 +147,13 @@ public class PfmApplication extends Application {
 		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
 			long returnValue = totalBudgetCursor.getLong(0);
 			long typeValue = totalBudgetCursor.getLong(1);
-			if (typeValue == 1 && totalBudgetCursor.moveToNext()){
+			if (typeValue == 1 && totalBudgetCursor.moveToNext()) {
 				returnValue = totalBudgetCursor.getLong(0);
 				typeValue = totalBudgetCursor.getLong(1);
 			}
-			
+
 			totalBudgetCursor.close();
-			return new long[] { returnValue, typeValue};
+			return new long[] { returnValue, typeValue };
 		}
 
 		return new long[] { 0, 0 };
