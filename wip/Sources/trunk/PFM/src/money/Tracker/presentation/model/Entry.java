@@ -33,7 +33,7 @@ public class Entry implements IModelBase {
 		return total;
 	}
 
-	public long getTotal() {
+	public long getTotal(ArrayList<Long> ignore) {
 		if (entryDetails == null) {
 			return 0;
 		}
@@ -41,7 +41,9 @@ public class Entry implements IModelBase {
 		long total = 0;
 
 		for (EntryDetail entryKey : entryDetails) {
-			total += entryKey.getMoney();
+			if (ignore == null || !ignore.contains(entryKey.getId())) {
+				total += entryKey.getMoney();
+			}
 		}
 
 		return total;

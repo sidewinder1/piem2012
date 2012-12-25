@@ -29,7 +29,7 @@ public abstract class BaseActivity extends Activity {
 	 */
 	@Override
 	protected void onCreate(android.os.Bundle savedInstanceState) {
-		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+		overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 		super.onCreate(savedInstanceState);
 	};
 

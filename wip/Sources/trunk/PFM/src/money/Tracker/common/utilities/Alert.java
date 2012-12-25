@@ -15,6 +15,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -36,24 +37,28 @@ public class Alert {
 
 	/**
 	 * Notify a message in Status bar when user is not in this application.
+	 * 
 	 * @param activity
-	 * The parent class that will be displayed when user clicks message.
+	 *            The parent class that will be displayed when user clicks
+	 *            message.
 	 * @param title
-	 * The title of message.
+	 *            The title of message.
 	 * @param message
-	 * The content of message.
+	 *            The content of message.
 	 * @param timeRemindInSeconds
-	 * The time that message will notify again if user doesn't click on message.
+	 *            The time that message will notify again if user doesn't click
+	 *            on message.
 	 * @param useDefaultRing
-	 * Check whether user uses default ring or not.
+	 *            Check whether user uses default ring or not.
 	 * @param notifyRing
-	 * The ring that message will use to notify.
+	 *            The ring that message will use to notify.
 	 * @param notifyId
-	 * Id of message.
+	 *            Id of message.
 	 */
 	public void notify(final Class<?> activity, final String title,
 			final String message, final long timeRemindInSeconds,
-			final boolean useDefaultRing, final Uri notifyRing, final int notifyId) {
+			final boolean useDefaultRing, final Uri notifyRing,
+			final int notifyId) {
 		mIsRunRemind = true;
 		new Thread(new Runnable() {
 			public void run() {
@@ -94,10 +99,15 @@ public class Alert {
 
 					try {
 						MediaPlayer player = new MediaPlayer();
-						player.setDataSource(PfmApplication.getAppContext(), notifyRing);
+						player.setDataSource(
+								PfmApplication.getAppContext(),
+								useDefaultRing ? RingtoneManager
+										.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+										: notifyRing);
 						player.prepare();
-						
-						Thread.sleep(timeRemindInSeconds * 1000 + player.getDuration());
+
+						Thread.sleep(timeRemindInSeconds * 1000
+								+ player.getDuration());
 					} catch (InterruptedException e) {
 						Logger.Log(e.getMessage(), "Alert");
 					} catch (IllegalArgumentException e) {
@@ -113,22 +123,23 @@ public class Alert {
 			};
 		}).start();
 	}
-	
+
 	/**
 	 * Stop reminding of message.
 	 */
-	public void stopNotify(){
-		mIsRunRemind  = false;
+	public void stopNotify() {
+		mIsRunRemind = false;
 	}
 
 	/**
 	 * Show dialog in application with specified message.
+	 * 
 	 * @param context
-	 * Parent data context.
+	 *            Parent data context.
 	 * @param message
-	 * The content of message.
+	 *            The content of message.
 	 * @param okAction
-	 * The action when user clicks on OK button.
+	 *            The action when user clicks on OK button.
 	 */
 	public void showDialog(Context context, String message,
 			OnClickListener okAction) {
@@ -142,14 +153,15 @@ public class Alert {
 
 	/**
 	 * Show dialog in application with specified message.
+	 * 
 	 * @param context
-	 * Parent data context.
+	 *            Parent data context.
 	 * @param message
-	 * The content of message.
+	 *            The content of message.
 	 * @param okAction
-	 * The action when user clicks on OK button.
+	 *            The action when user clicks on OK button.
 	 * @param cancelAction
-	 * The action when user clicks on Cancel button.
+	 *            The action when user clicks on Cancel button.
 	 */
 	public void showDialog(Context context, String message,
 			OnClickListener okAction, OnClickListener cancelAction) {
@@ -172,12 +184,12 @@ public class Alert {
 
 	/**
 	 * Show a message in application in short time.
+	 * 
 	 * @param context
-	 * The parent context.
+	 *            The parent context.
 	 * @param message
-	 * The content of message.
-	 * @return
-	 * Result of showing message.
+	 *            The content of message.
+	 * @return Result of showing message.
 	 */
 	public boolean show(Context context, String message) {
 		if (mToast != null) {
@@ -185,6 +197,7 @@ public class Alert {
 		}
 
 		mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+		mToast.setDuration(100);
 		mToast.show();
 		return true;
 	}
