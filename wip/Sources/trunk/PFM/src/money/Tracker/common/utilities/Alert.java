@@ -17,6 +17,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
@@ -26,6 +27,8 @@ public class Alert {
 	private Toast mToast;
 	private AlertDialog mAlertDialog;
 	private boolean mIsRunRemind;
+	private boolean mIsToasting;
+	private String mLastToastMessage;
 
 	public static Alert getInstance() {
 		if (sInstance == null) {
@@ -192,13 +195,23 @@ public class Alert {
 	 * @return Result of showing message.
 	 */
 	public boolean show(Context context, String message) {
-		if (mToast != null) {
+		if (mToast != null && mIsToasting && message.equals(mLastToastMessage)) {
 			mToast.cancel();
+			return false;
 		}
 
+		mIsToasting = true;
 		mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		mToast.setDuration(100);
 		mToast.show();
+		mIsToasting = true;
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			public void run() {
+				mIsToasting = false;
+			}
+		}, 2000);
+
 		return true;
 	}
 }
