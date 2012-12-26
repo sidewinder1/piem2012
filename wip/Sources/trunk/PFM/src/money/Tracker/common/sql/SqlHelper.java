@@ -1,7 +1,7 @@
 package money.Tracker.common.sql;
 
+import java.util.ArrayList;
 import java.util.Locale;
-
 import money.Tracker.common.utilities.AccountProvider;
 import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
@@ -15,7 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 /**
  * @author Kaminari.hp
- *
+ * 
  */
 public class SqlHelper {
 	public static SqlHelper instance;
@@ -24,6 +24,7 @@ public class SqlHelper {
 
 	/**
 	 * The constructor of class
+	 * 
 	 * @param context
 	 */
 	public SqlHelper(Context context) {
@@ -32,14 +33,14 @@ public class SqlHelper {
 	}
 
 	/**
-	 * This method is used to create a table with specified name and
-	 * column information if this table doesn’t exist.
+	 * This method is used to create a table with specified name and column
+	 * information if this table doesn’t exist.
+	 * 
 	 * @param tableName
-	 * The name of table that is created.
+	 *            The name of table that is created.
 	 * @param columnsInfo
-	 * The information of columns including
-	 * @return
-	 * A boolean that whether creation is successful or not.
+	 *            The information of columns including
+	 * @return A boolean that whether creation is successful or not.
 	 */
 	public boolean createTable(String tableName, String columnsInfo) {
 		try {
@@ -103,16 +104,16 @@ public class SqlHelper {
 
 	/**
 	 * Update a record to database with:
+	 * 
 	 * @param tableName
-	 * The name of table that has the record needs to update data.
+	 *            The name of table that has the record needs to update data.
 	 * @param columns
-	 * The name of columns need to update data.
+	 *            The name of columns need to update data.
 	 * @param newValues
-	 * New values match name of above columns.
+	 *            New values match name of above columns.
 	 * @param whereCondition
-	 * Where condition to select satisfied record.
-	 * @return
-	 * The number of rows affected. 
+	 *            Where condition to select satisfied record.
+	 * @return The number of rows affected.
 	 */
 	public int update(String tableName, String[] columns, String[] newValues,
 			String whereCondition) {
@@ -151,15 +152,14 @@ public class SqlHelper {
 		}
 	}
 
-	
 	/**
 	 * Mark a record as deleted.
+	 * 
 	 * @param tableName
-	 * The table name contains record need to delete.
+	 *            The table name contains record need to delete.
 	 * @param whereCondition
-	 * Where condition.
-	 * @return
-	 * True if marking is successful, else return false.
+	 *            Where condition.
+	 * @return True if marking is successful, else return false.
 	 */
 	public boolean delete(String tableName, String whereCondition) {
 		ContentValues newValueContent = new ContentValues();
@@ -195,15 +195,14 @@ public class SqlHelper {
 		return true;
 	}
 
-	
 	/**
 	 * Completely delete a record in table.
+	 * 
 	 * @param tableName
-	 * The table name contains record need to delete.
+	 *            The table name contains record need to delete.
 	 * @param whereCondition
-	 * Where condition.
-	 * @return
-	 * True if deleting is successful, else return false.
+	 *            Where condition.
+	 * @return True if deleting is successful, else return false.
 	 */
 	public boolean deepDelete(String tableName, String whereCondition) {
 		StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName)
@@ -217,13 +216,12 @@ public class SqlHelper {
 		return true;
 	}
 
-	
 	/**
 	 * Delete a table
+	 * 
 	 * @param tableName
-	 * Table name that is deleted.
-	 * @return
-	 * True if marking is successful, else return false.
+	 *            Table name that is deleted.
+	 * @return True if marking is successful, else return false.
 	 */
 	public boolean drop(String tableName) {
 		try {
@@ -237,10 +235,10 @@ public class SqlHelper {
 
 	/**
 	 * Run a SQL statement.
+	 * 
 	 * @param sqlStatement
-	 * The SQL statement.
-	 * @return
-	 * A Cursor for read data from database.
+	 *            The SQL statement.
+	 * @return A Cursor for read data from database.
 	 */
 	public Cursor query(String sqlStatement) {
 		Cursor cursor = null;
@@ -285,14 +283,14 @@ public class SqlHelper {
 
 	/**
 	 * Select a record in a table with specified condition.
+	 * 
 	 * @param tableName
-	 * Name of table contains records.
+	 *            Name of table contains records.
 	 * @param selectedColumns
-	 * Name of columns that are selected.
+	 *            Name of columns that are selected.
 	 * @param whereCondition
-	 * Condition for selecting.
-	 * @return
-	 * A Cursor to read data from database.
+	 *            Condition for selecting.
+	 * @return A Cursor to read data from database.
 	 */
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition) {
@@ -301,16 +299,17 @@ public class SqlHelper {
 
 	/**
 	 * Select a record in a table with specified condition.
+	 * 
 	 * @param tableName
-	 * Name of table contains records.
+	 *            Name of table contains records.
 	 * @param selectedColumns
-	 * Name of columns that are selected.
+	 *            Name of columns that are selected.
 	 * @param whereCondition
-	 * Condition for selecting.
+	 *            Condition for selecting.
 	 * @param includeDeletedRecords
-	 * Select all records or ignore records that are marked as deleted.
-	 * @return
-	 * A Cursor to read data from database.
+	 *            Select all records or ignore records that are marked as
+	 *            deleted.
+	 * @return A Cursor to read data from database.
 	 */
 	public Cursor select(String tableName, String selectedColumns,
 			String whereCondition, boolean includeDeletedRecords) {
@@ -345,7 +344,47 @@ public class SqlHelper {
 		return cursor;
 	}
 
-	
+	public Cursor query(String table, String[] columns, String selection,
+			ArrayList<String> selectionArgs, String groupBy, String having,
+			String orderBy) {
+		String whereForAppInfo = "";
+
+		try {
+			if (!"AppInfo".equals(table)) {
+				whereForAppInfo = new StringBuilder(
+						" AND (UserName= ? OR UserName = ?)").toString();
+				selectionArgs.add(0, AccountProvider.getInstance()
+						.getCurrentAccount().name);
+				selectionArgs.add(0, "GlobalAccount");
+			}
+
+			if (selection != null && !"".equals(selection)) {
+				selection = new StringBuilder("IsDeleted").append(" = ? ")
+						.append(whereForAppInfo).append(" AND ")
+						.append(selection).toString();
+				selectionArgs.add(0, "0");
+			} else {
+				selection = new StringBuilder("IsDeleted").append(" = ? ")
+						.append(whereForAppInfo).toString();
+				selectionArgs.add(0, "0");
+			}
+		} catch (Exception e) {
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
+		}
+
+		Cursor cursor = null;
+		String[] newSelectionArgs =  new String[selectionArgs.size()];;
+		try {
+			cursor = currentDb.query(table, columns, selection,
+					selectionArgs.toArray(newSelectionArgs), groupBy, having,
+					orderBy);
+		} catch (Exception e) {
+			Logger.Log("Exception: " + e.getMessage(), "SQLHelper");
+		}
+
+		return cursor;
+	}
+
 	/**
 	 * Delete all tables in database.
 	 */
