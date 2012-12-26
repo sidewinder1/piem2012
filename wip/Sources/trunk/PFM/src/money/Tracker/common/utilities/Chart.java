@@ -273,7 +273,7 @@ public class Chart extends AbstractChart {
 		
 		if(yMax > 1000 || yMax == 1000)
 		{
-			yMax = yMax + yMax / 10;
+			yMax = yMax + yMax / 2;
 		}
 
 		List<double[]> values = new ArrayList<double[]>();
