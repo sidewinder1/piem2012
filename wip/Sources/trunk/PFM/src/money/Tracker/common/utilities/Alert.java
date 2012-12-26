@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.widget.Toast;
 
 public class Alert {
@@ -66,41 +67,42 @@ public class Alert {
 		new Thread(new Runnable() {
 			public void run() {
 				while (mIsRunRemind) {
-					Context context = PfmApplication.getAppContext();
-					NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-							context).setSmallIcon(R.drawable.report)
-							.setAutoCancel(true).setContentTitle(title)
-							.setContentText(message);
-
-					// Creates an explicit intent for an Activity in your app.
-					Intent resultIntent = new Intent(context, activity);
-					TaskStackBuilder stackBuilder = TaskStackBuilder
-							.create(context);
-					stackBuilder.addParentStack(HomeActivity.class);
-					stackBuilder.addNextIntent(resultIntent);
-					PendingIntent resultPendingIntent = stackBuilder
-							.getPendingIntent(0,
-									PendingIntent.FLAG_UPDATE_CURRENT);
-
-					mBuilder.setContentIntent(resultPendingIntent).setDefaults(
-							Notification.DEFAULT_VIBRATE);
-					NotificationManager mNotificationManager = (NotificationManager) context
-							.getSystemService(Context.NOTIFICATION_SERVICE);
-
-					if (useDefaultRing) {
-						mBuilder.setDefaults(Notification.DEFAULT_SOUND);
-					} else {
-						if (notifyRing != null) {
-							mBuilder.setSound(notifyRing,
-									AudioManager.STREAM_MUSIC);
-						} else {
-							mBuilder.setSound(null);
-						}
-					}
-					// mId allows you to update the notification later on.
-					mNotificationManager.notify(notifyId, mBuilder.build());
-
 					try {
+						Context context = PfmApplication.getAppContext();
+						NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+								context).setSmallIcon(R.drawable.report)
+								.setAutoCancel(true).setContentTitle(title)
+								.setContentText(message);
+
+						// Creates an explicit intent for an Activity in your
+						// app.
+						Intent resultIntent = new Intent(context, activity);
+						TaskStackBuilder stackBuilder = TaskStackBuilder
+								.create(context);
+						stackBuilder.addParentStack(HomeActivity.class);
+						stackBuilder.addNextIntent(resultIntent);
+						PendingIntent resultPendingIntent = stackBuilder
+								.getPendingIntent(0,
+										PendingIntent.FLAG_UPDATE_CURRENT);
+
+						mBuilder.setContentIntent(resultPendingIntent)
+								.setDefaults(Notification.DEFAULT_VIBRATE);
+						NotificationManager mNotificationManager = (NotificationManager) context
+								.getSystemService(Context.NOTIFICATION_SERVICE);
+
+						if (useDefaultRing) {
+							mBuilder.setDefaults(Notification.DEFAULT_SOUND);
+						} else {
+							if (notifyRing != null) {
+								mBuilder.setSound(notifyRing,
+										AudioManager.STREAM_MUSIC);
+							} else {
+								mBuilder.setSound(null);
+							}
+						}
+						// mId allows you to update the notification later on.
+						mNotificationManager.notify(notifyId, mBuilder.build());
+
 						MediaPlayer player = new MediaPlayer();
 						player.setDataSource(
 								PfmApplication.getAppContext(),
@@ -108,7 +110,9 @@ public class Alert {
 										.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 										: notifyRing);
 						player.prepare();
-
+						Log.d("Locnd01006",
+								(timeRemindInSeconds * 1000 + player
+										.getDuration()) + "");
 						Thread.sleep(timeRemindInSeconds * 1000
 								+ player.getDuration());
 					} catch (InterruptedException e) {

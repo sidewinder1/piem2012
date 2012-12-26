@@ -167,26 +167,30 @@ public class PfmApplication extends Application {
 	private static Thread warningTimer = new Thread(new Runnable() {
 		public void run() {
 			// Looper.prepare();
-			try {
-				while (true) {
-					Cursor time = SqlHelper.instance.select(
-							"AppInfo",
-							"BorrowWarn, BorrowRing, BorrowRemind",
-							new StringBuilder("UserName='")
-									.append(AccountProvider.getInstance()
-											.getCurrentAccount().name)
-									.append("'").toString());
+			while (true) {
+				try {
+					ArrayList<String> selectionList = new ArrayList<String>();
+					selectionList.add(AccountProvider.getInstance()
+							.getCurrentAccount().name);
+					Cursor time = SqlHelper.instance.query("AppInfo",
+							new String[] { "BorrowWarn", "BorrowRing",
+									"BorrowRemind" }, new StringBuilder(
+									"UserName= ?").toString(), selectionList,
+							null, null, null);
 					if (time != null && time.moveToFirst()) {
 						int longTime = Integer.parseInt(time.getString(0));
+						ArrayList<String> borrowSelectionList = new ArrayList<String>();
+						borrowSelectionList.add(Converter
+								.toString(DateTimeHelper.addHours(
+										DateTimeHelper.now(false), longTime)));
+						Cursor checkBorrow = SqlHelper.instance.query(
+								"BorrowLend", new String[] { "Expired_date",
+										"Person_name", "Id" },
+								"Expired_date= ? ", borrowSelectionList, null,
+								null, null);
 
-						Cursor checkBorrow = SqlHelper.instance.select(
-								"BorrowLend",
-								"Expired_date, Person_name, Id",
-								"Expired_date='"
-										+ Converter.toString(DateTimeHelper
-												.addHours(DateTimeHelper
-														.now(false), longTime))
-										+ "'");
+						Log.d("Locnd01006", Converter.toString(DateTimeHelper
+								.addHours(DateTimeHelper.now(false), longTime)));
 
 						if (checkBorrow != null && checkBorrow.moveToFirst()) {
 							HomeActivity.sCurrentTab = 2;
@@ -208,9 +212,9 @@ public class PfmApplication extends Application {
 
 					time.close();
 					Thread.sleep(1 * 500);
+				} catch (Exception e) {
+					Logger.Log(e.getMessage(), "PfmApplication");
 				}
-			} catch (Exception e) {
-				Logger.Log(e.getMessage(), "PfmApplication");
 			}
 		}
 	});
