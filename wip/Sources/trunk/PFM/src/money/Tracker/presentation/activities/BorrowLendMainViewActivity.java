@@ -13,6 +13,10 @@ import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
 public class BorrowLendMainViewActivity extends TabActivity {
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.borrow_lend_main_view);
@@ -20,12 +24,12 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		TabHost mTabHost = getTabHost();
 //		mTabHost.getTabWidget().setDividerDrawable(R.drawable.divider);
 
-		// Create tab and intent for schedule.
+		// Create tab and intent for borrowing view.
 		Intent borrowViewIntent = new Intent(this, BorrowLendViewActivity.class);
 		borrowViewIntent.putExtra("Borrow", true);
 		setupTab(borrowViewIntent, getResources().getString(R.string.borrowing_title), mTabHost);
 
-		// Create tab and intent for Borrowing and Lending.
+		// Create tab and intent for lending view
 		Intent lendViewIntent = new Intent(this, BorrowLendViewActivity.class);
 		lendViewIntent.putExtra("Borrow", false);
 		setupTab(lendViewIntent, getResources().getString(R.string.lending_tilte), mTabHost);
@@ -43,7 +47,9 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		});
 	}
 
-	// This method is used to setup a tab with Name tab and content of tab.
+	/**
+	 * This method is used to setup a tab with Name tab and content of tab.
+	 */
 	private void setupTab(final Intent intent, final String tag,
 			TabHost mTabHost) {
 		View tabview = createTabView(mTabHost.getContext(), tag);
@@ -51,11 +57,17 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		setContent.setContent(intent);
 		mTabHost.addTab(setContent);
 	}
-
-	// Create tab view.
+	
+	/**
+	 * Create tab view.
+	 * @param context
+	 * 			parent context
+	 * @param text
+	 * 			title of tab
+	 * @return a view
+	 */
 	private static View createTabView(final Context context, final String text) {
-		View view = LayoutInflater.from(context)
-				.inflate(R.layout.tabs_bg, null);
+		View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
 		TextView tv = (TextView) view.findViewById(R.id.tabsText);
 		tv.setText(text);
 		return view;
@@ -66,8 +78,4 @@ public class BorrowLendMainViewActivity extends TabActivity {
 		getMenuInflater().inflate(R.menu.home_activity, menu);
 		return true;
 	}
-
-	public void navigateToView() {
-			return;
-		}
 }

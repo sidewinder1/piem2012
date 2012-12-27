@@ -29,13 +29,13 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class ReportViewActivity extends Activity {
 
-	private boolean checkMonthly;
-	private TextView displayNoReportDataText;
-	private LinearLayout reportListView;
-	private int checked = 0;
-	private List<Date[]> dateList;
-	private LinearLayout barChartListDate;
-	private boolean hasData = false;
+	private boolean mCheckMonthly;
+	private TextView mDisplayNoReportDataText;
+	private LinearLayout mReportListView;
+	private int mChecked = 0;
+	private List<Date[]> mDateList;
+	private LinearLayout mBarChartListDate;
+	private boolean mHasData = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,15 +56,15 @@ public class ReportViewActivity extends Activity {
 
 	private void bindData() {
 		Bundle extras = getIntent().getExtras();
-		checkMonthly = extras.getBoolean("Monthly");
-		displayNoReportDataText = (TextView) findViewById(R.id.no_report_data);
-		reportListView = (LinearLayout) findViewById(R.id.report_view_list_view);
-		reportListView.removeAllViews();
-		displayNoReportDataText.setVisibility(View.VISIBLE);
-		if (checkMonthly) {
+		mCheckMonthly = extras.getBoolean("Monthly");
+		mDisplayNoReportDataText = (TextView) findViewById(R.id.no_report_data);
+		mReportListView = (LinearLayout) findViewById(R.id.report_view_list_view);
+		mReportListView.removeAllViews();
+		mDisplayNoReportDataText.setVisibility(View.VISIBLE);
+		if (mCheckMonthly) {
 			Cursor monthlyEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
 			if (monthlyEntry != null && monthlyEntry.moveToFirst()) {
-				displayNoReportDataText.setVisibility(View.GONE);
+				mDisplayNoReportDataText.setVisibility(View.GONE);
 				do {
 					String month = monthlyEntry.getString(monthlyEntry.getColumnIndex("monthEntry"));
 					String year = monthlyEntry.getString(monthlyEntry.getColumnIndex("yearEntry"));
@@ -107,8 +107,8 @@ public class ReportViewActivity extends Activity {
 					}
 
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-					ReportViewItem monthReportViewItem = new ReportViewItem(this.getApplicationContext(), startDate, endDate, checkMonthly);
-					reportListView.addView(monthReportViewItem, params);
+					ReportViewItem monthReportViewItem = new ReportViewItem(this.getApplicationContext(), startDate, endDate, mCheckMonthly);
+					mReportListView.addView(monthReportViewItem, params);
 
 					final Date sDate = startDate;
 					final Date eDate = endDate;
@@ -116,7 +116,7 @@ public class ReportViewActivity extends Activity {
 
 								public void onClick(View v) {
 									// TODO Auto-generated method stub
-									onItemClick(checkMonthly, sDate, eDate);
+									onItemClick(mCheckMonthly, sDate, eDate);
 								}
 							});
 
@@ -125,7 +125,7 @@ public class ReportViewActivity extends Activity {
 		} else {
 			Cursor weekEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%W', Date) as weekEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%W', Date) DESC");
 			if (weekEntry != null && weekEntry.moveToFirst()) {
-				displayNoReportDataText.setVisibility(View.GONE);
+				mDisplayNoReportDataText.setVisibility(View.GONE);
 				do {
 					String week = weekEntry.getString(weekEntry.getColumnIndex("weekEntry"));
 					String year = weekEntry.getString(weekEntry.getColumnIndex("yearEntry"));
@@ -167,15 +167,15 @@ public class ReportViewActivity extends Activity {
 					endDate = DateTimeHelper.getLastDayOfWeek(startDate);
 
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-					ReportViewItem weekReportViewItem = new ReportViewItem(this, startDate, endDate, checkMonthly);
-					reportListView.addView(weekReportViewItem, params);
+					ReportViewItem weekReportViewItem = new ReportViewItem(this, startDate, endDate, mCheckMonthly);
+					mReportListView.addView(weekReportViewItem, params);
 
 					final Date sDate = startDate;
 					final Date eDate = endDate;
 					weekReportViewItem.setOnClickListener(new OnClickListener() {
 								public void onClick(View v) {
 									// TODO Auto-generated method stub
-									onItemClick(checkMonthly, sDate, eDate);
+									onItemClick(mCheckMonthly, sDate, eDate);
 								}
 							});
 
@@ -194,7 +194,7 @@ public class ReportViewActivity extends Activity {
 		final RadioButton reportInMonthWeekCheckBox = (RadioButton) dialog.findViewById(R.id.report_in_month_week_checkbox);
 		final RadioButton reportBetweenMonthWeekCheckBox = (RadioButton) dialog.findViewById(R.id.report_betwwen_month_week_checkbox);
 
-		if (checkMonthly) {
+		if (mCheckMonthly) {
 			reportBetweenMonthWeekCheckBox.setText(R.string.report_between_month);
 			reportInMonthWeekCheckBox.setText(R.string.report_in_month);
 		} else {
@@ -221,7 +221,7 @@ public class ReportViewActivity extends Activity {
 							boolean isChecked) {
 						// TODO Auto-generated method stub
 						if (isChecked) {
-							checked = 1;
+							mChecked = 1;
 						}
 					}
 				});
@@ -232,7 +232,7 @@ public class ReportViewActivity extends Activity {
 							boolean isChecked) {
 						// TODO Auto-generated method stub
 						if (isChecked) {
-							checked = 2;
+							mChecked = 2;
 						}
 					}
 				});
@@ -242,7 +242,7 @@ public class ReportViewActivity extends Activity {
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				checked = 0;
+				mChecked = 0;
 				dialog.dismiss();
 			}
 		});
@@ -250,7 +250,7 @@ public class ReportViewActivity extends Activity {
 		okButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				switch (checked) {
+				switch (mChecked) {
 				case 1:
 					Intent pieChart = new Intent(getParent(), ReportViewPieChartActivity.class);
 					pieChart.putExtra("checkMonthly", checkMonth);
@@ -258,14 +258,14 @@ public class ReportViewActivity extends Activity {
 					pieChart.putExtra("end_date", Converter.toString(eDate));
 					startActivity(pieChart);
 
-					checked = 0;
+					mChecked = 0;
 					dialog.dismiss();
 
 					break;
 
 				case 2:
-					dateList = new ArrayList<Date[]>();
-					dateList.add(new Date[] { sDate, eDate });
+					mDateList = new ArrayList<Date[]>();
+					mDateList.add(new Date[] { sDate, eDate });
 
 					final Dialog compareDialog = new Dialog(getParent(),R.style.CustomDialogTheme);
 					compareDialog.setContentView(R.layout.report_view_chart_compare_custom_dialog);
@@ -275,8 +275,8 @@ public class ReportViewActivity extends Activity {
 					else
 						title.setText(getResources().getString(R.string.report_bar_chart_week_title));
 
-					barChartListDate = (LinearLayout) compareDialog.findViewById(R.id.report_compare_custom_dialog_list_date_view);
-					barChartListDate.removeAllViews();
+					mBarChartListDate = (LinearLayout) compareDialog.findViewById(R.id.report_compare_custom_dialog_list_date_view);
+					mBarChartListDate.removeAllViews();
 					final Button okButton = (Button) compareDialog.findViewById(R.id.report_compare_custom_dialog_ok_button);
 					okButton.setVisibility(View.GONE);
 					bindDataCustomItemView(false, sDate, eDate, okButton);
@@ -285,9 +285,9 @@ public class ReportViewActivity extends Activity {
 					cancelButton.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							int size = dateList.size();
+							int size = mDateList.size();
 							for (int i = 1; i < size; i++) {
-								dateList.remove(1);
+								mDateList.remove(1);
 							}
 
 							compareDialog.dismiss();
@@ -298,16 +298,16 @@ public class ReportViewActivity extends Activity {
 							// TODO Auto-generated method stub
 							Intent barChartIntent = new Intent(ReportViewActivity.this, ReportViewBarChartActivity.class);
 
-							int size = dateList.size();
+							int size = mDateList.size();
 							barChartIntent.putExtra("Size_List", size);
 							barChartIntent.putExtra("checkMonthly", checkMonth);
 							for (int i = 0; i < size; i++) {
-								Date[] compareDate = dateList.get(i);
+								Date[] compareDate = mDateList.get(i);
 								barChartIntent.putExtra("start_date_" + i, Converter.toString(compareDate[0]));
 								barChartIntent.putExtra("end_date_" + i, Converter.toString(compareDate[1]));
 							}
 							for (int i = 1; i < size; i++) {
-								dateList.remove(1);
+								mDateList.remove(1);
 							}
 
 							startActivity(barChartIntent);
@@ -318,13 +318,13 @@ public class ReportViewActivity extends Activity {
 					final CheckBox checkAllCheckBox = (CheckBox) compareDialog.findViewById(R.id.compare_report_dialog_select_all);
 					checkAllCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 								public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-									int size = dateList.size();
+									int size = mDateList.size();
 
 									for (int i = 1; i < size; i++) {
-										dateList.remove(1);
+										mDateList.remove(1);
 									}
 
-									barChartListDate.removeAllViews();
+									mBarChartListDate.removeAllViews();
 									bindDataCustomItemView(isChecked, sDate,eDate, okButton);
 									
 									if (isChecked)
@@ -337,20 +337,20 @@ public class ReportViewActivity extends Activity {
 								}
 							});
 
-					if (hasData)
+					if (mHasData)
 						compareDialog.show();
 					else {
 						Alert alert = new Alert();
 						alert.show(ReportViewActivity.this, getResources().getString(R.string.report_no_data_compare_date));
 					}
 
-					checked = 0;
+					mChecked = 0;
 					dialog.dismiss();
 
 					break;
 
 				default:
-					checked = 0;
+					mChecked = 0;
 					dialog.dismiss();
 					break;
 				}
@@ -360,7 +360,7 @@ public class ReportViewActivity extends Activity {
 	}
 
 	private void bindDataCustomItemView(boolean check, Date _startDate, Date _endDate, Button okButton) {
-		if (checkMonthly) {
+		if (mCheckMonthly) {
 			Cursor monthlyEntry = SqlHelper.instance.select("Entry", "DISTINCT strftime('%m', Date) as monthEntry, strftime('%Y', Date) as yearEntry", "1=1 order by strftime('%Y', Date) DESC, strftime('%m', Date) DESC");
 			if (monthlyEntry != null) {
 				if (monthlyEntry.moveToFirst()) {
@@ -409,8 +409,8 @@ public class ReportViewActivity extends Activity {
 
 						if (startDate != null) {
 							LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-							barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonthly, startDate, endDate, dateList, check, okButton), params);
-							hasData = true;
+							mBarChartListDate.addView(new ReportCustomDialogViewItem(this, mCheckMonthly, startDate, endDate, mDateList, check, okButton), params);
+							mHasData = true;
 						}
 
 					} while (monthlyEntry.moveToNext());
@@ -470,8 +470,8 @@ public class ReportViewActivity extends Activity {
 						endDate = DateTimeHelper.getLastDayOfWeek(startDate);						
 
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-						barChartListDate.addView(new ReportCustomDialogViewItem(this, checkMonthly, startDate, endDate, dateList, check, okButton), params);
-						hasData = true;
+						mBarChartListDate.addView(new ReportCustomDialogViewItem(this, mCheckMonthly, startDate, endDate, mDateList, check, okButton), params);
+						mHasData = true;
 					}
 				} while (weekEntry.moveToNext());
 			}

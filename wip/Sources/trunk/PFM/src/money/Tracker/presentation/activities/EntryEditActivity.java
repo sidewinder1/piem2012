@@ -193,38 +193,23 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				if (_result.length > 2 || _result.length == 2) {
 
 					String nameProduct = "";
-					if (_result[0].length() > 14
-							&& (_result[0].contains("Tên sản phẩm: ")
-									|| _result[0].contains("Ten san pham: ") || _result[0]
-										.contains("Name: "))) {
-						if (_result[0].contains("Tên sản phẩm: ")
-								|| _result[0].contains("Ten san pham: "))
+					if (_result[0].length() > 14 && (_result[0].contains("Tên sản phẩm: ") || _result[0].contains("Ten san pham: ") || _result[0].contains("Name: "))) {
+						if (_result[0].contains("Tên sản phẩm: ") || _result[0].contains("Ten san pham: "))
 							nameProduct = _result[0].substring(14);
 						else
 							nameProduct = _result[0].substring(6);
 					}
 
 					String price = "";
-					if (_result[1].length() > 8
-							&& (_result[1].contains("Giá: ")
-									|| _result[1].contains("Gia: ") || _result[1]
-										.contains("Price: "))) {
+					if (_result[1].length() > 8 && (_result[1].contains("Giá: ") || _result[1].contains("Gia: ") || _result[1].contains("Price: "))) {
 						if (_result[1].contains("Giá: ")
 								|| _result[1].contains("Gia: ")) {
 							if (_result[1].contains("VND"))
-								price = _result[1].substring(5,
-										_result[1].length() - 3).replace(".",
-										"");
+								price = _result[1].substring(5, _result[1].length() - 3).replace(".", "");
 							else
-								price = _result[1].substring(5)
-										.replace(".", "");
+								price = _result[1].substring(5).replace(".", "");
 						} else {
-							price = _result[1]
-									.substring(7)
-									.replace(".", "")
-									.replaceAll(
-											"(V|v)(N|n)(D|d)|(u|U)(S|s)(D|d)",
-											"");
+							price = _result[1].substring(7).replace(".", "").replaceAll("(V|v)(N|n)(D|d)|(u|U)(S|s)(D|d)", "");
 						}
 					}
 
@@ -234,21 +219,17 @@ public class EntryEditActivity extends NfcDetectorActivity {
 						try {
 							entryDetail.setEntry_id(1);
 							entryDetail.setName(nameProduct);
-							entryDetail
-									.setMoney(Converter.toLong(price.trim()));
+							entryDetail.setMoney(Converter.toLong(price.trim()));
 						} catch (Exception e) {
 
 						}
 
 						ArrayList<EntryDetail> dataEntryDetail = new ArrayList<EntryDetail>();
 						dataEntryDetail.add(entryDetail);
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LayoutParams.FILL_PARENT,
-								LayoutParams.WRAP_CONTENT);
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 						for (int index = 0; index < mEntryList.getChildCount(); index++) {
-							EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
-									.getChildAt(index);
+							EntryEditCategoryView item = (EntryEditCategoryView) mEntryList.getChildAt(index);
 
 							if (item != null) {
 								if (item.checkEmptyCatagory()) {
@@ -257,8 +238,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 							}
 						}
 
-						mEntryList.addView(new EntryEditCategoryView(this,
-								dataEntryDetail), params);
+						mEntryList.addView(new EntryEditCategoryView(this, dataEntryDetail), params);
 						// txtScanResult.setText(result);
 					}
 				}

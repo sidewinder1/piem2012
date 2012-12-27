@@ -16,14 +16,14 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class ReportViewPieChartActivity extends BaseActivity {
 
-	private Date startDate;
-	private Date endDate;
-	private boolean checkMonthly;
-	private long totalExpense = 0;
-	private List<String> entryCategoryName;
-	private List<Long> entryCategoryValue;
-	private List<String> entryCategoryColor;
-	private List<Long> categoryIDList;
+	private Date mStartDate;
+	private Date mEndDate;
+	private boolean mCheckMonthly;
+	private long mTotalExpense = 0;
+	private List<String> mEntryCategoryName;
+	private List<Long> mEntryCategoryValue;
+	private List<String> mEntryCategoryColor;
+	private List<Long> mCategoryIDList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,47 +31,47 @@ public class ReportViewPieChartActivity extends BaseActivity {
 		setContentView(R.layout.activity_report_view_pie_chart);
 
 		Bundle extras = getIntent().getExtras();
-		checkMonthly = extras.getBoolean("checkMonthly");
-		startDate = Converter.toDate(extras.getString("start_date"));
-		endDate = Converter.toDate(extras.getString("end_date"));
+		mCheckMonthly = extras.getBoolean("checkMonthly");
+		mStartDate = Converter.toDate(extras.getString("start_date"));
+		mEndDate = Converter.toDate(extras.getString("end_date"));
 		
-		entryCategoryName = new ArrayList<String>();
-		entryCategoryValue = new ArrayList<Long>();
-		entryCategoryColor = new ArrayList<String>();
-		categoryIDList = new ArrayList<Long>();
+		mEntryCategoryName = new ArrayList<String>();
+		mEntryCategoryValue = new ArrayList<Long>();
+		mEntryCategoryColor = new ArrayList<String>();
+		mCategoryIDList = new ArrayList<Long>();
 		
 		LinearLayout pieChart = (LinearLayout) findViewById(R.id.report_pie_chart);
 		TextView totalMoneyTextView = (TextView) findViewById(R.id.report_pie_chart_total_money);
 		LinearLayout pieChartLegend = (LinearLayout) findViewById(R.id.report_pie_chart_legend);
 		TextView titlePieChart = (TextView) findViewById(R.id.report_pie_chart_title_text_view);
 		
-		if (checkMonthly)
-			titlePieChart.setText(getResources().getString(R.string.report_in_month) + " " + Converter.toString(startDate, "MM"));
+		if (mCheckMonthly)
+			titlePieChart.setText(getResources().getString(R.string.report_in_month) + " " + Converter.toString(mStartDate, "MM"));
 		else
 		{
 			//titlePieChart.setText(getResources().getString(R.string.report_in_week) + " " + new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
-			titlePieChart.setText(new StringBuilder(Converter.toString(startDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(endDate, "dd/MM/yyyy")));
+			titlePieChart.setText(new StringBuilder(Converter.toString(mStartDate, "dd/MM/yyyy")).append(" - ").append(Converter.toString(mEndDate, "dd/MM/yyyy")));
 			//titlePieChart.setTextSize(15);
 		}
 
 		getData();
-		totalMoneyTextView.setText(Converter.toString(totalExpense));
+		totalMoneyTextView.setText(Converter.toString(mTotalExpense));
 	
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		Chart chart = new Chart();
-		pieChart.addView(chart.getPieIntent(this.getApplicationContext(), checkMonthly, startDate, endDate), params);
+		pieChart.addView(chart.getPieIntent(this.getApplicationContext(), mCheckMonthly, mStartDate, mEndDate), params);
 		
-		for(int i = 0; i < entryCategoryColor.size(); i++)
+		for(int i = 0; i < mEntryCategoryColor.size(); i++)
 		{
 			LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			Log.d("Check pie chart legend detail", entryCategoryColor.get(i));
-			Log.d("Check pie chart legend detail", entryCategoryName.get(i));
-			Log.d("Check pie chart legend detail", "" + entryCategoryValue.get(i));
-			Log.d("Check pie chart legend detail", "" + totalExpense); 
-			Log.d("Check pie chart legend detail", "" + categoryIDList.get(i));
-			Log.d("Check pie chart legend detail", String.valueOf(startDate));
-			Log.d("Check pie chart legend detail", String.valueOf(endDate));
-			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), entryCategoryColor.get(i), entryCategoryName.get(i), entryCategoryValue.get(i), totalExpense, categoryIDList.get(i), startDate, endDate), params1);
+			Log.d("Check pie chart legend detail", mEntryCategoryColor.get(i));
+			Log.d("Check pie chart legend detail", mEntryCategoryName.get(i));
+			Log.d("Check pie chart legend detail", "" + mEntryCategoryValue.get(i));
+			Log.d("Check pie chart legend detail", "" + mTotalExpense); 
+			Log.d("Check pie chart legend detail", "" + mCategoryIDList.get(i));
+			Log.d("Check pie chart legend detail", String.valueOf(mStartDate));
+			Log.d("Check pie chart legend detail", String.valueOf(mEndDate));
+			pieChartLegend.addView(new ReportPieCategoryLegendItemView(this.getApplicationContext(), mEntryCategoryColor.get(i), mEntryCategoryName.get(i), mEntryCategoryValue.get(i), mTotalExpense, mCategoryIDList.get(i), mStartDate, mEndDate), params1);
 		}
 	}
 	
@@ -83,10 +83,10 @@ public class ReportViewPieChartActivity extends BaseActivity {
 					long id = entryExpenseCursor.getLong(entryExpenseCursor.getColumnIndex("Id"));
 					Date entryDate = Converter.toDate(entryExpenseCursor.getString(entryExpenseCursor.getColumnIndex("Date")));
 					
-					Log.d("Check pie chart legend", String.valueOf(entryDate) + " - " + String.valueOf(startDate) + " - " + String.valueOf(endDate));
-					if (entryDate.compareTo(startDate) > 0 && entryDate.compareTo(endDate) < 0
-							|| entryDate.compareTo(startDate) == 0
-							|| entryDate.compareTo(endDate) == 0) {
+					Log.d("Check pie chart legend", String.valueOf(entryDate) + " - " + String.valueOf(mStartDate) + " - " + String.valueOf(mEndDate));
+					if (entryDate.compareTo(mStartDate) > 0 && entryDate.compareTo(mEndDate) < 0
+							|| entryDate.compareTo(mStartDate) == 0
+							|| entryDate.compareTo(mEndDate) == 0) {
 						Cursor entryDetailCursor = SqlHelper.instance.select("EntryDetail", "Category_Id, sum(Money) as Total", "Entry_Id=" + id + " group by Category_Id");
 						if (entryDetailCursor != null) {
 							if (entryDetailCursor.moveToFirst()) {
@@ -109,32 +109,32 @@ public class ReportViewPieChartActivity extends BaseActivity {
 									value = entryDetailCursor.getLong(entryDetailCursor.getColumnIndex("Total"));
 									
 									Log.d("Check pie chart legend", categoryID + " - " + name + " - " + value + " - " + color);
-									if (!entryCategoryName.isEmpty()) {
+									if (!mEntryCategoryName.isEmpty()) {
 
 										boolean check = false;
 
-										for (int i = 0; i < entryCategoryName.size(); i++) {
-											if (entryCategoryName.get(i).equals(name)) {
-												entryCategoryValue.set(i, entryCategoryValue.get(i) + value);
+										for (int i = 0; i < mEntryCategoryName.size(); i++) {
+											if (mEntryCategoryName.get(i).equals(name)) {
+												mEntryCategoryValue.set(i, mEntryCategoryValue.get(i) + value);
 												check = true;
 											}
 										}
 
 										if (check == false) {
-											categoryIDList.add(categoryID);
-											entryCategoryName.add(name);
-											entryCategoryValue.add(value);
-											entryCategoryColor.add(color);
+											mCategoryIDList.add(categoryID);
+											mEntryCategoryName.add(name);
+											mEntryCategoryValue.add(value);
+											mEntryCategoryColor.add(color);
 										}
 
 									} else {
-										categoryIDList.add(categoryID);
-										entryCategoryName.add(name);
-										entryCategoryValue.add(value);
-										entryCategoryColor.add(color);
+										mCategoryIDList.add(categoryID);
+										mEntryCategoryName.add(name);
+										mEntryCategoryValue.add(value);
+										mEntryCategoryColor.add(color);
 									}
 									
-									totalExpense += value;
+									mTotalExpense += value;
 
 								} while (entryDetailCursor.moveToNext());
 							}

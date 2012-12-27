@@ -29,58 +29,65 @@ import android.widget.TextView;
 import money.Tracker.presentation.activities.BorrowLendViewDetailActivity;
 
 public class BorrowLendViewActivity extends Activity {
-	private TextView displayText;
-	private ListView borrowLendList;
-	private BorrowLendAdapter borrowLendAdapter;
-	private BorrowLend borrowLend;
-	private String debtType = "";
-	private boolean checkBorrowing;
-	private TextView totalMoneyTextView;
+	private TextView mDisplayText;
+	private ListView mBorrowLendList;
+	private BorrowLendAdapter mBorrowLendAdapter;
+	private BorrowLend mBorrowLend;
+	private String mDebtType = "";
+	private boolean mCheckBorrowing;
+	private TextView mTotalMoneyTextView;
 	private TextView mCurrentInterest;
-	private ArrayList<Object> values;	
+	private ArrayList<Object> mValues;	
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_borrow_lend_view);
 		Bundle extras = getIntent().getExtras();
-		checkBorrowing = extras.getBoolean("Borrow");
-		displayText = (TextView) findViewById(R.id.no_borrow_lend_data);
-		borrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
+		mCheckBorrowing = extras.getBoolean("Borrow");
+		mDisplayText = (TextView) findViewById(R.id.no_borrow_lend_data);
+		mBorrowLendList = (ListView) findViewById(R.id.borrow_lend_list_view);
 
 		bindData();
 		// borrowLendList.setTextFilterEnabled(true);
 		// borrowLendList.setClickable(true);
 		// borrowLendList.setItemsCanFocus(false);
 		// borrowLendList.setFocusableInTouchMode(false);
-		borrowLendList.setOnItemClickListener(new OnItemClickListener() {
+		mBorrowLendList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> listView, View view, int position, long id) {
-				borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(position);				
-				if (borrowLend != null) {
+				mBorrowLend = (BorrowLend) mBorrowLendList.getAdapter().getItem(position);				
+				if (mBorrowLend != null) {
 					Intent borrowLendDetail = new Intent(BorrowLendViewActivity.this, BorrowLendViewDetailActivity.class);
-					borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
-					borrowLendDetail.putExtra("checkBorrowing", checkBorrowing);
+					borrowLendDetail.putExtra("borrowLendID", mBorrowLend.getId());
+					borrowLendDetail.putExtra("checkBorrowing", mCheckBorrowing);
 					startActivity(borrowLendDetail);
 				}
 			}
 		});
 
-		totalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_view_total_money);
+		mTotalMoneyTextView = (TextView) findViewById(R.id.borrow_lend_view_total_money);
 		mCurrentInterest = (TextView) findViewById(R.id.borrow_lend_view_total_revenue);
-		if (checkBorrowing) {
-			debtType = "Borrowing";
+		if (mCheckBorrowing) {
+			mDebtType = "Borrowing";
 		} else {
-			debtType = "Lending";
+			mDebtType = "Lending";
 		}
 
 		getTotalInformatation();
 
-		registerForContextMenu(borrowLendList);
+		registerForContextMenu(mBorrowLendList);
 
 	}
 
+	/**
+	 * get all information about total money, total interest of borrowing or lending
+	 *
+	 */
 	private void getTotalInformatation() {
-		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*", "Debt_type like '" + debtType + "'");
+		Cursor borrowLendData = SqlHelper.instance.select("BorrowLend", "*", "Debt_type like '" + mDebtType + "'");
 
 		double totalMoney = 0;
 		double totalInterest = 0;		
@@ -103,7 +110,7 @@ public class BorrowLendViewActivity extends Activity {
 			}
 		}
 
-		totalMoneyTextView.setText(Converter.toString(totalMoney));
+		mTotalMoneyTextView.setText(Converter.toString(totalMoney));
 		mCurrentInterest.setText(Converter.toString(totalInterest));
 	}
 
@@ -114,30 +121,34 @@ public class BorrowLendViewActivity extends Activity {
 		getTotalInformatation();
 	}
 
+	/**
+	 * bind all information about borrowing or lending
+	 *
+	 */
 	private void bindData() {
-		if (checkBorrowing) {
-			debtType = "Borrowing";
+		if (mCheckBorrowing) {
+			mDebtType = "Borrowing";
 		} else {
-			debtType = "Lending";
+			mDebtType = "Lending";
 		}
 
 		TextView totalMoneyTitle = (TextView) findViewById(R.id.borrow_lend_total_money_title);
-		totalMoneyTitle.setText(getResources().getString(checkBorrowing ? R.string.total_borrow_money: R.string.total_lend_money));
+		totalMoneyTitle.setText(getResources().getString(mCheckBorrowing ? R.string.total_borrow_money: R.string.total_lend_money));
 		BorrowLendRepository bolere = new BorrowLendRepository();
-		values = bolere.getData("Debt_type like '" + debtType + "' order by expired_date DESC");
+		mValues = bolere.getData("Debt_type like '" + mDebtType + "' order by expired_date DESC");
 
-		if (values.size() == 0) {
-			displayText.setVisibility(View.VISIBLE);
+		if (mValues.size() == 0) {
+			mDisplayText.setVisibility(View.VISIBLE);
 		} else {
-			displayText.setVisibility(View.GONE);
+			mDisplayText.setVisibility(View.GONE);
 		}
 
 		sort();
-		borrowLendAdapter = new BorrowLendAdapter(this, R.layout.activity_borrow_lend_view_item, values);
+		mBorrowLendAdapter = new BorrowLendAdapter(this, R.layout.activity_borrow_lend_view_item, mValues);
 
-		borrowLendList.setVisibility(View.VISIBLE);
-		borrowLendAdapter.notifyDataSetChanged();
-		borrowLendList.setAdapter(borrowLendAdapter);
+		mBorrowLendList.setVisibility(View.VISIBLE);
+		mBorrowLendAdapter.notifyDataSetChanged();
+		mBorrowLendList.setAdapter(mBorrowLendAdapter);
 	}
 
 	@Override
@@ -155,17 +166,17 @@ public class BorrowLendViewActivity extends Activity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int menuItemIndex = item.getItemId();
-		borrowLend = (BorrowLend) borrowLendList.getAdapter().getItem(info.position);
+		mBorrowLend = (BorrowLend) mBorrowLendList.getAdapter().getItem(info.position);
 		switch (menuItemIndex) {
 		case 0: // Edit
 			Intent borrowLendDetail = new Intent(BorrowLendViewActivity.this, BorrowLendInsertActivity.class);
-			borrowLendDetail.putExtra("borrowLendID", borrowLend.getId());
+			borrowLendDetail.putExtra("borrowLendID", mBorrowLend.getId());
 			startActivity(borrowLendDetail);
 			break;
 		case 1: // Delete
 			Alert.getInstance().showDialog(getParent(), "Xóa ?", new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							SqlHelper.instance.delete("BorrowLend", "Id = " + borrowLend.getId());
+							SqlHelper.instance.delete("BorrowLend", "Id = " + mBorrowLend.getId());
 							bindData();
 							getTotalInformatation();
 						}
@@ -179,28 +190,28 @@ public class BorrowLendViewActivity extends Activity {
 
 	private void sort() {
 		int i, j;
-		int length = values.size();
+		int length = mValues.size();
 		BorrowLend t = new BorrowLend();
 		for (i = 0; i < length; i++) {
 			for (j = 1; j < (length - i); j++) {
 				Date j1ExpiredDate;
 				Date jExpiredDate;
-				if (((BorrowLend) values.get(j - 1)).getExpiredDate() != null)
-					j1ExpiredDate = ((BorrowLend) values.get(j - 1)).getExpiredDate();
+				if (((BorrowLend) mValues.get(j - 1)).getExpiredDate() != null)
+					j1ExpiredDate = ((BorrowLend) mValues.get(j - 1)).getExpiredDate();
 				else {
 					j1ExpiredDate = Converter.toDate("1/1/9999", "dd/MM/yyyy");
 				}
 
-				if (((BorrowLend) values.get(j)).getExpiredDate() != null)
-					jExpiredDate = ((BorrowLend) values.get(j)).getExpiredDate();
+				if (((BorrowLend) mValues.get(j)).getExpiredDate() != null)
+					jExpiredDate = ((BorrowLend) mValues.get(j)).getExpiredDate();
 				else {
 					jExpiredDate = Converter.toDate("1/1/9999", "dd/MM/yyyy");					
 				}
 				if (j1ExpiredDate.compareTo(jExpiredDate) > 0) {
 					Log.d("Check sort", String.valueOf(j1ExpiredDate.compareTo(jExpiredDate)));
-					t.setValue((BorrowLend) values.get(j - 1));
-					((BorrowLend) values.get(j - 1)).setValue((BorrowLend) values.get(j));
-					((BorrowLend) values.get(j)).setValue(t);
+					t.setValue((BorrowLend) mValues.get(j - 1));
+					((BorrowLend) mValues.get(j - 1)).setValue((BorrowLend) mValues.get(j));
+					((BorrowLend) mValues.get(j)).setValue(t);
 				}
 			}
 		}

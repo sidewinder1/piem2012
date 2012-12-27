@@ -33,9 +33,11 @@ public class Chart extends AbstractChart {
 	private List<Double> scheduleCategoryValue;
 	private List<Date []> dateList;
 
+	
 	public Chart() {
 	}
 
+	// get expense data follow week and month
 	private void getEntryData() {
 		entryCategoryName = new ArrayList<String>();
 		entryCategoryValue = new ArrayList<Double>();
@@ -100,6 +102,7 @@ public class Chart extends AbstractChart {
 		}
 	}
 
+	// get total money of expense entry and schedule budget
 	private void getData() {
 		// get spent
 		long spent = 0;
@@ -217,6 +220,7 @@ public class Chart extends AbstractChart {
 		renderer.setLabelsColor(labelsColor);
 	}
 	
+	// sort data on Y axis follow date
 	private void sort()
 	{
 		int i, j;
@@ -242,6 +246,17 @@ public class Chart extends AbstractChart {
 		}
 	}
 
+	/**
+	 * Build bar chart to compare between months or weeks
+	 * 
+	 * @param context
+	 *            The parent context.
+	 * @param checkMonthly
+	 *            true: month, false: week.
+	 * @param datelist
+	 * 			  the list of compared date
+	 * @return view of bar chart
+	 */
 	@SuppressWarnings("deprecation")
 	public View getBarCompareIntent(Context context, boolean checkMonthly,List<Date[]> dateList) {
 		entryCategoryValue = new ArrayList<Double>();
@@ -348,8 +363,20 @@ public class Chart extends AbstractChart {
 		return ChartFactory.getBarChartView(context,buildBarDataset(titles, values), renderer, Type.DEFAULT);
 	}
 
-	public View getPieIntent(Context context, boolean checkMonthly, Date sDate,
-			Date eDate) {
+	/**
+	 * Build pie chart to show information about expense in a month or week
+	 * 
+	 * @param context
+	 *            The parent context.
+	 * @param checkMonthly
+	 *            true: month, false: week.
+	 * @param sDate
+	 * 			  start date of a month or week
+	 * @param eDate
+	 * 			  end date of a month or week
+	 * @return view of bar chart
+	 */
+	public View getPieIntent(Context context, boolean checkMonthly, Date sDate, Date eDate) {
 		this.startDate = sDate;
 		this.endDate = eDate;
 		this.checkMonthly = checkMonthly;
