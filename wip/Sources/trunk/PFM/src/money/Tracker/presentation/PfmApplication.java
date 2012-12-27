@@ -102,8 +102,7 @@ public class PfmApplication extends Application {
 	 * 
 	 * @return A long type that is total of expense.
 	 */
-	public static long getTotalEntry(Date currentDate,
-			ArrayList<Long> ignoreList) {
+	public static long getTotalEntry(Date currentDate, long ignoreEntryId) {
 		EntryRepository.getInstance().updateData(
 				new StringBuilder("Type = 1").toString());
 		if (EntryRepository.getInstance().orderedEntries == null) {
@@ -119,7 +118,11 @@ public class PfmApplication extends Application {
 		}
 
 		for (Entry entryItem : entries) {
-			total_entry += entryItem.getTotal(ignoreList);
+			if (entryItem.getId() == ignoreEntryId) {
+				continue;
+			}
+
+			total_entry += entryItem.getTotal();
 		}
 
 		return total_entry;
@@ -131,10 +134,10 @@ public class PfmApplication extends Application {
 	 * 
 	 * @return A long type that is total of budget.
 	 */
-	public static long[] getTotalBudget(Date currentDate) {
+	public static long[] getTotalBudget(Date currentDate, long categoryId) {
 		Cursor totalBudgetCursor = SqlHelper.instance.select(
 				"Schedule",
-				"Budget, Type",
+				"Budget, Type, Id",
 				new StringBuilder("(End_date = '")
 						.append(Converter.toString(
 								DateTimeHelper.getLastDayOfWeek(currentDate),
@@ -148,13 +151,34 @@ public class PfmApplication extends Application {
 		if (totalBudgetCursor != null && totalBudgetCursor.moveToFirst()) {
 			long returnValue = totalBudgetCursor.getLong(0);
 			long typeValue = totalBudgetCursor.getLong(1);
+			long detailScheduleValue = 0;
+
+			Cursor detailBudgetCursor = SqlHelper.instance.select(
+					"ScheduleDetail", "Budget", "Schedule_Id = "
+							+ totalBudgetCursor.getLong(2)
+							+ " AND Category_Id = " + categoryId);
+
+			if (detailBudgetCursor != null && detailBudgetCursor.moveToFirst()) {
+				detailScheduleValue = detailBudgetCursor.getLong(0);
+			}
+
 			if (typeValue == 1 && totalBudgetCursor.moveToNext()) {
 				returnValue = totalBudgetCursor.getLong(0);
 				typeValue = totalBudgetCursor.getLong(1);
+
+				detailBudgetCursor = SqlHelper.instance.select(
+						"ScheduleDetail", "Budget", "Schedule_Id = "
+								+ totalBudgetCursor.getLong(2)
+								+ " AND Category_Id = " + categoryId);
+
+				if (detailBudgetCursor != null
+						&& detailBudgetCursor.moveToFirst()) {
+					detailScheduleValue = detailBudgetCursor.getLong(0);
+				}
 			}
 
 			totalBudgetCursor.close();
-			return new long[] { returnValue, typeValue };
+			return new long[] { returnValue, typeValue, detailScheduleValue };
 		}
 
 		return new long[] { 0, 0 };

@@ -12,11 +12,13 @@
     <string name="menu_export">Xuất…</string>
     <string name="input_file_name">Nhập tên tệp tin</string>
     <string name="month_overbudget">Đã vượt quá ngân sách tháng!!!</string>
+    <string name="schedule_detail_overbudget">Đã vượt quá ngân sách cho khoản {0}!!!</string>
     <string name="week_overbudget">Đã vượt quá ngân sách tuần!!!</string>
     <string name="choose_excel_type">Dữ liệu dạng excel</string>
     <string name="choose_import_data_type">Dữ liệu dạng lưu trữ (.pif)</string>
     <string name="note"><u>Chú thích</u></string>
     <string name="saved">Đã lưu</string>
+    <string name="exported_successfully">Đã lưu thành công tệp: sdcard/PFMData/{0}</string>
     <string name="select_all">Chọn tất cả</string>
     <string name="percent">%</string>
     <string name="error_save">Lỗi khi lưu trữ</string>

@@ -67,7 +67,7 @@ public class EntryMonthView extends LinearLayout {
 			// Draw chart.
 			entryDayList.removeAllViews();
 			for (Entry entry : entrySet) {
-				total += entry.getTotal(null);
+				total += entry.getTotal();
 				addToEntryDayList(new EntryDayView(getContext(), entry));
 
 				for (EntryDetail entryDetail : entry.getEntryDetails()) {
