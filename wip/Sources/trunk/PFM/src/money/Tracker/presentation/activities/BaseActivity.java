@@ -33,6 +33,12 @@ public abstract class BaseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 	};
 
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.push_right_out, R.anim.push_right_in);
+	};
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -124,6 +130,21 @@ public abstract class BaseActivity extends Activity {
 								} else {
 									button.setBackgroundResource(R.drawable.save_icon_disabled);
 									button.setEnabled(false);
+								}
+
+								if (!s.toString().matches(
+										"([a-z]|[A-Z])+((_*|[.]?)([a-z]|[A-Z])+)*")) {
+									Alert.getInstance()
+											.show(getBaseContext(),
+													getResources()
+															.getString(
+																	R.string.invalid_file_name));
+									button.setBackgroundResource(R.drawable.save_icon_disabled);
+									button.setEnabled(false);
+								}
+								else{
+									button.setBackgroundResource(R.drawable.save_icon);
+									button.setEnabled(true);
 								}
 							}
 						});

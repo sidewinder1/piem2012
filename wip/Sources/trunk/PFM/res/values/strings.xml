@@ -8,6 +8,7 @@
     <string name="language">Ngôn ngữ</string>
     <string name="menu_settings">Thiết lập</string>
     <string name="menu_import">Nhập…</string>
+    <string name="invalid_file_name">Tên tệp tin không hợp lệ</string>
     <string name="menu_export">Xuất…</string>
     <string name="input_file_name">Nhập tên tệp tin</string>
     <string name="month_overbudget">Đã vượt quá ngân sách tháng!!!</string>
