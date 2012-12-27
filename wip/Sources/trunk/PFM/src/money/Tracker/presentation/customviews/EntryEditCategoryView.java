@@ -10,6 +10,7 @@ import money.Tracker.common.utilities.Converter;
 import money.Tracker.common.utilities.DateTimeHelper;
 import money.Tracker.common.utilities.Logger;
 import money.Tracker.presentation.PfmApplication;
+import money.Tracker.presentation.activities.EntryEditActivity;
 import money.Tracker.presentation.activities.R;
 import money.Tracker.presentation.adapters.CategoryAdapter;
 import money.Tracker.presentation.model.Category;
@@ -217,24 +218,43 @@ public class EntryEditCategoryView extends LinearLayout {
 									.append(AccountProvider.getInstance()
 											.getCurrentAccount().name)
 									.append("'").toString());
-					long[] budgetInfo = PfmApplication
-							.getTotalBudget(mCurrentDate);
+					long[] budgetInfo = PfmApplication.getTotalBudget(
+							mCurrentDate, CategoryRepository.getInstance()
+									.getId(mCategory.getSelectedItemPosition()));
 					if (checkOverBudget != null
 							&& checkOverBudget.moveToFirst()
 							&& budgetInfo[0] != 0) {
 						double percent = checkOverBudget.getLong(0) / 100d;
 						long expense = PfmApplication.getTotalEntry(
-								mCurrentDate, ignoreList)
+								mCurrentDate, EntryEditActivity.sPassedEntryId)
 								+ getTotalParentMoney()
 								+ Converter.toLong(arg0.toString());
-						if (budgetInfo[0] <= expense) {
+						
+						if (mCategoryEdit.getVisibility() == View.GONE
+								&& budgetInfo[2] != 0
+								&& budgetInfo[2] < getMoney()) {
+							Alert.getInstance()
+									.show(getContext(),
+											getResources()
+													.getString(
+															R.string.schedule_detail_overbudget)
+													.replace(
+															"{0}",
+															((Category) mCategory
+																	.getAdapter()
+																	.getItem(
+																			mCategory
+																					.getSelectedItemPosition()))
+																	.getName()));
+						}
+						else if (budgetInfo[0] < expense) {
 							Alert.getInstance()
 									.show(getContext(),
 											getResources()
 													.getString(
 															budgetInfo[1] == 0 ? R.string.week_overbudget
 																	: R.string.month_overbudget));
-						} else if (budgetInfo[0] * percent <= expense) {
+						} else if (budgetInfo[0] * percent < expense) {
 							Alert.getInstance()
 									.show(getContext(),
 											getResources()

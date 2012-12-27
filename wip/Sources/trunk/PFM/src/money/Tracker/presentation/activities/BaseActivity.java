@@ -36,7 +36,7 @@ public abstract class BaseActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		finish();
-		overridePendingTransition(R.anim.push_right_out, R.anim.push_right_in);
+		overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 	};
 
 	/*
@@ -87,6 +87,9 @@ public abstract class BaseActivity extends Activity {
 									button.setBackgroundResource(R.drawable.save_icon_disabled);
 									button.setEnabled(false);
 								}
+
+								checkFileName(inputDialog.mNameValue.getText(),
+										button);
 							}
 						});
 
@@ -106,6 +109,9 @@ public abstract class BaseActivity extends Activity {
 									button.setBackgroundResource(R.drawable.save_icon_disabled);
 									button.setEnabled(false);
 								}
+
+								checkFileName(inputDialog.mNameValue.getText(),
+										button);
 							}
 						});
 
@@ -132,20 +138,7 @@ public abstract class BaseActivity extends Activity {
 									button.setEnabled(false);
 								}
 
-								if (!s.toString().matches(
-										"([a-z]|[A-Z])+((_*|[.]?)([a-z]|[A-Z])+)*")) {
-									Alert.getInstance()
-											.show(getBaseContext(),
-													getResources()
-															.getString(
-																	R.string.invalid_file_name));
-									button.setBackgroundResource(R.drawable.save_icon_disabled);
-									button.setEnabled(false);
-								}
-								else{
-									button.setBackgroundResource(R.drawable.save_icon);
-									button.setEnabled(true);
-								}
+								checkFileName(s, button);
 							}
 						});
 
@@ -164,8 +157,14 @@ public abstract class BaseActivity extends Activity {
 													.toString(), true);
 						}
 
-						Alert.getInstance().show(getBaseContext(),
-								getResources().getString(R.string.saved));
+						Alert.getInstance().show(
+								getBaseContext(),
+								getResources().getString(
+										R.string.exported_successfully)
+										.replace(
+												"{0}",
+												inputDialog.mNameValue
+														.getText().toString()));
 						dialog.dismiss();
 					}
 				}, new View.OnClickListener() {
@@ -194,5 +193,27 @@ public abstract class BaseActivity extends Activity {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check file name validation of a string.
+	 * 
+	 * @param str
+	 *            A string is checked.
+	 * 
+	 * @param button
+	 *            Related save button.
+	 */
+	private void checkFileName(Editable str, View button) {
+		if (!str.toString().matches(
+				"([a-z]|[A-Z])+((_*|[.]?)([a-z]|[A-Z]|[0-9])+)*")) {
+			Alert.getInstance().show(getBaseContext(),
+					getResources().getString(R.string.invalid_file_name));
+			button.setBackgroundResource(R.drawable.save_icon_disabled);
+			button.setEnabled(false);
+		} else {
+			button.setBackgroundResource(R.drawable.save_icon);
+			button.setEnabled(true);
+		}
 	}
 }

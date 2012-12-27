@@ -43,7 +43,7 @@ public class EntryDayView extends LinearLayout {
 			setName(Converter.toString(entry.getDate(), "dd/MM/yyyy"));
 
 			// Set content to budget
-			setCost(Converter.toString(entry.getTotal(null)));
+			setCost(Converter.toString(entry.getTotal()));
 
 			getChart().removeAllViews();
 

@@ -200,6 +200,9 @@ public class HomeActivity extends TabActivity {
 									button.setBackgroundResource(R.drawable.save_icon_disabled);
 									button.setEnabled(false);
 								}
+
+								checkFileName(inputDialog.mNameValue.getText(),
+										button);
 							}
 						});
 
@@ -219,6 +222,9 @@ public class HomeActivity extends TabActivity {
 									button.setBackgroundResource(R.drawable.save_icon_disabled);
 									button.setEnabled(false);
 								}
+
+								checkFileName(inputDialog.mNameValue.getText(),
+										button);
 							}
 						});
 
@@ -244,21 +250,8 @@ public class HomeActivity extends TabActivity {
 									button.setBackgroundResource(R.drawable.save_icon_disabled);
 									button.setEnabled(false);
 								}
-								
-								if (!s.toString().matches(
-										"([a-z]|[A-Z])+((_*|[.]?)([a-z]|[A-Z])+)*")) {
-									Alert.getInstance()
-											.show(getBaseContext(),
-													getResources()
-															.getString(
-																	R.string.invalid_file_name));
-									button.setBackgroundResource(R.drawable.save_icon_disabled);
-									button.setEnabled(false);
-								}
-								else{
-									button.setBackgroundResource(R.drawable.save_icon);
-									button.setEnabled(true);
-								}
+
+								checkFileName(s, button);
 							}
 						});
 
@@ -277,8 +270,14 @@ public class HomeActivity extends TabActivity {
 													.toString(), true);
 						}
 
-						Alert.getInstance().show(getBaseContext(),
-								getResources().getString(R.string.saved));
+						Alert.getInstance().show(
+								getBaseContext(),
+								getResources().getString(
+										R.string.exported_successfully)
+										.replace(
+												"{0}",
+												inputDialog.mNameValue
+														.getText().toString()));
 						dialog.dismiss();
 					}
 				}, new View.OnClickListener() {
@@ -307,5 +306,27 @@ public class HomeActivity extends TabActivity {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check file name validation of a string.
+	 * 
+	 * @param str
+	 *            A string is checked.
+	 * 
+	 * @param button
+	 *            Related save button.
+	 */
+	private void checkFileName(Editable str, View button) {
+		if (!str.toString().matches(
+				"([a-z]|[A-Z])+((_*|[.]?)([a-z]|[A-Z]|[0-9])+)*")) {
+			Alert.getInstance().show(getBaseContext(),
+					getResources().getString(R.string.invalid_file_name));
+			button.setBackgroundResource(R.drawable.save_icon_disabled);
+			button.setEnabled(false);
+		} else {
+			button.setBackgroundResource(R.drawable.save_icon);
+			button.setEnabled(true);
+		}
 	}
 }

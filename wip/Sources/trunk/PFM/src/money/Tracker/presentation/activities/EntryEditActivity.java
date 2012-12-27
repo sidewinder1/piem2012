@@ -54,7 +54,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private int mDay;
 	private TextView mTitle;
 	private TextView mDateEdit;
-	private long mPassedEntryId = -1;
+	public static long sPassedEntryId = -1;
 	private LinearLayout mEntryList;
 	private NdefMessage[] mMessages;
 	private boolean mBlocked;
@@ -78,7 +78,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			if (extras.containsKey("entry_id")) {
-				mPassedEntryId = extras.getLong("entry_id");
+				sPassedEntryId = extras.getLong("entry_id");
 			}
 		}
 
@@ -99,7 +99,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 
 		// New Mode
-		if (mPassedEntryId == -1) {
+		if (sPassedEntryId == -1) {
 			updateDateDisplay();
 
 			if (mEntryList.getChildCount() == 0) {
@@ -108,7 +108,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 		} else { // Edit mode
 			ArrayList<IModelBase> arraylist = EntryRepository.getInstance()
-					.getData("Id = " + mPassedEntryId);
+					.getData("Id = " + sPassedEntryId);
 			if (arraylist == null || arraylist.size() == 0) {
 				return;
 			}
@@ -126,7 +126,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			}
 
 			HashMap<String, ArrayList<EntryDetail>> values = EntryDetailRepository
-					.getInstance().updateData("Entry_Id = " + mPassedEntryId,
+					.getInstance().updateData("Entry_Id = " + sPassedEntryId,
 							"Category_Id");
 			for (ArrayList<EntryDetail> entryDetail : values.values()) {
 				EntryEditCategoryView categoryItem = new EntryEditCategoryView(
@@ -280,7 +280,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 	private void updateTitle() {
 		mTitle.setText(getResources()
 				.getString(
-						((mPassedEntryId != -1) ? (!mIsIncome ? R.string.entry_edit_expense_title
+						((sPassedEntryId != -1) ? (!mIsIncome ? R.string.entry_edit_expense_title
 								: R.string.entry_edit_income_title)
 								: (!mIsIncome ? R.string.entry_new_expense_title
 										: R.string.entry_new_income_title)))
@@ -383,14 +383,14 @@ public class EntryEditActivity extends NfcDetectorActivity {
 						.append(" AND Type = ").append(type).toString());
 		try {
 			if (oldEntry != null && oldEntry.moveToFirst()) {
-				if (mPassedEntryId != -1
-						&& mPassedEntryId != oldEntry.getLong(0)) {
+				if (sPassedEntryId != -1
+						&& sPassedEntryId != oldEntry.getLong(0)) {
 					SqlHelper.instance.delete(table, new StringBuilder("Id = ")
-							.append(mPassedEntryId).toString());
+							.append(sPassedEntryId).toString());
 					EntryDetailViewActivity.sEntryId = oldEntry.getLong(0);
 				}
 
-				mPassedEntryId = oldEntry.getLong(0);
+				sPassedEntryId = oldEntry.getLong(0);
 			}
 
 			oldEntry.close();
@@ -399,16 +399,16 @@ public class EntryEditActivity extends NfcDetectorActivity {
 			Logger.Log(e.getMessage(), "EntryEditActivity");
 		}
 
-		long id = mPassedEntryId;
+		long id = sPassedEntryId;
 
-		if (mPassedEntryId == -1) {
+		if (sPassedEntryId == -1) {
 			id = SqlHelper.instance.insert(table,
 					new String[] { "Date", "Type" }, new String[] { date,
 							String.valueOf(type) });
 		} else {
 			SqlHelper.instance.update(table, new String[] { "Date", "Type" },
 					new String[] { date, String.valueOf(type) },
-					new StringBuilder("Id = ").append(mPassedEntryId)
+					new StringBuilder("Id = ").append(sPassedEntryId)
 							.toString());
 		}
 

@@ -15,12 +15,30 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.database.Cursor;
 
 public class SyncHelper {
+	/**
+	 * Name space of web service.
+	 */
 	String NAMESPACE = "http://pfm.org/";
+
+	/**
+	 * URL that is used to connect to web service.
+	 */
 	String URL = "http://54.251.59.102:83/PFMService.asmx";
+
+	/**
+	 * Local last sync date time.
+	 */
 	private Date mLocalLastSync;
 
+	/**
+	 * Name of tables in local database.
+	 */
 	private final static String[] sTables = { "Category", "Schedule",
 			"ScheduleDetail", "Entry", "EntryDetail", "BorrowLend" };
+
+	/**
+	 * Name of columns match with above tables in local database.
+	 */
 	private final static String[] sColumns = {
 			"Id, CreatedDate, ModifiedDate, Name, IsDeleted,User_Color",
 			"Id, CreatedDate, ModifiedDate, Budget, Type, IsDeleted, Start_date, End_date",
@@ -28,29 +46,51 @@ public class SyncHelper {
 			"Id, CreatedDate, ModifiedDate, IsDeleted,Date, Type",
 			"Id, CreatedDate, ModifiedDate, Category_Id, Name, IsDeleted,Money, Entry_Id",
 			"ID, CreatedDate, ModifiedDate, IsDeleted, Debt_type, Money, Interest_type, Interest_rate, Start_date, Expired_date, Person_name, Person_phone, Person_address" };
-	private HashMap<String, String> tableMap = new HashMap<String, String>();
-	private static SyncHelper _instance;
 
+	/**
+	 * A HashMap is used to map column name with table name.
+	 */
+	private HashMap<String, String> mTableMap = new HashMap<String, String>();
+
+	/**
+	 * An instance of SyncHelper. This is used for Singleton pattern.
+	 */
+	private static SyncHelper sInstance;
+
+	/**
+	 * Constructor of SyncHelper class.
+	 */
 	public SyncHelper() {
 		getServerAddress();
 		getLocalLastSync();
 		createDictionary();
 	}
 
+	/**
+	 * Create tables mapping.
+	 */
 	private void createDictionary() {
 		for (int index = 0; index < sTables.length; index++) {
-			tableMap.put(sTables[index], sColumns[index]);
+			mTableMap.put(sTables[index], sColumns[index]);
 		}
 	}
 
+	/**
+	 * Create an instance of SyncHelper for Singleton pattern.
+	 * 
+	 * @return SyncHelper object.
+	 */
 	public static SyncHelper getInstance() {
-		if (_instance == null) {
-			_instance = new SyncHelper();
+		if (sInstance == null) {
+			sInstance = new SyncHelper();
 		}
 
-		return _instance;
+		return sInstance;
 	}
 
+	/**
+	 * Get address of server from local configuration file.
+	 */
 	private void getServerAddress() {
 		String nameSpace = XmlParser.getInstance()
 				.getConfigContent("namespace");
@@ -66,6 +106,9 @@ public class SyncHelper {
 
 	}
 
+	/**
+	 * Get local last sync time from local database with specified user account.
+	 */
 	private void getLocalLastSync() {
 		// String lastSync =
 		// XmlParser.getInstance().getConfigContent("lastSync");
@@ -82,6 +125,10 @@ public class SyncHelper {
 		mLocalLastSync = DateTimeHelper.getDate(1990, 0, 20);
 	}
 
+	/**
+	 * Synchronize method. This method will implement synchronization by using
+	 * SOAP object.
+	 */
 	public void synchronize() {
 		getLocalLastSync();
 
@@ -102,7 +149,7 @@ public class SyncHelper {
 						"UserName='LocalAccount'");
 			}
 		}
-		
+
 		Logger.Log("Login: "
 				+ AccountProvider.getInstance().getCurrentAccount().name
 				+ ", \r\nUrl: " + URL, "SyncHelper");
@@ -190,10 +237,12 @@ public class SyncHelper {
 							continue;
 						}
 
-						Cursor checkGlobalId = SqlHelper.instance.select(table,
-								tableMap.get(table), new StringBuilder("Id = ")
-										.append(updatedValue.getProperty(0))
-										.toString(), true);
+						Cursor checkGlobalId = SqlHelper.instance
+								.select(table,
+										mTableMap.get(table),
+										new StringBuilder("Id = ").append(
+												updatedValue.getProperty(0))
+												.toString(), true);
 
 						if (checkGlobalId != null
 								&& checkGlobalId.moveToFirst()) {
@@ -228,7 +277,7 @@ public class SyncHelper {
 
 								SqlHelper.instance
 										.update(table,
-												tableMap.get(table).split(","),
+												mTableMap.get(table).split(","),
 												columnValues,
 												new StringBuilder("Id = ")
 														.append(updatedValue
@@ -249,8 +298,9 @@ public class SyncHelper {
 									"Insert to local DB: "
 											+ columnValues.toString(),
 									"SyncHelper");
-							SqlHelper.instance.insert(table, tableMap
-									.get(table).split(","), columnValues);
+							SqlHelper.instance.insert(table,
+									mTableMap.get(table).split(","),
+									columnValues);
 						}
 					}
 
@@ -290,6 +340,10 @@ public class SyncHelper {
 		Logger.Log("Mark as Synchronize", "SyncHelper");
 	}
 
+	/**
+	 * Mark as synchronized. Save last sync date time to local database and
+	 * invoke MarkSynchronized() method from Server.
+	 */
 	private void markAsSynchronized() {
 		String lastSyncTime = Converter.toString(DateTimeHelper.now(true));
 		invokeServerMethod("MarkSynchronized", new String[] { "userName",
@@ -301,10 +355,20 @@ public class SyncHelper {
 		// XmlParser.getInstance().setConfigContent("lastSync", lastSyncTime);
 	}
 
+	/**
+	 * Get all modified records and convert them to SOAP object to transfer to
+	 * Server.
+	 * 
+	 * @param table
+	 *            The table name will be resolved and converted.
+	 * @param lastTime
+	 *            Last sync time.
+	 * @return A soap object contains modified records from last sync time.
+	 */
 	private SoapObject getModifiedRecords(String table, String lastTime) {
 		SoapObject records = new SoapObject();
 		Cursor modifiedRecords = SqlHelper.instance.select(table,
-				tableMap.get(table), new StringBuilder("ModifiedDate > '")
+				mTableMap.get(table), new StringBuilder("ModifiedDate > '")
 						.append(lastTime).append("'").toString(), true);
 
 		if (modifiedRecords != null && modifiedRecords.moveToFirst()) {
@@ -329,9 +393,11 @@ public class SyncHelper {
 	}
 
 	/**
-	 * @param modifiedRecords
-	 * @param index
-	 * @return
+	 * Create a property info of Soap object with specified string.
+	 * 
+	 * @param value
+	 *            A string contains value should be saved to PropertyInfo.
+	 * @return A Property info.
 	 */
 	private PropertyInfo createPropertyInfo(String value) {
 		PropertyInfo propertyInfo = new PropertyInfo();
@@ -341,12 +407,28 @@ public class SyncHelper {
 		return propertyInfo;
 	}
 
-	// / Invoke a function from web server.
-	// / Return a value that server's method returned.
+	/**
+	 * Invoke a function from web service.
+	 * 
+	 * @param methodName
+	 *            Method name that Web service provides.
+	 * @return Return a Soap object that server's method returned.
+	 */
 	public SoapObject invokeServerMethod(String methodName) {
 		return invokeServerMethod(methodName, null, null);
 	}
 
+	/**
+	 * Invoke a function from web service.
+	 * 
+	 * @param methodName
+	 *            Method name that Web service provides.
+	 * @param paramNames
+	 *            Name of parameters of Web service's method.
+	 * @param params
+	 *            Value of parameters of Web service's method.
+	 * @return Return a Soap object that server's method returned.
+	 */
 	public SoapObject invokeServerMethod(String methodName,
 			String[] paramNames, Object[] params) {
 		String SOAP_ACTIONS = new StringBuilder(NAMESPACE).append(methodName)
