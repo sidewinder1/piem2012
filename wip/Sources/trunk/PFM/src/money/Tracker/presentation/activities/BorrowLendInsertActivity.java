@@ -31,51 +31,54 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class BorrowLendInsertActivity extends BaseActivity {
-	private int startDate_Year;
-	private int startDate_Month;
-	private int startDate_Day;
-	private int expiredDate_Year;
-	private int expiredDate_Month;
-	private int expiredDate_Day;
+	private int mStartDate_Year;
+	private int mStartDate_Month;
+	private int mStartDate_Day;
+	private int mExpiredDate_Year;
+	private int mExpiredDate_Month;
+	private int mExpiredDate_Day;
 	private static final int DATE_DIALOG_ID = 0;
 	private static final int DATE_DIALOG_ID1 = 10;
-	private EditText startDateEditText;
-	private EditText expiredDateEditText;
-	private Alert alert;
-	private Button saveButton;
-	private Button cancelButton;
-	private TextView debtTypeTextView;
-	private Button debtTypeButton;
-	private AutoCompleteTextView nameEditText;
-	private EditText phoneEditText;
-	private EditText addressEditText;
-	private EditText moneyEditText;
-	private ToggleButton interestType;
-	private EditText interestRate;
-	private ArrayList<String> column;
-	private ArrayList<String> valuesChanged;
+	private EditText mStartDateEditText;
+	private EditText mExpiredDateEditText;
+	private Alert mAlert;
+	private Button mSaveButton;
+	private Button mCancelButton;
+	private TextView mDebtTypeTextView;
+	private Button mDebtTypeButton;
+	private AutoCompleteTextView mNameEditText;
+	private EditText mPhoneEditText;
+	private EditText mAddressEditText;
+	private EditText mMoneyEditText;
+	private ToggleButton mInterestType;
+	private EditText mInterestRate;
+	private ArrayList<String> mColumn;
+	private ArrayList<String> mChangedValues;
 	private long borrow_lend_id = -1;
 	private boolean mIsBorrow = true;
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_borrow_lend_insert);
 
-		saveButton = (Button) findViewById(R.id.saveButton);
-		cancelButton = (Button) findViewById(R.id.cancelBtn);
-		debtTypeTextView = (TextView) findViewById(R.id.title_text_view);
-		debtTypeButton = (Button) findViewById(R.id.borrowLendType);
-		nameEditText = (AutoCompleteTextView) findViewById(R.id.name_edit_text);
-		phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
-		addressEditText = (EditText) findViewById(R.id.address_edit_text);
-		moneyEditText = (EditText) findViewById(R.id.money_edit_text);
-		interestType = (ToggleButton) findViewById(R.id.interestType);
-		interestRate = (EditText) findViewById(R.id.interest_rate_edit_text);
-		startDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
-		expiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
+		mSaveButton = (Button) findViewById(R.id.saveButton);
+		mCancelButton = (Button) findViewById(R.id.cancelBtn);
+		mDebtTypeTextView = (TextView) findViewById(R.id.title_text_view);
+		mDebtTypeButton = (Button) findViewById(R.id.borrowLendType);
+		mNameEditText = (AutoCompleteTextView) findViewById(R.id.name_edit_text);
+		mPhoneEditText = (EditText) findViewById(R.id.phone_edit_text);
+		mAddressEditText = (EditText) findViewById(R.id.address_edit_text);
+		mMoneyEditText = (EditText) findViewById(R.id.money_edit_text);
+		mInterestType = (ToggleButton) findViewById(R.id.interestType);
+		mInterestRate = (EditText) findViewById(R.id.interest_rate_edit_text);
+		mStartDateEditText = (EditText) findViewById(R.id.start_date_edit_text);
+		mExpiredDateEditText = (EditText) findViewById(R.id.expired_date_edit_text);
 
-		alert = new Alert();
+		mAlert = new Alert();
 
 		new BorrowLendRepository();
 
@@ -94,58 +97,54 @@ public class BorrowLendInsertActivity extends BaseActivity {
 			
 			if (values.getDebtType().toString().equals("Borrowing")) {
 				setChecked(true);
-				debtTypeTextView.setText(getResources().getString(R.string.borrow_edit_title));
+				mDebtTypeTextView.setText(getResources().getString(R.string.borrow_edit_title));
 			} else {
 				setChecked(false);
-				debtTypeTextView.setText(getResources().getString(R.string.lend_edit_title));
+				mDebtTypeTextView.setText(getResources().getString(R.string.lend_edit_title));
 			}
 			
-			nameEditText.setText(String.valueOf(values.getPersonName()));
-			phoneEditText.setText(String.valueOf(values.getPersonPhone()));
-			addressEditText.setText(String.valueOf(values.getPersonAddress()));
-			moneyEditText.setText(String.valueOf(values.getMoney()));
+			mNameEditText.setText(String.valueOf(values.getPersonName()));
+			mPhoneEditText.setText(String.valueOf(values.getPersonPhone()));
+			mAddressEditText.setText(String.valueOf(values.getPersonAddress()));
+			mMoneyEditText.setText(String.valueOf(values.getMoney()));
 			if (values.getInterestType().equals("Simple"))
 			{
-				interestType.setChecked(true);
+				mInterestType.setChecked(true);
 			}
 			else
 			{
-				interestType.setChecked(false);
+				mInterestType.setChecked(false);
 			}
 			
 			if (values.getInterestRate() != 0)
-				interestRate.setText(String.valueOf(values.getInterestRate()));
+				mInterestRate.setText(String.valueOf(values.getInterestRate()));
 			
-			startDateEditText.setText(Converter.toString(values.getStartDate(),"dd/MM/yyyy"));
+			mStartDateEditText.setText(Converter.toString(values.getStartDate(),"dd/MM/yyyy"));
 			
 			String [] startDate = Converter.toString(values.getStartDate(),"dd/MM/yyyy").split("/");
-			startDate_Day = Integer.parseInt(startDate[0]);
-			startDate_Month = Integer.parseInt(startDate[1]) - 1;
-			startDate_Year = Integer.parseInt(startDate[2]);
-			Log.d("Check edit borrow lend dialog picker", startDate_Day + " - " + startDate_Month + " - " + startDate_Year);
+			mStartDate_Day = Integer.parseInt(startDate[0]);
+			mStartDate_Month = Integer.parseInt(startDate[1]) - 1;
+			mStartDate_Year = Integer.parseInt(startDate[2]);
 			
 			if (values.getExpiredDate() != null)
 			{
-				expiredDateEditText.setText(Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
-				Log.d("Check edit borrow lend", Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
+				mExpiredDateEditText.setText(Converter.toString(values.getExpiredDate(), "dd/MM/yyyy"));
 				String [] expiredDate = Converter.toString(values.getExpiredDate(), "dd/MM/yyyy").split("/");
-				expiredDate_Day = Integer.parseInt(expiredDate[0]);
-				expiredDate_Month = Integer.parseInt(expiredDate[1]) - 1;
-				expiredDate_Year = Integer.parseInt(expiredDate[2]);
+				mExpiredDate_Day = Integer.parseInt(expiredDate[0]);
+				mExpiredDate_Month = Integer.parseInt(expiredDate[1]) - 1;
+				mExpiredDate_Year = Integer.parseInt(expiredDate[2]);
 			}else
 			{
 				Calendar c = Calendar.getInstance();
-				expiredDate_Year = c.get(Calendar.YEAR);
-				expiredDate_Month = c.get(Calendar.MONTH);
-				expiredDate_Day = c.get(Calendar.DAY_OF_MONTH);
+				mExpiredDate_Year = c.get(Calendar.YEAR);
+				mExpiredDate_Month = c.get(Calendar.MONTH);
+				mExpiredDate_Day = c.get(Calendar.DAY_OF_MONTH);
 			}
 			
-			Log.d("Check edit borrow lend dialog picker", expiredDate_Day + " - " + expiredDate_Month + " - " + expiredDate_Year);
-			
-			column = new ArrayList<String>();
-			valuesChanged = new ArrayList<String>();
+			mColumn = new ArrayList<String>();
+			mChangedValues = new ArrayList<String>();
 
-			nameEditText.addTextChangedListener(new TextWatcher() {
+			mNameEditText.addTextChangedListener(new TextWatcher() {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -156,12 +155,12 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				}
 
 				public void afterTextChanged(Editable s) {
-					column.add("Person_name");
-					valuesChanged.add(String.valueOf(nameEditText.getText()));
+					mColumn.add("Person_name");
+					mChangedValues.add(String.valueOf(mNameEditText.getText()));
 				}
 			});
 
-			phoneEditText.addTextChangedListener(new TextWatcher() {
+			mPhoneEditText.addTextChangedListener(new TextWatcher() {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -172,12 +171,12 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				}
 
 				public void afterTextChanged(Editable s) {
-					column.add("Person_Phone");
-					valuesChanged.add(phoneEditText.getText().toString());
+					mColumn.add("Person_Phone");
+					mChangedValues.add(mPhoneEditText.getText().toString());
 				}
 			});
 
-			addressEditText.addTextChangedListener(new TextWatcher() {
+			mAddressEditText.addTextChangedListener(new TextWatcher() {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -188,12 +187,12 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				}
 
 				public void afterTextChanged(Editable s) {
-					column.add("Person_address");
-					valuesChanged.add(addressEditText.getText().toString());
+					mColumn.add("Person_address");
+					mChangedValues.add(mAddressEditText.getText().toString());
 				}
 			});
 
-			moneyEditText.addTextChangedListener(new TextWatcher() {
+			mMoneyEditText.addTextChangedListener(new TextWatcher() {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -204,12 +203,12 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				}
 
 				public void afterTextChanged(Editable s) {
-					column.add("Money");
-					valuesChanged.add(moneyEditText.getText().toString());
+					mColumn.add("Money");
+					mChangedValues.add(mMoneyEditText.getText().toString());
 				}
 			});
 
-			interestRate.addTextChangedListener(new TextWatcher() {
+			mInterestRate.addTextChangedListener(new TextWatcher() {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -220,12 +219,12 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				}
 
 				public void afterTextChanged(Editable s) {
-					column.add("Interest_rate");
-					valuesChanged.add(interestRate.getText().toString());
+					mColumn.add("Interest_rate");
+					mChangedValues.add(mInterestRate.getText().toString());
 				}
 			});
 
-			startDateEditText.addTextChangedListener(new TextWatcher() {
+			mStartDateEditText.addTextChangedListener(new TextWatcher() {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -236,12 +235,12 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				}
 
 				public void afterTextChanged(Editable s) {
-					column.add("Start_date");
-					valuesChanged.add(Converter.toString(Converter.toDate(startDateEditText.getText().toString(),"dd/MM/yyyy")));
+					mColumn.add("Start_date");
+					mChangedValues.add(Converter.toString(Converter.toDate(mStartDateEditText.getText().toString(),"dd/MM/yyyy")));
 				}
 			});
 
-			expiredDateEditText.addTextChangedListener(new TextWatcher() {
+			mExpiredDateEditText.addTextChangedListener(new TextWatcher() {
 
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -252,8 +251,8 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				}
 
 				public void afterTextChanged(Editable s) {
-					column.add("Expired_date");
-					valuesChanged.add(Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(),"dd/MM/yyyy")));
+					mColumn.add("Expired_date");
+					mChangedValues.add(Converter.toString(Converter.toDate(mExpiredDateEditText.getText().toString(),"dd/MM/yyyy")));
 				}
 			});
 		}
@@ -262,24 +261,24 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		Cursor contacts = cont.getContacts2(null);
 		startManagingCursor(contacts);
 		ContactsAutoCompleteCursorAdapter adapter = new ContactsAutoCompleteCursorAdapter(this, contacts);
-			nameEditText.setAdapter(adapter);
-			nameEditText.setThreshold(1);
-			nameEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			mNameEditText.setAdapter(adapter);
+			mNameEditText.setThreshold(1);
+			mNameEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					public void onItemClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
 						Cursor cursor = (Cursor) arg0.getItemAtPosition(arg2);
 						String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-						nameEditText.setText(name);
+						mNameEditText.setText(name);
 						String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
-						phoneEditText.setText(number);
+						mPhoneEditText.setText(number);
 
 						String address = "No data";
 						address = cont.getAddress(name);
-						addressEditText.setText(address);
+						mAddressEditText.setText(address);
 
 					}
 				});
 
-		saveButton.setOnClickListener(new View.OnClickListener() {
+		mSaveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				if (borrow_lend_id != -1) {
@@ -292,7 +291,7 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		});
 
 		// Hand on Cancel button
-		cancelButton.setOnClickListener(new View.OnClickListener() {
+		mCancelButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				BorrowLendInsertActivity.this.finish();
@@ -300,11 +299,11 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		});
 
 		// Hand on debt type
-		debtTypeButton.setOnClickListener(new View.OnClickListener() {
+		mDebtTypeButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				setChecked(!mIsBorrow);
-				debtTypeTextView.setText(getResources().getString(borrow_lend_id == -1 ? (mIsBorrow ? R.string.borrow_add_title: R.string.lend_add_title): (mIsBorrow ? R.string.borrow_edit_title: R.string.lend_edit_title)));
+				mDebtTypeTextView.setText(getResources().getString(borrow_lend_id == -1 ? (mIsBorrow ? R.string.borrow_add_title: R.string.lend_add_title): (mIsBorrow ? R.string.borrow_edit_title: R.string.lend_edit_title)));
 			}
 		});
 
@@ -312,9 +311,9 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		if (borrow_lend_id == -1)
 		{
 			final Calendar c = Calendar.getInstance();
-			expiredDate_Year = startDate_Year = c.get(Calendar.YEAR);
-			expiredDate_Month = startDate_Month = c.get(Calendar.MONTH);
-			expiredDate_Day = startDate_Day = c.get(Calendar.DAY_OF_MONTH);
+			mExpiredDate_Year = mStartDate_Year = c.get(Calendar.YEAR);
+			mExpiredDate_Month = mStartDate_Month = c.get(Calendar.MONTH);
+			mExpiredDate_Day = mStartDate_Day = c.get(Calendar.DAY_OF_MONTH);
 	
 			// display the current date (this method is below)
 			updateDisplayStartDate();
@@ -343,51 +342,53 @@ public class BorrowLendInsertActivity extends BaseActivity {
 
 	}
 
+	
 	private void setChecked(boolean isBorrow) {
 		mIsBorrow = isBorrow;
-		debtTypeButton.setBackgroundResource(isBorrow ? R.drawable.borrow_icon
-				: R.drawable.lending_icon);
+		mDebtTypeButton.setBackgroundResource(isBorrow ? R.drawable.borrow_icon : R.drawable.lending_icon);
 	}
 
 	// updates the date in the TextView
 	private void updateDisplayStartDate() {
 		Log.d("st", "Check 2");
-		startDateEditText.setText(new StringBuilder().append(startDate_Day)
-				.append("/").append(startDate_Month + 1).append("/")
-				.append(startDate_Year).toString());
+		mStartDateEditText.setText(new StringBuilder().append(mStartDate_Day)
+				.append("/").append(mStartDate_Month + 1).append("/")
+				.append(mStartDate_Year).toString());
 	}
 
 	// updates the date in the TextView
 	private void updateDisplayExpiredDate() {
-		expiredDateEditText.setText(new StringBuilder().append(expiredDate_Day)
-				.append("/").append(expiredDate_Month + 1).append("/")
-				.append(expiredDate_Year).toString());
+		mExpiredDateEditText.setText(new StringBuilder().append(mExpiredDate_Day)
+				.append("/").append(mExpiredDate_Month + 1).append("/")
+				.append(mExpiredDate_Year).toString());
 	}
 
-	// the callback received when the user "sets" the date in the dialog
+	// the callback received when the user "sets" the start date in the dialog
 	private DatePickerDialog.OnDateSetListener mDateSetListenerStartDate = new DatePickerDialog.OnDateSetListener() {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
-			startDate_Year = year;
-			startDate_Month = monthOfYear;
-			startDate_Day = dayOfMonth;
+			mStartDate_Year = year;
+			mStartDate_Month = monthOfYear;
+			mStartDate_Day = dayOfMonth;
 			updateDisplayStartDate();
 		}
 	};
 
-	// the callback received when the user "sets" the date in the dialog
+	/**
+	 * the callback received when the user "sets" the expired date in the dialog
+	 */
 	private DatePickerDialog.OnDateSetListener mDateSetListenerExpiredDate = new DatePickerDialog.OnDateSetListener() {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
-			expiredDate_Year = year;
-			expiredDate_Month = monthOfYear;
-			expiredDate_Day = dayOfMonth;
+			mExpiredDate_Year = year;
+			mExpiredDate_Month = monthOfYear;
+			mExpiredDate_Day = dayOfMonth;
 
-			String startDateString = startDate_Day + "/" + (startDate_Month + 1) + "/" + startDate_Year;
+			String startDateString = mStartDate_Day + "/" + (mStartDate_Month + 1) + "/" + mStartDate_Year;
 			Date _startDate = Converter.toDate(startDateString, "dd/MM/yyyy");
-			String expiredDateString = expiredDate_Day + "/" + (expiredDate_Month + 1) + "/" + expiredDate_Year;
+			String expiredDateString = mExpiredDate_Day + "/" + (mExpiredDate_Month + 1) + "/" + mExpiredDate_Year;
 			Date _expiredDate = Converter.toDate(expiredDateString, "dd/MM/yyyy");
 			Long startDate = _startDate.getTime();
 			Long expiredDate = _expiredDate.getTime();
@@ -395,23 +396,24 @@ public class BorrowLendInsertActivity extends BaseActivity {
 			if (expiredDate > startDate || (expiredDate - startDate) == 0) {
 				updateDisplayExpiredDate();
 			} else {
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_expired_date_less_than_start_date));
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_expired_date_less_than_start_date));
 				// get the current date
 				final Calendar c = Calendar.getInstance();
-				expiredDate_Year = c.get(Calendar.YEAR);
-				expiredDate_Month = c.get(Calendar.MONTH);
-				expiredDate_Day = c.get(Calendar.DAY_OF_MONTH);
+				mExpiredDate_Year = c.get(Calendar.YEAR);
+				mExpiredDate_Month = c.get(Calendar.MONTH);
+				mExpiredDate_Day = c.get(Calendar.DAY_OF_MONTH);
 			}
 		}
 	};
 
+	
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
 		case DATE_DIALOG_ID:
-			((DatePickerDialog) dialog).updateDate(startDate_Year, startDate_Month, startDate_Day);
+			((DatePickerDialog) dialog).updateDate(mStartDate_Year, mStartDate_Month, mStartDate_Day);
 			break;
 		case DATE_DIALOG_ID1:
-			((DatePickerDialog) dialog).updateDate(expiredDate_Year, expiredDate_Month, expiredDate_Day);
+			((DatePickerDialog) dialog).updateDate(mExpiredDate_Year, mExpiredDate_Month, mExpiredDate_Day);
 			break;
 		}
 	}
@@ -421,59 +423,63 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		switch (id) {
 		case DATE_DIALOG_ID:
 			Log.d("st", "Check 5");
-			return new DatePickerDialog(this, mDateSetListenerStartDate, startDate_Year, startDate_Month, startDate_Day);
+			return new DatePickerDialog(this, mDateSetListenerStartDate, mStartDate_Year, mStartDate_Month, mStartDate_Day);
 		case DATE_DIALOG_ID1:
 			Log.d("ex", "Check 5");
-			return new DatePickerDialog(this, mDateSetListenerExpiredDate, expiredDate_Year, expiredDate_Month, expiredDate_Day);
+			return new DatePickerDialog(this, mDateSetListenerExpiredDate, mExpiredDate_Year, mExpiredDate_Month, mExpiredDate_Day);
 		}
 		return null;
 	}
 
+	/**
+	 *	update data to database after user click save button 
+	 */
+	
 	private void updateData() {
 		String interestTypeString = "";
 		String debtType = "";
 		boolean checkCondition = false;
 		
-		if (interestType.isChecked())
+		if (mInterestType.isChecked())
 			interestTypeString = "Simple";
 		else
 			interestTypeString = "Compound";
 
-		column.add("Interest_type");
-		valuesChanged.add(interestTypeString);
+		mColumn.add("Interest_type");
+		mChangedValues.add(interestTypeString);
 
 		if (mIsBorrow)
 			debtType = "Borrowing";
 		else
 			debtType = "Lending";
 
-		column.add("Debt_type");
-		valuesChanged.add(debtType);
+		mColumn.add("Debt_type");
+		mChangedValues.add(debtType);
 
-		String[] columnUpdate = new String[column.size()];
-		columnUpdate = column.toArray(columnUpdate);
+		String[] columnUpdate = new String[mColumn.size()];
+		columnUpdate = mColumn.toArray(columnUpdate);
 
-		String[] valusChangedUpdate = new String[valuesChanged.size()];
-		valusChangedUpdate = valuesChanged.toArray(valusChangedUpdate);
+		String[] valusChangedUpdate = new String[mChangedValues.size()];
+		valusChangedUpdate = mChangedValues.toArray(valusChangedUpdate);
 		
-		if (nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+		if (mNameEditText.getText().toString().equals("") && mMoneyEditText.getText().toString().equals(""))
 		{
 			if(debtType.equals("Borrowing"))
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender_total_money));
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender_total_money));
 			else
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower_total_money));
-		} else if (nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals(""))
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower_total_money));
+		} else if (mNameEditText.getText().toString().equals("") && !mMoneyEditText.getText().toString().equals(""))
 		{
 			if(debtType.equals("Borrowing"))
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender));
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender));
 			else
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower));
-		} else if(!nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower));
+		} else if(!mNameEditText.getText().toString().equals("") && mMoneyEditText.getText().toString().equals(""))
 		{
-			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_total_money));
-		} else if (!interestRate.getText().toString().equals("") && expiredDateEditText.getText().toString().equals(""))
+			mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_total_money));
+		} else if (!mInterestRate.getText().toString().equals("") && mExpiredDateEditText.getText().toString().equals(""))
 		{
-			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
+			mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
 		} else
 		{
 			checkCondition = true;
@@ -481,9 +487,9 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		
 		if (checkCondition) 
 		{
-			if (!interestRate.getText().toString().trim().equals("")) {
-				if (Integer.parseInt(interestRate.getText().toString().trim()) == 0) {
-					alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
+			if (!mInterestRate.getText().toString().trim().equals("")) {
+				if (Integer.parseInt(mInterestRate.getText().toString().trim()) == 0) {
+					mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_0));
 					checkCondition = false;
 				} else {
 					checkCondition = true;
@@ -493,9 +499,9 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		
 		if (checkCondition)
 		{
-			if (Long.parseLong(moneyEditText.getText().toString().trim()) == 0)
+			if (Long.parseLong(mMoneyEditText.getText().toString().trim()) == 0)
 			{
-				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
+				mAlert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
 				checkCondition = false;
 			} else {
 				checkCondition = true;
@@ -515,18 +521,21 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
 			}
 			
-			alert.show(getApplicationContext(), getResources().getString(R.string.saved));
+			mAlert.show(getApplicationContext(), getResources().getString(R.string.saved));
 			
 			BorrowLendInsertActivity.this.finish();
 		}
 	}
 
+	/**
+	 * insert data to database after user click save button
+	 */
 	private void insertData() {
 		String interestTypeString = "";
 		String debtType = "";
 		boolean checkCondition = false;
 		
-		if (interestType.isChecked()) {
+		if (mInterestType.isChecked()) {
 			interestTypeString = "Simple";
 		} else {
 			interestTypeString = "Compound";
@@ -538,24 +547,24 @@ public class BorrowLendInsertActivity extends BaseActivity {
 			debtType = "Lending";
 		}
 		
-		if (nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+		if (mNameEditText.getText().toString().equals("") && mMoneyEditText.getText().toString().equals(""))
 		{
 			if(debtType.equals("Borrowing"))
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender_total_money));
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender_total_money));
 			else
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower_total_money));
-		} else if (nameEditText.getText().toString().equals("") && !moneyEditText.getText().toString().equals(""))
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower_total_money));
+		} else if (mNameEditText.getText().toString().equals("") && !mMoneyEditText.getText().toString().equals(""))
 		{
 			if(debtType.equals("Borrowing"))
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender));
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_lender));
 			else
-				alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower));
-		} else if(!nameEditText.getText().toString().equals("") && moneyEditText.getText().toString().equals(""))
+				mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_name_borrower));
+		} else if(!mNameEditText.getText().toString().equals("") && mMoneyEditText.getText().toString().equals(""))
 		{
-			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_total_money));
-		} else if (!interestRate.getText().toString().equals("") && expiredDateEditText.getText().toString().equals(""))
+			mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_total_money));
+		} else if (!mInterestRate.getText().toString().equals("") && mExpiredDateEditText.getText().toString().equals(""))
 		{
-			alert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
+			mAlert.show(getApplicationContext(), getResources().getString(R.string.borrow_lend_warning_interest_rate_expired_date));
 		} else
 		{
 			checkCondition = true;
@@ -563,11 +572,11 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		
 		if (checkCondition) 
 		{
-			if(!interestRate.getText().toString().trim().equals(""))
+			if(!mInterestRate.getText().toString().trim().equals(""))
 			{
-				if (Integer.parseInt(interestRate.getText().toString().trim()) == 0) 
+				if (Integer.parseInt(mInterestRate.getText().toString().trim()) == 0) 
 				{
-					alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_interest_rate_0));
+					mAlert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_interest_rate_0));
 					checkCondition = false;
 				} else {
 					checkCondition = true;
@@ -577,9 +586,9 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		
 		if (checkCondition)
 		{
-			if (Long.parseLong(moneyEditText.getText().toString().trim()) == 0)
+			if (Long.parseLong(mMoneyEditText.getText().toString().trim()) == 0)
 			{
-				alert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
+				mAlert.show(getApplicationContext(), getResources().getString( R.string.borrow_lend_warning_total_money_0));
 				checkCondition = false;
 			} else {
 				checkCondition = true;
@@ -590,8 +599,8 @@ public class BorrowLendInsertActivity extends BaseActivity {
 		{
 			String expiredDateString = "";
 			
-			if (!expiredDateEditText.getText().toString().equals(""))
-				expiredDateString = Converter.toString(Converter.toDate(expiredDateEditText.getText().toString(), "dd/MM/yyyy"));
+			if (!mExpiredDateEditText.getText().toString().equals(""))
+				expiredDateString = Converter.toString(Converter.toDate(mExpiredDateEditText.getText().toString(), "dd/MM/yyyy"));
 			
 			SqlHelper.instance.insert("BorrowLend",
 							new String[] { "Debt_type", "Money",
@@ -601,14 +610,14 @@ public class BorrowLendInsertActivity extends BaseActivity {
 									"Person_address" },
 							new String[] {
 									debtType,
-									moneyEditText.getText().toString(),
+									mMoneyEditText.getText().toString(),
 									interestTypeString,
-									interestRate.getText().toString(),
-									Converter.toString(Converter.toDate(startDateEditText.getText().toString(), "dd/MM/yyyy")),
+									mInterestRate.getText().toString(),
+									Converter.toString(Converter.toDate(mStartDateEditText.getText().toString(), "dd/MM/yyyy")),
 									expiredDateString,
-									nameEditText.getText().toString(),
-									phoneEditText.getText().toString(),
-									addressEditText.getText().toString() });
+									mNameEditText.getText().toString(),
+									mPhoneEditText.getText().toString(),
+									mAddressEditText.getText().toString() });
 			setResult(100);
 
 			try {
@@ -620,7 +629,7 @@ public class BorrowLendInsertActivity extends BaseActivity {
 				Logger.Log(e.getMessage(), "BorrowLendInsertActivity");
 			}
 			
-			alert.show(getApplicationContext(), getResources().getString(R.string.saved));
+			mAlert.show(getApplicationContext(), getResources().getString(R.string.saved));
 			
 			BorrowLendInsertActivity.this.finish();
 		}
