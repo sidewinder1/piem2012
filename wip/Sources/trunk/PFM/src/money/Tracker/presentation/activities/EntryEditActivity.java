@@ -160,12 +160,21 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 	}
 
+	/**
+	 * Get QRCode from an image that got from camera's capturing.
+	 */
 	private void getQRCode() {
 		ZXingLibConfig zxingLibConfig = new ZXingLibConfig();
 		zxingLibConfig.useFrontLight = true;
 		IntentIntegrator.initiateScan(EntryEditActivity.this, zxingLibConfig);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -242,7 +251,7 @@ public class EntryEditActivity extends NfcDetectorActivity {
 									.getChildAt(index);
 
 							if (item != null) {
-								if (item.removeEmptyCatagory()) {
+								if (item.checkEmptyCatagory()) {
 									mEntryList.removeView(item);
 								}
 							}
@@ -284,6 +293,10 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		setChecked(!mIsIncome);
 	}
 
+	/**
+	 * Update title of screen when user change type of entry (expense or
+	 * income).
+	 */
 	private void updateTitle() {
 		mTitle.setText(getResources()
 				.getString(
@@ -294,6 +307,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 				.replace("{0}", mDateEdit.getText().toString()));
 	}
 
+	/**
+	 * Handle event when user clicks save button. This method is used to call
+	 * save() method to save data from application to DB.
+	 * 
+	 * @param v
+	 *            Save button.
+	 */
 	public void doneBtnClicked(View v) {
 		if (save()) {
 			if (mEntryList.getTag() != null) {
@@ -331,6 +351,11 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 	}
 
+	/**
+	 * Check conditions before save data.
+	 * 
+	 * @return A message string for checking condition.
+	 */
 	private String checkBeforeSave() {
 		for (int index = 0; index < mEntryList.getChildCount(); index++) {
 			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList
@@ -344,6 +369,11 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		return null;
 	}
 
+	/**
+	 * Save application data to local database.
+	 * 
+	 * @return True if saving is successful, else return false.
+	 */
 	private boolean save() {
 		String temp = checkBeforeSave();
 		if (temp != null) {
@@ -415,12 +445,20 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		return true;
 	}
 
+	/**
+	 * Handle when user clicks cancel button. Finish this activity.
+	 * 
+	 * @param v
+	 *            Cancel button.
+	 */
 	public void cancelBtnClicked(View v) {
 		setResult(100);
 		this.finish();
 	}
 
-	// updates the date in the TextView
+	/**
+	 * Updates the date in the TextView.
+	 */
 	private void updateDateDisplay() {
 		Date startDate = DateTimeHelper.getDate(mYear, mMonth, mDay);
 
@@ -433,7 +471,9 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		updateTitle();
 	}
 
-	// the callback received when the user "sets" the date in the dialog
+	/**
+	 * The callback received when the user "sets" the date in the dialog.
+	 */
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -445,6 +485,11 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 	};
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onPrepareDialog(int, android.app.Dialog)
+	 */
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
 		case DATE_DIALOG_ID:
@@ -453,6 +498,11 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateDialog(int)
+	 */
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
@@ -464,6 +514,13 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * money.Tracker.presentation.activities.BaseActivity#onCreateOptionsMenu
+	 * (android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -471,21 +528,14 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		return true;
 	}
 
-	//
-	// @Override
-	// public boolean onOptionsItemSelected(MenuItem item) {
-	// // Handle item selection
-	// switch (item.getItemId()) {
-	// case R.id.entry_edit_get_QR_Code:
-	// getQRCode();
-	// return true;
-	// case R.id.entry_edit_get_NFC:
-	// return true;
-	// default:
-	// return super.onOptionsItemSelected(item);
-	// }
-	// }
-
+	/**
+	 * Get amount of expenses from a string that got from NFC tag.
+	 * 
+	 * @param tag
+	 *            A string is got from NFC tag. This contains price and name of
+	 *            expense.
+	 * @return An EntryDetail object. This a record of expense.
+	 */
 	private EntryDetail getEntryDetail(String tag) {
 		String[] strs = tag.split("\n");
 		EntryDetail value = new EntryDetail();
@@ -527,14 +577,33 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		return value;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see money.Tracker.presentation.activities.NfcDetectorActivity#
+	 * onNfcFeatureNotFound()
+	 */
 	@Override
 	protected void onNfcFeatureNotFound() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * money.Tracker.presentation.activities.NfcDetectorActivity#onNfcFeatureFound
+	 * ()
+	 */
 	@Override
 	protected void onNfcFeatureFound() {
 	}
 
+	/*
+	 * (non-Javadoc) Get data from NFC.
+	 * 
+	 * @see money.Tracker.common.utilities.NfcDetector.NfcIntentListener#
+	 * nfcIntentDetected(android.content.Intent, java.lang.String)
+	 */
 	public void nfcIntentDetected(Intent intent, String action) {
 		if (mBlocked) {
 			return;
@@ -602,6 +671,9 @@ public class EntryEditActivity extends NfcDetectorActivity {
 		}
 	}
 
+	/**
+	 * Remove item that doesn't contain price value of expense or income.
+	 */
 	private void removeEmptyItems() {
 		for (int index = 0; index < mEntryList.getChildCount(); index++) {
 			EntryEditCategoryView item = (EntryEditCategoryView) mEntryList

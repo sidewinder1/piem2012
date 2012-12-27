@@ -244,6 +244,21 @@ public class HomeActivity extends TabActivity {
 									button.setBackgroundResource(R.drawable.save_icon_disabled);
 									button.setEnabled(false);
 								}
+								
+								if (!s.toString().matches(
+										"([a-z]|[A-Z])+((_*|[.]?)([a-z]|[A-Z])+)*")) {
+									Alert.getInstance()
+											.show(getBaseContext(),
+													getResources()
+															.getString(
+																	R.string.invalid_file_name));
+									button.setBackgroundResource(R.drawable.save_icon_disabled);
+									button.setEnabled(false);
+								}
+								else{
+									button.setBackgroundResource(R.drawable.save_icon);
+									button.setEnabled(true);
+								}
 							}
 						});
 

@@ -70,7 +70,7 @@ public class Alert {
 					try {
 						Context context = PfmApplication.getAppContext();
 						NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-								context).setSmallIcon(R.drawable.report)
+								context).setSmallIcon(R.drawable.notification_icon)
 								.setAutoCancel(true).setContentTitle(title)
 								.setContentText(message);
 

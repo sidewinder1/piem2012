@@ -37,8 +37,8 @@ public class EntryEditCategoryView extends LinearLayout {
 	private LinearLayout mCategoryList;
 	private CategoryAdapter mCategoryAdapter;
 	public EditText mCategoryEdit;
-	private Date mCurrentDate = DateTimeHelper.now(false);
-	private int mType = 1;
+	private static Date mCurrentDate = DateTimeHelper.now(false);
+	private static int mType = 1;
 	private ArrayList<Long> ignoreList = new ArrayList<Long>();
 
 	public EntryEditCategoryView(Context context) {
@@ -225,6 +225,7 @@ public class EntryEditCategoryView extends LinearLayout {
 						double percent = checkOverBudget.getLong(0) / 100d;
 						long expense = PfmApplication.getTotalEntry(
 								mCurrentDate, ignoreList)
+								+ getTotalParentMoney()
 								+ Converter.toLong(arg0.toString());
 						if (budgetInfo[0] <= expense) {
 							Alert.getInstance()
@@ -336,15 +337,32 @@ public class EntryEditCategoryView extends LinearLayout {
 		return mCategoryList.getChildCount() == 0;
 	}
 
+	/**
+	 * Update current date value when user changes entry date.
+	 * 
+	 * @param date
+	 *            New date value that user changed.
+	 */
 	public void updateDate(Date date) {
 		mCurrentDate = date;
 	}
 
+	/**
+	 * Update type entry: expense or income.
+	 * 
+	 * @param type
+	 *            1: Expense. 0: Income.
+	 */
 	public void updateType(int type) {
 		mType = type;
 	}
 
-	public boolean removeEmptyCatagory() {
+	/**
+	 * Remove empty product name fields.
+	 * 
+	 * @return True if an item's name is empty.
+	 */
+	public boolean checkEmptyCatagory() {
 		boolean check = false;
 
 		for (int index = 0; index < mCategoryList.getChildCount(); index++) {
@@ -359,6 +377,11 @@ public class EntryEditCategoryView extends LinearLayout {
 		return check;
 	}
 
+	/**
+	 * Check value before saving.
+	 * 
+	 * @return Message of checking.
+	 */
 	public String checkBeforeSave() {
 		if (mCategoryEdit.getVisibility() == View.VISIBLE) {
 			if ("".equals(mCategoryEdit.getText().toString())) {
@@ -390,6 +413,47 @@ public class EntryEditCategoryView extends LinearLayout {
 		return null;
 	}
 
+	/**
+	 * Get total money of parent list.
+	 * 
+	 * @return Total money of an entry.
+	 */
+	private long getTotalParentMoney() {
+		LinearLayout parentList = (LinearLayout) getParent();
+		long returnedValue = 0;
+		if (parentList == null) {
+			return 0;
+		}
+
+		for (int index = 0; index < parentList.getChildCount(); index++) {
+			EntryEditCategoryView categoryItem = (EntryEditCategoryView) parentList
+					.getChildAt(index);
+
+			if (categoryItem == null || categoryItem == this) {
+				continue;
+			}
+
+			returnedValue += categoryItem.getMoney();
+		}
+
+		return returnedValue;
+	}
+
+	/**
+	 * Get money of this item.
+	 * 
+	 * @return Money of this item that is total money of detailed entries.
+	 */
+	private long getMoney() {
+		return Converter.toLong(("0" + mTotal_money.getText().toString()));
+	}
+
+	/**
+	 * 
+	 * Get detailed entry records from list view.
+	 * 
+	 * @return List of EntryDetail objects.
+	 */
 	public ArrayList<EntryDetail> getDetails() {
 		ArrayList<EntryDetail> data = new ArrayList<EntryDetail>();
 		long category_id_str = CategoryRepository.getInstance().getId(
@@ -413,6 +477,12 @@ public class EntryEditCategoryView extends LinearLayout {
 		return data;
 	}
 
+	/**
+	 * Save data of view to database with specified entry id.
+	 * 
+	 * @param entry_id
+	 *            Id of entry that should be saved.
+	 */
 	public void save(long entry_id) {
 		String[] columns = new String[] { "Name", "Money", "Category_Id",
 				"Entry_Id" };
