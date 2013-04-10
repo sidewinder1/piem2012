@@ -2,7 +2,7 @@
     "use strict";
 
     window.Filters = {};
-   
+
     window.Filters.getPixels = function (img) {
         var c, ctx;
         if (img.getContext) {
@@ -76,6 +76,28 @@
         return this.tmpCtx.createImageData(w, h);
     };
 
+    window.Filters.sobel = function(px) {
+        px = Filters.grayscale(px);
+        var vertical = Filters.convoluteFloat32(px,
+            [-1, -2, -1,
+                0, 0, 0,
+                1, 2, 1]);
+        var horizontal = Filters.convoluteFloat32(px,
+            [-1, 0, 1,
+                -2, 0, 2,
+                -1, 0, 1]);
+        var id = Filters.createImageData(vertical.width, vertical.height);
+        for (var i = 0; i < id.data.length; i += 4) {
+            var v = Math.abs(vertical.data[i]);
+            id.data[i] = v;
+            var h = Math.abs(horizontal.data[i]);
+            id.data[i + 1] = h;
+            id.data[i + 2] = (v + h) / 4;
+            id.data[i + 3] = 255;
+        }
+        return id;
+    };
+    
     window.Filters.convolute = function (pixels, weights, opaque) {
         var side = Math.round(Math.sqrt(weights.length));
         var halfSide = Math.floor(side / 2);
@@ -119,7 +141,8 @@
         }
         return output;
     };
-    
+
+
 
     //brightness = function() {
     //    runFilter('brightness', Filters.brightness, 40);
