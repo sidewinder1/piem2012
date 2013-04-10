@@ -22,14 +22,38 @@
 				</span>	
 				<button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>			 
 
-				<div id="toolContainer"></div>
+				<div id="toolContainer">
+					<button>Pen</button>
+					<button>Brush</button>
+					<button>Eraser</button>
+					<button>Painter</button>
+					<button>...</button>
+				</div>
+				<div id="effectContainer">
+					<button onclick="window.CanvasProcessing.Filter = Filters.grayscale;">Gray scale</button>
+					<button onclick="window.CanvasProcessing.Filter = Filters.brightness;window.CanvasProcessing.Args = 40;">Brightness</button>
+					<button onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 0, -1,  0, -1,  5, -1, 0, -1,  0];">Sharpen</button>
+					<button onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9 ];">Blur</button>
+				</div>
+				<div id="shapeContainer">
+					<button>Rectangle</button>
+					<button>Elip</button>
+					<button>Line</button>
+					<button>Circle</button>
+				</div>
+				<div id="colorContainer">
+					<button>Red</button>
+					<button>Blue</button>
+				</div>
 			</div>
         </header>
         <section aria-label="Main content" role="main">
-            <div id="mainScreen">
-                <canvas id="displayCanvas"></canvas>
-            </div>
-           
+			<div id="editorScreen">
+				<div id="mainScreen">
+					<canvas id="displayCanvas"></canvas>
+				</div>
+				<div id="layersContainer"></div>
+			</div>          
         </section>
     </div>
 </body>
