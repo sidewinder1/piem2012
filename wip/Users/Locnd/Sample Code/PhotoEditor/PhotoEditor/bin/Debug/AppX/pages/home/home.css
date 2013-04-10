@@ -1,0 +1,89 @@
+﻿.homepage {
+    background-image: -ms-linear-gradient(top, #98FB98 0%, #C2F3C9 25%, #A8EEB0 80%, #DCF8DF  100%);
+}
+img {
+    height: 100%;
+}
+    .homepage section[role=main] {        
+    }
+
+	.homepage #ribbonBar {
+        height: 100%;
+		-ms-grid-rows: auto 1fr;
+		display: -ms-grid;
+		background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
+		-ms-grid-column-span:3;
+		margin-bottom:2px;
+		border-bottom: 2px solid #dddddd;
+		-ms-grid-columns: 1fr;
+		width: 100%;
+    }
+	
+	.homepage #ribbonBar #titleDiv
+	{
+		display:block;
+		-ms-grid-column-align:stretch;
+		text-align:center;
+		font-size:19px;
+		margin-left:140px;
+		opacity: 0.9;
+		background-image: -ms-linear-gradient(top, #800000 0%, #DB1620 5%, #DB111C 95%, #800000 100%);	
+		width:calc(100% - 140px);
+	}
+	
+	.homepage #ribbonBar #titleDiv:hover
+	{
+		opacity: 1;
+	}
+	
+	.homepage #ribbonBar #Process {
+        background-image: -ms-linear-gradient(top, #C8E5DF 0%, #B7E0C9 25%, #A0D0B0 80%, #90D898 96%, #008000 100%);		
+		border-top-left-radius: 15px;
+		width:140px;
+		border: 1px solid green;
+		transition: background-image ease-in 0.5s;
+    }
+	
+	.homepage #ribbonBar #Process:hover {
+        background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
+    }
+	
+    .homepage #mainScreen {
+		border:1px solid #A0D0B0;
+        height: calc(100% - 30px);
+		overflow:scroll;
+		margin:1px;
+        background-image: -ms-linear-gradient(top, #e1e1e1 0%, #eeeeee 10%, #ffffff 85%, #eeeeee 100%);
+        scrollbar-3dlight-color: beige;
+        scrollbar-shadow-color: blanchedalmond;
+        width: calc(100% - 2px);
+    }
+	
+        .homepage #mainScreen #displayCanvas {
+            display: block;
+			background-color:white;
+            border: 1px solid #000;
+			box-shadow: 3px 3px 6px #888;
+        }
+ 
+        /*.homepage #mainScreen #displayImage {
+            display: block;
+            -ms-grid-column: 1;
+            border: 2px solid #aaa;
+            box-shadow: 3px 10px;
+        }*/
+
+
+@media screen and (-ms-view-state: snapped) {
+    .homepage section[role=main] {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+@media screen and (-ms-view-state: fullscreen-portrait) {
+    .homepage section[role=main] {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}
