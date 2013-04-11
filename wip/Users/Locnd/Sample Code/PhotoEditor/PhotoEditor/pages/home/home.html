@@ -34,10 +34,10 @@
 				<button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>			 
 
 				<div id="toolContainer">
-					<button>Pen</button>
-					<button>Brush</button>
-					<button>Eraser</button>
-					<button>Painter</button>					
+					<button onclick="window.Tools.Current = window.Tools.Pen;">Pen</button>
+					<button onclick="window.Tools.Current = window.Tools.Brush;">Brush</button>
+					<button onclick="window.Tools.Current = window.Tools.Eraser;">Eraser</button>
+					<button onclick="window.Tools.Current = window.Tools.Painter;">Painter</button>					
 				</div>
 				<div id="effectContainer">
 					<button onclick="window.CanvasProcessing.Filter = Filters.grayscale;">Gray scale</button>
@@ -52,16 +52,20 @@
 					<button>Circle</button>
 				</div>
 				<div id="colorContainer">
+					<span id="color2"></span>
+					<span id="color1"></span>
+
 					<div id="colorsDiv" 
-						data-win-control="WinJS.UI.ListView" 
-						data-win-options="{itemTemplate:select('#colorTemplate'), itemDataSource: window.ColorManager.Colors.dataSource}"></div>
+					     data-win-control="WinJS.UI.ListView"                         
+					     data-win-options="{ itemTemplate:select('#colorTemplate')}"></div>
 				</div>
 			</div>
         </header>
         <section aria-label="Main content" role="main">
 			<div id="editorScreen">
-				<div id="mainScreen">
-					<canvas id="displayCanvas"></canvas>					
+				<div id="mainScreen" data-win-design-locked="true">
+					<canvas id="backgroundCanvas"></canvas>
+					<canvas id="displayCanvas"></canvas>										
 				</div>				
 				<div id="layersContainer" 
 					data-win-control="WinJS.UI.ListView" 
