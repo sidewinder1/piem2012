@@ -1,6 +1,8 @@
 ﻿(function () {
     "use strict";
     window.ColorManager = {};
+    window.ColorManager.Color1 ="black";
+    window.ColorManager.Color2 = "white";
     
     window.ColorManager.GetColor = function () {
         return [{ color: "black" },
@@ -10,7 +12,7 @@
                 { color: "pink" },
                 { color: "green" },
                 { color: "red" },
-                { color: "oliver" },
+                { color: "olive" },
                 { color: "yellow" },
                 { color: "orange" }];
     };
