@@ -6,6 +6,11 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             document.getElementById("openFileCmd").addEventListener("click", HomePageEvents._openFileCmd, false);
+            
+
+            var canvas = document.querySelector(".homepage #mainScreen #displayCanvas");
+            // Set first canvas to draw.
+            window.Tools.setCanvas(canvas);
         },
     });
 })();

@@ -100,6 +100,23 @@ img {
 		-ms-grid-rows: 1fr;
 		display: -ms-grid;
         width: calc(100% - 2px);
+		perspective: 250px;
+    }
+	
+	.homepage #editorScreen #layersContainer {
+		border:1px solid #A0D0B0;
+        height: 100%;
+		-ms-grid-column : 2;		
+		overflow-y:scroll;
+		background-color:#ddedee;
+        width: 300px;
+    }
+	
+	.homepage #editorScreen #layersContainer #layer {
+		border:1px solid #A0D0B0;
+        height: 200px;
+		background-color : white;
+        width: 300px;
     }
 	
     .homepage #editorScreen #mainScreen {
@@ -113,14 +130,6 @@ img {
         width: 100%;
     }
 	
-	.homepage #editorScreen #layersContainer {
-		border:1px solid #A0D0B0;
-        height: 100%;
-		-ms-grid-column : 2;
-		overflow:scroll;
-		background-color:#ddedee;
-        width: 300px;
-    }
 	
         .homepage #editorScreen #mainScreen #displayCanvas {
             display: block;
