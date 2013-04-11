@@ -14,10 +14,16 @@
     <script src="/pages/home/home.js"></script>
 </head>
 <body>
-	<div id="layerTemplate"
+    <div id="layerTemplate"
+         data-win-control="WinJS.Binding.Template">
+        <canvas id="layer">			
+        </canvas>
+    </div>
+    
+    <div id="colorTemplate"
 		data-win-control="WinJS.Binding.Template">
-		<canvas id="layer">			
-		</canvas>
+		<span id="colorItem" data-win-bind="style.backgroundColor:color;">			
+		</span>
 	</div>
 
     <!-- The content that will be loaded and displayed. -->
@@ -46,8 +52,9 @@
 					<button>Circle</button>
 				</div>
 				<div id="colorContainer">
-					<button onclick="window.Tools.setDrawer('red');">Red</button>
-					<button onclick="window.Tools.setDrawer('blue');">Blue</button>
+					<div id="colorsDiv" 
+						data-win-control="WinJS.UI.ListView" 
+						data-win-options="{itemTemplate:select('#colorTemplate'), itemDataSource: window.ColorManager.Colors.dataSource}"></div>
 				</div>
 			</div>
         </header>
