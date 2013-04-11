@@ -14,20 +14,24 @@
     <script src="/pages/home/home.js"></script>
 </head>
 <body>
+	<div id="layerTemplate"
+		data-win-control="WinJS.Binding.Template">
+		<canvas id="layer">			
+		</canvas>
+	</div>
+
     <!-- The content that will be loaded and displayed. -->
     <div class="fragment homepage">
         <header aria-label="Header content" role="banner" data-win-design-locked="true">
             <div id="ribbonBar">				
-				<span id="titleDiv">Title				
-				</span>	
+				<span id="titleDiv">Photo Editor</span>	
 				<button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>			 
 
 				<div id="toolContainer">
 					<button>Pen</button>
 					<button>Brush</button>
 					<button>Eraser</button>
-					<button>Painter</button>
-					<button>...</button>
+					<button>Painter</button>					
 				</div>
 				<div id="effectContainer">
 					<button onclick="window.CanvasProcessing.Filter = Filters.grayscale;">Gray scale</button>
@@ -42,17 +46,20 @@
 					<button>Circle</button>
 				</div>
 				<div id="colorContainer">
-					<button>Red</button>
-					<button>Blue</button>
+					<button onclick="window.Tools.setDrawer('red');">Red</button>
+					<button onclick="window.Tools.setDrawer('blue');">Blue</button>
 				</div>
 			</div>
         </header>
         <section aria-label="Main content" role="main">
 			<div id="editorScreen">
 				<div id="mainScreen">
-					<canvas id="displayCanvas"></canvas>
-				</div>
-				<div id="layersContainer"></div>
+					<canvas id="displayCanvas"></canvas>					
+				</div>				
+				<div id="layersContainer" 
+					data-win-control="WinJS.UI.ListView" 
+					data-win-options="{itemTemplate:select('#layerTemplate'),
+									 layout:{type:WinJS.UI.ListLayout}}"></div>
 			</div>          
         </section>
     </div>

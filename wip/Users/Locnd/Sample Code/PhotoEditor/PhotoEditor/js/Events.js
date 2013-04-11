@@ -21,10 +21,12 @@
                     if (file) {
                         // Application now has read/write access to the picked file
                         WinJS.log && WinJS.log("Picked photo: " + file.name, "sample", "status");
+						var title = document.querySelector(".homepage #ribbonBar #titleDiv");
+						title.innerHTML = file.name + " - Photo Editor";
 
                         HomePageEvents.currentImage = new Image();
                         var canvas = document.querySelector(".homepage #mainScreen #displayCanvas");
-                        
+
                         HomePageEvents.currentImage.src = URL.createObjectURL(file);
 
                         var context = canvas.getContext("2d");
