@@ -14,9 +14,13 @@
             window.Tools.setCanvas(canvas);
 
             var colorList = element.querySelector(".homepage #ribbonBar #colorContainer #colorsDiv").winControl;
-
             colorList.itemDataSource = window.ColorManager.Colors.dataSource;
             colorList.oniteminvoked = HomePageEvents._selectColor.bind(this);
+            
+            var layers = element.querySelector(".homepage #editorScreen #layersContainer").winControl;
+
+            layers.itemDataSource = window.LayerManager.Layers.dataSource;
+            layers.oniteminvoked = HomePageEvents._selectColor.bind(this);
             
             // Create a checkerboard background.
             // set up a pattern, something really elaborate!

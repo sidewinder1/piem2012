@@ -66,6 +66,7 @@
     <Content Include="js\Events.js" />
     <Content Include="js\FilePickerHelpers.js" />
     <Content Include="js\Filters.js" />
+    <Content Include="js\Layers.js" />
     <Content Include="js\navigator.js" />
     <Content Include="js\Tool.js" />
     <Content Include="pages\home\home.css" />
