@@ -21,7 +21,11 @@
     };
 
     window.Tools.setDrawer = function (color, strokeWidth, strokeType) {
-        window.ColorManager.Color1 = color;
+        if (color.length > 1)
+        {
+            window.ColorManager.Color1 = color;
+        }
+        
         _strokeType = strokeType;
         _strokeWidth = strokeWidth;
     };
@@ -47,7 +51,7 @@
             }
         };
 
-        canvas.onmouseup = function (e) {
+        document.onmouseup = function (e) {
             if (window.Tools.Current) {
                 window.Tools.Current.end();
             }

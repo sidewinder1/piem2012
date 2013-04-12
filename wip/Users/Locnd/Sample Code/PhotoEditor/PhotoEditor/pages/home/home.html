@@ -34,22 +34,26 @@
 				<button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>			 
 
 				<div id="toolContainer">
-					<button onclick="window.Tools.Current = window.Tools.Pen;">Pen</button>
-					<button onclick="window.Tools.Current = window.Tools.Brush;">Brush</button>
-					<button onclick="window.Tools.Current = window.Tools.Eraser;">Eraser</button>
-					<button onclick="window.Tools.Current = window.Tools.Painter;">Painter</button>					
+					<button class="button" onclick="window.Tools.Current = window.Tools.Pen;">Pen</button>
+					<button class="button" onclick="window.Tools.Current = window.Tools.Brush;">Brush</button>
+					<button class="button" onclick="window.Tools.Current = window.Tools.Eraser;">Eraser</button>
+					<button class="button" onclick="window.Tools.Current = window.Tools.Painter;">Painter</button>
+					<input onchange="window.Tools.setDrawer('', this.value);" max="100" min="1" value="1" type="range" />
 				</div>
 				<div id="effectContainer">
-					<button onclick="window.CanvasProcessing.Filter = Filters.grayscale;">Gray scale</button>
-					<button onclick="window.CanvasProcessing.Filter = Filters.brightness;window.CanvasProcessing.Args = 40;">Brightness</button>
-					<button onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 0, -1,  0, -1,  5, -1, 0, -1,  0];">Sharpen</button>
-					<button onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9 ];">Blur</button>
+					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.grayscale;">Gray scale</button>
+					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.brightness;window.CanvasProcessing.Args = 40;">Brightness</button>
+					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 0, -1,  0, -1,  5, -1, 0, -1,  0];">Sharpen</button>
+					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9 ];">Blur</button>
+					<input onchange="window.CanvasProcessing.updateArgs(this.value, '', '');" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg1" type="range" />
+					<input onchange="window.CanvasProcessing.updateArgs('', this.value, '');" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg2" type="range" />
+					<input onchange="window.CanvasProcessing.updateArgs('', '', this.value);" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg3" type="range" />
 				</div>
 				<div id="shapeContainer">
-					<button>Rectangle</button>
-					<button>Elip</button>
-					<button>Line</button>
-					<button>Circle</button>
+					<button class="button">Rectangle</button>
+					<button class="button">Elip</button>
+					<button class="button">Line</button>
+					<button class="button">Circle</button>
 				</div>
 				<div id="colorContainer">
 					<span id="color2"></span>
