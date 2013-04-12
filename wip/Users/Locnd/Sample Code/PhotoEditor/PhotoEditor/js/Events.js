@@ -7,7 +7,7 @@
             currentImage: {},
 
             _processOnClicked: function () {
-                CanvasProcessing.runFilter("displayCanvas", HomePageEvents.currentImage);
+                CanvasProcessing.runFilter(HomePageEvents.currentImage);
             },
 
             _selectColor: function (args) {

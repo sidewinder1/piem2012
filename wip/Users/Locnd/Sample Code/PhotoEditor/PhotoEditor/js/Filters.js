@@ -26,10 +26,20 @@
     };
 
     window.Filters.filterImage = function (filter, image, var_args) {
-        var args = [this.getPixels(image)];
+        var args;
+        
+        if (image) { args = [this.getPixels(image)]; }
+        else {
+            args = [window.Tools.CanvasContext.getImageData(0, 0, window.Tools.Canvas.width, window.Tools.Canvas.height)];
+        }
+        
+        if (args.push == undefined) {
+            return filter.apply(null, args);
+        }
         for (var i = 2; i < arguments.length; i++) {
             args.push(arguments[i]);
         }
+        
         return filter.apply(null, args);
     };
 
