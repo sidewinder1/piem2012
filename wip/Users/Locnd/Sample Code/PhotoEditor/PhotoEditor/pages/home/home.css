@@ -1,226 +1,216 @@
 ﻿.homepage {
-    background-image: -ms-linear-gradient(top, #98FB98 0%, #C2F3C9 25%, #A8EEB0 80%, #DCF8DF  100%);
+    background-image: -ms-linear-gradient(top, #98FB98 0%, #C2F3C9 25%, #A8EEB0 80%, #DCF8DF 100%);
 }
+
 img {
     height: 100%;
 }
 
-    .homepage section[role=main] {        
+.homepage section[role=main] {
+}
+
+.homepage #ribbonBar {
+    height: 100%;
+    -ms-grid-rows: auto 1fr;
+    display: -ms-grid;
+    background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
+    -ms-grid-column-span: 3;
+    margin-bottom: 2px;
+    border-bottom: 2px solid #dddddd;
+    -ms-grid-columns: auto auto auto auto 1fr;
+    width: 100%;
+}
+
+    .homepage #ribbonBar #titleDiv {
+        display: block;
+        -ms-grid-column-align: stretch;
+        text-align: center;
+        -ms-grid-column-span: 5;
+        font-size: 19px;
+        margin-left: 140px;
+        background-image: -ms-linear-gradient(top, #800000 0%, #DB1620 5%, #DB111C 95%, #800000 100%);
+        width: calc(100% - 140px);
     }
 
-	.homepage #ribbonBar {
-        height: 100%;
-		-ms-grid-rows: auto 1fr;
-		display: -ms-grid;
-		background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
-		-ms-grid-column-span:3;
-		margin-bottom:2px;
-		border-bottom: 2px solid #dddddd;
-		-ms-grid-columns: auto auto auto auto 1fr;
-		width: 100%;
-    }
-	
-	.homepage #ribbonBar #titleDiv
-	{
-		display:block;
-		-ms-grid-column-align:stretch;
-		text-align:center;
-		-ms-grid-column-span:5;
-		font-size:19px;
-		margin-left:140px;
-		background-image: -ms-linear-gradient(top, #800000 0%, #DB1620 5%, #DB111C 95%, #800000 100%);	
-		width:calc(100% - 140px);
-	}
-
-	.homepage #ribbonBar #Process {
-        background-image: -ms-linear-gradient(top, #C8E5DF 0%, #B7E0C9 25%, #A0D0B0 80%, #90D898 96%, #008000 100%);		
-		border-top-left-radius: 15px;
-		width:140px;
-		border: 1px solid green;
-		transition: background-image ease-in 0.5s;
-    }
-	
-	.homepage #ribbonBar #Process:hover {
-        background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
-		outline: 2px #A8EEB0 solid;
-    }
-	
-	.homepage #ribbonBar #toolContainer
-	{
-		display:block;
-		-ms-grid-column-align:stretch;
-		-ms-grid-row:2;
-		-ms-grid-column:2;
-		border-right: 1px solid black;
-		border-bottom-right-radius:10px;
-		width:100px;
-		overflow:hidden;
-		transition: width 1s;		
-	}
-	
-	.homepage #ribbonBar .button{
-		background-image: -ms-linear-gradient(top, #C8E5DF 0%, #B7E0C9 25%, #A0D0B0 80%, #90D898 96%, #008000 100%);		
-		border-radius: 10px;
-		min-width:95px;			
-	}
-	
-	.homepage #ribbonBar .button:hover {
-        background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
-		outline: 2px #A8EEB0 solid;
+    .homepage #ribbonBar #Process {
+        background-image: -ms-linear-gradient(top, #C8E5DF 0%, #B7E0C9 25%, #A0D0B0 80%, #90D898 96%, #008000 100%);
+        border-top-left-radius: 15px;
+        width: 140px;
+        border: 1px solid green;
+        transition: background-image ease-in 0.5s;
     }
 
-	.homepage #ribbonBar #toolContainer:hover
-	{		
-		width:100%;
-		overflow: auto;
-	}
-	
-	.homepage #ribbonBar #effectContainer
-	{
-		display:block;
-		-ms-grid-column-align:stretch;
-		-ms-grid-row:2;
-		-ms-grid-column:3;
-		border-right: 1px solid black;
-		border-bottom-right-radius:10px;
-		width:100px;
-		overflow:hidden;
-		transition: width 1s;
-	}
-	
-	.homepage #ribbonBar #effectContainer:hover
-	{		
-		width:100%;
-		overflow: auto;
-	}
-	
-	.homepage #ribbonBar #shapeContainer
-	{
-		display:block;
-		-ms-grid-column:4;
-		-ms-grid-column-align:stretch;
-		-ms-grid-row:2;
-		border-right: 1px solid black;
-		border-bottom-right-radius:10px;
-		width:100px;
-		overflow:hidden;
-		transition: width 1s;
-	}
-	
-	.homepage #ribbonBar #shapeContainer:hover
-	{		
-		width:100%;
-		overflow: auto;
-	}
-	
-	.homepage #ribbonBar #colorContainer
-	{
-		display:-ms-grid;
-		-ms-grid-column-align:stretch;
-		-ms-grid-row:2;
-		border-right: 1px solid black;
-		-ms-grid-columns: 95px 1fr auto;
-		-ms-grid-rows: 1fr;
-		border-bottom-right-radius:10px;
-		width:100%;
-	}
-	
-		.homepage #ribbonBar #colorContainer #color1
-	{
-		display:block;
-		-ms-grid-column-align:start;
-		margin: 20px;
-		border: 1px solid black;
-		background-color: black;
-		border-radius:3px;
-		width:34px;
-		height:34px;
-	}
-		
-		.homepage #ribbonBar #colorContainer #color2
-	{
-		display:block;
-		-ms-grid-column-align:end;
-		-ms-grid-row-align:end;
-		margin: 20px;		
-		background-color:white;
-		border: 1px solid black;
-		border-radius:3px;
-		width:34px;
-		height:34px;
-	}
-		
-	.homepage #ribbonBar #colorContainer #colorsDiv
-	{
-		-ms-grid-column: 2;
-		border-left: 1px solid black;
-		border-radius:3px;
-		width:100%;
-		min-width:100px;
-		height:100%;
-	}
-	
-	.homepage #ribbonBar #colorContainer #colorsDiv #colorItem
-	{
-		display:block;
-		border: 1px solid black;
-		border-radius:3px;
-		width:26px;	
-		height:26px;
-	}
-	
-	  .homepage #editorScreen {
-		border:1px solid #A0D0B0;
-        height: calc(100% - 30px);
-		margin:1px;
-		-ms-grid-columns: 1fr auto;
-		-ms-grid-rows: 1fr;
-		display: -ms-grid;
-        width: calc(100% - 2px);
-		perspective: 250px;
+        .homepage #ribbonBar #Process:hover {
+            background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
+            outline: 2px #A8EEB0 solid;
+        }
+
+    .homepage #ribbonBar #toolContainer {
+        display: block;
+        -ms-grid-column-align: stretch;
+        -ms-grid-row: 2;
+        -ms-grid-column: 2;
+        border-right: 1px solid black;
+        border-bottom-right-radius: 10px;
+        width: 100px;
+        overflow: hidden;
+        transition: width 1s;
     }
-	
-	.homepage #editorScreen #layersContainer {
-		border:1px solid #A0D0B0;
-        height: 100%;
-		-ms-grid-column : 2;		
-		overflow-y:scroll;
-		background-color:#ddedee;
-        width: 300px;
+
+    .homepage #ribbonBar .button {
+        background-image: -ms-linear-gradient(top, #C8E5DF 0%, #B7E0C9 25%, #A0D0B0 80%, #90D898 96%, #008000 100%);
+        border-radius: 10px;
+        min-width: 95px;
     }
-	
-	.homepage #editorScreen #layersContainer #layer {
-		border:1px solid #A0D0B0;
-        height: 200px;
-		background-color : white;
-        width: 300px;
+
+        .homepage #ribbonBar .button:hover {
+            background-image: -ms-linear-gradient(top, #DCF8DF 0%, #C2F3C9 25%, #A8EEB0 80%, #98FB98 100%);
+            outline: 2px #A8EEB0 solid;
+        }
+
+    .homepage #ribbonBar #toolContainer:hover {
+        width: 100%;
+        overflow: auto;
     }
-	
-    .homepage #editorScreen #mainScreen {
-		border:1px solid #A0D0B0;
-        height: 100%;
-		display:-ms-grid;
-		overflow:scroll;
-		background-image: -ms-linear-gradient(top, #e1e1e1 0%, #eeeeee 10%, #ffffff 85%, #eeeeee 100%);
-        scrollbar-3dlight-color: red;
-        scrollbar-shadow-color: blue;
-		scrollbar-base-color: fuchsia;
+
+    .homepage #ribbonBar #effectContainer {
+        display: block;
+        -ms-grid-column-align: stretch;
+        -ms-grid-row: 2;
+        -ms-grid-column: 3;
+        border-right: 1px solid black;
+        border-bottom-right-radius: 10px;
+        width: 100px;
+        overflow: hidden;
+        transition: width 1s;
+    }
+
+        .homepage #ribbonBar #effectContainer:hover {
+            width: 100%;
+            overflow: auto;
+        }
+
+    .homepage #ribbonBar #shapeContainer {
+        display: block;
+        -ms-grid-column: 4;
+        -ms-grid-column-align: stretch;
+        -ms-grid-row: 2;
+        border-right: 1px solid black;
+        border-bottom-right-radius: 10px;
+        width: 100px;
+        overflow: hidden;
+        transition: width 1s;
+    }
+
+        .homepage #ribbonBar #shapeContainer:hover {
+            width: 100%;
+            overflow: auto;
+        }
+
+    .homepage #ribbonBar #colorContainer {
+        display: -ms-grid;
+        -ms-grid-column-align: stretch;
+        -ms-grid-row: 2;
+        border-right: 1px solid black;
+        -ms-grid-columns: 95px 1fr auto;
+        -ms-grid-rows: 1fr;
+        border-bottom-right-radius: 10px;
         width: 100%;
     }
-	
-	
+
+        .homepage #ribbonBar #colorContainer #color1 {
+            display: block;
+            -ms-grid-column-align: start;
+            margin: 20px;
+            border: 1px solid black;
+            background-color: black;
+            border-radius: 3px;
+            width: 34px;
+            height: 34px;
+        }
+
+        .homepage #ribbonBar #colorContainer #color2 {
+            display: block;
+            -ms-grid-column-align: end;
+            -ms-grid-row-align: end;
+            margin: 20px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 3px;
+            width: 34px;
+            height: 34px;
+        }
+
+        .homepage #ribbonBar #colorContainer #colorsDiv {
+            -ms-grid-column: 2;
+            border-left: 1px solid black;
+            border-radius: 3px;
+            width: 100%;
+            min-width: 100px;
+            height: 100%;
+        }
+
+            .homepage #ribbonBar #colorContainer #colorsDiv #colorItem {
+                display: block;
+                border: 1px solid black;
+                border-radius: 3px;
+                width: 26px;
+                height: 26px;
+            }
+
+.homepage #editorScreen {
+    border: 1px solid #A0D0B0;
+    height: calc(100% - 30px);
+    margin: 1px;
+    -ms-grid-columns: 1fr auto;
+    -ms-grid-rows: 1fr;
+    display: -ms-grid;
+    width: calc(100% - 2px);
+    perspective: 250;
+}
+
+    .homepage #editorScreen #layersContainer {
+        border: 1px solid #A0D0B0;
+        height: 100%;
+        -ms-grid-column: 2;
+        overflow-y: scroll;
+        background-color: #ddedee;
+        width: 300px;
+    }
+
+        .homepage #editorScreen #layersContainer #layer {
+            border: 1px solid #A0D0B0;
+            height: 200px;
+            background-color: white;
+            width: 300px;
+        }
+
+    .homepage #editorScreen #mainScreen {
+        border: 1px solid #A0D0B0;
+        height: 100%;
+        display: -ms-grid;
+        overflow: scroll;
+        background-image: -ms-linear-gradient(top, #e1e1e1 0, #eeeeee 10%, #ffffff 85%, #eeeeee 100%);
+        scrollbar-3dlight-color: -ms-linear-gradient(top, #C8E5ee 0, #B7E0ee 25%, #A0D0ee 80%, #90D8ee 96%, #0080ee 100%);
+        scrollbar-shadow-color: -ms-linear-gradient(top, #C8E5DF 0%, #B7E0C9 25%, #A0D0B0 80%, #90D898 96%, #008000 100%);
+        scrollbar-base-color: -ms-linear-gradient(top, #eeE5DF 0%, #eeE0C9 25%, #eeD0B0 80%, #eeD898 96%, #ee8000 100%);
+        width: 100%;
+    }
+
+
         .homepage #editorScreen #mainScreen #displayCanvas {
-            background-color:transparent;
+            background-color: transparent;
             border: 1px solid #000;
-			box-shadow: 3px 3px 6px #888;
+            box-shadow: 3px 3px 6px #888;
         }
-		
-		 .homepage #editorScreen #mainScreen #backgroundCanvas {
-            background-color:transparent;
+
+        .homepage #editorScreen #mainScreen #backgroundCanvas {
+            background-color: transparent;
             border: 1px solid #000;
-			box-shadow: 3px 3px 6px #888;
+            box-shadow: 3px 3px 6px #888;
+            z-index: -1; 
         }
-     
+
 @media screen and (-ms-view-state: snapped) {
     .homepage section[role=main] {
         margin-left: 20px;

@@ -39,13 +39,13 @@
 
         canvas.onmousedown = function (e) {
             var mouseX = e.pageX - this.offsetLeft;
-            var mouseY = e.pageY - this.offsetTop - 129; // 129 px for ribbonbar.
+            var mouseY = e.pageY - this.offsetTop; // 129 px for ribbonbar.
             window.Tools.Current.start(mouseX, mouseY);
         };
 
         canvas.onmousemove = function (e) {
             var mouseX = e.pageX - this.offsetLeft;
-            var mouseY = e.pageY - this.offsetTop - 129; // 129 px for ribbonbar.
+            var mouseY = e.pageY - this.offsetTop; // 129 px for ribbonbar.
             if (window.Tools.Current) {
                 window.Tools.Current.moveTo(mouseX, mouseY);
             }

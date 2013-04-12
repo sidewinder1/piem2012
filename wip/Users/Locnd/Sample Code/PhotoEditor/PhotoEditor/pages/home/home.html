@@ -12,70 +12,77 @@
     <link href="/css/default.css" rel="stylesheet" />
     <link href="/pages/home/home.css" rel="stylesheet" />
     <script src="/pages/home/home.js"></script>
+    <script src="/js/Events.js"></script>
+    <script src="/js/CanvasProcessing.js"></script>
+    <script src="/js/Filters.js"></script>
+    <script src="/js/Tool.js"></script>
+    <script src="/js/ColorManager.js"></script>
+    <script src="/js/FilePickerHelpers.js"></script>
+    <script src="/js/Layers.js"></script>
 </head>
 <body>
     <div id="layerTemplate"
-         data-win-control="WinJS.Binding.Template">
-        <canvas id="layer">			
-        </canvas>
+        data-win-control="WinJS.Binding.Template">
+        <canvas id="layer"></canvas>
     </div>
-    
+
     <div id="colorTemplate"
-		data-win-control="WinJS.Binding.Template">
-		<span id="colorItem" data-win-bind="style.backgroundColor:color;">			
-		</span>
-	</div>
+        data-win-control="WinJS.Binding.Template">
+        <span id="colorItem" data-win-bind="style.backgroundColor:color;"></span>
+    </div>
 
     <!-- The content that will be loaded and displayed. -->
     <div class="fragment homepage">
         <header aria-label="Header content" role="banner" data-win-design-locked="true">
-            <div id="ribbonBar">				
-				<span id="titleDiv">Photo Editor</span>	
-				<button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>			 
+            <div id="ribbonBar">
+                <span id="titleDiv">Photo Editor</span>
+                <button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>
 
-				<div id="toolContainer">
-					<button class="button" onclick="window.Tools.Current = window.Tools.Pen;">Pen</button>
-					<button class="button" onclick="window.Tools.Current = window.Tools.Brush;">Brush</button>
-					<button class="button" onclick="window.Tools.Current = window.Tools.Eraser;">Eraser</button>
-					<button class="button" onclick="window.Tools.Current = window.Tools.Painter;">Painter</button>
-					<input onchange="window.Tools.setDrawer('', this.value);" max="100" min="1" value="1" type="range" />
-				</div>
-				<div id="effectContainer">
-					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.grayscale;">Gray scale</button>
-					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.brightness;window.CanvasProcessing.Args = 40;">Brightness</button>
-					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 0, -1,  0, -1,  5, -1, 0, -1,  0];">Sharpen</button>
-					<button class="button" onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9 ];">Blur</button>
-					<input onchange="window.CanvasProcessing.updateArgs(this.value, '', '');" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg1" type="range" />
-					<input onchange="window.CanvasProcessing.updateArgs('', this.value, '');" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg2" type="range" />
-					<input onchange="window.CanvasProcessing.updateArgs('', '', this.value);" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg3" type="range" />
-				</div>
-				<div id="shapeContainer">
-					<button class="button">Rectangle</button>
-					<button class="button">Elip</button>
-					<button class="button">Line</button>
-					<button class="button">Circle</button>
-				</div>
-				<div id="colorContainer">
-					<span id="color2"></span>
-					<span id="color1"></span>
+                <div id="toolContainer">
+                    <button class="button" onclick="window.Tools.Current = window.Tools.Pen;">Pen</button>
+                    <button class="button" onclick="window.Tools.Current = window.Tools.Brush;">Brush</button>
+                    <button class="button" onclick="window.Tools.Current = window.Tools.Eraser;">Eraser</button>
+                    <button class="button" onclick="window.Tools.Current = window.Tools.Painter;">Painter</button>
+                    <input onchange="window.Tools.setDrawer('', this.value);" max="100" min="1" value="1" type="range" />
+                </div>
+                <div id="effectContainer">
+                    <button class="button" onclick="window.CanvasProcessing.Filter = Filters.grayscale;">Gray scale</button>
+                    <button class="button" onclick="window.CanvasProcessing.Filter = Filters.brightness;window.CanvasProcessing.Args = 40;">Brightness</button>
+                    <button class="button" onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 0, -1,  0, -1,  5, -1, 0, -1,  0];">Sharpen</button>
+                    <button class="button" onclick="window.CanvasProcessing.Filter = Filters.convolute;window.CanvasProcessing.Args = [ 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9 ];">Blur</button>
+                    <input onchange="window.CanvasProcessing.updateArgs(this.value, '', '');" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg1" type="range" />
+                    <input onchange="window.CanvasProcessing.updateArgs('', this.value, '');" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg2" type="range" />
+                    <input onchange="window.CanvasProcessing.updateArgs('', '', this.value);" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg3" type="range" />
+                </div>
+                <div id="shapeContainer">
+                    <button class="button">Rectangle</button>
+                    <button class="button">Elip</button>
+                    <button class="button">Line</button>
+                    <button class="button">Circle</button>
+                </div>
+                <div id="colorContainer">
+                    <span id="color2"></span>
+                    <span id="color1"></span>
 
-					<div id="colorsDiv" 
-					     data-win-control="WinJS.UI.ListView"                         
-					     data-win-options="{ itemTemplate:select('#colorTemplate')}"></div>
-				</div>
-			</div>
+                    <div id="colorsDiv"
+                        data-win-control="WinJS.UI.ListView"
+                        data-win-options="{ itemTemplate:select('#colorTemplate')}">
+                    </div>
+                </div>
+            </div>
         </header>
         <section aria-label="Main content" role="main">
-			<div id="editorScreen">
-				<div id="mainScreen" data-win-design-locked="true">
-					<canvas id="backgroundCanvas"></canvas>
-					<canvas id="displayCanvas"></canvas>										
-				</div>				
-				<div id="layersContainer" 
-					data-win-control="WinJS.UI.ListView" 
-					data-win-options="{itemTemplate:select('#layerTemplate'),
-									 layout:{type:WinJS.UI.ListLayout}}"></div>
-			</div>          
+            <div id="editorScreen">
+                <div id="mainScreen" data-win-design-locked="true">
+                    <canvas id="backgroundCanvas"></canvas>
+                    <canvas id="displayCanvas"></canvas>
+                </div>
+                <div id="layersContainer"
+                    data-win-control="WinJS.UI.ListView"
+                    data-win-options="{itemTemplate:select('#layerTemplate'),
+									 layout:{type:WinJS.UI.ListLayout}}">
+                </div>
+            </div>
         </section>
     </div>
 </body>
