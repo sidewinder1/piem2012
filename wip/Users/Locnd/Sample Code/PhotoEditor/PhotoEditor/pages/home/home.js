@@ -9,9 +9,7 @@
             
             document.getElementById("saveFileCmd").addEventListener("click", HomePageEvents._saveFile, false);
             
-            var canvas = document.querySelector(".homepage #mainScreen #displayCanvas");
-            // Set first canvas to draw.
-            window.Tools.setCanvas(canvas);
+            window.LayerManager.CreateLayer("displayCanvas");            
 
             var colorList = element.querySelector(".homepage #ribbonBar #colorContainer #colorsDiv").winControl;
             colorList.itemDataSource = window.ColorManager.Colors.dataSource;

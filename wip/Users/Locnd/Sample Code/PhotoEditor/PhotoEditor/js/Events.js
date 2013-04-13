@@ -50,8 +50,8 @@
                     stream.size = 0;
                     return Imaging.BitmapEncoder.createAsync(encoderId, stream);
                 }).then(function (encoder) {
-                    var width = window.Tools.Canvas.width;
-                    var height = window.Tools.Canvas.height;
+                    var width = window.LayerManager.Current.width;
+                    var height = window.LayerManager.Current.height;
 
                     //// get the image data object
                     //var image = window.Tools.CanvasContext.getImageData(0, 0, 500, 200);
@@ -107,14 +107,13 @@
                         title.innerHTML = file.name + " - Photo Editor";
 
                         HomePageEvents.currentImage = new Image();
-                        var canvas = document.querySelector(".homepage #mainScreen #displayCanvas");
-
+                        
                         HomePageEvents.currentImage.src = URL.createObjectURL(file);
-
-                        var context = canvas.getContext("2d");
+                        window.LayerManager.CreateLayer();
+                        var context = window.LayerManager.Current.getContext("2d");
                         HomePageEvents.currentImage.onload = function () {
-                            canvas.width = HomePageEvents.currentImage.width;
-                            canvas.height = HomePageEvents.currentImage.height;
+                            window.LayerManager.Current.width = HomePageEvents.currentImage.width;
+                            window.LayerManager.Current.height = HomePageEvents.currentImage.height;
                             context.drawImage(HomePageEvents.currentImage, 0, 0, HomePageEvents.currentImage.width, HomePageEvents.currentImage.height);
                         };
                     } else {

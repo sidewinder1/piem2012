@@ -14,9 +14,9 @@
         }
                 
         var idata = Filters.filterImage(window.CanvasProcessing.Filter, img, window.CanvasProcessing.Args ,arg1, arg2);
-        window.Tools.Canvas.width = idata.width;
-        window.Tools.Canvas.height = idata.height;
-        var ctx = window.Tools.Canvas.getContext('2d');
+        window.LayerManager.Current.width = idata.width;
+        window.LayerManager.Current.height = idata.height;
+        var ctx = window.LayerManager.Current.getContext('2d');
         ctx.putImageData(idata, 0, 0);
     };
     

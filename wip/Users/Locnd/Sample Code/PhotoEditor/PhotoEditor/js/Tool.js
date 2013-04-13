@@ -8,17 +8,12 @@
     var _strokeWidth = 3;
     var _strokeType = "round";
 
-    window.Tools.Canvas = null;
-    window.Tools.CanvasContext = null;
+     window.Tools.CanvasContext = null;
 
     var clickX = new Array();
     var clickY = new Array();
     var clickDrag = new Array();
     var paint = false;
-
-    window.Tools.setEditorScreen = function (objDom) {
-
-    };
 
     window.Tools.setDrawer = function (color, strokeWidth, strokeType) {
         if (color.length > 1)
@@ -30,39 +25,9 @@
         _strokeWidth = strokeWidth;
     };
 
-    // Current canvas that is used to draw on.
-    window.Tools.setCanvas = function (canvas) {
-        window.Tools.Canvas = canvas;
-        if (window.Tools.Current === null) {
-            window.Tools.Current = window.Tools.Brush;
-        }
-
-        canvas.onmousedown = function (e) {
-            var mouseX = e.pageX - this.offsetLeft;
-            var mouseY = e.pageY - this.offsetTop; // 129 px for ribbonbar.
-            window.Tools.Current.start(mouseX, mouseY);
-        };
-
-        canvas.onmousemove = function (e) {
-            var mouseX = e.pageX - this.offsetLeft;
-            var mouseY = e.pageY - this.offsetTop; // 129 px for ribbonbar.
-            if (window.Tools.Current) {
-                window.Tools.Current.moveTo(mouseX, mouseY);
-            }
-        };
-
-        document.onmouseup = function (e) {
-            if (window.Tools.Current) {
-                window.Tools.Current.end();
-            }
-        };
-
-        window.Tools.CanvasContext = canvas.getContext("2d");
-    };
-
     window.Tools.Redraw = function () {
-        window.Tools.Canvas.width = window.Tools.Canvas.width; // Clears the canvas
-
+        window.LayerManager.Current.width = window.Tools.Canvas.width; // Clears the canvas
+        // window.LayerManager.Current.clearRect
         for (var i = 0; i < clickX.length; i++) {
             window.Tools.CanvasContext.beginPath();
             if (clickDrag[i] && i) {
@@ -126,7 +91,7 @@
         // get the image data object
         var image = window.Tools.CanvasContext.getImageData(0, 0, window.Tools.Canvas.width, window.Tools.Canvas.height);
         // get the image data values
-        var width = window.Tools.Canvas.width;
+        var width = window.LayerManager.Current.width;
         var points = getPointsInLine(x, y, lastPoint.x, lastPoint.y);
 
         for (var j = 0; j < points.length; j++) {

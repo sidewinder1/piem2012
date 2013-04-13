@@ -198,11 +198,11 @@ img {
     }
 
 
-        .homepage #editorScreen #mainScreen #displayCanvas {
+        /*.homepage #editorScreen #mainScreen #displayCanvas {
             background-color: transparent;
             border: 1px solid #000;
             box-shadow: 3px 3px 6px #888;
-        }
+        }*/
 
         .homepage #editorScreen #mainScreen #backgroundCanvas {
             background-color: transparent;
