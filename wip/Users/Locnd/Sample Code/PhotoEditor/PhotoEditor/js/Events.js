@@ -8,6 +8,44 @@
 
             _processOnClicked: function () {
                 CanvasProcessing.runFilter(HomePageEvents.currentImage);
+            }, 
+            
+            _newLayerCmd: function () {
+                var popup = document.querySelector("#newLayerFlyout");
+                popup.winControl.show(this, "top");
+            },
+
+            _visibilityLayer: function (dom) {
+                var title = dom.previousSibling.previousSibling;
+                var canvas = window.LayerManager.Find(title.textContent);
+                if (canvas.style.visibility == "hidden") {
+                    canvas.style.visibility = "visible";
+                } else {
+                    canvas.style.visibility = "hidden";
+                }
+            },
+
+            _newLayerClicked: function () {
+                var name = document.querySelector("#newLayerFlyout #layerName");
+                var width = document.querySelector("#newLayerFlyout #layerWidth");
+                var height = document.querySelector("#newLayerFlyout #layerHeight");
+                
+                if (name.value === "" || name.value === undefined) {
+                    name.focus();
+                    return;
+                }
+                if (width.value === "" || width.value === undefined) {
+                    width.focus();
+                    return;
+                }
+                if (height.value === "" || height.value === undefined) {
+                    height.focus();
+                    return;
+                }
+
+                window.LayerManager.CreateLayer(name.value, width.value, height.value);
+                var popup = document.querySelector("#newLayerFlyout");
+                popup.winControl.hide();
             },
 
             _selectColor: function (args) {
@@ -15,6 +53,11 @@
                 window.ColorManager.Color1 = item.color;
                 var color1Dom = document.querySelector(".homepage #ribbonBar #colorContainer #color1");
                 color1Dom.style.backgroundColor = item.color;
+            },
+            
+            _layerSelected: function (args) {
+                var item = window.LayerManager.Layers.getAt(args.detail.itemIndex);
+                window.LayerManager.SelectLayer(item.name);
             },
 
             _saveFile: function () {
@@ -113,6 +156,8 @@
                         var context = window.LayerManager.Current.getContext("2d");
                         HomePageEvents.currentImage.onload = function () {
                             window.LayerManager.Current.width = HomePageEvents.currentImage.width;
+                            window.LayerManager.Current.style.width = HomePageEvents.currentImage.width + "px";
+                            window.LayerManager.Current.style.height = HomePageEvents.currentImage.height + "px";
                             window.LayerManager.Current.height = HomePageEvents.currentImage.height;
                             context.drawImage(HomePageEvents.currentImage, 0, 0, HomePageEvents.currentImage.width, HomePageEvents.currentImage.height);
                         };
