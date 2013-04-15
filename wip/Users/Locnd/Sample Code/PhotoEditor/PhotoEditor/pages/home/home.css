@@ -9,6 +9,26 @@ img {
 .homepage section[role=main] {
 }
 
+#newLayerFlyout
+{
+	display:-ms-grid;
+	-ms-grid-rows: 1fr 1fr 1fr 1fr;
+}
+
+#newLayerFlyout #widthDiv
+{
+	-ms-grid-row: 2;
+}
+#newLayerFlyout #heightDiv
+{
+	-ms-grid-row: 3;
+}
+
+#newLayerFlyout .newLayerButton
+{
+	-ms-grid-row: 4;
+}
+
 .homepage #ribbonBar {
     height: 100%;
     -ms-grid-rows: auto 1fr;
@@ -50,11 +70,12 @@ img {
         -ms-grid-column-align: stretch;
         -ms-grid-row: 2;
         -ms-grid-column: 2;
+        max-width: 400px;
         border-right: 1px solid black;
         border-bottom-right-radius: 10px;
         width: 100px;
         overflow: hidden;
-        transition: width 1s;
+        transition: width 2s;
     }
 
     .homepage #ribbonBar .button {
@@ -82,7 +103,7 @@ img {
         border-bottom-right-radius: 10px;
         width: 100px;
         overflow: hidden;
-        transition: width 1s;
+        transition: width 2s;
     }
 
         .homepage #ribbonBar #effectContainer:hover {
@@ -99,7 +120,7 @@ img {
         border-bottom-right-radius: 10px;
         width: 100px;
         overflow: hidden;
-        transition: width 1s;
+        transition: width 2s;
     }
 
         .homepage #ribbonBar #shapeContainer:hover {
@@ -166,7 +187,6 @@ img {
     -ms-grid-rows: 1fr;
     display: -ms-grid;
     width: calc(100% - 2px);
-    perspective: 250;
 }
 
     .homepage #editorScreen #layersContainer {
@@ -175,14 +195,42 @@ img {
         -ms-grid-column: 2;
         overflow-y: scroll;
         background-color: #ddedee;
-        width: 300px;
+        width: 250px;
     }
 
-        .homepage #editorScreen #layersContainer #layer {
+        .homepage #editorScreen #layersContainer #layerItem {
             border: 1px solid #A0D0B0;
-            height: 200px;
+            height: 150px;
+            background-color: #70D0B0;
+			display: -ms-grid;
+			-ms-grid-columns: 100px 1fr;
+            -ms-grid-rows: 1fr 1fr;
+            width: 250px;
+        }
+
+		.homepage #editorScreen #layersContainer #layerItem #layer {
+            border: 1px solid #A0D0B0;
+            height: 100%;
+		    -ms-grid-row-span: 2;
             background-color: white;
-            width: 300px;
+            width: 100%;
+        }
+		
+		.homepage #editorScreen #layersContainer #layerItem #name {
+            border: 1px solid #A0D0B0;
+            background-color: white;
+			-ms-grid-column: 2;
+            width: 100%;
+        }
+		
+        .homepage #editorScreen #layersContainer #layerItem #visibilityLayer {
+            border: 1px solid #A0D0B0;
+            background-color: blue;
+            height: 27px;
+            width: 27px;
+            border-radius: 10px;
+			-ms-grid-column: 2;
+			-ms-grid-row: 2;
         }
 
     .homepage #editorScreen #mainScreen {
@@ -191,9 +239,9 @@ img {
         display: -ms-grid;
         overflow: scroll;
         background-image: -ms-linear-gradient(top, #e1e1e1 0, #eeeeee 10%, #ffffff 85%, #eeeeee 100%);
-        scrollbar-3dlight-color: -ms-linear-gradient(top, #C8E5ee 0, #B7E0ee 25%, #A0D0ee 80%, #90D8ee 96%, #0080ee 100%);
-        scrollbar-shadow-color: -ms-linear-gradient(top, #C8E5DF 0%, #B7E0C9 25%, #A0D0B0 80%, #90D898 96%, #008000 100%);
-        scrollbar-base-color: -ms-linear-gradient(top, #eeE5DF 0%, #eeE0C9 25%, #eeD0B0 80%, #eeD898 96%, #ee8000 100%);
+        scrollbar-3dlight-color: #B7E0ee;
+        scrollbar-shadow-color: #A0D0B0;
+        scrollbar-base-color: #eeD0B0;
         width: 100%;
     }
 
@@ -207,6 +255,7 @@ img {
         .homepage #editorScreen #mainScreen #backgroundCanvas {
             background-color: transparent;
             border: 1px solid #000;
+			visibility:hidden;
             box-shadow: 3px 3px 6px #888;
             z-index: -1; 
         }

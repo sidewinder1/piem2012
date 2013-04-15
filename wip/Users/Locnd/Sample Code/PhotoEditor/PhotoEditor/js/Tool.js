@@ -8,7 +8,7 @@
     var _strokeWidth = 3;
     var _strokeType = "round";
 
-     window.Tools.CanvasContext = null;
+    window.Tools.CanvasContext = null;
 
     var clickX = new Array();
     var clickY = new Array();
@@ -16,11 +16,10 @@
     var paint = false;
 
     window.Tools.setDrawer = function (color, strokeWidth, strokeType) {
-        if (color.length > 1)
-        {
+        if (color.length > 1) {
             window.ColorManager.Color1 = color;
         }
-        
+
         _strokeType = strokeType;
         _strokeWidth = strokeWidth;
     };
@@ -41,11 +40,11 @@
         }
     };
 
-    var getIndex = function(x, y, w, a) {
+    var getIndex = function (x, y, w, a) {
         return (x + y * w) * 4 + a;
     };
 
-    var getPointsInLine = function(x1, y1, x2, y2) {
+    var getPointsInLine = function (x1, y1, x2, y2) {
         // With 2 points, we will create a line with : y = mx + b;
         var m = (y2 - y1) / (x2 - x1);
         var b = y1 - m * x1;
@@ -80,16 +79,16 @@
             for (var i = 0; i < Math.abs(y1 - y2) ; i++) {
                 var pointY = y1 + (i * adder);
                 points.push({ x: Math.round((pointY - b) / m), y: pointY });
-            }           
+            }
         }
 
         return points;
     };
-    
-    var lastPoint = { };
+
+    var lastPoint = {};
     window.Tools.ErasePoint = function (x, y) {
         // get the image data object
-        var image = window.Tools.CanvasContext.getImageData(0, 0, window.Tools.Canvas.width, window.Tools.Canvas.height);
+        var image = window.Tools.CanvasContext.getImageData(0, 0, window.LayerManager.Current.width, window.LayerManager.Current.height);
         // get the image data values
         var width = window.LayerManager.Current.width;
         var points = getPointsInLine(x, y, lastPoint.x, lastPoint.y);
@@ -163,24 +162,44 @@
         }
     });
 
+    // Move tool. Used to move canvas.
+    window.Tools.Move = WinJS.Class.define(
+    {
+        start: function (x, y) {
+            paint = true;
+            window.LayerManager.Current.style.marginLeft = x + "px";
+            window.LayerManager.Current.style.marginTop = y + "px";
+        },
+
+        moveTo: function (x, y) {
+            if (paint) {
+                window.LayerManager.Current.style.marginLeft = x + "px";
+                window.LayerManager.Current.style.marginTop = y + "px";
+            }
+        },
+
+        end: function () {
+            paint = false;
+        }
+    });
+
     // Eraser tool. Used to erase strokes.
     window.Tools.Eraser = WinJS.Class.define(
     {
         start: function (x, y) {
             lastPoint = { x: x, y: y };
             paint = true;
-            window.Tools.ErasePoint(x, y);        
+            window.Tools.ErasePoint(x, y);
         },
 
         moveTo: function (x, y) {
             if (paint) {
-                window.Tools.ErasePoint(x, y);             
+                window.Tools.ErasePoint(x, y);
             }
         },
 
         end: function () {
             paint = false;
-            window.Tools.CanvasContext.closePath();
         }
     });
 
