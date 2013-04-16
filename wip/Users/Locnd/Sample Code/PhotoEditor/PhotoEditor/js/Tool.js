@@ -169,14 +169,14 @@
     {
         start: function (x, y) {
             paint = true;
-            window.LayerManager.Current.style.left = x + "px";
-            window.LayerManager.Current.style.top = y + "px";
+            window.LayerManager.Current.style.marginLeft = x + "px";
+            window.LayerManager.Current.style.marginTop = y + "px";
         },
 
         moveTo: function (x, y) {
             if (paint) {
-                window.LayerManager.Current.style.left = x + "px";
-                window.LayerManager.Current.style.top = y + "px";
+                window.LayerManager.Current.style.marginLeft = x + "px";
+                window.LayerManager.Current.style.marginTop = y + "px";
             }
         },
 
