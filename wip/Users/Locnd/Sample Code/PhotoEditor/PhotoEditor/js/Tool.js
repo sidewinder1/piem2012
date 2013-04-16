@@ -108,13 +108,7 @@
         // and put the imagedata back to the canvas
         window.Tools.CanvasContext.putImageData(image, 0, 0);
     };
-
-    var addClick = function (x, y, dragging) {
-        clickX.push(x);
-        clickY.push(y);
-        clickDrag.push(dragging);
-    };
-
+ 
     // Pen tool. Used to draw vectors.
     window.Tools.Pen = WinJS.Class.define(
     {
@@ -135,6 +129,10 @@
     window.Tools.Brush = WinJS.Class.define(
     {
         start: function (x, y) {
+            if (!window.Tools.CanvasContext) {
+                return;
+            }
+
             window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
             window.Tools.CanvasContext.lineJoin = _strokeType;
             window.Tools.CanvasContext.lineWidth = _strokeWidth;
@@ -157,6 +155,10 @@
         },
 
         end: function () {
+            if (!paint) {
+                return;
+            }
+            
             paint = false;
             window.Tools.CanvasContext.closePath();
         }
@@ -167,14 +169,14 @@
     {
         start: function (x, y) {
             paint = true;
-            window.LayerManager.Current.style.marginLeft = x + "px";
-            window.LayerManager.Current.style.marginTop = y + "px";
+            window.LayerManager.Current.style.left = x + "px";
+            window.LayerManager.Current.style.top = y + "px";
         },
 
         moveTo: function (x, y) {
             if (paint) {
-                window.LayerManager.Current.style.marginLeft = x + "px";
-                window.LayerManager.Current.style.marginTop = y + "px";
+                window.LayerManager.Current.style.left = x + "px";
+                window.LayerManager.Current.style.top = y + "px";
             }
         },
 

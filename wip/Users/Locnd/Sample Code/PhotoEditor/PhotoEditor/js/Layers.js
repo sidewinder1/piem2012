@@ -11,6 +11,47 @@
         var canvas = document.querySelector(".homepage #editorScreen #mainScreen ." + layerClass);
         return canvas;
     };
+
+    var _mouseX, _mouseY, _mouseT, _mouseL;
+    
+    document.onmousedown = function (e) {
+        if (window.Tools.Current === null) {
+            window.Tools.Current = window.Tools.Brush;
+        }
+
+        _mouseX = e.offsetX;
+        _mouseY = e.offsetY; // 129 px for ribbonbar.
+        if (window.Tools.Current === window.Tools.Move) {
+            _mouseX = e.clientX;
+            _mouseY = e.clientY;
+            _mouseT = e.srcElement.style.top;
+            _mouseL = e.srcElement.style.left;
+        }
+        
+        //document.querySelector("#titleDiv").textContent = _mouseX + ", " + _mouseY;
+        window.Tools.Current.start(_mouseX, _mouseY);
+    };
+
+    document.onmousemove = function (e) {
+        var mouseX = e.offsetX;
+        var mouseY = e.offsetY; // 129 px for ribbonbar.
+
+        if (window.Tools.Current === window.Tools.Move) {
+            mouseX = parseInt(_mouseL) + (e.clientX - _mouseX);
+            mouseY = parseInt(_mouseT) + (e.clientY - _mouseY);
+        }
+        
+        if (window.Tools.Current) {
+            //document.querySelector("#titleDiv").textContent = mouseX + ", " + mouseY;
+            window.Tools.Current.moveTo(mouseX, mouseY);
+        }
+    };
+
+    document.onmouseup = function () {
+        if (window.Tools.Current) {
+            window.Tools.Current.end();
+        }
+    };
     
     window.LayerManager.CreateLayer = function (layerName, width, height) {
         if (layerName === undefined || layerName === null) {
@@ -29,9 +70,11 @@
         canvas.setAttribute("class", layerClass);
         canvas.style.zIndex = (window.LayerManager.Layers.length + 1);
         canvas.style.backgroundColor = "transparent";
+        canvas.style.msGridColumnAlign = "start";
+        canvas.style.msGridRowAlign = "start";
         canvas.style.border = "1px solid #aaa";
-        canvas.draggable = "true";
-        
+        canvas.style.position = "absolute";
+
         document.querySelector(".homepage #editorScreen #mainScreen").appendChild(canvas);
         window.LayerManager.Layers.push(WinJS.Binding.as({ name: layerName, data: {}, index: (window.LayerManager.Layers.length + 1) }));
         window.LayerManager.SelectLayer(layerName);
@@ -39,6 +82,7 @@
         var can = document.getElementById('backgroundCanvas');
         can.style.visibility = "visible";
         
+
         if (width != undefined && height != undefined) {
             canvas.style.width = width + "px";
             canvas.style.height = height + "px";
@@ -49,7 +93,6 @@
             can.style.width = canvas.style.width;
             can.style.height = canvas.style.height;
         }
-
         
         // Create a checkerboard background.
         // set up a pattern, something really elaborate!
@@ -65,67 +108,7 @@
         var ctx = can.getContext('2d');
         var patternFill = ctx.createPattern(pattern, "repeat");
         ctx.fillStyle = patternFill;
-        ctx.fillRect(0, 0, can.width, can.height);
-        
-        canvas.onmousedown = function (e) {
-            if (window.Tools.Current === null) {
-                window.Tools.Current = window.Tools.Brush;
-            }
-
-            var mouseX = e.offsetX;
-            var mouseY = e.offsetY; // 129 px for ribbonbar.
-            if (window.Tools.Current === window.Tools.Move) {
-                return;
-                mouseX = e.x - mouseX;
-                mouseY = e.y - mouseY;
-            }
-
-            window.Tools.Current.start(mouseX, mouseY);
-        };
-
-        canvas.onmousemove = function (e) {
-            var mouseX = e.offsetX;
-            var mouseY = e.offsetY; // 129 px for ribbonbar.
-
-            if (window.Tools.Current === window.Tools.Move) {
-                return;
-                mouseX = e.x - mouseX;
-                mouseY = e.y - mouseY;
-            }
-            if (window.Tools.Current) {
-                window.Tools.Current.moveTo(mouseX, mouseY);
-            }
-        };
-
-        document.onmouseup = function () {
-            if (window.Tools.Current) {
-                window.Tools.Current.end();
-            }
-        };
-
-    
-        canvas.onDragStart = function(ev) {
-            ev.dataTransfer.effectAllowed = 'move';
-            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-            ev.dataTransfer.setDragImage(ev.target, 0, 0);
-            return true;
-        };
-
-        canvas.ondragEnter = function(ev) {
-            event.preventDefault();
-            return true;
-        };
-
-        canvas.ondragOver = function(ev) {
-            return false;
-        };
-        
-        canvas.ondragDrop = function(ev) {
-            var src = ev.dataTransfer.getData("Text");
-            ev.target.appendChild(document.getElementById(src));
-            ev.stopPropagation();
-            return false;
-        };
+        ctx.fillRect(0, 0, can.width, can.height);          
     };
 
     window.LayerManager.SelectLayer = function (layerName) {
