@@ -75,7 +75,7 @@ img {
         border-bottom-right-radius: 10px;
         width: 100px;
         overflow: hidden;
-        transition: width 2s;
+        transition: width 0.5s;
     }
 
     .homepage #ribbonBar .button {
@@ -103,7 +103,7 @@ img {
         border-bottom-right-radius: 10px;
         width: 100px;
         overflow: hidden;
-        transition: width 2s;
+        transition: width 0.5s;
     }
 
         .homepage #ribbonBar #effectContainer:hover {
@@ -120,7 +120,7 @@ img {
         border-bottom-right-radius: 10px;
         width: 100px;
         overflow: hidden;
-        transition: width 2s;
+        transition: width 0.5s;
     }
 
         .homepage #ribbonBar #shapeContainer:hover {
@@ -202,7 +202,7 @@ img {
         .homepage #editorScreen #layersContainer #layerItem {
             border: 1px solid #A0D0B0;
             height: 150px;
-            background-color: #70D0B0;
+            background-color: #79E8C8;
 			display: -ms-grid;
 			-ms-grid-columns: 100px 1fr;
             -ms-grid-rows: auto 1fr;

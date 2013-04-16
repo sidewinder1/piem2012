@@ -1,7 +1,7 @@
 ﻿(function () {
     "use strict";
 
-    var Imaging = Windows.Graphics.Imaging;
+    var imaging = Windows.Graphics.Imaging;
     WinJS.Namespace.define("HomePageEvents",
         {
             currentImage: {},
@@ -57,7 +57,15 @@
             
             _layerSelected: function (args) {
                 var item = window.LayerManager.Layers.getAt(args.detail.itemIndex);
-                
+
+                // Make all layer item in list view to normal color.
+                var items = document.querySelectorAll(".homepage #editorScreen #layersContainer #layerItem");
+                for (var i = 0; i < items.length; i++) {
+                    items[i].style.backgroundColor = "#70D0B0";
+                }
+
+                var currentLayerItem = args.srcElement.querySelector("#layerItem");
+                currentLayerItem.style.backgroundColor = "#79E8C8";
                 window.LayerManager.SelectLayer(item.name);
             },
 
@@ -74,14 +82,14 @@
 
                     switch (file.fileType) {
                         case ".jpg":
-                            encoderId = Imaging.BitmapEncoder.jpegEncoderId;
+                            encoderId = imaging.BitmapEncoder.jpegEncoderId;
                             break;
                         case ".bmp":
-                            encoderId = Imaging.BitmapEncoder.bmpEncoderId;
+                            encoderId = imaging.BitmapEncoder.bmpEncoderId;
                             break;
                         case ".png":
                         default:
-                            encoderId = Imaging.BitmapEncoder.pngEncoderId;
+                            encoderId = imaging.BitmapEncoder.pngEncoderId;
                             break;
                     }
 
@@ -92,7 +100,7 @@
                     // BitmapEncoder expects an empty output stream; the user may have selected a
                     // pre-existing file.
                     stream.size = 0;
-                    return Imaging.BitmapEncoder.createAsync(encoderId, stream);
+                    return imaging.BitmapEncoder.createAsync(encoderId, stream);
                 }).then(function (encoder) {
                     var width = window.LayerManager.Current.width;
                     var height = window.LayerManager.Current.height;
@@ -114,8 +122,8 @@
                     var outputPixelData = window.Tools.CanvasContext.getImageData(0, 0, width, height);
 
                     encoder.setPixelData(
-                        Imaging.BitmapPixelFormat.rgba8,
-                        Imaging.BitmapAlphaMode.straight,
+                        imaging.BitmapPixelFormat.rgba8,
+                        imaging.BitmapAlphaMode.straight,
                         width,
                         height,
                         96, // Horizontal DPI
