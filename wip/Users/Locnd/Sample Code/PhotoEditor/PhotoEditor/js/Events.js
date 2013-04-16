@@ -33,7 +33,7 @@
                 for (var i = 0; i < window.LayerManager.Layers.length; i++) {
                     var item = window.LayerManager.Layers.getAt(i);
                     if (item.name == title.textContent) {
-                        window.LayerManager.Layers.pop(item);
+                        window.LayerManager.Layers.splice(i, 1);
                         return;
                     }
                 }              

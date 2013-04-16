@@ -5,7 +5,7 @@
     window.LayerManager.Layers = new WinJS.Binding.List();
     window.LayerManager.Current = null;
     var currentData;
-
+    var totalLayer = 0;
     window.LayerManager.Find = function (layerName) {
         var layerClass = "Loc" + layerName.replace("/", "").replace(" ", "");
         var canvas = document.querySelector(".homepage #editorScreen #mainScreen ." + layerClass);
@@ -65,7 +65,7 @@
 
     window.LayerManager.CreateLayer = function (layerName, width, height) {
         if (layerName === undefined || layerName === null) {
-            layerName = "Layer " + (window.LayerManager.Layers.length + 1);
+            layerName = "Layer " + (totalLayer + 1);
         }
 
         var layerClass = "Loc" + layerName.replace("/", "").replace(" ", "");
@@ -76,9 +76,11 @@
             return;
         }
 
+        totalLayer++;
+        
         canvas = document.createElement("canvas");
         canvas.setAttribute("class", layerClass);
-        canvas.style.zIndex = (window.LayerManager.Layers.length + 1);
+        canvas.style.zIndex = totalLayer;
         canvas.style.backgroundColor = "transparent";
         canvas.style.border = "1px solid #eee";
         canvas.style.marginTop = "0px";
@@ -92,7 +94,7 @@
         }
 
         document.querySelector(".homepage #editorScreen #mainScreen").appendChild(canvas);
-        window.LayerManager.Layers.push(WinJS.Binding.as({ name: layerName, data: {}, index: (window.LayerManager.Layers.length + 1) }));
+        window.LayerManager.Layers.push(WinJS.Binding.as({ name: layerName, data: {}, index: totalLayer }));
         window.LayerManager.SelectLayer(layerName);
 
         var can = document.getElementById('backgroundCanvas');
