@@ -81,8 +81,16 @@
         canvas.style.msGridColumnAlign = "start";
         canvas.style.msGridRowAlign = "start";
         canvas.style.border = "1px solid #aaa";
-        canvas.style.position = "absolute";
+        canvas.style.top = "130px";
+        canvas.style.left = "3px";
+        canvas.style.position = "fixed";
 
+        // Make all layer item in list view to normal color.
+        var items = document.querySelectorAll(".homepage #editorScreen #layersContainer #layerItem");
+        for (var i = 0; i < items.length; i++) {
+            items[i].style.backgroundColor = "#70D0B0";
+        }
+        
         document.querySelector(".homepage #editorScreen #mainScreen").appendChild(canvas);
         window.LayerManager.Layers.push(WinJS.Binding.as({ name: layerName, data: {}, index: (window.LayerManager.Layers.length + 1) }));
         window.LayerManager.SelectLayer(layerName);
@@ -116,7 +124,7 @@
         var ctx = can.getContext('2d');
         var patternFill = ctx.createPattern(pattern, "repeat");
         ctx.fillStyle = patternFill;
-        ctx.fillRect(0, 0, can.width, can.height);          
+        ctx.fillRect(0, 0, can.width, can.height);              
     };
 
     window.LayerManager.SelectLayer = function (layerName) {
