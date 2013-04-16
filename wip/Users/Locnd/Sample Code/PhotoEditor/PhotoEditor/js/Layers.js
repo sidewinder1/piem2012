@@ -12,24 +12,33 @@
         return canvas;
     };
 
-    var _mouseX, _mouseY, _mouseT, _mouseL;
+    var gMouseX, gMouseY, gMouseT, gMouseL;
     
     document.onmousedown = function (e) {
+        
         if (window.Tools.Current === null) {
             window.Tools.Current = window.Tools.Brush;
         }
 
-        _mouseX = e.offsetX;
-        _mouseY = e.offsetY; // 129 px for ribbonbar.
+        var mouseX = e.offsetX;
+        var mouseY = e.offsetY; // 129 px for ribbonbar.
         if (window.Tools.Current === window.Tools.Move) {
-            _mouseX = e.clientX;
-            _mouseY = e.clientY;
-            _mouseT = e.srcElement.style.top;
-            _mouseL = e.srcElement.style.left;
+            gMouseX = e.clientX;
+            gMouseY = e.clientY;
+            if (e.srcElement !== window.LayerManager.Current) {
+                mouseX = window.LayerManager.Current.style.left;
+                mouseY = window.LayerManager.Current.style.top;
+            } else {
+                mouseX = gMouseX - e.offsetX;
+                mouseY = gMouseY - e.offsetY;
+            }
+            
+
+            gMouseT = window.LayerManager.Current.style.top;
+            gMouseL = window.LayerManager.Current.style.left;
         }
         
-        //document.querySelector("#titleDiv").textContent = _mouseX + ", " + _mouseY;
-        window.Tools.Current.start(_mouseX, _mouseY);
+        window.Tools.Current.start(mouseX, mouseY);
     };
 
     document.onmousemove = function (e) {
@@ -37,12 +46,11 @@
         var mouseY = e.offsetY; // 129 px for ribbonbar.
 
         if (window.Tools.Current === window.Tools.Move) {
-            mouseX = parseInt(_mouseL) + (e.clientX - _mouseX);
-            mouseY = parseInt(_mouseT) + (e.clientY - _mouseY);
+            mouseX = parseInt(gMouseL) + (e.clientX - gMouseX);
+            mouseY = parseInt(gMouseT) + (e.clientY - gMouseY);
         }
         
         if (window.Tools.Current) {
-            //document.querySelector("#titleDiv").textContent = mouseX + ", " + mouseY;
             window.Tools.Current.moveTo(mouseX, mouseY);
         }
     };
