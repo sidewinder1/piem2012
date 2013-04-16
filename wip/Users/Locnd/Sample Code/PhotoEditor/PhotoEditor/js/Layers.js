@@ -15,20 +15,29 @@
     var gMouseX, gMouseY, gMouseT, gMouseL;
 
     document.onmousedown = function (e) {
-
+        if (!window.LayerManager.Current) {
+            return;
+        }
+        
         if (window.Tools.Current === null) {
             window.Tools.Current = window.Tools.Brush;
         }
 
         var mouseX = e.offsetX;
         var mouseY = e.offsetY; // 129 px for ribbonbar.
+
+        if (e.clientY < 129) {
+            return;
+        }
+        
         if (window.Tools.Current === window.Tools.Move) {
             gMouseX = e.clientX;
             gMouseY = e.clientY;
-            mouseX = window.LayerManager.Current.style.marginLeft;
-            mouseY = window.LayerManager.Current.style.marginTop;
-            gMouseT = window.LayerManager.Current.style.marginTop;
-            gMouseL = window.LayerManager.Current.style.marginLeft;
+            mouseX = window.LayerManager.Current.style.marginLeft.replace("px", "");
+            mouseY = window.LayerManager.Current.style.marginTop.replace("px", "");
+            gMouseT = window.LayerManager.Current.style.marginTop.replace("px", "");
+            gMouseL = window.LayerManager.Current.style.marginLeft.replace("px", "");
+         
         }
 
         window.Tools.Current.start(mouseX, mouseY);
@@ -71,9 +80,7 @@
         canvas.setAttribute("class", layerClass);
         canvas.style.zIndex = (window.LayerManager.Layers.length + 1);
         canvas.style.backgroundColor = "transparent";
-        canvas.style.msGridColumnAlign = "start";
-        canvas.style.msGridRowAlign = "start";
-        canvas.style.border = "1px solid #aaa";
+        canvas.style.border = "1px solid #eee";
         canvas.style.marginTop = "0px";
         canvas.style.marginLeft = "0px";
         // canvas.style.position = "fixed";

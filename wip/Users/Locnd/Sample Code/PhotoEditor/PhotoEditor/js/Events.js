@@ -24,6 +24,20 @@
                     canvas.style.visibility = "hidden";
                 }
             },
+            
+            _deleteLayer: function (dom) {
+                var title = dom.previousSibling.previousSibling;
+                var canvas = window.LayerManager.Find(title.textContent);
+                
+                document.querySelector(".homepage #editorScreen #mainScreen").removeChild(canvas);
+                for (var i = 0; i < window.LayerManager.Layers.length; i++) {
+                    var item = window.LayerManager.Layers.getAt(i);
+                    if (item.name == title.textContent) {
+                        window.LayerManager.Layers.pop(item);
+                        return;
+                    }
+                }              
+            },
 
             _newLayerClicked: function () {
                 var name = document.querySelector("#newLayerFlyout #layerName");
@@ -161,13 +175,14 @@
                         HomePageEvents.currentImage = new Image();
                         
                         HomePageEvents.currentImage.src = URL.createObjectURL(file);
-                        window.LayerManager.CreateLayer();
-                        var context = window.LayerManager.Current.getContext("2d");
                         HomePageEvents.currentImage.onload = function () {
-                            window.LayerManager.Current.width = HomePageEvents.currentImage.width;
-                            window.LayerManager.Current.style.width = HomePageEvents.currentImage.width + "px";
-                            window.LayerManager.Current.style.height = HomePageEvents.currentImage.height + "px";
-                            window.LayerManager.Current.height = HomePageEvents.currentImage.height;
+                            window.LayerManager.CreateLayer(null, HomePageEvents.currentImage.width, HomePageEvents.currentImage.height);
+                            var context = window.LayerManager.Current.getContext("2d");
+                        
+                            //window.LayerManager.Current.width = HomePageEvents.currentImage.width;
+                            //window.LayerManager.Current.style.width = HomePageEvents.currentImage.width + "px";
+                            //window.LayerManager.Current.style.height = HomePageEvents.currentImage.height + "px";
+                            //window.LayerManager.Current.height = HomePageEvents.currentImage.height;
                             context.drawImage(HomePageEvents.currentImage, 0, 0, HomePageEvents.currentImage.width, HomePageEvents.currentImage.height);
                         };
                     } else {
