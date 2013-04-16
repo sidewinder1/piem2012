@@ -57,6 +57,7 @@
             
             _layerSelected: function (args) {
                 var item = window.LayerManager.Layers.getAt(args.detail.itemIndex);
+                
                 window.LayerManager.SelectLayer(item.name);
             },
 
