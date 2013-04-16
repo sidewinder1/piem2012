@@ -1,4 +1,4 @@
-﻿(function() {
+﻿(function () {
     "use strict";
 
     window.LayerManager = {};
@@ -6,16 +6,16 @@
     window.LayerManager.Current = null;
     var currentData;
 
-    window.LayerManager.Find = function(layerName) {
+    window.LayerManager.Find = function (layerName) {
         var layerClass = "Loc" + layerName.replace("/", "").replace(" ", "");
         var canvas = document.querySelector(".homepage #editorScreen #mainScreen ." + layerClass);
         return canvas;
     };
 
     var gMouseX, gMouseY, gMouseT, gMouseL;
-    
+
     document.onmousedown = function (e) {
-        
+
         if (window.Tools.Current === null) {
             window.Tools.Current = window.Tools.Brush;
         }
@@ -25,19 +25,12 @@
         if (window.Tools.Current === window.Tools.Move) {
             gMouseX = e.clientX;
             gMouseY = e.clientY;
-            if (e.srcElement !== window.LayerManager.Current) {
-                mouseX = window.LayerManager.Current.style.left;
-                mouseY = window.LayerManager.Current.style.top;
-            } else {
-                mouseX = gMouseX - e.offsetX;
-                mouseY = gMouseY - e.offsetY;
-            }
-            
-
-            gMouseT = window.LayerManager.Current.style.top;
-            gMouseL = window.LayerManager.Current.style.left;
+            mouseX = window.LayerManager.Current.style.marginLeft;
+            mouseY = window.LayerManager.Current.style.marginTop;
+            gMouseT = window.LayerManager.Current.style.marginTop;
+            gMouseL = window.LayerManager.Current.style.marginLeft;
         }
-        
+
         window.Tools.Current.start(mouseX, mouseY);
     };
 
@@ -49,7 +42,7 @@
             mouseX = parseInt(gMouseL) + (e.clientX - gMouseX);
             mouseY = parseInt(gMouseT) + (e.clientY - gMouseY);
         }
-        
+
         if (window.Tools.Current) {
             window.Tools.Current.moveTo(mouseX, mouseY);
         }
@@ -60,7 +53,7 @@
             window.Tools.Current.end();
         }
     };
-    
+
     window.LayerManager.CreateLayer = function (layerName, width, height) {
         if (layerName === undefined || layerName === null) {
             layerName = "Layer " + (window.LayerManager.Layers.length + 1);
@@ -69,7 +62,7 @@
         var layerClass = "Loc" + layerName.replace("/", "").replace(" ", "");
 
         var canvas = window.LayerManager.Find(layerName);
-        
+
         if (canvas) {
             return;
         }
@@ -81,23 +74,23 @@
         canvas.style.msGridColumnAlign = "start";
         canvas.style.msGridRowAlign = "start";
         canvas.style.border = "1px solid #aaa";
-        canvas.style.top = "130px";
-        canvas.style.left = "3px";
-        canvas.style.position = "fixed";
+        canvas.style.marginTop = "0px";
+        canvas.style.marginLeft = "0px";
+        // canvas.style.position = "fixed";
 
         // Make all layer item in list view to normal color.
         var items = document.querySelectorAll(".homepage #editorScreen #layersContainer #layerItem");
         for (var i = 0; i < items.length; i++) {
             items[i].style.backgroundColor = "#70D0B0";
         }
-        
+
         document.querySelector(".homepage #editorScreen #mainScreen").appendChild(canvas);
         window.LayerManager.Layers.push(WinJS.Binding.as({ name: layerName, data: {}, index: (window.LayerManager.Layers.length + 1) }));
         window.LayerManager.SelectLayer(layerName);
-        
+
         var can = document.getElementById('backgroundCanvas');
         can.style.visibility = "visible";
-        
+
 
         if (width != undefined && height != undefined) {
             canvas.style.width = width + "px";
@@ -109,7 +102,7 @@
             can.style.width = canvas.style.width;
             can.style.height = canvas.style.height;
         }
-        
+
         // Create a checkerboard background.
         // set up a pattern, something really elaborate!
         var pattern = document.createElement('canvas');
@@ -124,18 +117,18 @@
         var ctx = can.getContext('2d');
         var patternFill = ctx.createPattern(pattern, "repeat");
         ctx.fillStyle = patternFill;
-        ctx.fillRect(0, 0, can.width, can.height);              
+        ctx.fillRect(0, 0, can.width, can.height);
     };
 
     window.LayerManager.SelectLayer = function (layerName) {
         var canvas = window.LayerManager.Find(layerName);
-        
+
         if (canvas) {
             window.LayerManager.Current = canvas;
-            
+
 
             window.Tools.CanvasContext = canvas.getContext("2d");
-            
+
             for (var i = 0; i < window.LayerManager.Layers.length; i++) {
                 if (window.LayerManager.Layers.getAt(i).name == layerName) {
                     currentData = window.LayerManager.Layers.getAt(i);
