@@ -44,11 +44,12 @@
                 <button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>
 
                 <div id="toolContainer">
-                    <span class="button" onclick="window.Tools.Current = window.Tools.Pen;">Pen</span>
-                    <span class="button" onclick="window.Tools.Current = window.Tools.Brush;">Brush</span>
-                    <span class="button" onclick="window.Tools.Current = window.Tools.Eraser;">Eraser</span>
-                    <span class="button" onclick="window.Tools.Current = window.Tools.Move;">Move</span>
-                    <span class="button" onclick="window.Tools.Current = window.Tools.Painter;">Painter</span><br/>
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Pen;">Pen</span>
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Brush;">Brush</span>
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Eraser;">Eraser</span>
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Move;window.LayerManager.Current.style.cursor = 'move';">Move</span>
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Painter;">Painter</span><br/>
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Transform;window.Tools.SetTransformObj(window.LayerManager.Current);">Transform</span><br/>
                     <input onchange="window.Tools.setDrawer('', this.value);" max="100" min="1" value="1" type="range" />
                 </div>
                 <div id="effectContainer">
@@ -81,6 +82,32 @@
             <div id="editorScreen">
                 <div id="mainScreen" data-win-design-locked="true">
                     <canvas id="backgroundCanvas"></canvas>
+					<div id="borderHandler">
+						<div class="corner tlCorner">
+							
+						</div>
+						<div class="corner trCorner">
+							
+						</div>
+						<div class="corner tCorner">
+							
+						</div>
+						<div class="corner lCorner">
+							
+						</div>
+						<div class="corner rCorner">
+							
+						</div>
+						<div class="corner blCorner">
+							
+						</div>
+						<div class="corner brCorner">
+							
+						</div>	
+						<div class="corner bCorner">
+							
+						</div>
+					</div>
                 </div>
                 <div id="layersContainer"
                     data-win-control="WinJS.UI.ListView"
@@ -102,6 +129,6 @@
 			<h3>Height: </h3><input type="text" id="layerHeight"/> pixel
 		</div>
 		<button onclick="HomePageEvents._newLayerClicked();" class="newLayerButton">OK</button>
-    </div>
+    </div>	
 </body>
 </html>

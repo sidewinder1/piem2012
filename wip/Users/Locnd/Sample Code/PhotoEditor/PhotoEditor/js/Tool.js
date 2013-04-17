@@ -7,7 +7,7 @@
     window.Tools.Current = null;
     var _strokeWidth = 3;
     var _strokeType = "round";
-
+    var _currentTransformObj;
     window.Tools.CanvasContext = null;
 
     var clickX = new Array();
@@ -24,6 +24,39 @@
         _strokeWidth = strokeWidth;
     };
 
+    window.Tools.ResetAllState = function() {
+        window.Tools.UnsetTransformObj();
+        window.LayerManager.Current.style.cursor = "default";
+    };
+
+    window.Tools.SetTransformObj = function (dom) {
+        if (window.Tools.Current != window.Tools.Transform) {
+            return;
+        }
+        
+        window.Tools.UnsetTransformObj();
+        
+        _currentTransformObj = dom;
+        _currentTransformObj.style.border = "1px dashed blue";
+        var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
+        border.style.visibility = "visible";
+        border.style.marginLeft = dom.style.marginLeft;
+        border.style.marginTop = dom.style.marginTop;
+        border.style.height = dom.style.height;
+        border.style.width = dom.style.width;        
+    };
+
+    window.Tools.UnsetTransformObj = function () {
+        if (!_currentTransformObj) {
+            return;
+        }
+
+        var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
+        border.style.visibility = "collapse";
+        _currentTransformObj.style.border = "none";
+        _currentTransformObj = null;
+    };
+    
     window.Tools.Redraw = function () {
         window.LayerManager.Current.width = window.Tools.Canvas.width; // Clears the canvas
         // window.LayerManager.Current.clearRect
@@ -122,6 +155,45 @@
 
         end: function (x, y) {
 
+        }
+    });
+    
+    // Transform tool. Used to resize a object.
+    window.Tools.Transform = WinJS.Class.define(
+    {
+        start: function (x, y) {
+            if (!window.Tools.CanvasContext) {
+                return;
+            }
+
+            window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
+            window.Tools.CanvasContext.lineJoin = _strokeType;
+            window.Tools.CanvasContext.lineWidth = _strokeWidth;
+
+            paint = true;
+            window.Tools.CanvasContext.beginPath();
+            window.Tools.CanvasContext.moveTo(x, y);
+            window.Tools.CanvasContext.stroke();
+            //addClick(x, y);
+            //window.Tools.Redraw();
+        },
+
+        moveTo: function (x, y) {
+            if (paint) {
+                window.Tools.CanvasContext.lineTo(x, y);
+                window.Tools.CanvasContext.stroke();
+                //addClick(x, y, true);
+                //window.Tools.Redraw();
+            }
+        },
+
+        end: function () {
+            if (!paint) {
+                return;
+            }
+
+            paint = false;
+            window.Tools.CanvasContext.closePath();
         }
     });
 
