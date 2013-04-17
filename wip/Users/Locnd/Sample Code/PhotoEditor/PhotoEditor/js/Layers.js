@@ -134,7 +134,7 @@
 
         if (canvas) {
             window.LayerManager.Current = canvas;
-
+            window.Tools.SetTransformObj(canvas);
 
             window.Tools.CanvasContext = canvas.getContext("2d");
 

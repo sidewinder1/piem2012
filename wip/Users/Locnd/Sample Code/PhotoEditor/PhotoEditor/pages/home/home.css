@@ -262,7 +262,80 @@ img {
         width: 100%;
     }
 
-
+	.homepage #editorScreen #mainScreen #borderHandler{
+        border: 1px solid #A0D0B0;
+        height: 100px;
+        display: -ms-grid;
+		visibility : collapse;
+		z-index : 10000;
+		-ms-grid-columns: 10px 1fr 10px;
+		-ms-grid-rows: 10px 1fr 10px;
+        width: 100px;
+    }
+	
+	.homepage #editorScreen #mainScreen #borderHandler .corner{
+        background-image: url('/images/borderCorner.jpg');
+		background-repeat:no-repeat;		
+    }
+	
+	.homepage #editorScreen #mainScreen #borderHandler .tlCorner{
+        height:100%;
+		cursor: nw-resize;
+		width:100%;
+		background-position: left top;
+    }
+	.homepage #editorScreen #mainScreen #borderHandler .trCorner{
+        height:100%;
+		-ms-grid-column:3;
+		cursor: ne-resize;
+		width:100%;
+		background-position: right top;
+    }
+	.homepage #editorScreen #mainScreen #borderHandler .lCorner{
+        height:100%;
+		-ms-grid-row:2;
+		width:100%;
+		cursor: w-resize;
+		background-position: left;
+    }
+	.homepage #editorScreen #mainScreen #borderHandler .tCorner{
+        height:100%;
+		-ms-grid-column:2;
+		width:100%;
+		cursor: n-resize;
+		background-position: top;
+    }
+	.homepage #editorScreen #mainScreen #borderHandler .rCorner{
+        height:100%;
+		-ms-grid-column:3;
+		-ms-grid-row:2;
+		width:100%;
+		cursor: e-resize;
+		background-position: right;
+    }
+	.homepage #editorScreen #mainScreen #borderHandler .blCorner{
+        height:100%;
+		-ms-grid-row:3;
+		width:100%;
+		cursor: sw-resize;
+		background-position: left bottom;
+    }
+	.homepage #editorScreen #mainScreen #borderHandler .brCorner{
+        height:100%;
+		-ms-grid-row:3;
+		-ms-grid-column:3;
+		width:100%;
+		cursor: se-resize;
+		background-position: bottom right;
+    }
+	.homepage #editorScreen #mainScreen #borderHandler .bCorner{
+        height:100%;
+		-ms-grid-row:3;
+		-ms-grid-column:2;
+		width:100%;
+		cursor: s-resize;
+		background-position: bottom;
+    }
         /*.homepage #editorScreen #mainScreen #displayCanvas {
             background-color: transparent;
             border: 1px solid #000;
