@@ -82,7 +82,6 @@
         canvas.setAttribute("class", layerClass);
         canvas.style.zIndex = totalLayer;
         canvas.style.backgroundColor = "transparent";
-        canvas.style.border = "1px solid #eee";
         canvas.style.marginTop = "0px";
         canvas.style.marginLeft = "0px";
         // canvas.style.position = "fixed";
