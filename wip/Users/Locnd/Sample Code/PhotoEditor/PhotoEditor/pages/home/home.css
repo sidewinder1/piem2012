@@ -263,10 +263,10 @@ img {
     }
 
 	.homepage #editorScreen #mainScreen #borderHandler{
-        border: 1px solid #A0D0B0;
+        border: 1px dashed #3399FF;
         height: 100px;
         display: -ms-grid;
-		visibility : collapse;
+		visibility : visible;
 		z-index : 10000;
 		-ms-grid-columns: 10px 1fr 10px;
 		-ms-grid-rows: 10px 1fr 10px;
@@ -283,6 +283,8 @@ img {
 		cursor: nw-resize;
 		width:100%;
 		background-position: left top;
+		margin-top: -3px;
+		margin-left: -3px;
     }
 	.homepage #editorScreen #mainScreen #borderHandler .trCorner{
         height:100%;
@@ -290,6 +292,8 @@ img {
 		cursor: ne-resize;
 		width:100%;
 		background-position: right top;
+		margin-top: -3px;
+		margin-left: 3px;
     }
 	.homepage #editorScreen #mainScreen #borderHandler .lCorner{
         height:100%;
@@ -297,6 +301,7 @@ img {
 		width:100%;
 		cursor: w-resize;
 		background-position: left;
+		margin-left: -3px;
     }
 	.homepage #editorScreen #mainScreen #borderHandler .tCorner{
         height:100%;
@@ -304,6 +309,7 @@ img {
 		width:100%;
 		cursor: n-resize;
 		background-position: top;
+		margin-top: -3px;
     }
 	.homepage #editorScreen #mainScreen #borderHandler .rCorner{
         height:100%;
@@ -312,6 +318,7 @@ img {
 		width:100%;
 		cursor: e-resize;
 		background-position: right;
+		margin-left: 3px;
     }
 	.homepage #editorScreen #mainScreen #borderHandler .blCorner{
         height:100%;
@@ -319,6 +326,8 @@ img {
 		width:100%;
 		cursor: sw-resize;
 		background-position: left bottom;
+		margin-top: 3px;
+		margin-left: -3px;
     }
 	.homepage #editorScreen #mainScreen #borderHandler .brCorner{
         height:100%;
@@ -327,6 +336,8 @@ img {
 		width:100%;
 		cursor: se-resize;
 		background-position: bottom right;
+		margin-top: 3px;
+		margin-left: 3px;
     }
 	.homepage #editorScreen #mainScreen #borderHandler .bCorner{
         height:100%;
@@ -335,6 +346,7 @@ img {
 		width:100%;
 		cursor: s-resize;
 		background-position: bottom;
+		margin-top: 3px;
     }
         /*.homepage #editorScreen #mainScreen #displayCanvas {
             background-color: transparent;

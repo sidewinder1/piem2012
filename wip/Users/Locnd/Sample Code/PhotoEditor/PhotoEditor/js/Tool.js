@@ -37,13 +37,12 @@
         window.Tools.UnsetTransformObj();
         
         _currentTransformObj = dom;
-        _currentTransformObj.style.border = "1px dashed blue";
         var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
         border.style.visibility = "visible";
         border.style.marginLeft = dom.style.marginLeft;
         border.style.marginTop = dom.style.marginTop;
         border.style.height = dom.style.height;
-        border.style.width = dom.style.width;        
+        border.style.width = dom.style.width;
     };
 
     window.Tools.UnsetTransformObj = function () {
@@ -53,7 +52,6 @@
 
         var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
         border.style.visibility = "collapse";
-        _currentTransformObj.style.border = "none";
         _currentTransformObj = null;
     };
     
