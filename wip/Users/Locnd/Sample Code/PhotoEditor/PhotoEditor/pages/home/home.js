@@ -9,6 +9,7 @@
             document.getElementById("newCmd").addEventListener("click", HomePageEvents._newLayerCmd, false);
             document.getElementById("openFileCmd").addEventListener("click", HomePageEvents._openFileCmd, false);            
             document.getElementById("saveFileCmd").addEventListener("click", HomePageEvents._saveFile, false);
+            document.getElementById("saveAsFileCmd").addEventListener("click", HomePageEvents._saveAsFile, false);
                         
             var colorList = element.querySelector(".homepage #ribbonBar #colorContainer #colorsDiv").winControl;
             colorList.itemDataSource = window.ColorManager.Colors.dataSource;
