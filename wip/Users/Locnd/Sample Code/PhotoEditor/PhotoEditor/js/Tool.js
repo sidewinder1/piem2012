@@ -5,7 +5,7 @@
 
     // Current tool that is used to draw.
     window.Tools.Current = null;
-    var _strokeWidth = 3;
+    var _strokeWidth = 1;
     var _strokeType = "round";
     var _currentTransformObj;
     window.Tools.CanvasContext = null;
@@ -156,16 +156,45 @@
         }
     });
 
+    // Pen tool. Used to draw vectors.
+    window.Tools.RectangleDraw = WinJS.Class.define(
+    {
+        start: function (x, y) {
+            paint = true;
+            lastPoint = { x: x, y: y };
+            window.Tools.CanvasContext.save();
+        },
+
+        moveTo: function (x, y) {
+            if (!paint) {
+                return;
+            }
+
+
+            window.Tools.CanvasContext.beginPath();
+            window.Tools.CanvasContext.rect(lastPoint.x, lastPoint.y, x - lastPoint.x, y - lastPoint.y);
+            window.Tools.CanvasContext.fillStyle = window.ColorManager.Color2;
+            window.Tools.CanvasContext.fill();
+            window.Tools.CanvasContext.lineWidth = _strokeWidth;
+            window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
+            window.Tools.CanvasContext.stroke();
+        },
+
+        end: function (x, y) {
+            if (!paint) {
+                return;
+            }
+            window.Tools.CanvasContext.restore();
+            paint = false;
+        }
+    });
+
     var hDirect, vDirect, oldSize;
     // Transform tool. Used to resize a object.
     window.Tools.Transform = WinJS.Class.define(
     {
         start: function (x, y) {
-            if (!window.Tools.CanvasContext) {
-                return;
-            }
-
-            lastPoint = { };
+            lastPoint = {};
             oldSize = { w: Number(_currentTransformObj.style.width.replace("px", "")), h: Number(_currentTransformObj.style.height.replace("px", "")) };
 
             if (Math.abs(x - 5 - Number(_currentTransformObj.style.marginLeft.replace("px", ""))) < 6) {
@@ -210,7 +239,7 @@
                 } else if (vDirect === "b") {
                     _currentTransformObj.style.height = (y - lastPoint.y + oldSize.h) + "px";
                 }
-                
+
                 var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
                 border.style.marginLeft = _currentTransformObj.style.marginLeft;
                 border.style.marginTop = _currentTransformObj.style.marginTop;
@@ -224,6 +253,17 @@
                 return;
             }
 
+            // copy image to stretch or reduce image.
+            var img = new Image();
+            img.src = window.LayerManager.Current.toDataURL("image/png");
+
+            img.onload = function() {
+                _currentTransformObj.width = Number(_currentTransformObj.style.width.replace("px", ""));
+                _currentTransformObj.height = Number(_currentTransformObj.style.height.replace("px", ""));
+                window.Tools.CanvasContext = window.LayerManager.Current.getContext('2d');
+                window.Tools.CanvasContext.drawImage(img, 0, 0, _currentTransformObj.width, _currentTransformObj.height);
+            };
+           
             paint = false;
         }
     });
@@ -232,10 +272,6 @@
     window.Tools.Brush = WinJS.Class.define(
     {
         start: function (x, y) {
-            if (!window.Tools.CanvasContext) {
-                return;
-            }
-
             window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
             window.Tools.CanvasContext.lineJoin = _strokeType;
             window.Tools.CanvasContext.lineWidth = _strokeWidth;

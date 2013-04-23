@@ -62,7 +62,7 @@
                     <input onchange="window.CanvasProcessing.updateArgs('', '', this.value);" max="100" min="0" data-win-bind="value: window.CanvasProcessing.Args.Arg3" type="range" />
                 </div>
                 <div id="shapeContainer">
-                    <button class="button">Rectangle</button>
+                    <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.RectangleDraw;">Rectangle</button>
                     <button class="button">Elip</button>
                     <button class="button">Line</button>
                     <button class="button">Circle</button>

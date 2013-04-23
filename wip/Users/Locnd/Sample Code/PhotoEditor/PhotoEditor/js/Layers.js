@@ -15,7 +15,7 @@
     var gMouseX, gMouseY, gMouseT, gMouseL;
 
     document.onmousedown = function (e) {
-        if (!window.LayerManager.Current) {
+        if (!window.LayerManager.Current ||!window.Tools.CanvasContext) {
             return;
         }
         
