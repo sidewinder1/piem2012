@@ -24,7 +24,7 @@
         _strokeWidth = strokeWidth;
     };
 
-    window.Tools.ResetAllState = function() {
+    window.Tools.ResetAllState = function () {
         window.Tools.UnsetTransformObj();
         window.LayerManager.Current.style.cursor = "default";
     };
@@ -33,9 +33,9 @@
         if (window.Tools.Current != window.Tools.Transform) {
             return;
         }
-        
+
         window.Tools.UnsetTransformObj();
-        
+
         _currentTransformObj = dom;
         var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
         border.style.visibility = "visible";
@@ -54,7 +54,7 @@
         border.style.visibility = "collapse";
         _currentTransformObj = null;
     };
-    
+
     window.Tools.Redraw = function () {
         window.LayerManager.Current.width = window.Tools.Canvas.width; // Clears the canvas
         // window.LayerManager.Current.clearRect
@@ -139,7 +139,7 @@
         // and put the imagedata back to the canvas
         window.Tools.CanvasContext.putImageData(image, 0, 0);
     };
- 
+
     // Pen tool. Used to draw vectors.
     window.Tools.Pen = WinJS.Class.define(
     {
@@ -155,7 +155,8 @@
 
         }
     });
-    
+
+    var hDirect, vDirect, oldSize;
     // Transform tool. Used to resize a object.
     window.Tools.Transform = WinJS.Class.define(
     {
@@ -164,24 +165,57 @@
                 return;
             }
 
-            window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
-            window.Tools.CanvasContext.lineJoin = _strokeType;
-            window.Tools.CanvasContext.lineWidth = _strokeWidth;
+            lastPoint = { };
+            oldSize = { w: Number(_currentTransformObj.style.width.replace("px", "")), h: Number(_currentTransformObj.style.height.replace("px", "")) };
+
+            if (Math.abs(x - 5 - Number(_currentTransformObj.style.marginLeft.replace("px", ""))) < 6) {
+                hDirect = "l";
+                lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+            }
+            else if (Math.abs(x - 5 - (Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w)) < 6) {
+                hDirect = "r";
+                lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+            } else {
+                hDirect = null;
+            }
+
+            if (Math.abs(y - 5 - Number(_currentTransformObj.style.marginTop.replace("px", ""))) < 6) {
+                vDirect = "t";
+                lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+            }
+            else if (Math.abs(y - 5 - (Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h)) < 6) {
+                vDirect = "b";
+                lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+            }
+            else {
+                vDirect = null;
+            }
 
             paint = true;
-            window.Tools.CanvasContext.beginPath();
-            window.Tools.CanvasContext.moveTo(x, y);
-            window.Tools.CanvasContext.stroke();
-            //addClick(x, y);
-            //window.Tools.Redraw();
         },
 
         moveTo: function (x, y) {
             if (paint) {
-                window.Tools.CanvasContext.lineTo(x, y);
-                window.Tools.CanvasContext.stroke();
-                //addClick(x, y, true);
-                //window.Tools.Redraw();
+                if (hDirect === "l") {
+                    _currentTransformObj.style.marginLeft = x + "px";
+                    _currentTransformObj.style.width = (lastPoint.x - x + oldSize.w) + "px";
+                }
+                else if (hDirect === "r") {
+                    _currentTransformObj.style.width = (x - lastPoint.x + oldSize.w) + "px";
+                }
+
+                if (vDirect === "t") {
+                    _currentTransformObj.style.marginTop = y + "px";
+                    _currentTransformObj.style.height = (lastPoint.y - y + oldSize.h) + "px";
+                } else if (vDirect === "b") {
+                    _currentTransformObj.style.height = (y - lastPoint.y + oldSize.h) + "px";
+                }
+                
+                var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
+                border.style.marginLeft = _currentTransformObj.style.marginLeft;
+                border.style.marginTop = _currentTransformObj.style.marginTop;
+                border.style.width = _currentTransformObj.style.width;
+                border.style.height = _currentTransformObj.style.height;
             }
         },
 
@@ -191,7 +225,6 @@
             }
 
             paint = false;
-            window.Tools.CanvasContext.closePath();
         }
     });
 
@@ -228,7 +261,7 @@
             if (!paint) {
                 return;
             }
-            
+
             paint = false;
             window.Tools.CanvasContext.closePath();
         }

@@ -266,7 +266,7 @@ img {
         border: 1px dashed #3399FF;
         height: 100px;
         display: -ms-grid;
-		visibility : visible;
+		visibility : collapse;
 		z-index : 10000;
 		-ms-grid-columns: 10px 1fr 10px;
 		-ms-grid-rows: 10px 1fr 10px;
