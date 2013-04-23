@@ -117,7 +117,7 @@
                 }
             },
 
-            _saveFile: function () {
+            _saveAsFile: function () {
                 WinJS.log && WinJS.log("Saving to a new file...", "sample", "status");
 
                 // Keep data in-scope across multiple asynchronous methods.
@@ -166,8 +166,16 @@
                     ////image.data = imageData;
                     //// and put the imagedata back to the canvas
                     //window.Tools.CanvasContext.putImageData(image, 0, 0);
-
-                    var outputPixelData = window.Tools.CanvasContext.getImageData(0, 0, width, height);
+                    var savedCanvas = document.createElement("canvas");
+                    var savedContext = savedCanvas.getContext("2d");
+                    savedCanvas.height = 1000;
+                    savedCanvas.width = 1000;
+                    for (var i = 0; i < window.LayerManager.Layers.length; i++) {
+                        var canvas = window.LayerManager.Find(window.LayerManager.Layers.getAt(i).name);
+                        savedContext.drawImage(canvas, Number(canvas.style.marginLeft.replace("px", "")), Number(canvas.style.marginTop.replace("px", "")));
+                    }
+                    
+                    var outputPixelData = savedContext.getImageData(0, 0, width, height);
 
                     encoder.setPixelData(
                         imaging.BitmapPixelFormat.rgba8,
