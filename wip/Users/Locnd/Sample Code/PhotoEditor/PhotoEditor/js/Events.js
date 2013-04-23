@@ -150,44 +150,26 @@
                     stream.size = 0;
                     return imaging.BitmapEncoder.createAsync(encoderId, stream);
                 }).then(function (encoder) {
-                    var width = window.LayerManager.Current.width;
-                    var height = window.LayerManager.Current.height;
+                    return copyImageToCanvas().then(function (savedContext) {
+                        var width = 1000;
+                        var height = 1000;
 
-                    //// get the image data object
-                    //var image = window.Tools.CanvasContext.getImageData(0, 0, 500, 200);
-                    //// get the image data values
-                    //var length = image.data.length;
-                    //// set every fourth value to 50
-                    //for (var i = 3; i < length; i += 4) {
-                    //    if (image.data[i-2] > 0) image.data[i] = 0;
-                    //}
+                        var outputPixelData = savedContext.getImageData(0, 0, width, height);
 
-                    //// after the manipulation, reset the data
-                    ////image.data = imageData;
-                    //// and put the imagedata back to the canvas
-                    //window.Tools.CanvasContext.putImageData(image, 0, 0);
-                    var savedCanvas = document.createElement("canvas");
-                    var savedContext = savedCanvas.getContext("2d");
-                    savedCanvas.height = 1000;
-                    savedCanvas.width = 1000;
-                    for (var i = 0; i < window.LayerManager.Layers.length; i++) {
-                        var canvas = window.LayerManager.Find(window.LayerManager.Layers.getAt(i).name);
-                        savedContext.drawImage(canvas, Number(canvas.style.marginLeft.replace("px", "")), Number(canvas.style.marginTop.replace("px", "")));
-                    }
-                    
-                    var outputPixelData = savedContext.getImageData(0, 0, width, height);
-
-                    encoder.setPixelData(
-                        imaging.BitmapPixelFormat.rgba8,
-                        imaging.BitmapAlphaMode.straight,
-                        width,
-                        height,
-                        96, // Horizontal DPI
-                        96, // Vertical DPI
-                        outputPixelData.data
+                        encoder.setPixelData(
+                            imaging.BitmapPixelFormat.rgba8,
+                            imaging.BitmapAlphaMode.straight,
+                            width,
+                            height,
+                            96, // Horizontal DPI
+                            96, // Vertical DPI
+                            outputPixelData.data
                         );
 
-                    return encoder.flushAsync();
+                        return encoder.flushAsync();
+                    });
+                    
+                   
                 }).then(function () {
                     WinJS.log && WinJS.log("Saved new file: " + filename, "sample", "status");
 
@@ -234,4 +216,31 @@
                 });
             }
         });
+
+    function copyImageToCanvas() {
+        return new WinJS.Promise(function(comp, err, prog) {            
+            var savedCanvas = document.createElement("canvas");
+            var savedContext = savedCanvas.getContext("2d");
+            savedCanvas.height = 1000;
+            savedCanvas.width = 1000;
+            for (var i = 0; i < window.LayerManager.Layers.length; i++) {
+                var canvas = window.LayerManager.Find(window.LayerManager.Layers.getAt(i).name);
+
+                var img = new Image();
+                img.src = canvas.toDataURL("image/png");
+                img.style.zIndex = i;
+
+                img.onload = function () {
+                    var canvas1 = window.LayerManager.Find(window.LayerManager.Layers.getAt(this.style.zIndex).name);
+                    this.width = Number(canvas1.style.width.replace("px", ""));
+                    this.height = Number(canvas1.style.height.replace("px", ""));
+                    savedContext.drawImage(this, Number(canvas1.style.marginLeft.replace("px", "")), Number(canvas1.style.marginTop.replace("px", "")));
+
+                    if (this.style.zIndex === window.LayerManager.Layers.length - 1) {
+                        comp(savedContext);
+                    }
+                };
+            }
+        });
+    }
 })();
