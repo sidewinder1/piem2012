@@ -38,6 +38,10 @@
             gMouseT = window.LayerManager.Current.style.marginTop.replace("px", "");
             gMouseL = window.LayerManager.Current.style.marginLeft.replace("px", "");
          
+            
+        } else if (window.Tools.Current === window.Tools.Transform) {
+            mouseX = e.clientX;
+            mouseY = e.clientY - 129;
         }
 
         window.Tools.Current.start(mouseX, mouseY);
@@ -51,7 +55,11 @@
             mouseX = parseInt(gMouseL) + (e.clientX - gMouseX);
             mouseY = parseInt(gMouseT) + (e.clientY - gMouseY);
         }
-
+        else if (window.Tools.Current === window.Tools.Transform) {
+            mouseX = e.clientX;
+            mouseY = e.clientY - 129;
+        }
+        
         if (window.Tools.Current) {
             window.Tools.Current.moveTo(mouseX, mouseY);
         }
