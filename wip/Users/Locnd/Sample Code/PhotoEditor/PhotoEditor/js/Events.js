@@ -83,6 +83,40 @@
                 window.LayerManager.SelectLayer(item.name);
             },
 
+            _orderLayer : function (bringUp) {
+                for (var i = 0; i < window.LayerManager.Layers.length; i++) {
+                    if (window.LayerManager.Layers.getAt(i) === window.LayerManager.CurrentData) {
+                        if (bringUp) {
+                            if (i == 0) {
+                                return;
+                            }
+
+                            window.LayerManager.Layers.move(i, i - 1);
+                            var canvas1 = window.LayerManager.Find(window.LayerManager.Layers.getAt(i).name);
+                            var canvas2 = window.LayerManager.Find(window.LayerManager.Layers.getAt(i - 1).name);
+
+                            var temp = canvas1.style.zIndex;
+                            canvas1.style.zIndex = canvas2.style.zIndex;
+                            canvas2.style.zIndex = temp;
+                        } else {
+                            if (i == window.LayerManager.Layers.length - 1) {
+                                return;
+                            }
+
+                            window.LayerManager.Layers.move(i, i + 1);
+                            var canvas3 = window.LayerManager.Find(window.LayerManager.Layers.getAt(i).name);
+                            var canvas4 = window.LayerManager.Find(window.LayerManager.Layers.getAt(i + 1).name);
+
+                            var temp1 = canvas3.style.zIndex;
+                            canvas3.style.zIndex = canvas4.style.zIndex;
+                            canvas4.style.zIndex = temp1;
+                        }
+
+                        return;
+                    }
+                }
+            },
+
             _saveFile: function () {
                 WinJS.log && WinJS.log("Saving to a new file...", "sample", "status");
 

@@ -9,25 +9,22 @@ img {
 .homepage section[role=main] {
 }
 
-#newLayerFlyout
-{
-	display:-ms-grid;
-	-ms-grid-rows: 1fr 1fr 1fr 1fr;
+#newLayerFlyout {
+    display: -ms-grid;
+    -ms-grid-rows: 1fr 1fr 1fr 1fr;
 }
 
-#newLayerFlyout #widthDiv
-{
-	-ms-grid-row: 2;
-}
-#newLayerFlyout #heightDiv
-{
-	-ms-grid-row: 3;
-}
+    #newLayerFlyout #widthDiv {
+        -ms-grid-row: 2;
+    }
 
-#newLayerFlyout .newLayerButton
-{
-	-ms-grid-row: 4;
-}
+    #newLayerFlyout #heightDiv {
+        -ms-grid-row: 3;
+    }
+
+    #newLayerFlyout .newLayerButton {
+        -ms-grid-row: 4;
+    }
 
 .homepage #ribbonBar {
     height: 100%;
@@ -192,62 +189,87 @@ img {
     width: calc(100% - 2px);
 }
 
-    .homepage #editorScreen #layersContainer {
-        border: 1px solid #A0D0B0;
+    .homepage #editorScreen #subRightPanel {
         height: 100%;
         -ms-grid-column: 2;
-        z-index: 999;
-        overflow-y: scroll;
-        background-color: #ddedee;
+        -ms-grid-columns: 1fr;
+        -ms-grid-rows: 30px 1fr;
+        display: -ms-grid;
         width: 250px;
     }
 
-        .homepage #editorScreen #layersContainer #layerItem {
+        .homepage #editorScreen #subRightPanel #upButton {
             border: 1px solid #A0D0B0;
-            height: 150px;
-            background-color: #79E8C8;
-			display: -ms-grid;
-			-ms-grid-columns: 100px 1fr 1fr 1fr;
-            -ms-grid-rows: auto 1fr 1fr;
+            height: 100%;
+            -ms-grid-column-align: end;
+            background-color: #bbb;
+            width: 30%;
+        }
+
+        .homepage #editorScreen #subRightPanel #downButton {
+            border: 1px solid #A0D0B0;
+            height: 100%;
+            -ms-grid-column-align: start;
+            background-color: #bbb;
+            width: 30%;
+        }
+
+        .homepage #editorScreen #subRightPanel #layersContainer {
+            border: 1px solid #A0D0B0;
+            height: 100%;
+            -ms-grid-row: 2;
+            z-index: 999;
+            overflow-y: scroll;
+            background-color: #ddedee;
             width: 250px;
         }
 
-		.homepage #editorScreen #layersContainer #layerItem #layer {
-            border: 1px solid #A0D0B0;
-            height: 90%;
-		    -ms-grid-row-align: center;
-		    -ms-grid-column-align: center;
-		    -ms-grid-row-span: 3;
-            background-color: white;
-            width: 90%;
-        }
-		
-		.homepage #editorScreen #layersContainer #layerItem #name {
-            -ms-grid-column: 2;
-		    text-align: center;
-            -ms-grid-column-span: 3;
-            width: 100%;
-        }
-		
-        .homepage #editorScreen #layersContainer #layerItem #visibilityLayer {
-            border: 1px solid #A0D0B0;
-            background-color: blue;
-            height: 27px;
-            width: 27px;
-            border-radius: 10px;
-			-ms-grid-column: 2;
-			-ms-grid-row: 2;
-        }
- 
-        .homepage #editorScreen #layersContainer #layerItem #deleteLayer {
-            border: 1px solid #A0D0B0;
-            background-color: blue;
-            height: 27px;
-            width: 27px;
-            border-radius: 10px;
-			-ms-grid-column: 3;
-			-ms-grid-row: 2;
-        }
+            .homepage #editorScreen #subRightPanel #layersContainer #layerItem {
+                border: 1px solid #A0D0B0;
+                height: 150px;
+                background-color: #79E8C8;
+                display: -ms-grid;
+                -ms-grid-columns: 100px 1fr 1fr 1fr;
+                -ms-grid-rows: auto 1fr 1fr;
+                width: 250px;
+            }
+
+                .homepage #editorScreen #subRightPanel #layersContainer #layerItem #layer {
+                    border: 1px solid #A0D0B0;
+                    height: 90%;
+                    -ms-grid-row-align: center;
+                    -ms-grid-column-align: center;
+                    -ms-grid-row-span: 3;
+                    background-color: white;
+                    width: 90%;
+                }
+
+                .homepage #editorScreen #subRightPanel #layersContainer #layerItem #name {
+                    -ms-grid-column: 2;
+                    text-align: center;
+                    -ms-grid-column-span: 3;
+                    width: 100%;
+                }
+
+                .homepage #editorScreen #subRightPanel #layersContainer #layerItem #visibilityLayer {
+                    border: 1px solid #A0D0B0;
+                    background-color: blue;
+                    height: 27px;
+                    width: 27px;
+                    border-radius: 10px;
+                    -ms-grid-column: 2;
+                    -ms-grid-row: 2;
+                }
+
+                .homepage #editorScreen #subRightPanel #layersContainer #layerItem #deleteLayer {
+                    border: 1px solid #A0D0B0;
+                    background-color: blue;
+                    height: 27px;
+                    width: 27px;
+                    border-radius: 10px;
+                    -ms-grid-column: 3;
+                    -ms-grid-row: 2;
+                }
 
     .homepage #editorScreen #mainScreen {
         border: 1px solid #A0D0B0;
@@ -262,92 +284,99 @@ img {
         width: 100%;
     }
 
-	.homepage #editorScreen #mainScreen #borderHandler{
-        border: 1px dashed #3399FF;
-        height: 100px;
-        display: -ms-grid;
-		visibility : collapse;
-		z-index : 10000;
-		-ms-grid-columns: 10px 1fr 10px;
-		-ms-grid-rows: 10px 1fr 10px;
-        width: 100px;
-    }
-	
-	.homepage #editorScreen #mainScreen #borderHandler .corner{
-        background-image: url('/images/borderCorner.jpg');
-		background-repeat:no-repeat;		
-    }
-	
-	.homepage #editorScreen #mainScreen #borderHandler .tlCorner{
-        height:100%;
-		cursor: nw-resize;
-		width:100%;
-		background-position: left top;
-		margin-top: -3px;
-		margin-left: -3px;
-    }
-	.homepage #editorScreen #mainScreen #borderHandler .trCorner{
-        height:100%;
-		-ms-grid-column:3;
-		cursor: ne-resize;
-		width:100%;
-		background-position: right top;
-		margin-top: -3px;
-		margin-left: 3px;
-    }
-	.homepage #editorScreen #mainScreen #borderHandler .lCorner{
-        height:100%;
-		-ms-grid-row:2;
-		width:100%;
-		cursor: w-resize;
-		background-position: left;
-		margin-left: -3px;
-    }
-	.homepage #editorScreen #mainScreen #borderHandler .tCorner{
-        height:100%;
-		-ms-grid-column:2;
-		width:100%;
-		cursor: n-resize;
-		background-position: top;
-		margin-top: -3px;
-    }
-	.homepage #editorScreen #mainScreen #borderHandler .rCorner{
-        height:100%;
-		-ms-grid-column:3;
-		-ms-grid-row:2;
-		width:100%;
-		cursor: e-resize;
-		background-position: right;
-		margin-left: 3px;
-    }
-	.homepage #editorScreen #mainScreen #borderHandler .blCorner{
-        height:100%;
-		-ms-grid-row:3;
-		width:100%;
-		cursor: sw-resize;
-		background-position: left bottom;
-		margin-top: 3px;
-		margin-left: -3px;
-    }
-	.homepage #editorScreen #mainScreen #borderHandler .brCorner{
-        height:100%;
-		-ms-grid-row:3;
-		-ms-grid-column:3;
-		width:100%;
-		cursor: se-resize;
-		background-position: bottom right;
-		margin-top: 3px;
-		margin-left: 3px;
-    }
-	.homepage #editorScreen #mainScreen #borderHandler .bCorner{
-        height:100%;
-		-ms-grid-row:3;
-		-ms-grid-column:2;
-		width:100%;
-		cursor: s-resize;
-		background-position: bottom;
-		margin-top: 3px;
-    }
+        .homepage #editorScreen #mainScreen #borderHandler {
+            border: 1px dashed #3399FF;
+            height: 100px;
+            display: -ms-grid;
+            visibility: collapse;
+            z-index: 10000;
+            -ms-grid-columns: 10px 1fr 10px;
+            -ms-grid-rows: 10px 1fr 10px;
+            width: 100px;
+        }
+
+            .homepage #editorScreen #mainScreen #borderHandler .corner {
+                background-image: url('/images/borderCorner.jpg');
+                background-repeat: no-repeat;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .tlCorner {
+                height: 100%;
+                cursor: nw-resize;
+                width: 100%;
+                background-position: left top;
+                margin-top: -3px;
+                margin-left: -3px;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .trCorner {
+                height: 100%;
+                -ms-grid-column: 3;
+                cursor: ne-resize;
+                width: 100%;
+                background-position: right top;
+                margin-top: -3px;
+                margin-left: 3px;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .lCorner {
+                height: 100%;
+                -ms-grid-row: 2;
+                width: 100%;
+                cursor: w-resize;
+                background-position: left;
+                margin-left: -3px;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .tCorner {
+                height: 100%;
+                -ms-grid-column: 2;
+                width: 100%;
+                cursor: n-resize;
+                background-position: top;
+                margin-top: -3px;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .rCorner {
+                height: 100%;
+                -ms-grid-column: 3;
+                -ms-grid-row: 2;
+                width: 100%;
+                cursor: e-resize;
+                background-position: right;
+                margin-left: 3px;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .blCorner {
+                height: 100%;
+                -ms-grid-row: 3;
+                width: 100%;
+                cursor: sw-resize;
+                background-position: left bottom;
+                margin-top: 3px;
+                margin-left: -3px;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .brCorner {
+                height: 100%;
+                -ms-grid-row: 3;
+                -ms-grid-column: 3;
+                width: 100%;
+                cursor: se-resize;
+                background-position: bottom right;
+                margin-top: 3px;
+                margin-left: 3px;
+            }
+
+            .homepage #editorScreen #mainScreen #borderHandler .bCorner {
+                height: 100%;
+                -ms-grid-row: 3;
+                -ms-grid-column: 2;
+                width: 100%;
+                cursor: s-resize;
+                background-position: bottom;
+                margin-top: 3px;
+            }
         /*.homepage #editorScreen #mainScreen #displayCanvas {
             background-color: transparent;
             border: 1px solid #000;
@@ -357,9 +386,9 @@ img {
         .homepage #editorScreen #mainScreen #backgroundCanvas {
             background-color: transparent;
             border: 1px solid #000;
-			visibility:hidden;
+            visibility: hidden;
             box-shadow: 3px 3px 6px #888;
-            z-index: -1; 
+            z-index: -1;
         }
 
 @media screen and (-ms-view-state: snapped) {

@@ -4,7 +4,8 @@
     window.LayerManager = {};
     window.LayerManager.Layers = new WinJS.Binding.List();
     window.LayerManager.Current = null;
-    var currentData;
+    window.LayerManager.CurrentData = null;
+    
     var totalLayer = 0;
     window.LayerManager.Find = function (layerName) {
         var layerClass = "Loc" + layerName.replace("/", "").replace(" ", "");
@@ -102,6 +103,7 @@
 
         document.querySelector(".homepage #editorScreen #mainScreen").appendChild(canvas);
         window.LayerManager.Layers.push(WinJS.Binding.as({ name: layerName, data: {}, index: totalLayer }));
+        window.LayerManager.Layers.move(window.LayerManager.Layers.length - 1, 0);
         window.LayerManager.SelectLayer(layerName);
 
         var can = document.getElementById('backgroundCanvas');
@@ -147,7 +149,7 @@
 
             for (var i = 0; i < window.LayerManager.Layers.length; i++) {
                 if (window.LayerManager.Layers.getAt(i).name == layerName) {
-                    currentData = window.LayerManager.Layers.getAt(i);
+                    window.LayerManager.CurrentData = window.LayerManager.Layers.getAt(i);
                     break;
                 }
             }

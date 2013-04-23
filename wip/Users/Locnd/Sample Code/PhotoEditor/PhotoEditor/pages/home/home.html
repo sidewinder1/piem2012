@@ -63,9 +63,9 @@
                 </div>
                 <div id="shapeContainer">
                     <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.RectangleDraw;">Rectangle</button>
-                    <button class="button">Elip</button>
-                    <button class="button">Line</button>
-                    <button class="button">Circle</button>
+                    <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.LineDraw;">Line</button>
+                    <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.CircleDraw;">Circle</button>                    
+                    <input type="checkbox" onchange="window.Tools.FillShape = this.checked;"/>Fill Shape
                 </div>
                 <div id="colorContainer">
                     <span id="color2"></span>
@@ -82,23 +82,27 @@
             <div id="editorScreen">
                 <div id="mainScreen" data-win-design-locked="true">
                     <canvas id="backgroundCanvas"></canvas>
-					<div id="borderHandler">
-						<div class="corner tlCorner"></div>
-						<div class="corner trCorner"></div>
-						<div class="corner tCorner"></div>
-						<div class="corner lCorner"></div>
-						<div class="corner rCorner"></div>
-						<div class="corner blCorner"></div>
-						<div class="corner brCorner"></div>	
-						<div class="corner bCorner"></div>
-					</div>
+                    <div id="borderHandler">
+                        <div class="corner tlCorner"></div>
+                        <div class="corner trCorner"></div>
+                        <div class="corner tCorner"></div>
+                        <div class="corner lCorner"></div>
+                        <div class="corner rCorner"></div>
+                        <div class="corner blCorner"></div>
+                        <div class="corner brCorner"></div>	
+                        <div class="corner bCorner"></div>
+                    </div>
                 </div>
-                <div id="layersContainer"
-                    data-win-control="WinJS.UI.ListView"
-                     data-win-options="{itemTemplate:select('#layerTemplate'),
-                                        selectionMode: 'single',
-									 layout:{type:WinJS.UI.ListLayout}}">
-                </div>
+                <div id="subRightPanel">
+                    <button id="upButton" onclick="HomePageEvents._orderLayer(true);">Up</button>
+                    <button id="downButton" onclick="HomePageEvents._orderLayer(false);">Down</button>
+                    <div id="layersContainer"
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{itemTemplate:select('#layerTemplate'),
+	selectionMode: 'single',
+	layout:{type:WinJS.UI.ListLayout}}">
+                    </div>
+                </div>                
             </div>
         </section>
     </div>
