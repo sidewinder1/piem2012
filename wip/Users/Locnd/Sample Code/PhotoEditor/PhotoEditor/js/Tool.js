@@ -8,6 +8,8 @@
     var _strokeWidth = 1;
     var _strokeType = "round";
     var _currentTransformObj;
+    window.Tools.FillShape = false;
+    
     window.Tools.CanvasContext = null;
 
     var clickX = new Array();
@@ -156,25 +158,34 @@
         }
     });
 
+    var lastData;
     // Pen tool. Used to draw vectors.
     window.Tools.RectangleDraw = WinJS.Class.define(
     {
         start: function (x, y) {
             paint = true;
+            window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
+            window.Tools.CanvasContext.lineJoin = _strokeType;
+            window.Tools.CanvasContext.fillStyle = window.ColorManager.Color2;
+            window.Tools.CanvasContext.lineWidth = _strokeWidth;
             lastPoint = { x: x, y: y };
-            window.Tools.CanvasContext.save();
+            lastData = window.Tools.CanvasContext.getImageData(0, 0, window.LayerManager.Current.width, window.LayerManager.Current.height);
         },
 
         moveTo: function (x, y) {
             if (!paint) {
                 return;
             }
-
-
+            if (lastData) {
+                window.Tools.CanvasContext.putImageData(lastData, 0, 0);
+            }
             window.Tools.CanvasContext.beginPath();
             window.Tools.CanvasContext.rect(lastPoint.x, lastPoint.y, x - lastPoint.x, y - lastPoint.y);
-            window.Tools.CanvasContext.fillStyle = window.ColorManager.Color2;
-            window.Tools.CanvasContext.fill();
+            window.Tools.CanvasContext.closePath();
+            if (window.Tools.FillShape) {
+                window.Tools.CanvasContext.fill();
+            }
+            
             window.Tools.CanvasContext.lineWidth = _strokeWidth;
             window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
             window.Tools.CanvasContext.stroke();
@@ -184,11 +195,80 @@
             if (!paint) {
                 return;
             }
-            window.Tools.CanvasContext.restore();
             paint = false;
         }
     });
 
+    // Pen tool. Used to draw vectors.
+    window.Tools.LineDraw = WinJS.Class.define(
+    {
+        start: function (x, y) {
+            paint = true;
+            window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
+            window.Tools.CanvasContext.lineJoin = _strokeType;
+            window.Tools.CanvasContext.lineWidth = _strokeWidth;
+            lastPoint = { x: x, y: y };           
+            lastData = window.Tools.CanvasContext.getImageData(0, 0, window.LayerManager.Current.width, window.LayerManager.Current.height);
+        },
+
+        moveTo: function (x, y) {
+            if (!paint) {
+                return;
+            }
+            if (lastData) {
+                window.Tools.CanvasContext.putImageData(lastData, 0, 0);
+            }
+            
+            window.Tools.CanvasContext.beginPath();
+            window.Tools.CanvasContext.moveTo(lastPoint.x, lastPoint.y);
+            window.Tools.CanvasContext.lineTo(x, y);
+            window.Tools.CanvasContext.closePath();
+            
+            window.Tools.CanvasContext.stroke();
+        },
+
+        end: function (x, y) {
+            if (!paint) {
+                return;
+            }
+            paint = false;
+        }
+    });
+    
+    // Pen tool. Used to draw vectors.
+    window.Tools.CircleDraw = WinJS.Class.define(
+    {
+        start: function (x, y) {
+            paint = true;
+            window.Tools.CanvasContext.strokeStyle = window.ColorManager.Color1;
+            window.Tools.CanvasContext.lineJoin = _strokeType;
+            window.Tools.CanvasContext.fillStyle = window.ColorManager.Color2;
+
+            window.Tools.CanvasContext.lineWidth = _strokeWidth;
+            lastPoint = { x: x, y: y };
+            lastData = window.Tools.CanvasContext.getImageData(0, 0, window.LayerManager.Current.width, window.LayerManager.Current.height);
+        },
+
+        moveTo: function (x, y) {
+            if (!paint) {
+                return;
+            }
+            
+            if (lastData) {
+                window.Tools.CanvasContext.putImageData(lastData, 0, 0);
+            }
+
+            drawEllipse(Math.min(x, lastPoint.x), Math.min(y, lastPoint.y), Math.abs(x - lastPoint.x), Math.abs(y - lastPoint.y));
+        },
+
+        end: function (x, y) {
+            if (!paint) {
+                return;
+            }
+            paint = false;
+        }
+    });
+    
     var hDirect, vDirect, oldSize;
     // Transform tool. Used to resize a object.
     window.Tools.Transform = WinJS.Class.define(
@@ -359,4 +439,27 @@
 
         }
     });
+    
+    function drawEllipse(x, y, w, h) {
+        var kappa = .5522848,
+            ox = (w / 2) * kappa, // control point offset horizontal
+            oy = (h / 2) * kappa, // control point offset vertical
+            xe = x + w,           // x-end
+            ye = y + h,           // y-end
+            xm = x + w / 2,       // x-middle
+            ym = y + h / 2;       // y-middle
+
+        window.Tools.CanvasContext.beginPath();
+        window.Tools.CanvasContext.moveTo(x, ym);
+        window.Tools.CanvasContext.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+        window.Tools.CanvasContext.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+        window.Tools.CanvasContext.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+        window.Tools.CanvasContext.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+        window.Tools.CanvasContext.closePath();
+        window.Tools.CanvasContext.stroke();
+        
+        if (window.Tools.FillShape) {
+            window.Tools.CanvasContext.fill();
+        }
+    }
 })();
