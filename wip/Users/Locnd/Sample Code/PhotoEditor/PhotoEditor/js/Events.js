@@ -8,10 +8,15 @@
 
             _processOnClicked: function () {
                 CanvasProcessing.runFilter(HomePageEvents.currentImage);
-            }, 
-            
+            },
+
             _newLayerCmd: function () {
                 var popup = document.querySelector("#newLayerFlyout");
+                popup.winControl.show(this, "top");
+            },
+
+            _showColorPicker: function () {
+                var popup = document.querySelector("#colorPicker");
                 popup.winControl.show(this, "top");
             },
 
@@ -24,11 +29,11 @@
                     canvas.style.visibility = "hidden";
                 }
             },
-            
+
             _deleteLayer: function (dom) {
                 var title = dom.previousSibling.previousSibling;
                 var canvas = window.LayerManager.Find(title.textContent);
-                
+
                 document.querySelector(".homepage #editorScreen #mainScreen").removeChild(canvas);
                 for (var i = 0; i < window.LayerManager.Layers.length; i++) {
                     var item = window.LayerManager.Layers.getAt(i);
@@ -36,14 +41,14 @@
                         window.LayerManager.Layers.splice(i, 1);
                         return;
                     }
-                }              
+                }
             },
 
             _newLayerClicked: function () {
                 var name = document.querySelector("#newLayerFlyout #layerName");
                 var width = document.querySelector("#newLayerFlyout #layerWidth");
                 var height = document.querySelector("#newLayerFlyout #layerHeight");
-                
+
                 if (name.value === "" || name.value === undefined) {
                     name.focus();
                     return;
@@ -68,7 +73,7 @@
                 var color1Dom = document.querySelector(".homepage #ribbonBar #colorContainer #color1");
                 color1Dom.style.backgroundColor = item.color;
             },
-            
+
             _layerSelected: function (args) {
                 var item = window.LayerManager.Layers.getAt(args.detail.itemIndex);
 
@@ -83,7 +88,7 @@
                 window.LayerManager.SelectLayer(item.name);
             },
 
-            _orderLayer : function (bringUp) {
+            _orderLayer: function (bringUp) {
                 for (var i = 0; i < window.LayerManager.Layers.length; i++) {
                     if (window.LayerManager.Layers.getAt(i) === window.LayerManager.CurrentData) {
                         if (bringUp) {
@@ -115,6 +120,18 @@
                         return;
                     }
                 }
+            },
+
+            _saveFile: function () {
+
+            },
+
+            _colorPanelClicked: function (e) {
+                var colorPanel = document.querySelector("#colorPicker #colorPanel");
+                var context = colorPanel.getContext("2d");
+                var data = context.getImageData(0, 0, colorPanel.width, colorPanel.height).data;
+                var colorRefiner = document.querySelector("#colorPicker #colorRefiner");
+                colorRefiner.style.backgroundImage = "-ms-linear-gradient(top, #ffffff 0%, " + getColor(data, e.offsetX, e.offsetY) + " 50%, #000000 100%);";
             },
 
             _saveAsFile: function () {
@@ -168,8 +185,8 @@
 
                         return encoder.flushAsync();
                     });
-                    
-                   
+
+
                 }).then(function () {
                     WinJS.log && WinJS.log("Saved new file: " + filename, "sample", "status");
 
@@ -197,12 +214,12 @@
                         title.innerHTML = file.name + " - Photo Editor";
 
                         HomePageEvents.currentImage = new Image();
-                        
+
                         HomePageEvents.currentImage.src = URL.createObjectURL(file);
                         HomePageEvents.currentImage.onload = function () {
                             window.LayerManager.CreateLayer(null, HomePageEvents.currentImage.width, HomePageEvents.currentImage.height);
                             var context = window.LayerManager.Current.getContext("2d");
-                        
+
                             //window.LayerManager.Current.width = HomePageEvents.currentImage.width;
                             //window.LayerManager.Current.style.width = HomePageEvents.currentImage.width + "px";
                             //window.LayerManager.Current.style.height = HomePageEvents.currentImage.height + "px";
@@ -217,8 +234,14 @@
             }
         });
 
+    function getColor(data, x, y) {
+        var redIndex = (x + y * 256) * 4;
+        return "rgb(" + data[redIndex] + "," +
+            data[redIndex + 1] + "," +
+            data[redIndex + 2] + ")";
+    }
     function copyImageToCanvas() {
-        return new WinJS.Promise(function(comp, err, prog) {            
+        return new WinJS.Promise(function (comp, err, prog) {
             var savedCanvas = document.createElement("canvas");
             var savedContext = savedCanvas.getContext("2d");
             savedCanvas.height = 1000;

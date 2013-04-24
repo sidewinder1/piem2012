@@ -56,6 +56,8 @@
     </AppxManifest>
     <Content Include="css\default.css" />
     <Content Include="images\borderCorner.jpg" />
+    <Content Include="images\color.png" />
+    <Content Include="images\indicator.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />

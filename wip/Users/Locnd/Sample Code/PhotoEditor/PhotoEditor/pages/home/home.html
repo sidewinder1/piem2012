@@ -70,10 +70,10 @@
                 <div id="colorContainer">
                     <span id="color2"></span>
                     <span id="color1"></span>
-
+                    <span id="customColor"></span>
                     <div id="colorsDiv"
-                        data-win-control="WinJS.UI.ListView"
-                        data-win-options="{ itemTemplate:select('#colorTemplate')}">
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{ itemTemplate:select('#colorTemplate')}">
                     </div>
                 </div>
             </div>
@@ -106,6 +106,18 @@
             </div>
         </section>
     </div>
+    
+    <div id="colorPicker" data-win-control="WinJS.UI.Flyout">
+        <canvas id="colorPanel">            
+        </canvas>
+        <div id="colorRefiner">           
+        </div>
+        <div id="indicator"></div>
+        <div id="colorDisplayer">            
+        </div>
+        <button id="addColor">Add</button>
+    </div>
+    	
 	<div id="newLayerFlyout" data-win-control="WinJS.UI.Flyout">
 		<div id="nameDiv">
 			<h3>Name: </h3><input type="text" id="layerName"/>

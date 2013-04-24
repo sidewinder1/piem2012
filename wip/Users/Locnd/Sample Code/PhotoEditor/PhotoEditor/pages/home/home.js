@@ -10,7 +10,24 @@
             document.getElementById("openFileCmd").addEventListener("click", HomePageEvents._openFileCmd, false);            
             document.getElementById("saveFileCmd").addEventListener("click", HomePageEvents._saveFile, false);
             document.getElementById("saveAsFileCmd").addEventListener("click", HomePageEvents._saveAsFile, false);
-                        
+            
+            // Add event listener to custom color button.
+            var customColor = element.querySelector(".homepage #ribbonBar #colorContainer #customColor");
+            customColor.addEventListener("click", HomePageEvents._showColorPicker, false);
+
+            // Initialize data to display color picker control.
+            var canvas = element.querySelector("#colorPicker #colorPanel");
+            var context = canvas.getContext("2d");
+            var img = new Image();
+            img.src = "/images/color.png";
+            img.onload = function () {
+                canvas.height = this.height;
+                canvas.width = this.width;
+                context.drawImage(this, 0, 0);
+            };
+
+            canvas.addEventListener("click", HomePageEvents._colorPanelClicked, false);
+
             var colorList = element.querySelector(".homepage #ribbonBar #colorContainer #colorsDiv").winControl;
             colorList.itemDataSource = window.ColorManager.Colors.dataSource;
             colorList.oniteminvoked = HomePageEvents._selectColor.bind(this);
