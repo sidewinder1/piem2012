@@ -26,6 +26,58 @@ img {
         -ms-grid-row: 4;
     }
 
+#colorPicker {
+    display: -ms-grid;
+    -ms-grid-rows: 5px 256px 1fr auto 5px;
+    -ms-grid-columns: 5px 1fr 5px;
+}
+
+    #colorPicker #colorPanel {
+        -ms-grid-row: 2;
+        -ms-grid-column: 2;
+        border: 1px solid #ccc;
+        box-shadow: -1px -1px #ddd;
+    }
+
+    #colorPicker #colorRefiner {
+        -ms-grid-row: 2;
+        -ms-grid-column: 2;
+        margin-left: 266px;
+        -ms-grid-column-align: start;
+        width: 20px;
+        height: 256px;       
+    }
+
+    #colorPicker #indicator {
+        -ms-grid-row: 2;
+        -ms-grid-column: 2;
+        width: 7px;
+        height: 13px;
+        margin-left: 286px;
+        background-image: url('/images/indicator.png');
+        -ms-grid-column-align: start;
+    }
+
+
+    #colorPicker #colorDisplayer {
+        -ms-grid-row: 2;
+        -ms-grid-column: 2;
+        margin-left: 260px;
+        -ms-grid-column-align: start;
+        width: 25px;
+        height: 256px;
+        border: 1px solid black;
+        box-shadow: 1px 1px 1px #ddd;
+    }
+
+    #colorPicker #addColor {
+        -ms-grid-row: 4;
+        -ms-grid-column: 2;
+        -ms-grid-column-align: start;
+        width: 85px;
+        height: 25px;
+    }
+
 .homepage #ribbonBar {
     height: 100%;
     -ms-grid-rows: auto 1fr;
@@ -133,7 +185,7 @@ img {
         -ms-grid-column-align: stretch;
         -ms-grid-row: 2;
         border-right: 1px solid black;
-        -ms-grid-columns: 95px 1fr auto;
+        -ms-grid-columns: 50px 1fr auto;
         -ms-grid-rows: 1fr;
         border-bottom-right-radius: 10px;
         width: 100%;
@@ -142,24 +194,38 @@ img {
         .homepage #ribbonBar #colorContainer #color1 {
             display: block;
             -ms-grid-column-align: start;
-            margin: 20px;
+            margin: 5px;
             border: 1px solid black;
             background-color: black;
             border-radius: 3px;
-            width: 34px;
-            height: 34px;
+            width: 23px;
+            height: 23px;
         }
 
         .homepage #ribbonBar #colorContainer #color2 {
             display: block;
             -ms-grid-column-align: end;
             -ms-grid-row-align: end;
-            margin: 20px;
+            margin-bottom: 50px;
+            margin-right: 5px;
             background-color: white;
             border: 1px solid black;
             border-radius: 3px;
-            width: 34px;
-            height: 34px;
+            width: 23px;
+            height: 23px;
+        }
+
+        .homepage #ribbonBar #colorContainer #customColor {
+            display: block;
+            -ms-grid-column-align: center;
+            -ms-grid-row-align: end;
+            margin: 5px;
+            background-image: url('/images/color.png');
+            background-repeat: no-repeat;
+            border: 1px solid black;
+            border-radius: 3px;
+            width: 23px;
+            height: 23px;
         }
 
         .homepage #ribbonBar #colorContainer #colorsDiv {
@@ -175,8 +241,8 @@ img {
                 display: block;
                 border: 1px solid black;
                 border-radius: 3px;
-                width: 26px;
-                height: 26px;
+                width: 20px;
+                height: 20px;
             }
 
 .homepage #editorScreen {
