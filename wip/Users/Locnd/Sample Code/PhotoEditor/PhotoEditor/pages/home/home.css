@@ -45,7 +45,9 @@ img {
         margin-left: 266px;
         -ms-grid-column-align: start;
         width: 20px;
-        height: 256px;       
+        height: 256px;  
+         border: 1px solid #ccc;
+        box-shadow: -1px -1px #ddd;     
     }
 
     #colorPicker #indicator {
@@ -53,19 +55,18 @@ img {
         -ms-grid-column: 2;
         width: 7px;
         height: 13px;
-        margin-left: 286px;
+        margin-left: 287px;
         background-image: url('/images/indicator.png');
         -ms-grid-column-align: start;
     }
 
 
     #colorPicker #colorDisplayer {
-        -ms-grid-row: 2;
+        -ms-grid-row: 3;
         -ms-grid-column: 2;
-        margin-left: 260px;
         -ms-grid-column-align: start;
         width: 25px;
-        height: 256px;
+        height: 86px;
         border: 1px solid black;
         box-shadow: 1px 1px 1px #ddd;
     }
