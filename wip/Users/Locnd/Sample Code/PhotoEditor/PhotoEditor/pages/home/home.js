@@ -16,6 +16,9 @@
             customColor.addEventListener("click", HomePageEvents._showColorPicker, false);
 
             // Initialize data to display color picker control.
+            var colorRefiner = element.querySelector("#colorPicker #colorRefiner");
+            colorRefiner.addEventListener("click", HomePageEvents._colorRefinerClicked, false);
+
             var canvas = element.querySelector("#colorPicker #colorPanel");
             var context = canvas.getContext("2d");
             var img = new Image();
@@ -23,6 +26,7 @@
             img.onload = function () {
                 canvas.height = this.height;
                 canvas.width = this.width;
+                colorRefiner.height = canvas.height;
                 context.drawImage(this, 0, 0);
             };
 
