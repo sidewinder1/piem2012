@@ -55,6 +55,7 @@ img {
         -ms-grid-column: 2;
         width: 7px;
         height: 13px;
+        margin-top: 128px;
         margin-left: 287px;
         background-image: url('/images/indicator.png');
         -ms-grid-column-align: start;
@@ -65,8 +66,8 @@ img {
         -ms-grid-row: 3;
         -ms-grid-column: 2;
         -ms-grid-column-align: start;
-        width: 25px;
-        height: 86px;
+        width: 60px;
+        height: 25px;
         border: 1px solid black;
         box-shadow: 1px 1px 1px #ddd;
     }
