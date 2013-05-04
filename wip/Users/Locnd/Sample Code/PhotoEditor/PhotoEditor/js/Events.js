@@ -5,7 +5,7 @@
     WinJS.Namespace.define("HomePageEvents",
         {
             currentImage: {},
-            indicatorValue : 0,
+            indicatorValue : 128,
             _processOnClicked: function () {
                 CanvasProcessing.runFilter(HomePageEvents.currentImage);
             },
@@ -18,6 +18,14 @@
             _showColorPicker: function () {
                 var popup = document.querySelector("#colorPicker");
                 popup.winControl.show(this, "top");
+            },
+            
+            _addColorClicked: function () {
+                var colorDisplayer = document.querySelector("#colorPicker #colorDisplayer");
+                window.ColorManager.Colors.push({ color: colorDisplayer.style.backgroundColor});
+                window.ColorManager.Color1 = colorDisplayer.style.backgroundColor;
+                var popup = document.querySelector("#colorPicker");
+                popup.winControl.hide();
             },
 
             _visibilityLayer: function (dom) {

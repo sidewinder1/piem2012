@@ -19,6 +19,9 @@
             var colorRefiner = element.querySelector("#colorPicker #colorRefiner");
             colorRefiner.addEventListener("click", HomePageEvents._colorRefinerClicked, false);
 
+            var addColor = element.querySelector("#colorPicker #addColor");
+            addColor.addEventListener("click", HomePageEvents._addColorClicked, false);
+
             var canvas = element.querySelector("#colorPicker #colorPanel");
             var context = canvas.getContext("2d");
             var img = new Image();
