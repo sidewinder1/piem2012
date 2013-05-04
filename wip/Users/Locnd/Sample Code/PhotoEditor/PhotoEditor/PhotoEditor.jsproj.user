@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ReferenceCachePath>C:\Users\Kaminari.hp\AppData\Local\Temp\vb2sew3z_PhotoEditor_refcache</ReferenceCachePath>
+    <ReferenceCachePath>C:\Users\locnd4\AppData\Local\Temp\1fvdzlmm_PhotoEditor_refcache</ReferenceCachePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
+    <DebuggerFlavor>AppHostSimulatorDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

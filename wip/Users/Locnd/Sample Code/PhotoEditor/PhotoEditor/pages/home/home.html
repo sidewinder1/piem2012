@@ -48,8 +48,8 @@
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Brush;">Brush</span>
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Eraser;">Eraser</span>
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Move;window.LayerManager.Current.style.cursor = 'move';">Move</span>
-                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Painter;">Painter</span><br/>
-                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Transform;window.Tools.SetTransformObj(window.LayerManager.Current);">Transform</span><br/>
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Painter;">Painter</span><br />
+                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Transform;window.Tools.SetTransformObj(window.LayerManager.Current);">Transform</span><br />
                     <input onchange="window.Tools.setDrawer('', this.value);" max="100" min="1" value="1" type="range" />
                 </div>
                 <div id="effectContainer">
@@ -64,16 +64,16 @@
                 <div id="shapeContainer">
                     <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.RectangleDraw;">Rectangle</button>
                     <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.LineDraw;">Line</button>
-                    <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.CircleDraw;">Circle</button>                    
-                    <input type="checkbox" onchange="window.Tools.FillShape = this.checked;"/>Fill Shape
+                    <button class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.CircleDraw;">Circle</button>
+                    <input type="checkbox" onchange="window.Tools.FillShape = this.checked;" />Fill Shape
                 </div>
                 <div id="colorContainer">
                     <span id="color2"></span>
                     <span id="color1"></span>
                     <span id="customColor"></span>
                     <div id="colorsDiv"
-                         data-win-control="WinJS.UI.ListView"
-                         data-win-options="{ itemTemplate:select('#colorTemplate')}">
+                        data-win-control="WinJS.UI.ListView"
+                        data-win-options="{ itemTemplate:select('#colorTemplate')}">
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                         <div class="corner lCorner"></div>
                         <div class="corner rCorner"></div>
                         <div class="corner blCorner"></div>
-                        <div class="corner brCorner"></div>	
+                        <div class="corner brCorner"></div>
                         <div class="corner bCorner"></div>
                     </div>
                 </div>
@@ -97,38 +97,55 @@
                     <button id="upButton" onclick="HomePageEvents._orderLayer(true);">Up</button>
                     <button id="downButton" onclick="HomePageEvents._orderLayer(false);">Down</button>
                     <div id="layersContainer"
-                         data-win-control="WinJS.UI.ListView"
-                         data-win-options="{itemTemplate:select('#layerTemplate'),
+                        data-win-control="WinJS.UI.ListView"
+                        data-win-options="{itemTemplate:select('#layerTemplate'),
 	selectionMode: 'single',
 	layout:{type:WinJS.UI.ListLayout}}">
                     </div>
-                </div>                
+                </div>
             </div>
         </section>
     </div>
-    
+
     <div id="colorPicker" data-win-control="WinJS.UI.Flyout">
-        <canvas id="colorPanel">            
-        </canvas>
+        <canvas id="colorPanel"></canvas>
         <div id="indicator"></div>
-        <canvas id="colorRefiner">           
-        </canvas>
-        <div id="colorDisplayer">            
+        <canvas id="colorRefiner"></canvas>
+        <div id="detailPart">
+            <div id="colorDisplayer"></div>
+            <h3 id="hueLabel">Hue:</h3>
+            <h3 id="satLabel">Sat:</h3>
+            <h3 id="lumLabel">Lum:</h3>
+            <h3 id="redLabel">Red:</h3>
+            <h3 id="greenLabel">Green:</h3>
+            <h3 id="blueLabel">Blue:</h3>
+            
+            <input maxlength="3" onkeydown="HomePageEvents._keyDown();" id="hueValue" />
+            <input maxlength="3" onkeydown="HomePageEvents._keyDown();" id="satValue" />
+            <input maxlength="3" onkeydown="HomePageEvents._keyDown();" id="lumValue" />
+            <input maxlength="3" onkeydown="HomePageEvents._keyDown();" id="redValue" />
+            <input maxlength="3" onkeydown="HomePageEvents._keyDown();" id="greenValue" />
+            <input maxlength="3" onkeydown="HomePageEvents._keyDown();" id="blueValue" />
         </div>
         <button id="addColor">Add</button>
     </div>
-    	
-	<div id="newLayerFlyout" data-win-control="WinJS.UI.Flyout">
-		<div id="nameDiv">
-			<h3>Name: </h3><input type="text" id="layerName"/>
-		</div>
+
+    <div id="newLayerFlyout" data-win-control="WinJS.UI.Flyout">
+        <div id="nameDiv">
+            <h3>Name: </h3>
+            <input type="text" id="layerName" />
+        </div>
         <div id="widthDiv">
-			<h3>Width: </h3><input type="text" id="layerWidth"/> pixel
-		</div>
-		<div id="heightDiv">
-			<h3>Height: </h3><input type="text" id="layerHeight"/> pixel
-		</div>
-		<button onclick="HomePageEvents._newLayerClicked();" class="newLayerButton">OK</button>
-    </div>	
+            <h3>Width: </h3>
+            <input type="text" id="layerWidth" />
+            pixel
+        </div>
+        <div id="heightDiv">
+            <h3>Height: </h3>
+            <input type="text" id="layerHeight" />
+            pixel
+        </div>
+        <button onclick="HomePageEvents._newLayerClicked();" class="newLayerButton">OK</button>
+    </div>
 </body>
 </html>

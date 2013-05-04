@@ -5,7 +5,8 @@
     WinJS.Namespace.define("HomePageEvents",
         {
             currentImage: {},
-            indicatorValue : 128,
+            
+            indicatorValue: 128,
             _processOnClicked: function () {
                 CanvasProcessing.runFilter(HomePageEvents.currentImage);
             },
@@ -17,12 +18,13 @@
 
             _showColorPicker: function () {
                 var popup = document.querySelector("#colorPicker");
+                updateColorRefiner(window.ColorManager.Color1);
                 popup.winControl.show(this, "top");
             },
-            
+
             _addColorClicked: function () {
                 var colorDisplayer = document.querySelector("#colorPicker #colorDisplayer");
-                window.ColorManager.Colors.push({ color: colorDisplayer.style.backgroundColor});
+                window.ColorManager.Colors.push({ color: colorDisplayer.style.backgroundColor });
                 window.ColorManager.Color1 = colorDisplayer.style.backgroundColor;
                 var popup = document.querySelector("#colorPicker");
                 popup.winControl.hide();
@@ -138,23 +140,11 @@
                 var colorPanel = document.querySelector("#colorPicker #colorPanel");
                 var context = colorPanel.getContext("2d");
                 var data = context.getImageData(0, 0, colorPanel.width, colorPanel.height).data;
-                var colorRefiner = document.querySelector("#colorPicker #colorRefiner");
                 var color = getColor(data, e.offsetX, e.offsetY, 256);
 
-                var refinerContext = colorRefiner.getContext("2d");
-                var lingrad2 = refinerContext.createLinearGradient(0, 0, 0, 256);
-                lingrad2.addColorStop(0, '#fff');
-                lingrad2.addColorStop(0.5, color);
-                lingrad2.addColorStop(1, '#000');
-
-                // assign gradients to fill and stroke styles
-                refinerContext.fillStyle = lingrad2;
-                // draw shapes
-                refinerContext.fillRect(0, 0, 720, 256);
-
-                displayColor();
+                updateColorRefiner(color);                
             },
-            
+
             _colorRefinerClicked: function (e) {
                 var colorIndicator = document.querySelector("#colorPicker #indicator");
                 colorIndicator.style.marginTop = (e.offsetY - 5) + "px";
@@ -260,14 +250,53 @@
                         WinJS.log && WinJS.log("Operation cancelled.", "sample", "status");
                     }
                 });
+            },
+
+            _keyDown: function () {
+                if (event.keyCode !== 8 && (event.keyCode < 48 || event.keyCode > 57)) {
+                    event.returnValue = false;
+                }
+                else {
+                    var nextNumber = Number(event.srcElement.value + String.fromCharCode(event.keyCode));
+                    if (nextNumber) {
+                        if (nextNumber > 255) {
+                            event.returnValue = false;
+                        }
+                    }
+                    else {
+                        if (nextNumber > 255) {
+                            event.returnValue = false;
+                        }
+                    }
+                }
             }
         });
+
+    function updateByTextbox(value, type) {
+        
+    }
 
     function getColor(data, x, y, w) {
         var redIndex = (x + y * w) * 4;
         return "rgb(" + data[redIndex] + "," +
             data[redIndex + 1] + "," +
             data[redIndex + 2] + ")";
+    }
+
+    function updateColorRefiner(color) {
+        var colorRefiner = document.querySelector("#colorPicker #colorRefiner");
+        var refinerContext = colorRefiner.getContext("2d");
+        var lingrad2 = refinerContext.createLinearGradient(0, 0, 0, 256);
+        lingrad2.addColorStop(0, '#fff');
+        lingrad2.addColorStop(0.5, color);
+        lingrad2.addColorStop(1, '#000');
+
+        // assign gradients to fill and stroke styles
+        refinerContext.fillStyle = lingrad2;
+        // draw shapes
+        refinerContext.fillRect(0, 0, 720, 256);
+        
+        displayColor();
     }
 
     function displayColor() {
@@ -280,7 +309,7 @@
         var colorDisplayer = document.querySelector("#colorPicker #colorDisplayer");
         colorDisplayer.style.backgroundColor = color;
     }
-    
+
     function copyImageToCanvas() {
         return new WinJS.Promise(function (comp, err, prog) {
             var savedCanvas = document.createElement("canvas");
