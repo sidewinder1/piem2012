@@ -5,7 +5,7 @@
     WinJS.Namespace.define("HomePageEvents",
         {
             currentImage: {},
-            
+
             indicatorValue: 128,
             _processOnClicked: function () {
                 CanvasProcessing.runFilter(HomePageEvents.currentImage);
@@ -18,7 +18,7 @@
 
             _showColorPicker: function () {
                 var popup = document.querySelector("#colorPicker");
-                updateColorRefiner(window.ColorManager.Color1);
+                // updateColorRefiner(window.ColorManager.Color1);
                 popup.winControl.show(this, "top");
             },
 
@@ -137,12 +137,7 @@
             },
 
             _colorPanelClicked: function (e) {
-                var colorPanel = document.querySelector("#colorPicker #colorPanel");
-                var context = colorPanel.getContext("2d");
-                var data = context.getImageData(0, 0, colorPanel.width, colorPanel.height).data;
-                var color = getColor(data, e.offsetX, e.offsetY, 256);
-
-                updateColorRefiner(color);                
+                setHslAndUpdate(e.offsetX, e.offsetY, null);
             },
 
             _colorRefinerClicked: function (e) {
@@ -150,7 +145,7 @@
                 colorIndicator.style.marginTop = (e.offsetY - 5) + "px";
                 HomePageEvents.indicatorValue = e.offsetY;
 
-                displayColor();
+                setHslAndUpdate(null, null, e.offsetY);
             },
 
             _saveAsFile: function () {
@@ -272,42 +267,114 @@
             }
         });
 
-    function updateByTextbox(value, type) {
-        
-    }
-
     function getColor(data, x, y, w) {
+        x = Math.max(0, x);
+        y = Math.max(0, y);
         var redIndex = (x + y * w) * 4;
         return "rgb(" + data[redIndex] + "," +
             data[redIndex + 1] + "," +
             data[redIndex + 2] + ")";
     }
 
-    function updateColorRefiner(color) {
-        var colorRefiner = document.querySelector("#colorPicker #colorRefiner");
-        var refinerContext = colorRefiner.getContext("2d");
-        var lingrad2 = refinerContext.createLinearGradient(0, 0, 0, 256);
-        lingrad2.addColorStop(0, '#fff');
-        lingrad2.addColorStop(0.5, color);
-        lingrad2.addColorStop(1, '#000');
+    function updateColorRefiner(offsetX, offsetY) {
+        if (offsetX !== null && offsetY !== null) {
+            var colorPanel = document.querySelector("#colorPicker #colorPanel");
+            var context = colorPanel.getContext("2d");
+            var data = context.getImageData(0, 0, colorPanel.width, colorPanel.height).data;
+            var color = getColor(data, offsetX, offsetY, 256);
 
-        // assign gradients to fill and stroke styles
-        refinerContext.fillStyle = lingrad2;
-        // draw shapes
-        refinerContext.fillRect(0, 0, 720, 256);
+            var colorRefiner = document.querySelector("#colorPicker #colorRefiner");
+            var refinerContext = colorRefiner.getContext("2d");
+            var lingrad2 = refinerContext.createLinearGradient(0, 0, 0, 256);
+            lingrad2.addColorStop(0, '#fff');
+            lingrad2.addColorStop(0.5, color);
+            lingrad2.addColorStop(1, '#000');
+
+            // assign gradients to fill and stroke styles
+            refinerContext.fillStyle = lingrad2;
+            // draw shapes
+            refinerContext.fillRect(0, 0, 720, 256);
+        }
         
-        displayColor();
+        displayHslColor();
     }
 
-    function displayColor() {
+    function displayHslColor() {
         var colorRefiner = document.querySelector("#colorPicker #colorRefiner");
         var context = colorRefiner.getContext("2d");
         var data = context.getImageData(0, 0, 20, colorRefiner.height).data;
 
         var color = getColor(data, 1, HomePageEvents.indicatorValue, 20);
-
         var colorDisplayer = document.querySelector("#colorPicker #colorDisplayer");
         colorDisplayer.style.backgroundColor = color;
+    }
+
+    function displayRgbColor() {
+        var r = document.querySelector("#colorPicker #detailPart #redValue");
+        var g = document.querySelector("#colorPicker #detailPart #greenValue");
+        var b = document.querySelector("#colorPicker #detailPart #blueValue");
+
+        var color = "rgb(" + r.value + "," + g.value + "," + b.value + ")";
+        var colorDisplayer = document.querySelector("#colorPicker #colorDisplayer");
+        colorDisplayer.style.backgroundColor = color;
+    }
+
+    function setHslText(hC, sC, lC) {
+        var h = document.querySelector("#colorPicker #detailPart #hueValue");
+        var l = document.querySelector("#colorPicker #detailPart #lumValue");
+        var s = document.querySelector("#colorPicker #detailPart #satValue");
+        h.value = hC ? hC : h.value;
+        s.value = sC ? sC : s.value;
+        l.value = lC ? lC : l.value;
+    }
+
+    function setRgbText(rC, gC, bC) {
+        var r = document.querySelector("#colorPicker #detailPart #redValue");
+        var g = document.querySelector("#colorPicker #detailPart #greenValue");
+        var b = document.querySelector("#colorPicker #detailPart #blueValue");
+
+        r.value = rC;
+        g.value = gC;
+        b.value = bC;
+    }
+
+
+    function setHslAndUpdate(hC, sC, lC) {
+        setHslText(hC, sC, lC);
+
+        updateColorRefiner(hC, sC);
+        update(1);
+    }
+
+    function setRgbAndUpdate(rC, gC, bC) {
+        setRgbText(rC, gC, bC);
+        
+        var color = "rgb(" + rC + "," + gC + "," + bC + ")";
+        var colorDisplayer = document.querySelector("#colorPicker #colorDisplayer");
+        colorDisplayer.style.backgroundColor = color;
+        
+        update(0);
+    }
+
+    function update(type) {
+        var colorDisplayer = document.querySelector("#colorPicker #colorDisplayer");
+        var color = colorDisplayer.style.backgroundColor;
+        switch (type) {
+            case 0:
+                // Update hsl
+
+                break;
+            case 1:
+                // Update rgb
+                var colors = color.split(",");
+                setRgbText(parseInt(colors[0].replace("rgb(", "")),
+                    parseInt(colors[1]),
+                    parseInt(colors[2].replace(")", "")));
+                break;
+            case 2:
+                // 
+                break;
+        }
     }
 
     function copyImageToCanvas() {
@@ -316,7 +383,7 @@
             var savedContext = savedCanvas.getContext("2d");
             savedCanvas.height = 1000;
             savedCanvas.width = 1000;
-            for (var i = 0; i < window.LayerManager.Layers.length; i++) {
+            for (var i = window.LayerManager.Layers.length - 1; i >= 0; i--) {
                 var canvas = window.LayerManager.Find(window.LayerManager.Layers.getAt(i).name);
 
                 var img = new Image();
@@ -329,7 +396,7 @@
                     this.height = Number(canvas1.style.height.replace("px", ""));
                     savedContext.drawImage(this, Number(canvas1.style.marginLeft.replace("px", "")), Number(canvas1.style.marginTop.replace("px", "")));
 
-                    if (this.style.zIndex === window.LayerManager.Layers.length - 1) {
+                    if (this.style.zIndex === 0) {
                         comp(savedContext);
                     }
                 };

@@ -158,6 +158,22 @@
         }
     });
 
+    // Pen tool. Used to draw vectors.
+    window.Tools.ColorPicker = WinJS.Class.define(
+    {
+        start: function (x, y) {
+
+        },
+
+        moveTo: function (x, y) {
+
+        },
+
+        end: function (x, y) {
+
+        }
+    });
+
     var lastData;
     // Pen tool. Used to draw vectors.
     window.Tools.RectangleDraw = WinJS.Class.define(
