@@ -76,6 +76,9 @@
     <Content Include="pages\home\home.html" />
     <Content Include="pages\home\home.js" />
     <Content Include="default.html" />
+    <Content Include="pages\startPage\startPage.css" />
+    <Content Include="pages\startPage\startPage.html" />
+    <Content Include="pages\startPage\startPage.js" />
     <None Include="PhotoEditor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
