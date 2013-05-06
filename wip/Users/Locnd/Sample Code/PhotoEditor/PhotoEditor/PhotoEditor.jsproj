@@ -59,10 +59,12 @@
     <Content Include="images\borderCorner.jpg" />
     <Content Include="images\color.png" />
     <Content Include="images\indicator.png" />
-    <Content Include="images\logo.png" />
+    <Content Include="images\logo.scale-100.png" />
+    <Content Include="images\logo.scale-140.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
-    <Content Include="images\storelogo.png" />
+    <Content Include="images\storelogo.scale-100.png" />
+    <Content Include="images\WideLogo.scale-100.png" />
     <Content Include="js\CanvasProcessing.js" />
     <Content Include="js\ColorManager.js" />
     <Content Include="js\default.js" />

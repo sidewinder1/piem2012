@@ -1,48 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-
-  <Identity
-    Name="073d1682-37aa-475b-acb6-e99834659d90"
-    Version="1.0.0.0"
-    Publisher="CN=LocND4" />
-
+  <Identity Name="LPhotoEditor" Version="1.0.0.0" Publisher="CN=LocND4" />
   <Properties>
-    <DisplayName>PhotoEditor</DisplayName>
+    <DisplayName>LPhotoEditor</DisplayName>
     <PublisherDisplayName>LocND4</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
-
   <Prerequisites>
     <OSMinVersion>6.2.1</OSMinVersion>
     <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
   </Prerequisites>
-
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
-
   <Applications>
-    <Application 
-      Id="App"
-      StartPage="default.html">
-
-      <VisualElements
-        DisplayName="PhotoEditor"
-        Logo="images\logo.png"
-        SmallLogo="images\smalllogo.png"
-        Description="PhotoEditor"
-        ForegroundText="light"
-        BackgroundColor="#464646">
-
-        <DefaultTile ShowName="allLogos" />
+    <Application Id="App" StartPage="default.html">
+      <VisualElements DisplayName="L Photo Editor" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="L Photo Editor" ForegroundText="light" BackgroundColor="#a5e2e3">
+        <DefaultTile ShowName="allLogos" WideLogo="images\WideLogo.png" />
         <SplashScreen Image="images\splashscreen.png" />
-
       </VisualElements>
     </Application>
   </Applications>
-
   <Capabilities>
     <Capability Name="internetClient" />
   </Capabilities>
-
 </Package>
