@@ -90,11 +90,11 @@
                 // Make all layer item in list view to normal color.
                 var items = document.querySelectorAll(".homepage #editorScreen #layersContainer #layerItem");
                 for (var i = 0; i < items.length; i++) {
-                    items[i].style.backgroundColor = "#70D0B0";
+                    items[i].style.backgroundImage = "url('/images/paper_note_with_clipper.jpg')";
                 }
 
                 var currentLayerItem = args.srcElement.querySelector("#layerItem");
-                currentLayerItem.style.backgroundColor = "#79E8C8";
+                currentLayerItem.style.backgroundImage = "url('/images/paper_note_with_clipper_selected.jpg')";
                 window.LayerManager.SelectLayer(item.name);
             },
 
