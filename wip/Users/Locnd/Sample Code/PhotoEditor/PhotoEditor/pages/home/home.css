@@ -319,6 +319,8 @@ img {
         -ms-grid-column: 2;
         -ms-grid-columns: 1fr;
         -ms-grid-rows: 30px 1fr;
+        background-image: url('/images/right_panel_background.jpg');
+        background-size: 100% 100%;
         display: -ms-grid;
         width: 250px;
     }
@@ -340,19 +342,17 @@ img {
         }
 
         .homepage #editorScreen #subRightPanel #layersContainer {
-            border: 1px solid #A0D0B0;
             height: 100%;
             -ms-grid-row: 2;
             z-index: 999;
             overflow-y: scroll;
-            background-color: #ddedee;
             width: 250px;
         }
-
+ 
             .homepage #editorScreen #subRightPanel #layersContainer #layerItem {
-                border: 1px solid #A0D0B0;
                 height: 150px;
-                background-color: #79E8C8;
+                background-image: url('/images/paper_note_with_clipper_selected.jpg');
+                background-size: 100% 100%;
                 display: -ms-grid;
                 -ms-grid-columns: 100px 1fr 1fr 1fr;
                 -ms-grid-rows: auto 1fr 1fr;
@@ -360,12 +360,10 @@ img {
             }
 
                 .homepage #editorScreen #subRightPanel #layersContainer #layerItem #layer {
-                    border: 1px solid #A0D0B0;
                     height: 90%;
                     -ms-grid-row-align: center;
                     -ms-grid-column-align: center;
                     -ms-grid-row-span: 3;
-                    background-color: white;
                     width: 90%;
                 }
 
@@ -397,12 +395,12 @@ img {
                 }
 
     .homepage #editorScreen #mainScreen {
-        border: 1px solid #A0D0B0;
         height: 100%;
         display: -ms-grid;
         overflow: scroll;
         z-index: 10000;
-        background-image: -ms-linear-gradient(top, #e1e1e1 0, #eeeeee 10%, #ffffff 85%, #eeeeee 100%);
+        background-image: url('/images/cork_board_background.jpg');
+        background-size: 100% 100%;
         scrollbar-3dlight-color: #B7E0ee;
         scrollbar-shadow-color: #A0D0B0;
         scrollbar-base-color: #eeD0B0;
@@ -415,8 +413,8 @@ img {
             display: -ms-grid;
             visibility: collapse;
             z-index: 10000;
-            -ms-grid-columns: 10px 1fr 10px;
-            -ms-grid-rows: 10px 1fr 10px;
+            -ms-grid-columns: 20px 1fr 20px;
+            -ms-grid-rows: 20px 1fr 20px;
             width: 100px;
         }
 
