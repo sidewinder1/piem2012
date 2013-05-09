@@ -26,10 +26,6 @@
 
         var mouseX = e.offsetX;
         var mouseY = e.offsetY; // 129 px for ribbonbar.
-
-        if (e.clientY < 129) {
-            return;
-        }
         
         if (window.Tools.Current === window.Tools.Move) {
             gMouseX = e.clientX;
@@ -42,7 +38,7 @@
             
         } else if (window.Tools.Current === window.Tools.Transform) {
             mouseX = e.clientX;
-            mouseY = e.clientY - 129;
+            mouseY = e.clientY;
         }
 
         window.Tools.Current.start(mouseX, mouseY);
@@ -58,7 +54,7 @@
         }
         else if (window.Tools.Current === window.Tools.Transform) {
             mouseX = e.clientX;
-            mouseY = e.clientY - 129;
+            mouseY = e.clientY;
         }
         
         if (window.Tools.Current) {

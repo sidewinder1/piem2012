@@ -309,12 +309,12 @@ img {
 
 .homepage #editorScreen {
     border: 1px solid #A0D0B0;
-    height: calc(100% - 30px);
+    height: 100%;
     margin: 1px;
     -ms-grid-columns: 1fr auto;
-    -ms-grid-rows: 1fr;
+	-ms-grid-rows: 1fr;
     display: -ms-grid;
-    width: calc(100% - 2px);
+    width: 100%;
 }
 
     .homepage #editorScreen #subRightPanel {
@@ -355,11 +355,11 @@ img {
             .homepage #editorScreen #subRightPanel #layersContainer #layerItem {
                 height: 150px;
                 background-image: url('/images/paper_note_with_clipper_selected.jpg');
-                background-size: 100% 100%;
+                background-size: calc(100% - 40px) 100%;
                 display: -ms-grid;
                 -ms-grid-columns: 100px 1fr 1fr 1fr;
-                -ms-grid-rows: auto 1fr 1fr;
-                width: 250px;
+                -ms-grid-rows: 20px 1fr 1fr 20px;
+                width: 250px;                
             }
 
                 .homepage #editorScreen #subRightPanel #layersContainer #layerItem #layer {
@@ -371,15 +371,13 @@ img {
                 }
 
                 .homepage #editorScreen #subRightPanel #layersContainer #layerItem #name {
-                    -ms-grid-column: 2;
+					-ms-grid-row: 4;
                     text-align: center;
-                    -ms-grid-column-span: 3;
                     width: 100%;
                 }
 
                 .homepage #editorScreen #subRightPanel #layersContainer #layerItem #visibilityLayer {
                     border: 1px solid #A0D0B0;
-                    background-color: blue;
                     height: 27px;
                     width: 27px;
                     border-radius: 10px;
@@ -389,7 +387,6 @@ img {
 
                 .homepage #editorScreen #subRightPanel #layersContainer #layerItem #deleteLayer {
                     border: 1px solid #A0D0B0;
-                    background-color: blue;
                     height: 27px;
                     width: 27px;
                     border-radius: 10px;
