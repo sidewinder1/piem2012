@@ -353,11 +353,13 @@
             var img = new Image();
             img.src = window.LayerManager.Current.toDataURL("image/png");
 
+            _currentTransformObj.width = Number(_currentTransformObj.style.width.replace("px", ""));
+            _currentTransformObj.height = Number(_currentTransformObj.style.height.replace("px", ""));
+
+            var w = _currentTransformObj.width, h = _currentTransformObj.height;
             img.onload = function() {
-                _currentTransformObj.width = Number(_currentTransformObj.style.width.replace("px", ""));
-                _currentTransformObj.height = Number(_currentTransformObj.style.height.replace("px", ""));
                 window.Tools.CanvasContext = window.LayerManager.Current.getContext('2d');
-                window.Tools.CanvasContext.drawImage(img, 0, 0, _currentTransformObj.width, _currentTransformObj.height);
+                window.Tools.CanvasContext.drawImage(img, 0, 0, w, h);
             };
            
             paint = false;
