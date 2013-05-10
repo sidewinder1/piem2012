@@ -27,16 +27,8 @@
         var mouseX = e.offsetX;
         var mouseY = e.offsetY; // 129 px for ribbonbar.
         
-        if (window.Tools.Current === window.Tools.Move) {
-            gMouseX = e.clientX;
-            gMouseY = e.clientY;
-            mouseX = window.LayerManager.Current.style.marginLeft.replace("px", "");
-            mouseY = window.LayerManager.Current.style.marginTop.replace("px", "");
-            gMouseT = window.LayerManager.Current.style.marginTop.replace("px", "");
-            gMouseL = window.LayerManager.Current.style.marginLeft.replace("px", "");
-         
-            
-        } else if (window.Tools.Current === window.Tools.Transform) {
+        if (window.Tools.Current === window.Tools.Move ||
+            window.Tools.Current === window.Tools.Transform) {
             mouseX = e.clientX;
             mouseY = e.clientY;
         }
@@ -48,11 +40,8 @@
         var mouseX = e.offsetX;
         var mouseY = e.offsetY; // 129 px for ribbonbar.
 
-        if (window.Tools.Current === window.Tools.Move) {
-            mouseX = parseInt(gMouseL) + (e.clientX - gMouseX);
-            mouseY = parseInt(gMouseT) + (e.clientY - gMouseY);
-        }
-        else if (window.Tools.Current === window.Tools.Transform) {
+        if (window.Tools.Current === window.Tools.Move ||
+            window.Tools.Current === window.Tools.Transform) {
             mouseX = e.clientX;
             mouseY = e.clientY;
         }
