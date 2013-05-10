@@ -412,9 +412,9 @@ img {
             height: 100px;
             display: -ms-grid;
             visibility: collapse;
-            z-index: 10000;
-            -ms-grid-columns: 20px 1fr 20px;
-            -ms-grid-rows: 20px 1fr 20px;
+            z-index: 10000;            
+            -ms-grid-columns: 1fr 10fr 1fr;
+            -ms-grid-rows: 1fr 10fr 1fr;
             width: 100px;
         }
 
@@ -427,6 +427,8 @@ img {
                 height: 100%;
                 cursor: nw-resize;
                 width: 100%;
+                max-height: 20px;
+                max-width: 20px;
                 background-position: left top;
                 margin-top: -3px;
                 margin-left: -3px;
@@ -437,6 +439,8 @@ img {
                 -ms-grid-column: 3;
                 cursor: ne-resize;
                 width: 100%;
+                 max-height: 20px;
+                max-width: 20px;
                 background-position: right top;
                 margin-top: -3px;
                 margin-left: 3px;
@@ -446,6 +450,7 @@ img {
                 height: 100%;
                 -ms-grid-row: 2;
                 width: 100%;
+                max-width: 20px;
                 cursor: w-resize;
                 background-position: left;
                 margin-left: -3px;
@@ -455,6 +460,7 @@ img {
                 height: 100%;
                 -ms-grid-column: 2;
                 width: 100%;
+                max-height: 20px;
                 cursor: n-resize;
                 background-position: top;
                 margin-top: -3px;
@@ -462,6 +468,7 @@ img {
 
             .homepage #editorScreen #mainScreen #borderHandler .rCorner {
                 height: 100%;
+                max-width: 20px;
                 -ms-grid-column: 3;
                 -ms-grid-row: 2;
                 width: 100%;
@@ -471,6 +478,8 @@ img {
             }
 
             .homepage #editorScreen #mainScreen #borderHandler .blCorner {
+                max-height: 20px;
+                max-width: 20px;
                 height: 100%;
                 -ms-grid-row: 3;
                 width: 100%;
@@ -481,6 +490,8 @@ img {
             }
 
             .homepage #editorScreen #mainScreen #borderHandler .brCorner {
+                max-height: 20px;
+                max-width: 20px;
                 height: 100%;
                 -ms-grid-row: 3;
                 -ms-grid-column: 3;
@@ -492,6 +503,7 @@ img {
             }
 
             .homepage #editorScreen #mainScreen #borderHandler .bCorner {
+                max-height: 20px;
                 height: 100%;
                 -ms-grid-row: 3;
                 -ms-grid-column: 2;

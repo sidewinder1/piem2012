@@ -28,11 +28,13 @@
 
     window.Tools.ResetAllState = function () {
         window.Tools.UnsetTransformObj();
-        window.LayerManager.Current.style.cursor = "default";
+        if (window.LayerManager.Current) {
+            window.LayerManager.Current.style.cursor = "default";
+        }
     };
 
     window.Tools.SetTransformObj = function (dom) {
-        if (window.Tools.Current != window.Tools.Transform) {
+        if (window.Tools.Current != window.Tools.Transform || dom === null) {
             return;
         }
 
@@ -285,7 +287,32 @@
         }
     });
     
-    var hDirect, vDirect, oldSize;
+    var hDirect = "c", vDirect = "c", oldSize;
+    var gMouseX, gMouseY, gMouseT, gMouseL;
+    // Move tool. Used to move canvas.
+    window.Tools.Move = WinJS.Class.define(
+    {        
+        start: function (x, y) {
+            paint = true;
+           
+            //window.LayerManager.Current.style.marginLeft = x + "px";
+            //window.LayerManager.Current.style.marginTop = y + "px";
+        },
+
+        moveTo: function (x, y) {
+            if (paint) {
+                var mouseX = parseInt(gMouseL) + (x - gMouseX);
+                var mouseY = parseInt(gMouseT) + (y - gMouseY);
+                window.LayerManager.Current.style.marginLeft = mouseX + "px";
+                window.LayerManager.Current.style.marginTop = mouseY + "px";
+            }
+        },
+
+        end: function () {
+            paint = false;
+        }
+    });
+    
     // Transform tool. Used to resize a object.
     window.Tools.Transform = WinJS.Class.define(
     {
@@ -301,7 +328,7 @@
                 hDirect = "r";
                 lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
             } else {
-                hDirect = null;
+                hDirect = "c";
             }
 
             if (Math.abs(y - 5 - Number(_currentTransformObj.style.marginTop.replace("px", ""))) < 6) {
@@ -313,29 +340,44 @@
                 lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
             }
             else {
-                vDirect = null;
+                vDirect = "c";
+            }
+            
+            if (vDirect === "c" && hDirect === "c") {
+                gMouseX = x;
+                gMouseY = y;
+                gMouseT = window.LayerManager.Current.style.marginTop.replace("px", "");
+                gMouseL = window.LayerManager.Current.style.marginLeft.replace("px", "");
             }
 
             paint = true;
         },
 
         moveTo: function (x, y) {
-            if (paint) {
-                if (hDirect === "l") {
-                    _currentTransformObj.style.marginLeft = x + "px";
-                    _currentTransformObj.style.width = (lastPoint.x - x + oldSize.w) + "px";
+            if (paint) {                
+                if (vDirect === "c" && hDirect === "c") {
+                    var mouseX = parseInt(gMouseL) + (x - gMouseX);
+                    var mouseY = parseInt(gMouseT) + (y - gMouseY);
+                    window.LayerManager.Current.style.marginLeft = mouseX + "px";
+                    window.LayerManager.Current.style.marginTop = mouseY + "px";
                 }
-                else if (hDirect === "r") {
-                    _currentTransformObj.style.width = (x - lastPoint.x + oldSize.w) + "px";
-                }
+                else {
+                    if (hDirect === "l") {
+                        _currentTransformObj.style.marginLeft = x + "px";
+                        _currentTransformObj.style.width = (lastPoint.x - x + oldSize.w) + "px";
+                    }
+                    else if (hDirect === "r") {
+                        _currentTransformObj.style.width = (x - lastPoint.x + oldSize.w) + "px";
+                    }
 
-                if (vDirect === "t") {
-                    _currentTransformObj.style.marginTop = y + "px";
-                    _currentTransformObj.style.height = (lastPoint.y - y + oldSize.h) + "px";
-                } else if (vDirect === "b") {
-                    _currentTransformObj.style.height = (y - lastPoint.y + oldSize.h) + "px";
+                    if (vDirect === "t") {
+                        _currentTransformObj.style.marginTop = y + "px";
+                        _currentTransformObj.style.height = (lastPoint.y - y + oldSize.h) + "px";
+                    } else if (vDirect === "b") {
+                        _currentTransformObj.style.height = (y - lastPoint.y + oldSize.h) + "px";
+                    }
                 }
-
+                
                 var border = document.querySelector(".homepage #editorScreen #mainScreen #borderHandler");
                 border.style.marginLeft = _currentTransformObj.style.marginLeft;
                 border.style.marginTop = _currentTransformObj.style.marginTop;
@@ -398,27 +440,6 @@
 
             paint = false;
             window.Tools.CanvasContext.closePath();
-        }
-    });
-
-    // Move tool. Used to move canvas.
-    window.Tools.Move = WinJS.Class.define(
-    {
-        start: function (x, y) {
-            paint = true;
-            window.LayerManager.Current.style.marginLeft = x + "px";
-            window.LayerManager.Current.style.marginTop = y + "px";
-        },
-
-        moveTo: function (x, y) {
-            if (paint) {
-                window.LayerManager.Current.style.marginLeft = x + "px";
-                window.LayerManager.Current.style.marginTop = y + "px";
-            }
-        },
-
-        end: function () {
-            paint = false;
         }
     });
 

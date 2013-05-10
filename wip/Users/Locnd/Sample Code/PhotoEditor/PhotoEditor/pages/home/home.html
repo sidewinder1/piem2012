@@ -47,9 +47,11 @@
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Pen;">Pen</span>
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Brush;">Brush</span>
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Eraser;">Eraser</span>
-                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Move;window.LayerManager.Current.style.cursor = 'move';">Move</span>
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Painter;">Painter</span><br />
-                    <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Transform;window.Tools.SetTransformObj(window.LayerManager.Current);">Transform</span><br />
+                    <span class="button" onclick="window.Tools.ResetAllState(); 
+                        window.Tools.Current = window.Tools.Transform;
+                        window.Tools.SetTransformObj(window.LayerManager.Current);
+                        window.LayerManager.Current.style.cursor = 'move';">Transform</span><br />
                     <input onchange="window.Tools.setDrawer('', this.value);" max="100" min="1" value="1" type="range" />
                 </div>
                 <div id="effectContainer">
