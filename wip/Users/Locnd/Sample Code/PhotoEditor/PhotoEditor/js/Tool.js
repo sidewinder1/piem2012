@@ -318,14 +318,16 @@
     {
         start: function (x, y) {
             lastPoint = {};
+            var scroller = document.querySelector(".homepage #editorScreen #mainScreen");
+            
             oldSize = { w: Number(_currentTransformObj.style.width.replace("px", "")), h: Number(_currentTransformObj.style.height.replace("px", "")) };
             var e = event;
             switch (e.srcElement.getAttribute("class")) {
                 case "corner tlCorner":
                     hDirect = "l";
-                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+                    lastPoint.x = scroller.scrollLeft + Number(_currentTransformObj.style.marginLeft.replace("px", ""));
                     vDirect = "t";
-                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+                    lastPoint.y = scroller.scrollTop + Number(_currentTransformObj.style.marginTop.replace("px", ""));
                     break;
                 default:
                     vDirect = "c";
@@ -333,40 +335,40 @@
                     break;
                 case "corner trCorner":
                     hDirect = "r";
-                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+                    lastPoint.x = scroller.scrollLeft + Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
                     vDirect = "t";
-                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+                    lastPoint.y = scroller.scrollTop + Number(_currentTransformObj.style.marginTop.replace("px", ""));
                     break;
                 case "corner tCorner":
                     vDirect = "t";
-                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+                    lastPoint.y = scroller.scrollTop + Number(_currentTransformObj.style.marginTop.replace("px", ""));
                     hDirect = "c";
                     break;
                 case "corner lCorner":
                     hDirect = "l";
-                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+                    lastPoint.x = scroller.scrollLeft + Number(_currentTransformObj.style.marginLeft.replace("px", ""));
                     vDirect = "c";
                     break;
                 case "corner rCorner":
                     hDirect = "r";
-                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+                    lastPoint.x = scroller.scrollLeft + Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
                     vDirect = "c";
                     break;
                 case "corner blCorner":
                     hDirect = "l";
-                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+                    lastPoint.x = scroller.scrollLeft + Number(_currentTransformObj.style.marginLeft.replace("px", ""));
                     vDirect = "b";
-                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+                    lastPoint.y = scroller.scrollTop + Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
                     break;
                 case "corner brCorner":
                     hDirect = "r";
-                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+                    lastPoint.x = scroller.scrollLeft + Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
                     vDirect = "b";
-                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+                    lastPoint.y = scroller.scrollTop + Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
                     break;
                 case "corner bCorner":
                     vDirect = "b";
-                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+                    lastPoint.y = scroller.scrollTop + Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
                     hDirect = "c";
                     break;
             }
@@ -413,19 +415,21 @@
                     window.LayerManager.Current.style.marginTop = mouseY + "px";
                 }
                 else {
+                    var scroller = document.querySelector(".homepage #editorScreen #mainScreen");
+                    
                     if (hDirect === "l") {
-                        _currentTransformObj.style.marginLeft = x + "px";
-                        _currentTransformObj.style.width = (lastPoint.x - x + oldSize.w) + "px";
+                        _currentTransformObj.style.marginLeft = (x + scroller.scrollLeft) + "px";
+                        _currentTransformObj.style.width = (lastPoint.x + scroller.scrollLeft - x + oldSize.w) + "px";
                     }
                     else if (hDirect === "r") {
-                        _currentTransformObj.style.width = (x - lastPoint.x + oldSize.w) + "px";
+                        _currentTransformObj.style.width = (x + scroller.scrollLeft - lastPoint.x + oldSize.w) + "px";
                     }
 
                     if (vDirect === "t") {
-                        _currentTransformObj.style.marginTop = y + "px";
-                        _currentTransformObj.style.height = (lastPoint.y - y + oldSize.h) + "px";
+                        _currentTransformObj.style.marginTop = (scroller.scrollTop + y) + "px";
+                        _currentTransformObj.style.height = (lastPoint.y + scroller.scrollTop - y + oldSize.h) + "px";
                     } else if (vDirect === "b") {
-                        _currentTransformObj.style.height = (y - lastPoint.y + oldSize.h) + "px";
+                        _currentTransformObj.style.height = (y + scroller.scrollTop - lastPoint.y + oldSize.h) + "px";
                     }
                 }
                 
