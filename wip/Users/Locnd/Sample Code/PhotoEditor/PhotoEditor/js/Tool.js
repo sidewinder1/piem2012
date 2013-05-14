@@ -319,29 +319,80 @@
         start: function (x, y) {
             lastPoint = {};
             oldSize = { w: Number(_currentTransformObj.style.width.replace("px", "")), h: Number(_currentTransformObj.style.height.replace("px", "")) };
+            var e = event;
+            switch (e.srcElement.getAttribute("class")) {
+                case "corner tlCorner":
+                    hDirect = "l";
+                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+                    vDirect = "t";
+                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+                    break;
+                default:
+                    vDirect = "c";
+                    hDirect = "c";
+                    break;
+                case "corner trCorner":
+                    hDirect = "r";
+                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+                    vDirect = "t";
+                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+                    break;
+                case "corner tCorner":
+                    vDirect = "t";
+                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+                    hDirect = "c";
+                    break;
+                case "corner lCorner":
+                    hDirect = "l";
+                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+                    vDirect = "c";
+                    break;
+                case "corner rCorner":
+                    hDirect = "r";
+                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+                    vDirect = "c";
+                    break;
+                case "corner blCorner":
+                    hDirect = "l";
+                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+                    vDirect = "b";
+                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+                    break;
+                case "corner brCorner":
+                    hDirect = "r";
+                    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+                    vDirect = "b";
+                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+                    break;
+                case "corner bCorner":
+                    vDirect = "b";
+                    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+                    hDirect = "c";
+                    break;
+            }
+            
+            //if (Math.abs(x - 5 - Number(_currentTransformObj.style.marginLeft.replace("px", ""))) < 6) {
+            //    hDirect = "l";
+            //    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
+            //}
+            //else if (Math.abs(x - 5 - (Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w)) < 6) {
+            //    hDirect = "r";
+            //    lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
+            //} else {
+            //    hDirect = "c";
+            //}
 
-            if (Math.abs(x - 5 - Number(_currentTransformObj.style.marginLeft.replace("px", ""))) < 6) {
-                hDirect = "l";
-                lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", ""));
-            }
-            else if (Math.abs(x - 5 - (Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w)) < 6) {
-                hDirect = "r";
-                lastPoint.x = Number(_currentTransformObj.style.marginLeft.replace("px", "")) + oldSize.w;
-            } else {
-                hDirect = "c";
-            }
-
-            if (Math.abs(y - 5 - Number(_currentTransformObj.style.marginTop.replace("px", ""))) < 6) {
-                vDirect = "t";
-                lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
-            }
-            else if (Math.abs(y - 5 - (Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h)) < 6) {
-                vDirect = "b";
-                lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
-            }
-            else {
-                vDirect = "c";
-            }
+            //if (Math.abs(y - 5 - Number(_currentTransformObj.style.marginTop.replace("px", ""))) < 6) {
+            //    vDirect = "t";
+            //    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", ""));
+            //}
+            //else if (Math.abs(y - 5 - (Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h)) < 6) {
+            //    vDirect = "b";
+            //    lastPoint.y = Number(_currentTransformObj.style.marginTop.replace("px", "")) + oldSize.h;
+            //}
+            //else {
+            //    vDirect = "c";
+            //}
             
             if (vDirect === "c" && hDirect === "c") {
                 gMouseX = x;
