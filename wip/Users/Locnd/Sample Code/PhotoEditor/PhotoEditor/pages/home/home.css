@@ -407,7 +407,7 @@ img {
         width: 100%;
     }
 
-        .homepage #editorScreen #mainScreen #borderHandler {
+        .homepage #editorScreen #mainScreen #borderHandler {         
             border: 1px dashed #3399FF;
             height: 100px;
             display: -ms-grid;
@@ -421,6 +421,7 @@ img {
             .homepage #editorScreen #mainScreen #borderHandler .corner {
                 background-image: url('/images/borderCorner.jpg');
                 background-repeat: no-repeat;
+                z-index: 10000;
             }
 
             .homepage #editorScreen #mainScreen #borderHandler .tlCorner {
@@ -431,7 +432,18 @@ img {
                 max-width: 20px;
                 background-position: left top;
                 margin-top: -3px;
+                -ms-grid-row-align: start;
+                -ms-grid-column-align: start;
                 margin-left: -3px;
+            }
+
+             .homepage #editorScreen #mainScreen #borderHandler .center {
+                height: 100%;
+                cursor: move;
+                z-index: 10000;
+                width: 100%;
+                -ms-grid-row: 2;
+                -ms-grid-column: 2;
             }
 
             .homepage #editorScreen #mainScreen #borderHandler .trCorner {
@@ -442,6 +454,8 @@ img {
                  max-height: 20px;
                 max-width: 20px;
                 background-position: right top;
+                -ms-grid-row-align: start;
+                -ms-grid-column-align: end;
                 margin-top: -3px;
                 margin-left: 3px;
             }
@@ -452,6 +466,7 @@ img {
                 width: 100%;
                 max-width: 20px;
                 cursor: w-resize;
+                -ms-grid-column-align: start;
                 background-position: left;
                 margin-left: -3px;
             }
@@ -463,6 +478,7 @@ img {
                 max-height: 20px;
                 cursor: n-resize;
                 background-position: top;
+                -ms-grid-row-align: start;
                 margin-top: -3px;
             }
 
@@ -474,6 +490,7 @@ img {
                 width: 100%;
                 cursor: e-resize;
                 background-position: right;
+                -ms-grid-column-align: end;
                 margin-left: 3px;
             }
 
@@ -485,6 +502,8 @@ img {
                 width: 100%;
                 cursor: sw-resize;
                 background-position: left bottom;
+                -ms-grid-row-align: end;
+                -ms-grid-column-align: start;
                 margin-top: 3px;
                 margin-left: -3px;
             }
@@ -498,6 +517,8 @@ img {
                 width: 100%;
                 cursor: se-resize;
                 background-position: bottom right;
+                -ms-grid-row-align: end;
+                -ms-grid-column-align: end;
                 margin-top: 3px;
                 margin-left: 3px;
             }
@@ -509,6 +530,7 @@ img {
                 -ms-grid-column: 2;
                 width: 100%;
                 cursor: s-resize;
+                -ms-grid-row-align: end;
                 background-position: bottom;
                 margin-top: 3px;
             }
