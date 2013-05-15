@@ -39,6 +39,9 @@
     <!-- The content that will be loaded and displayed. -->
     <div class="fragment homepage">
         <header aria-label="Header content" role="banner" data-win-design-locked="true">
+            <div id="floatBar">
+                
+            </div>
             <div id="ribbonBar">
                 <span id="titleDiv">Photo Editor</span>
                 <button id="Process" onclick="HomePageEvents._processOnClicked()" data-win-design-locked="true">Process image</button>
@@ -49,9 +52,9 @@
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Eraser;">Eraser</span>
                     <span class="button" onclick="window.Tools.ResetAllState(); window.Tools.Current = window.Tools.Painter;">Painter</span><br />
                     <span class="button" onclick="window.Tools.ResetAllState(); 
-                        window.Tools.Current = window.Tools.Transform;
-                        window.Tools.SetTransformObj(window.LayerManager.Current);
-                        window.LayerManager.Current.style.cursor = 'move';">Transform</span><br />
+window.Tools.Current = window.Tools.Transform;
+window.Tools.SetTransformObj(window.LayerManager.Current);
+window.LayerManager.Current.style.cursor = 'move';">Transform</span><br />
                     <input onchange="window.Tools.setDrawer('', this.value);" max="100" min="1" value="1" type="range" />
                 </div>
                 <div id="effectContainer">
@@ -74,8 +77,8 @@
                     <span id="color1"></span>
                     <span id="customColor"></span>
                     <div id="colorsDiv"
-                        data-win-control="WinJS.UI.ListView"
-                        data-win-options="{ itemTemplate:select('#colorTemplate')}">
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{ itemTemplate:select('#colorTemplate')}">
                     </div>
                 </div>
             </div>

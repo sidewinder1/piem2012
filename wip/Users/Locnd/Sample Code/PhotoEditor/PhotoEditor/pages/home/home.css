@@ -140,7 +140,7 @@ img {
     }
 
 .homepage #ribbonBar {
-    height: 120px;
+    height: 12px;
 	position:absolute;
     -ms-grid-rows: auto 1fr;
     display: -ms-grid;
@@ -149,7 +149,13 @@ img {
     margin-bottom: 2px;
     border-bottom: 2px solid #dddddd;
     -ms-grid-columns: auto auto auto auto 1fr;
-    width: 80%;
+    width: 8%;
+    transition: 1s height ease-in , 1s width ease-in;
+}
+
+.homepage #ribbonBar:hover {
+    height: 120px;
+	width: 100%;
 }
 
     .homepage #ribbonBar #titleDiv {
