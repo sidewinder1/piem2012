@@ -29,4 +29,7 @@ const int VERTICAL							= 2;
 const int TABLE_SIZE						= 10;
 const int MAX_PLAN_STEP						= 50;
 
+const int RANDOM_ATTACK						= 0;
+const int OUTSIDE_ATTACK					= 1;
+const int INSIDE_ATTACK						= 2;
 #endif

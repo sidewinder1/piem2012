@@ -7,6 +7,9 @@
 class ArtificialIntelligence
 {
 private:
+	// Current plan. (attack randomly or from outside or from inside)
+	int currentPlan;
+
 	// Direction of moving.
 	int director;
 	
@@ -51,7 +54,7 @@ public:
 	bool IsValidPath(int x, int y);
 
 	//------------------------------------------//
-	int GetRandomNumber(int a, int b, int m);
+	int GetBaseStepFromPlan(int plan);
 
 	//--------------------------------------------------------------//
 	// Update attack points to get correct position before attacking//

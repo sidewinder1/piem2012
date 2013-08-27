@@ -1,44 +1,22 @@
 #include "ArtificialIntelligence.h"
 
 using namespace std;
-//	
-//const int MISS								= -1;
-//const int EMPTY								= 0;
-//const int HIT								= 1;
-//const int DISTROYER							= 2;
-//const int PATROL							= 3;
-//const int SUBMARINE							= 3;
-//const int BATTLESHIP						= 4;
-//const int AIRCRAFT_CARRIER					= 5;
-//
-//const int TIME_SETBOAR						= 10;
-//const int TIME_TURN							= 2;
-//
-//const int NONE								= 0;
-//const int LEFT								= 1;
-//const int TOP								= 2;
-//const int RIGHT								= 3;
-//const int BOTTOM							= 4;
-//
-//const int NOT_FOUND							= 0;
-//const int HORIZONTAL						= 1;
-//const int VERTICAL							= 2;
-//const int TABLE_SIZE						= 10;
-//const int MAX_PLAN_STEP						= 50;
 
 ArtificialIntelligence::ArtificialIntelligence()
 {
 	// Direction of moving.
-	director = 0;
-	orientation = 0;
+	director = NONE;
+	orientation = NONE;
 
-	attackPosX = 0;
-	attackPosY = 0;
+	attackPosX = NONE;
+	attackPosY = NONE;
 
 	lastHitX = -1;
 	lastHitY = -1;
 
 	planStepLength = 0;
+
+	currentPlan = RANDOM_ATTACK;
 }
 
 ArtificialIntelligence::~ArtificialIntelligence()
@@ -96,17 +74,20 @@ bool ArtificialIntelligence::IsValidPath(int x, int y)
 	return available_to_shoot[y*10+x] != -1 && x >= 0 && x < TABLE_SIZE && y >= 0 && y < TABLE_SIZE;
 }
 
-int ArtificialIntelligence::GetRandomNumber(int a, int b, int m)
+int ArtificialIntelligence::GetBaseStepFromPlan(int plan)
 {
-	if(a>=b)
-		return -1;
-	srand(time(NULL));
-	int n = rand();
-	srand((n+31215*m+101)%102131);
-	n = rand();
-	if(n<0)
-		n=-n;
-	return a+n%(b-a);
+	switch(plan)
+	{
+		case RANDOM_ATTACK:
+			return rand() % MAX_PLAN_STEP;
+			break;
+		case OUTSIDE_ATTACK:
+			return 0;
+			break;
+		case INSIDE_ATTACK:
+			return MAX_PLAN_STEP / 2;
+			break;
+	}
 }
 
 
@@ -179,17 +160,29 @@ bool ArtificialIntelligence::UpdateAttackPoint()
 		case NONE:
 			// Random attack to find ship.
 			std::cout<< "Plan Step Length: " << planStepLength << std::endl;
+
+			// TODO: Hardcode here. Need to replace param later.
+			int baseStep = GetBaseStepFromPlan(currentPlan);
 			if (planStepLength != 0)
 			{
-				for(int j =0; j < 50; j++)
+				for(int j = 0; j < 50; j++)
 				{
-					if (available_to_shoot[plan_A[j]] < 0)
+					if (baseStep - j >= 0 && available_to_shoot[plan_A[baseStep - j]] >= 0)
+					{
+						attackPosX = plan_A[baseStep - j] % 10;
+						attackPosY = plan_A[baseStep - j] / 10;
+						std::cout<< "Plan A: " << attackPosX << ", " << attackPosY << std::endl;
+						planStepLength--;
+						return true;
+					}
+
+					if (baseStep + j >= 50 || available_to_shoot[plan_A[baseStep + j]] < 0)
 					{
 						continue;
 					}
 
-					attackPosX = plan_A[j] % 10;
-					attackPosY = plan_A[j] / 10;
+					attackPosX = plan_A[baseStep + j] % 10;
+					attackPosY = plan_A[baseStep + j] / 10;
 					std::cout<< "Plan A: " << attackPosX << ", " << attackPosY << std::endl;
 					planStepLength--;
 					return true;
@@ -198,6 +191,7 @@ bool ArtificialIntelligence::UpdateAttackPoint()
 				planStepLength = 0;
 			}
 			
+			// Use this plan when A plan cannot be used anymore.
 			std::cout<< "-------------Change to plan B----------" << std::endl;
 			for (int nextPosition = 0; nextPosition < 100; nextPosition++)
 			{
