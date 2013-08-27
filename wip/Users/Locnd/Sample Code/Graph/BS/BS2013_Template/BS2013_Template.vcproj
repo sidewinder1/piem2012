@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;.;.."
+				AdditionalIncludeDirectories=".\include;.."
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -166,7 +166,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ArtificialIntelligence.cpp"
+				RelativePath=".\src\ArtificialIntelligence.cpp"
 				>
 			</File>
 			<File
@@ -180,7 +180,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\ArtificialIntelligence.h"
+				RelativePath=".\src\ArtificialIntelligence.h"
 				>
 			</File>
 			<File

@@ -27,5 +27,6 @@ const int NOT_FOUND							= 0;
 const int HORIZONTAL						= 1;
 const int VERTICAL							= 2;
 const int TABLE_SIZE						= 10;
+const int MAX_PLAN_STEP						= 50;
 
 #endif
