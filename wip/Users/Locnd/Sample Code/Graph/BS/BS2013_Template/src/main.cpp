@@ -3,11 +3,11 @@
 //================================//
 //	---		for User	 ---
 //--------------------------------//
-int my_map_1[][5] = {{2,0,0,0},{3,0,2,0},{3,0,4,0},{4,0,6,0},{5,0,9,0}}; //Isral map
+int my_map_1[][5] = {{2,6,8,0},{3,4,5,1},{3,1,4,0},{4,5,1,0},{5,8,3,1}};
 int my_map_2[][5] = {{2,8,0,0},{3,0,1,0},{3,9,7,1},{4,6,2,0},{5,0,3,0}};
-int my_map_3[][5] = {{2,7,6,0},{3,4,1,0},{3,2,6,1},{4,5,9,0},{5,3,3,0}};
-int my_map_4[][5] = {{2,1,0,0},{3,7,1,1},{3,1,7,0},{4,0,2,1},{5,4,9,0}};
-int my_map_5[][5] = {{2,7,4,0},{3,1,4,1},{3,6,9,0},{4,4,2,0},{5,4,5,1}};
+int my_map_3[][5] = {{2,8,3,1},{3,6,6,0},{3,4,6,1},{4,2,3,1},{5,2,1,0}};
+int my_map_4[][5] = {{2,7,5,0},{3,6,6,1},{3,3,5,0},{4,6,1,1},{5,1,2,1}};
+int my_map_5[][5] = {{2,1,1,1},{3,1,7,0},{3,3,3,1},{4,7,4,1},{5,4,2,0}};
 
 ArtificialIntelligence *ai = new ArtificialIntelligence();
 
@@ -40,6 +40,7 @@ void AI_SetBoard(Battleship* _this)
 	std::cout<<"Set "<<cSet<<" start!"<<std::endl;
 
 	bool result = false;
+	ai->PrepareForNewSet();
 	
 	switch(cSet)
 	{
@@ -49,10 +50,18 @@ void AI_SetBoard(Battleship* _this)
 			break;
 		case 2:
 			// set board for Set 2
+			if (_this->GetMyWin() == 0)
+			{
+				ai->SetPlan(RANDOM_ATTACK, SMALL_TARGET);
+			}
 			result = _this->SetMyBoard(my_map_2);
 			break;
 		case 3:
 			// set board for Set 3
+			if (_this->GetMyWin() == 0)
+			{
+				ai->SetPlan(INSIDE_ATTACK, SMALL_TARGET);
+			}
 			result = _this->SetMyBoard(my_map_3);
 			break;
 		case 4:
@@ -75,8 +84,6 @@ void AI_SetBoard(Battleship* _this)
 	{
 		std::cout<<"result: ERROR -- "<<std::endl;
 	}
-
-	ai->PrepareForNewSet();
 };
 
 void AI_Update(Battleship* _this)

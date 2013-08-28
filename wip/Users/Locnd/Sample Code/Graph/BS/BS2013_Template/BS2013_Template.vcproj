@@ -191,6 +191,10 @@
 				RelativePath=".\src\init.h"
 				>
 			</File>
+			<File
+				RelativePath=".\src\map.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
