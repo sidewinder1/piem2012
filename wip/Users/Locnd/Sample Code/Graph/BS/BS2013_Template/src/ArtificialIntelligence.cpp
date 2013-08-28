@@ -16,16 +16,24 @@ ArtificialIntelligence::ArtificialIntelligence()
 
 	planStepLength = 0;
 
-	currentPlan = RANDOM_ATTACK;
+	SetPlan(RANDOM_ATTACK, LARGE_TARGET);
 }
 
 ArtificialIntelligence::~ArtificialIntelligence()
 {
+	delete plan_A;
+	delete myBoard;
+	delete opponentBoard;
+	std::cout<< "Destructured!" << std::endl;
 }
 
 void ArtificialIntelligence::PrepareForNewSet()
 {
-	std::cout<<"Plan A: ";
+	// Set plan for new set.
+	SetPlan(RANDOM_ATTACK, LARGE_TARGET);
+	battleshipIsDistroyed = false;
+	aircraftCarrierIsDistroyed = false;
+
 	planStepLength = 0;
 
 	for(int i=0; i<100; i++)
@@ -77,19 +85,48 @@ bool ArtificialIntelligence::IsValidPath(int x, int y)
 int ArtificialIntelligence::GetBaseStepFromPlan(int plan)
 {
 	switch(plan)
-	{
-		case RANDOM_ATTACK:
-			return rand() % MAX_PLAN_STEP;
-			break;
+	{		
 		case OUTSIDE_ATTACK:
 			return 0;
-			break;
 		case INSIDE_ATTACK:
-			return MAX_PLAN_STEP / 2;
-			break;
+			return targetSize / 2;
+		// RANDOM ATTACK:
+		default:
+			srand(time(NULL));
+			return rand() % targetSize;
 	}
 }
 
+
+//--------------------------------------------------//
+// Set plan to current plan adn update attack data.	//
+// newPlan: new value for current plan.				//
+//--------------------------------------------------//
+void ArtificialIntelligence::SetPlan(int newPlan, int newTarget)
+{
+	currentPlan = newPlan;
+	targetSize = newTarget;
+}
+
+//----------------------------------------------------//
+// Get attack position that is based on current plan. //
+// indexOfData: index of data in array.				  //
+// currentPlan: current plan.						  //
+//----------------------------------------------------//
+int ArtificialIntelligence::GetDataFromPlan(int indexOfData)
+{
+	switch(targetSize)
+	{
+		case LARGE_TARGET:
+			// Get points that are on crossed line of map with large distance as: 0, 4,8,11,13,...
+			// indexOfData - (indexOfData % 5 % 2) + (indexOfData / 10 % 2) always is in of range with indexOfData get value from 0 to 49;
+			return plan_A[indexOfData - (indexOfData % 5 % 2) + (indexOfData / 10 % 2)];
+		//case SMALL_TARGET:
+		default:
+			// Get points that are on crossed line of map with small distance as: 0, 2, 4,6, 8,...
+			return plan_A[indexOfData];
+	}
+}
 
 bool ArtificialIntelligence::UpdateAttackPoint()
 {
@@ -165,30 +202,42 @@ bool ArtificialIntelligence::UpdateAttackPoint()
 			int baseStep = GetBaseStepFromPlan(currentPlan);
 			if (planStepLength != 0)
 			{
+				if (planStepLength == LARGE_TARGET)
+				{
+					targetSize = SMALL_TARGET;
+				}
+
 				for(int j = 0; j < 50; j++)
 				{
-					if (baseStep - j >= 0 && available_to_shoot[plan_A[baseStep - j]] >= 0)
+					if (baseStep - j >= 0 && available_to_shoot[GetDataFromPlan(baseStep - j)] >= 0)
 					{
-						attackPosX = plan_A[baseStep - j] % 10;
-						attackPosY = plan_A[baseStep - j] / 10;
+						attackPosX = GetDataFromPlan(baseStep - j) % 10;
+						attackPosY = GetDataFromPlan(baseStep - j) / 10;
 						std::cout<< "Plan A: " << attackPosX << ", " << attackPosY << std::endl;
 						planStepLength--;
 						return true;
 					}
 
-					if (baseStep + j >= 50 || available_to_shoot[plan_A[baseStep + j]] < 0)
+					if (baseStep + j >= 50 || available_to_shoot[GetDataFromPlan(baseStep + j)] < 0)
 					{
 						continue;
 					}
 
-					attackPosX = plan_A[baseStep + j] % 10;
-					attackPosY = plan_A[baseStep + j] / 10;
+					attackPosX = GetDataFromPlan(baseStep + j) % 10;
+					attackPosY = GetDataFromPlan(baseStep + j) / 10;
 					std::cout<< "Plan A: " << attackPosX << ", " << attackPosY << std::endl;
 					planStepLength--;
 					return true;
 				}
 
-				planStepLength = 0;
+				if (targetSize == LARGE_TARGET)
+				{
+					targetSize = SMALL_TARGET;
+				}
+				else
+				{
+					planStepLength = 0;
+				}
 			}
 			
 			// Use this plan when A plan cannot be used anymore.
@@ -293,59 +342,81 @@ void ArtificialIntelligence::FindToDestroy(Battleship * ship)
 			std::cout<<"EMPTY at "<<attackPosX<<";"<<attackPosY<<std::endl;
 			break;
 		default:
+			if (lastResult == BATTLESHIP)
+			{
+				battleshipIsDistroyed = true;
+			}
+
+			if (lastResult == AIRCRAFT_CARRIER)
+			{
+				aircraftCarrierIsDistroyed = true;
+			}
+
+			if (battleshipIsDistroyed && aircraftCarrierIsDistroyed)
+			{
+				targetSize = SMALL_TARGET;
+			}
+
 			std::cout<<"Ship "<<lastResult<<" destroyed!"<<std::endl << "Ignored points: ";
 			// Reduce the points that can be used to attack.
-			try{
-				int unitX = 0, unitY = 0, row = 0, col = 0;
-				if (orientation == VERTICAL)
-				{
-					row = 1;
-					unitY = director == TOP ? 1 : -1;
-				}
-				else 
-				{
-					unitX = director == LEFT ? 1 : -1;
-					col = 1;
-				}
-
-				// TODO: Check this case later.
-				if ((orientation == VERTICAL && attackPosY + 1 < TABLE_SIZE) || 
-					(orientation != VERTICAL && attackPosX + 1 < TABLE_SIZE))
-				{
-					available_to_shoot[(attackPosY + row) * 10 + attackPosX + col] = -1;
-					std::cout << ((attackPosY + row) * 10 + attackPosX + col) << ", ";
-				}
-				if ((orientation == VERTICAL && attackPosY - 1 >= 0) || 
-					(orientation != VERTICAL && attackPosX - 1 >= 0))
-				{
-					available_to_shoot[(attackPosY - row) * 10 + attackPosX - col] = -1;
-					std::cout << (attackPosY - row) * 10 + attackPosX - col << ", ";
-				}
-
-				bool checkBottomRight = (orientation == VERTICAL && attackPosX + 1 < TABLE_SIZE)
-					|| (orientation != VERTICAL && attackPosY + 1 < TABLE_SIZE);
-				bool checkTopLeft =(orientation == VERTICAL && attackPosX - 1 >= 0) || 
-					(orientation != VERTICAL && attackPosY - 1 >= 0);
-
-				for (int i = 0; i < lastResult; i++)
-				{
-					if (checkBottomRight)
-					{
-						available_to_shoot[(attackPosY + unitY * i + col ) * 10 + attackPosX + unitX * i + row] = -1;
-						std::cout << (attackPosY + unitY * i + col ) * 10 + attackPosX + unitX * i + row << ", ";
-					}
-					if (checkTopLeft)
-					{
-						available_to_shoot[(attackPosY + unitY * i - col) * 10 + attackPosX + unitX * i - row] = -1;
-						std::cout << (attackPosY + unitY * i - col) * 10 + attackPosX + unitX * i - row << ", ";
-					}
-				}	
-				std::cout << std::endl;
-			}catch(std::exception e)
+			int unitX = 0, unitY = 0, row = 0, col = 0;
+			if (orientation == VERTICAL)
 			{
-				std::cout << e.what() << std::endl;
+				row = 1;
+				unitY = director == TOP ? 1 : -1;
 			}
-			
+			else 
+			{
+				unitX = director == LEFT ? 1 : -1;
+				col = 1;
+			}
+
+			// Addition adjustment.
+			int adjustmentX = (director == LEFT ? col * lastResult : col);
+			int adjustmentY = (director == TOP ? row * lastResult : row);
+			if ((orientation == VERTICAL && attackPosY + adjustmentY < TABLE_SIZE) || 
+				(orientation != VERTICAL && attackPosX + adjustmentX < TABLE_SIZE))
+			{
+				available_to_shoot[(attackPosY + adjustmentY) * 10 
+					+ attackPosX + adjustmentX] = -1;
+				std::cout << (attackPosY + adjustmentY) * 10 
+					+ attackPosX + adjustmentX << "*, ";
+			}
+
+			// Subtraction adjustment.
+			adjustmentX = (director == LEFT ? -col : -col * lastResult );
+			adjustmentY = (director == TOP ? -row : -row * lastResult );
+			if ((orientation == VERTICAL && attackPosY + adjustmentY >= 0) || 
+				(orientation != VERTICAL && attackPosX + adjustmentX >= 0))
+			{
+				available_to_shoot[
+					(attackPosY + adjustmentY) * 10 
+						+ attackPosX + adjustmentX] = -1;
+				std::cout << (attackPosY + adjustmentY) * 10 
+						+ attackPosX + adjustmentX << "*, ";
+			}
+
+			bool checkBottomRight = (orientation == VERTICAL && attackPosX + 1 < TABLE_SIZE)
+				|| (orientation != VERTICAL && attackPosY + 1 < TABLE_SIZE);
+			bool checkTopLeft =(orientation == VERTICAL && attackPosX - 1 >= 0) || 
+				(orientation != VERTICAL && attackPosY - 1 >= 0);
+
+			for (int i = 0; i < lastResult; i++)
+			{
+				if (checkBottomRight)
+				{
+					available_to_shoot[(attackPosY + unitY * i + col ) * 10 + attackPosX + unitX * i + row] = -1;
+					std::cout << (attackPosY + unitY * i + col ) * 10 + attackPosX + unitX * i + row << ", ";
+				}
+				if (checkTopLeft)
+				{
+					available_to_shoot[(attackPosY + unitY * i - col) * 10 + attackPosX + unitX * i - row] = -1;
+					std::cout << (attackPosY + unitY * i - col) * 10 + attackPosX + unitX * i - row << ", ";
+				}
+			}	
+			std::cout << std::endl;
+
+			// Change targetSize if need.
 			ResetState();
 			break;
 	}

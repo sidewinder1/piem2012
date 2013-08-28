@@ -32,4 +32,8 @@ const int MAX_PLAN_STEP						= 50;
 const int RANDOM_ATTACK						= 0;
 const int OUTSIDE_ATTACK					= 1;
 const int INSIDE_ATTACK						= 2;
+
+const int LARGE_TARGET						= 26;
+const int SMALL_TARGET						= 50;
+
 #endif
