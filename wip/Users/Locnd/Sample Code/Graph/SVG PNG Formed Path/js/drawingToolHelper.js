@@ -163,7 +163,7 @@
        
         // Clear canvas content.
         window.drawer.drawContext.clearRect(0, 0, window.drawer.canvasSize, window.drawer.canvasSize);
-        var Magic_Degree = -Math.PI/13*6;
+        var Magic_Degree = 0;
         var numSlices = window.drawer.pathData.length;
         var h = img.height, w = img.width, degree = Magic_Degree;
         sliceWidth = w / numSlices;
@@ -198,11 +198,11 @@
 
                 degree = currentDegree;
             }
-            else if (degree == Magic_Degree)
-            {
-                currentDegree = degree;
-                window.drawer.drawContext.rotate(currentDegree);
-            }
+            //else if (degree == Magic_Degree)
+            //{
+            //    currentDegree = degree;
+            //    window.drawer.drawContext.rotate(currentDegree);
+            //}
 
             // Calculate small adjustment.
             var y = -h * Math.cos(degree)/2, x = -h* Math.sin(degree)/2;
