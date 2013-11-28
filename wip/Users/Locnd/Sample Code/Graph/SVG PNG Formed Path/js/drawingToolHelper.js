@@ -169,7 +169,6 @@
         sliceWidth = w / numSlices;
         window.drawer.drawContext.save();
 
-//        window.drawer.drawContext.translate(window.drawer.pathData[0].x, window.drawer.pathData[0].y);
         // iterate over all slices      
         for (var n = 0; n < numSlices; n++) {
             window.drawer.drawContext.save();
@@ -180,11 +179,6 @@
                 id1 = numSlices - 3;
             }
 
-            // translate Canvas to draw new points.
-//            if (n > 0) {
-//                window.drawer.drawContext.translate(window.drawer.pathData[n].x - window.drawer.pathData[n-1].x,
-//                    window.drawer.pathData[n].y - window.drawer.pathData[n-1].y);
-//            }
             window.drawer.drawContext.translate(window.drawer.pathData[n].x, window.drawer.pathData[n].y);
 
             // Get degree of current line with Ox.
@@ -198,12 +192,7 @@
 
                 degree = currentDegree;
             }
-            //else if (degree == Magic_Degree)
-            //{
-            //    currentDegree = degree;
-            //    window.drawer.drawContext.rotate(currentDegree);
-            //}
-
+          
             // Calculate small adjustment.
             var y = -h * Math.cos(degree)/2, x = -h* Math.sin(degree)/2;
             x = 0;
@@ -216,6 +205,19 @@
 
         window.drawer.drawContext.restore();
     };
+
+    window.drawer.getRange = function (point, width, degree)
+    {
+        var y = -width * Math.cos(degree) / 2, x = -width * Math.sin(degree) / 2;
+        var y2 = width * Math.cos(degree) / 2, x2 = width * Math.sin(degree) / 2;
+        return [{ x: x, y: y }, { x: x2, y: y2 }];
+    }
+
+    // Check 2 line that are created by 4 points is intersect or not.
+    window.drawer.isIntersect = function (point1, point2, point3, point4)
+    {
+        return true;
+    }
 
     window.drawer.getDegree = function (x1, y1, x2, y2) {
         var a = (y1 - y2) / (x1 - x2);
