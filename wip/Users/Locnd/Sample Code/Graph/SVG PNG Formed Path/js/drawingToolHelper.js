@@ -157,6 +157,8 @@
         };
     });
 
+    var Epsilon = 0.005;
+
     // This function create a image from source image and transform it to form to current path.
     window.drawer.formImageToPath = function () {
         var img = $("#fillSource")[0];
@@ -165,42 +167,65 @@
         window.drawer.drawContext.clearRect(0, 0, window.drawer.canvasSize, window.drawer.canvasSize);
         var Magic_Degree = 0;
         var numSlices = window.drawer.pathData.length;
-        var h = img.height, w = img.width, degree = Magic_Degree;
+        var h = img.height, w = img.width, degree = 0, lastX = -1, lastY = -1;
         sliceWidth = w / numSlices;
         window.drawer.drawContext.save();
-
+        var THRESHOLD_DIS = 0.01
+        degree = window.drawer.getDegree(window.drawer.pathData[0].x, window.drawer.pathData[0].y,
+                window.drawer.pathData[3].x, window.drawer.pathData[3].y);
         // iterate over all slices      
         for (var n = 0; n < numSlices; n++) {
-            window.drawer.drawContext.save();
-            var id1 = n, id2 = n + 2;
-            if (id2 >= numSlices)
-            {
-                id2 = numSlices - 1;
-                id1 = numSlices - 3;
-            }
+            if (Math.abs(lastX - window.drawer.pathData[n].x) > THRESHOLD_DIS &&
+                Math.abs(lastY - window.drawer.pathData[n].y) > THRESHOLD_DIS) {
+                window.drawer.drawContext.save();
+           
+                var id1 = n, id2 = n + 2;
+                if (id2 >= numSlices) {
+                    id2 = numSlices - 1;
+                    id1 = numSlices - 3;
+                }
 
-            window.drawer.drawContext.translate(window.drawer.pathData[n].x, window.drawer.pathData[n].y);
+                // Translate to correct position.
+                window.drawer.drawContext.translate(window.drawer.pathData[n].x, window.drawer.pathData[n].y);
 
-            // Get degree of current line with Ox.
-            var currentDegree = window.drawer.getDegree(window.drawer.pathData[id1].x, window.drawer.pathData[id1].y,
-                window.drawer.pathData[id2].x, window.drawer.pathData[id2].y);
+                // Get degree of current line with Ox.
+                var currentDegree = window.drawer.getDegree(window.drawer.pathData[id1].x, window.drawer.pathData[id1].y,
+                    window.drawer.pathData[id2].x, window.drawer.pathData[id2].y);
+                console.log("Current degree: %d ", Math.round(currentDegree / Math.PI * 180));
 
-            // Rotate canvas to draw new points.
-            //            window.drawer.drawContext.rotate(currentDegree - degree);
-            if (Math.abs(currentDegree - degree) < 0.0005 || currentDegree == 0) {
+                if (n > 0) {
+                    var line1 = window.drawer.getRange(window.drawer.pathData[n - 1], h, degree);
+                    var line2 = window.drawer.getRange(window.drawer.pathData[n], h, currentDegree);
+
+                    if (window.drawer.isIntersect(line1[0], line1[1], line2[0], line2[1])
+                        || Math.abs(currentDegree - degree) > 0.005) {
+                        // degree = currentDegree = (degree * 2 + currentDegree) / 3;
+                        currentDegree = window.drawer.calculateDesiredDegree(line1[0], line2[1],
+                            window.drawer.pathData[n], currentDegree);
+                        console.log("Adjusted current degree to: %d ", Math.round(currentDegree / Math.PI * 180));
+                    }
+                }
+                // Rotate canvas to draw new points.
+                //            window.drawer.drawContext.rotate(currentDegree - degree);
+                //if () {
                 window.drawer.drawContext.rotate(currentDegree);
-
+                console.log("Changed degree from %d to %d ", Math.round(degree / Math.PI * 180), Math.round(currentDegree / Math.PI * 180));
                 degree = currentDegree;
+                //}
+
+                // Calculate small adjustment.
+                var y = -h * Math.cos(degree) / 2, x = -h * Math.sin(degree) / 2;
+                x = 0;
+                y = -h / 2;
+                // Draw new points.
+                window.drawer.drawContext.drawImage(img, n * sliceWidth, 0,
+                    sliceWidth, h, x, y, Math.max(sliceWidth, 5), h);
+            
+
+                window.drawer.drawContext.restore();
+                lastX = window.drawer.pathData[n].x;
+                lastY = window.drawer.pathData[n].y;
             }
-          
-            // Calculate small adjustment.
-            var y = -h * Math.cos(degree)/2, x = -h* Math.sin(degree)/2;
-            x = 0;
-            y = - h / 2;
-            // Draw new points.
-            window.drawer.drawContext.drawImage(img, n * sliceWidth, 0,
-                sliceWidth, h, x, y, Math.max(sliceWidth, 5), h);
-            window.drawer.drawContext.restore();
         }
 
         window.drawer.drawContext.restore();
@@ -208,19 +233,137 @@
 
     window.drawer.getRange = function (point, width, degree)
     {
-        var y = -width * Math.cos(degree) / 2, x = -width * Math.sin(degree) / 2;
-        var y2 = width * Math.cos(degree) / 2, x2 = width * Math.sin(degree) / 2;
+        var y = point.y - width * Math.cos(degree) / 2, x = point.x - width * Math.sin(degree) / 2;
+        var y2 = point.y + width * Math.cos(degree) / 2, x2 = point.x + width * Math.sin(degree) / 2;
         return [{ x: x, y: y }, { x: x2, y: y2 }];
     }
 
     // Check 2 line that are created by 4 points is intersect or not.
     window.drawer.isIntersect = function (point1, point2, point3, point4)
     {
-        return true;
+        var xA = point1.x, yA = point1.y, xB = point2.x, yB = point2.y,
+            xC = point3.x, yC = point3.y, xD = point4.x, yD = point4.y;
+
+        var dAB = window.drawer.distance(xA, yA, xB, yB);
+        var dCD = window.drawer.distance(xC, yC, xD, yD);
+
+        // A == B
+        if (dAB < Epsilon) {
+            // C == D
+            if (dCD < Epsilon) {
+                var dAC = window.drawer.distance(xA, yA, xC, yC);
+                if (dAC < Epsilon) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            // C != D
+            var dA = (yD - yC) * (xA - xC) - (xD - xC) * (yA - yC);
+            if (Math.abs(dA) > Epsilon) {
+                return false;
+            }
+
+            if (((window.drawer.distance(xA, yA, xC, yC) <= window.drawer.distance(xC, yC, xD, yD)) &&
+                 (window.drawer.distance(xA, yA, xD, yD) <= window.drawer.distance(xC, yC, xD, yD)))) {
+                return true;
+            }
+
+            return false;
+        }
+
+        // A != B
+        if (Math.abs(dCD) < Epsilon) // C == D
+        {
+            var dC = (yB - yA) * (xC - xA) - (xB - xA) * (yC - yA);
+            if (Math.abs(dC) > Epsilon) {
+                return false;
+            }
+
+            if (((window.drawer.distance(xC, yC, xA, yA) <= window.drawer.distance(xA, yA, xB, yB)) &&
+                 (window.drawer.distance(xC, yC, xB, yB) <= window.drawer.distance(xA, yA, xB, yB)))) {
+                return true;
+            }
+
+            return false;
+        }
+
+        // C != D
+        var delta = (yB - yA) * (xD - xC) - (xB - xA) * (yD - yC);
+        var dt = -(yB - yA) * (xC - xA) + (xB - xA) * (yC - yA);
+
+        if (Math.abs(delta) < Epsilon) // delta == 0
+        {
+            if (Math.abs(dt) > Epsilon) // AB || CD
+            {
+                return false;
+            }
+
+            // AB == CD
+            var dII = window.drawer.distance((xC + xD) / 2, (yC + yD) / 2, (xA + xB) / 2, (yA + yB) / 2);
+            if (dII > (dAB / 2) + (dCD / 2) + Epsilon) {
+                return false;
+            }
+
+            if ((dII - ((Math.abs(dAB - dCD)) / 2)) < 0) {
+                return true;
+            }
+            else {
+                var dAI2 = (((xC + xD) / 2) - xA) * (((xC + xD) / 2) - xA) +
+                           (((yC + yD) / 2) - yA) * (((yC + yD) / 2) - yA);
+                var dBI2 = (((xC + xD) / 2) - xB) * (((xC + xD) / 2) - xB) +
+                           (((yC + yD) / 2) - yB) * (((yC + yD) / 2) - yB);
+                var dCI1 = (((xA + xB) / 2) - xC) * (((xA + xB) / 2) - xC) +
+                           (((yA + yB) / 2) - yC) * (((yA + yB) / 2) - yC);
+                var dDI1 = (((xA + xB) / 2) - xD) * (((xA + xB) / 2) - xD) +
+                           (((yA + yB) / 2) - yD) * (((yA + yB) / 2) - yD);
+
+                if (Math.abs(window.drawer.distance((dAI2 > dBI2) ? xB : xA, (dAI2 > dBI2) ? yB : yA,
+                 (dCI1 > dDI1) ? xD : xC, (dCI1 > dDI1) ? yD : yC)) < Epsilon) {
+                    return true;
+                }
+            }
+        }
+        else // delta != 0
+        {
+            var kk;
+            var x = xC + (xD - xC) * (dt / delta);
+            var y = yC + (yD - yC) * (dt / delta);
+
+            kk = (Math.abs(xB - xA) < Epsilon) ? (y - yA) / (yB - yA) : (x - xA) / (xB - xA);
+            if (((dt / delta < 0) || (dt / delta > 1)) || ((kk < 0) || (kk > 1))) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        return false;
     }
 
+    // Calculate distance between A and B.
+    window.drawer.distance = function (xA, yA, xB, yB)
+    {
+        var ret = Math.sqrt((xB - xA) * (xB - xA) + (yB - yA) * (yB - yA));
+        return (ret < Epsilon) ? 0 : ret;
+    }
+
+    // calculate desired degree to draw. 
+    window.drawer.calculateDesiredDegree = function(pointA, pointB, centerCD, degreeCD)
+    {
+        var degree1 = window.drawer.getDegree(pointA.x, pointA.y, centerCD.x, centerCD.y);
+        var degree2 = window.drawer.getDegree(pointB.x, pointB.y, centerCD.x, centerCD.y);
+
+        return Math.abs(degree1 - degreeCD) < Math.abs(degree2 - degreeCD) ? degree1 : degree2;
+    }
+
+    // Calculate degree that is created by line A(x1,y1) and B(x2,y2) with Ox axis.
     window.drawer.getDegree = function (x1, y1, x2, y2) {
         var a = (y1 - y2) / (x1 - x2);
         return Math.atan(a);
     };
+
+
 })();
