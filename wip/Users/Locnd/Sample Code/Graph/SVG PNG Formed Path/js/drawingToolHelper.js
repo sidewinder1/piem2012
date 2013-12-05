@@ -243,9 +243,9 @@
             //    window.drawer.drawContext.fill();
             //}
 
-            var adjustment = 100 * (1 - (window.drawer.pathData[n].h) / maxHeight * (window.drawer.pathData[n].h) / maxHeight);// 10-0
+            var adjustment = 100 - 100 * (1 - (window.drawer.pathData[n].h) / maxHeight * (window.drawer.pathData[n].h) / maxHeight) + 1;// 10-0
 
-            var sheight = Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h * 2+ h * adjustment)/(2 + adjustment));
+            var sheight = Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment)/(1 + adjustment));
 
             // Draw new points.
             window.drawer.drawContext.drawImage(img, n * sliceWidth, 0,
