@@ -3,15 +3,16 @@ body {
 }
 
 #canvasPanel {
-    display:block;
+    display: block;
     background: #fff;
-    position:absolute;
+    position: absolute;
 }
 
 .canvasPanel {
-    display:block;
-    position:absolute;
+    display: block;
+    position: absolute;
 }
+
 #headerTool {
     display: block;
     margin: -5px;

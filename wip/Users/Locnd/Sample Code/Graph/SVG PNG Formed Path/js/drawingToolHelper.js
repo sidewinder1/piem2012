@@ -46,9 +46,9 @@
 		nextParameter,
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
-		THRESHOLD_DIST = 0.3,
-		STEP_COUNT = 35,
-        SMALLEST_DISTANCE = 12,
+		THRESHOLD_DIST = 0.1,
+		STEP_COUNT = 45,
+        SMALLEST_DISTANCE = 10,
 		lastDrawPoint = { x: -3, y: -3 };
 
         var getBsplinePoint = function (t) {
@@ -204,8 +204,13 @@
         newCanvas[0].height = window.drawer.canvasSize;
         newCanvas[0].width = window.drawer.canvasSize;
 
-        newCanvas.css("opacity", $("#slider").val());
-        
+        var alpha = $("#slider").slider( "option", "value" );
+
+        newCanvas.css("-moz-opacity", alpha);/* For older FF versions */
+        newCanvas.css("-khtml-opacity", alpha);
+        newCanvas.css("opacity", alpha);
+        newCanvas.css("-moz-opacity", alpha);
+
         // Clear canvas content.
         window.drawer.drawContext.clearRect(0, 0, window.drawer.canvasSize, window.drawer.canvasSize);
         var Magic_Degree = 0;
@@ -216,8 +221,7 @@
         sliceWidth = w / numSlices;
 
         drawContext.save();
-        drawContext.globalAlpha = $("#slider").slider( "option", "value" );
-
+        
         degree = window.drawer.getDegree(window.drawer.pathData[0].x, window.drawer.pathData[0].y,
                 window.drawer.pathData[6].x, window.drawer.pathData[6].y);
 
