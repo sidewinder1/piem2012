@@ -5,15 +5,37 @@
 
     window.drawer.mainCanvas = null;
     window.drawer.drawContext = null;
-    window.drawer.canvasSize = 600;
+    window.drawer.canvasSize = 700;
     window.drawer.pathData = [];
 
     var painting = false, maxHeight = 0;
 
     // Initialize some data for this tool as: get main canvas, set mouse events to this canvas.
     $(window).load(function () {
+        $("#imageSource").change(function () {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#fillSource').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
         window.drawer.mainCanvas = $("#canvasPanel")[0];
         window.drawer.drawContext = window.drawer.mainCanvas.getContext("2d");
+        // Initilize canvas setting here.
+        window.drawer.mainCanvas.height = window.drawer.canvasSize;
+        window.drawer.mainCanvas.width = window.drawer.canvasSize;
+
+        $("#slider").slider({
+            max: 1, min: 0, step: 0.1, value: 1, change: function ()
+            {
+                
+            }
+        });
 
         // Check undefined.
         if (!window.drawer.mainCanvas) { return; }
@@ -24,9 +46,9 @@
 		nextParameter,
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
-		THRESHOLD_DIST = 0.5,
-		STEP_COUNT = 45,
-        SMALLEST_DISTANCE = 0,
+		THRESHOLD_DIST = 0.3,
+		STEP_COUNT = 35,
+        SMALLEST_DISTANCE = 12,
 		lastDrawPoint = { x: -3, y: -3 };
 
         var getBsplinePoint = function (t) {
@@ -78,7 +100,8 @@
 
 
         // Handle mouse down event for main canvas.
-        window.drawer.mainCanvas.onmousedown = function (evt) {
+        document.body.onmousedown = function (evt) {
+            if (evt.target.tagName != "CANVAS") { return; }
             // Initilize stroke values: color, width,...
             window.drawer.drawContext.strokeStyle = "#000000";
             window.drawer.drawContext.lineJoin = 2;
@@ -105,7 +128,7 @@
         };
 
         // Handle mouse move event for main canvas.
-        window.drawer.mainCanvas.onmousemove = function (evt) {
+        document.body.onmousemove = function (evt) {
             var distance = window.drawer.distance(lastDrawPoint.x, lastDrawPoint.y, evt.offsetX, evt.offsetY);
             if (painting && distance > SMALLEST_DISTANCE) {
                 // T E S T-----------------------------
@@ -121,32 +144,26 @@
                         sumDistance += Math.sqrt((nextPos.x - bSpline.x) * (nextPos.x - bSpline.x) + (nextPos.y - bSpline.y) * (nextPos.y - bSpline.y));
                         if (sumDistance > THRESHOLD_DIST) {
                             window.drawer.pathData.push({ x: bSpline.x, y: bSpline.y, h: bSpline.h });
-                            //window.drawer.drawContext.lineTo(bSpline.x, bSpline.y);
-                            //window.drawer.drawContext.stroke();
+                            window.drawer.drawContext.lineTo(bSpline.x, bSpline.y);
+                            window.drawer.drawContext.stroke();
                             sumDistance -= THRESHOLD_DIST;
                         }
                     }
                 }
-                else {
-                    // T E S T-----------------------------
-                    lastDrawPoint.x = evt.offsetX;
-                    lastDrawPoint.y = evt.offsetY;
-
-                    // Push data to pathData.
-                    window.drawer.pathData.push({ x: evt.offsetX, y: evt.offsetY });
-                }
+                //window.drawer.drawContext.fillStyle = "blue";
+                //window.drawer.drawContext.rect(evt.offsetX, evt.offsetY, 5, 5);
+                //window.drawer.drawContext.fill();
 
                 controllPoint2 = { x: controllPoint1.x, y: controllPoint1.y };
                 controllPoint1 = { x: start.x, y: start.y };
                 start = { x: end.x, y: end.y };
-
-                // Draw stroke.
-                window.drawer.drawContext.lineTo(evt.offsetX, evt.offsetY);
-                window.drawer.drawContext.stroke();
+                // T E S T-----------------------------
+                lastDrawPoint.x = evt.offsetX;
+                lastDrawPoint.y = evt.offsetY;
             }
         };
 
-        window.drawer.mainCanvas.onmouseup = function (evt) {
+        document.body.onmouseup = function (evt) {
             if (!painting) {
                 return;
             }
@@ -163,6 +180,8 @@
 
             // Push data to pathData.
             window.drawer.pathData.push({ x: evt.offsetX, y: evt.offsetY });
+            window.drawer.drawContext.lineTo(evt.offsetX, evt.offsetY);
+            window.drawer.drawContext.stroke();
 
             // Close stroke.
             painting = false;
@@ -178,88 +197,95 @@
     window.drawer.formImageToPath = function () {
         var SMALLEST_WIDTH = 5,
         img = $("#fillSource")[0];
-        //var points = window.drawer.test2();
-        //window.drawer.pathData = points;
 
+        // Create new canvas.
+        var newCanvas = $('<canvas/>', { 'width': window.drawer.canvasSize, 'height': window.drawer.canvasSize, 'class': 'canvasPanel' }).appendTo(document.body);
+        var drawContext = newCanvas[0].getContext("2d");
+        newCanvas[0].height = window.drawer.canvasSize;
+        newCanvas[0].width = window.drawer.canvasSize;
+
+        newCanvas.css("opacity", $("#slider").val());
+        
         // Clear canvas content.
         window.drawer.drawContext.clearRect(0, 0, window.drawer.canvasSize, window.drawer.canvasSize);
         var Magic_Degree = 0;
         var numSlices = window.drawer.pathData.length;
         var h = img.height,
             w = img.width, degree = 0;
-        sliceWidth = w / numSlices;
-        window.drawer.drawContext.save();
         var THRESHOLD_DIS = 0.01
+        sliceWidth = w / numSlices;
+
+        drawContext.save();
+        drawContext.globalAlpha = $("#slider").slider( "option", "value" );
+
         degree = window.drawer.getDegree(window.drawer.pathData[0].x, window.drawer.pathData[0].y,
                 window.drawer.pathData[6].x, window.drawer.pathData[6].y);
 
         // iterate over all slices      
         for (var n = 0; n < numSlices; n++) {
-            // change height.
-            //if (window.drawer.pathData[n].h) {
-                //h = Math.min(window.drawer.pathData[n].h * 2, h);
-            //}
+            drawContext.save();
 
-            //if (Math.abs(lastX - window.drawer.pathData[n].x) > THRESHOLD_DIS &&
-            //    Math.abs(lastY - window.drawer.pathData[n].y) > THRESHOLD_DIS) {
-            window.drawer.drawContext.save();
-
-            var id1 = n, id2 = n + 2;
+            var id1 = n, id2 = n + 1;
             if (id2 >= numSlices) {
                 id2 = numSlices - 1;
-                id1 = Math.min(0,numSlices - 2);
+                id1 = Math.min(0, numSlices - 1);
             }
+
+            var id3 = id2 < numSlices - 1 ? id2 + 1 : id2;
+
+            var adjustDegree = window.drawer.getDegree(window.drawer.pathData[id1].x, window.drawer.pathData[id1].y,
+                window.drawer.pathData[id3].x, window.drawer.pathData[id3].y,
+                window.drawer.pathData[id2].x, window.drawer.pathData[id2].y);
 
             // Get degree of current line with Ox.
             var currentDegree = window.drawer.getDegree(window.drawer.pathData[id1].x, window.drawer.pathData[id1].y,
                 window.drawer.pathData[id2].x, window.drawer.pathData[id2].y);
 
-            //var nextDegree = n < numSlices - 5 ? window.drawer.getDegree(window.drawer.pathData[n + 3].x, window.drawer.pathData[n + 3].y,
-            //    window.drawer.pathData[n + 5].x, window.drawer.pathData[n + 5].y) : currentDegree;
-
             console.log("<<<%d-height:%d>>>Current degree: %d (%d, %d) ", n, h, Math.round(currentDegree / Math.PI * 180), window.drawer.pathData[n].x, window.drawer.pathData[n].y);
-           
-            // Translate to correct position.
-            window.drawer.drawContext.translate(window.drawer.pathData[n].x, window.drawer.pathData[n].y);
 
-            //currentDegree = (currentDegree + nextDegree) / 2;
-            window.drawer.drawContext.rotate(currentDegree);
+            // Translate to correct position.
+            drawContext.translate(window.drawer.pathData[n].x, window.drawer.pathData[n].y);
+
+            drawContext.rotate(currentDegree);
+
+            // Calculate small adjustment.
+            //var y = -h * Math.cos(degree) / 2, x = -h * Math.sin(degree) / 2;
+            //if ((window.drawer.pathData[n].h) / maxHeight < 0.5) {
+
+            //    var color = (window.drawer.pathData[n].h) / maxHeight < 0.1 ? "blue" :
+            //        (window.drawer.pathData[n].h) / maxHeight < 0.2 ? "lightgreen" :
+            //        (window.drawer.pathData[n].h) / maxHeight < 0.3 ? "green" :
+            //        (window.drawer.pathData[n].h) / maxHeight < 0.4 ? "yellow" : "orange";
+
+            //    if (Math.abs((currentDegree % Math.PI * 2) - (degree % Math.PI * 2)) > 0.01) {
+            //        color = "brown";
+            //    }
+
+            //    window.drawer.drawContext.beginPath();
+            //    window.drawer.drawContext.fillStyle = color;
+            //    window.drawer.drawContext.rect(0, -h / 2, 4, h);
+            //    window.drawer.drawContext.fill();
+            //}
 
             console.log("Changed degree from %d to %d ", Math.round(degree / Math.PI * 180), Math.round(currentDegree / Math.PI * 180));
             degree = currentDegree;
             //}
 
-            // Calculate small adjustment.
-            //var y = -h * Math.cos(degree) / 2, x = -h * Math.sin(degree) / 2;
-            //if ((window.drawer.pathData[n].h) / maxHeight < 0.5)
-            //{
-            //    var color = (window.drawer.pathData[n].h) / maxHeight < 0.1 ? "blue" :
-            //        (window.drawer.pathData[n].h) / maxHeight < 0.2 ? "lightgreen" :
-            //        (window.drawer.pathData[n].h) / maxHeight < 0.3 ? "green" :
-            //        (window.drawer.pathData[n].h) / maxHeight < 0.4 ? "yellow" : "orange";
-            //    window.drawer.drawContext.beginPath();
-            //    window.drawer.drawContext.fillStyle = color;
-            //    window.drawer.drawContext.rect(0, -h/2, 4, h);
-            //    window.drawer.drawContext.fill();
-            //}
 
-            var adjustment = 100 - 100 * (1 - (window.drawer.pathData[n].h) / maxHeight * (window.drawer.pathData[n].h) / maxHeight) + 1;// 10-0
+            var adjustment = 1.1;
 
-            var sheight = Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment)/(1 + adjustment));
+            var sheight = Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment));
 
             // Draw new points.
-            window.drawer.drawContext.drawImage(img, n * sliceWidth, 0,
+            drawContext.drawImage(img, n * sliceWidth, 0,
                 Math.max(sliceWidth, 1), img.height, 0, -sheight / 2, Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
             console.log("Max  %d to %d ", Math.round(degree / Math.PI * 180), Math.round(currentDegree / Math.PI * 180));
-            //window.drawer.drawContext.beginPath();
-            //window.drawer.drawContext.rect(0, -sheight/2, 4, sheight);
-            //window.drawer.drawContext.fill();
 
-            window.drawer.drawContext.restore();         
+            drawContext.restore();
             // }
         }
 
-        window.drawer.drawContext.restore();
+        drawContext.restore();
         maxHeight = 0;
         // window.drawer.test();
     };
@@ -459,11 +485,9 @@
         return (ret < Epsilon) ? 0 : ret;
     }
 
-    window.drawer.refineData = function ()
-    {
+    window.drawer.refineData = function () {
         var newList = [];
-        for (var i = 0; i < window.drawer.pathData.length - 4; i = i + 4)
-        {
+        for (var i = 0; i < window.drawer.pathData.length - 4; i = i + 4) {
 
         }
     }
@@ -477,13 +501,18 @@
     }
 
     // Calculate degree that is created by line A(x1,y1) and B(x2,y2) with Ox axis.
-    window.drawer.getDegree = function (x1, y1, x2, y2) {
+    window.drawer.getDegree = function (x1, y1, x2, y2, x3, y3) {
         // if y1 < y2 -> degree > 0, else degree < 0;
         var a = (y1 - y2) / (x1 - x2);
         var returnDegree = Math.atan(a);
+        if (x3 && y3) {
+            var AB = Math.sqrt(Math.pow(x3 - x1, 2) + Math.pow(y3 - y1, 2));
+            var BC = Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2));
+            var AC = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            returnDegree = Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
+        }
 
-        if (Math.abs(returnDegree) > Math.PI)
-        {
+        if (Math.abs(returnDegree) > Math.PI) {
             alert("larger");
         }
 
