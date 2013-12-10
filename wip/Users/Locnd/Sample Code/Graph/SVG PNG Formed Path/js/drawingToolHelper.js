@@ -186,8 +186,8 @@
             painting = false;
             window.drawer.drawContext.closePath();
 
-            window.drawer.formImageToPath1();
-            window.drawer.testDrawImage();
+            window.drawer.formImageToPath();
+            //window.drawer.testDrawImage();
         };
     });
 
@@ -237,8 +237,8 @@
             // Get degree of current line with Ox.
             //var currentDegree = window.drawer.getDegree(window.drawer.pathData[id1].x, window.drawer.pathData[id1].y,
             //    window.drawer.pathData[id2].x, window.drawer.pathData[id2].y);
-
-            var currentDegree = window.drawer.getLinearEquation(window.drawer.pathData[n - 1], window.drawer.pathData[n], window.drawer.pathData[n + 1]).angle;
+            var currentLine = window.drawer.getLinearEquation(window.drawer.pathData[n - 1], window.drawer.pathData[n], window.drawer.pathData[n + 1]);
+            var currentDegree = currentLine.angle;
 
             console.log("<<<%d-height:%d>>>Current degree: %d (%d, %d) ", n, h, Math.round(currentDegree / Math.PI * 180), window.drawer.pathData[n].x, window.drawer.pathData[n].y);
 
@@ -265,15 +265,33 @@
             degree = currentDegree;
 
             var adjustment = 1.1;
-
+            var nextLine = window.drawer.getLinearEquation(window.drawer.pathData[n], window.drawer.pathData[n + 1], window.drawer.pathData[n + 2]);
             var sheight = Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment));
+            var perLine1 = new LinearEquation(-1 / currentDegree.a, window.drawer.pathData[n].y + window.drawer.pathData[n].x * 1 / currentDegree.a);
 
-            // Draw new points.
-            drawContext.drawImage(img, n * sliceWidth, 0,
-                Math.max(sliceWidth, 1), img.height,
-                0, -sheight / 2,
-                Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
+            // We have: x1*x1*(1 + a*a) + x1*(-2*c      +2*a*b      -2*a*d)     + c*c     + b*b      +2*b*d          +d*d - R*R = 0
+            // and current line: y1 = a*x1 + b.
 
+            var top = 1, bottom = 1;
+            var resultTopBottom = window.drawer.getTopBottom(currentLine, window.drawer.pathData[n], sheight, nextLine);
+            top = resultTopBottom.top;
+            bottom = resultTopBottom.bottom;
+
+            for (var u = 0; u < img.height; u++) {
+                var delta = u * sheight/img.height;
+                var correctWidth = (top * (sheight - delta) + delta * bottom) / sheight;
+                // Draw new points.
+                drawContext.drawImage(img, n * sliceWidth, u,
+                    Math.max(sliceWidth, 1), 1,
+                    0, -sheight / 2 + delta,
+                    Math.max(correctWidth, SMALLEST_WIDTH), sheight / img.height);
+
+                // OLD METHOD.
+                //drawContext.drawImage(img, n * sliceWidth, 0,
+                //   Math.max(sliceWidth, 1), img.height,
+                //   0, -sheight / 2,
+                //   Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
+            }
             //if ((window.drawer.pathData[n].h) / maxHeight < 0.15)
             //{
             //    var xx = window.drawer.getLinearEquation(window.drawer.pathData[n], window.drawer.pathData[n + 1], window.drawer.pathData[n + 2]).a;
@@ -296,6 +314,33 @@
         drawContext.restore();
         maxHeight = 0;
     };
+
+    window.drawer.getTopBottom = function (currentLine, currentPoint, sheight, nextLine)
+    {
+        var top = 1, bottom = 1;
+        // Find x: 
+        var aa = 1 + currentLine.a * currentLine.a,
+            bb = 2 * (-currentPoint.x + currentLine.a * currentLine.b - currentLine.a * currentPoint.y),
+            cc = currentPoint.x * currentPoint.x + currentPoint.y *
+            currentPoint.y + 2 * currentLine.b * currentPoint.y + currentLine.b * currentLine.b - sheight * sheight / 4;
+        var delta = bb * bb - 4 * aa * cc;
+
+        if (delta >= 0 && currentLine.a != 0) {
+            var x1 = (-bb - Math.sqrt(delta)) / (2 * aa);
+            var x2 = (-bb + Math.sqrt(delta)) / (2 * aa);
+            var topPoint = { x: x1, y: x1 * currentLine.a + currentLine.b },
+                bottomPoint = { x: x2, y: x2 * currentLine.a + currentLine.b };
+            // We have linear equation of 2 lines that are perpendicular with currentLine.
+            var perTopLine = new LinearEquation(-1 / currentLine.a, topPoint.y + 1 / currentLine.a * topPoint.x);
+            var perBottomLine = new LinearEquation(-1 / currentLine.a, bottomPoint.y + 1 / currentLine.a * bottomPoint.x);
+            var topRPoint = perTopLine.findIntersectPoint(nextLine);
+            var bottomRPoint = perBottomLine.findIntersectPoint(nextLine);
+            top = window.drawer.distance(topPoint.x, topPoint.y, topRPoint.x, topRPoint.y);
+            bottom = window.drawer.distance(bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
+        }
+
+        return { top: top, bottom: bottom };
+    }
 
     window.drawer.formImageToPath1 = function () {
         img = $("#fillSource")[0];
@@ -326,7 +371,7 @@
             var cLine = window.drawer.getLinearEquation(window.drawer.pathData[id - 1 + JUMP_STEP / 2], centerPoint, window.drawer.pathData[id + 1 + JUMP_STEP / 2]);
             var rLine = window.drawer.getLinearEquation(window.drawer.pathData[id - 1 + JUMP_STEP], window.drawer.pathData[id + JUMP_STEP], window.drawer.pathData[id + 1 + JUMP_STEP]);
 
-            var topPointY = centerPoint.y - sheight / 2;
+            var topPointY = centerPoint.y - (sheight / 2) / Math.cos(cLine.angle);
             var topPointX = cLine.findX(topPointY);
             var aEdge = (-1 / cLine.a);
             var topEdge = new LinearEquation(aEdge, topPointY - aEdge * topPointX);
@@ -440,7 +485,7 @@
         if (Math.abs(angle - a1) > Math.PI / 2 && Math.abs(angle - a2) > Math.PI / 2) {
             angle = (angle + Math.PI) % (2 * Math.PI);
         }
-        a = Math.tan((angle + Math.PI *3/2) % (2 * Math.PI));
+        a = angle%Math.PI == Math.PI/2 ? 1 : Math.tan((angle + Math.PI *3/2) % (2 * Math.PI));
         // And calculate b:
         var b = cPoint.y - a * cPoint.x;
         ret = new LinearEquation(a, b, angle);
@@ -612,4 +657,16 @@
             return { x: x, y: a * x + b };
         }
     };
+
+    var a = Math.tan(Math.PI / 4), a1 = Math.tan(Math.PI / 3);
+    var line1 = new LinearEquation(a, 1 - a * 2);
+    var line2 = new LinearEquation(0, 1 - 0 * 2);
+    var line3 = new LinearEquation(a1, 0 - a1 * 2);
+    var line4 = new LinearEquation(0, 3 - 0 * 2);
+    var intersect12 = line1.findIntersectPoint(line2);
+    var intersect13 = line1.findIntersectPoint(line3);
+    var intersect14 = line1.findIntersectPoint(line4);
+    var intersect41 = line4.findIntersectPoint(line1);
+    var intersect31 = line3.findIntersectPoint(line1);
+    window.drawer.getTopBottom(line1, { x: 1, y: 0 }, 2 * Math.sqrt(2), line3);
 })();
