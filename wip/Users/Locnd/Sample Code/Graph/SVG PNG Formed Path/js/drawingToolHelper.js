@@ -45,7 +45,7 @@
 		nextParameter,
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
-		THRESHOLD_DIST = 0.51,
+		THRESHOLD_DIST = 0.8,
 		STEP_COUNT = 5,
         SMALLEST_DISTANCE = 9,
 		lastDrawPoint = { x: -3, y: -3 };
@@ -223,9 +223,10 @@
 
         degree = window.drawer.getDegree(window.drawer.pathData[0].x, window.drawer.pathData[0].y,
                 window.drawer.pathData[6].x, window.drawer.pathData[6].y);
-
+		var JUMP_STEPS = 1;
+		
         // iterate over all slices      
-        for (var n = 0; n < numSlices; n++) {
+        for (var n = 0; n < numSlices - JUMP_STEPS; n+=JUMP_STEPS) {
             drawContext.save();
 
             var id1 = n, id2 = n + 1;
@@ -239,7 +240,7 @@
             //    window.drawer.pathData[id2].x, window.drawer.pathData[id2].y);
             var currentLine = window.drawer.getLinearEquation(window.drawer.pathData[n - 1], window.drawer.pathData[n], window.drawer.pathData[n + 1]);
             var currentDegree = currentLine.angle;
-
+			currentLine.draw(window.drawer.drawContext, "blue", window.drawer.pathData[n].y - 50, window.drawer.pathData[n].y + 50);
             console.log("<<<%d-height:%d>>>Current degree: %d (%d, %d) ", n, h, Math.round(currentDegree / Math.PI * 180), window.drawer.pathData[n].x, window.drawer.pathData[n].y);
 
             // Translate to correct position.
@@ -266,7 +267,8 @@
 
             var adjustment = 1.1;
             var nextLine = window.drawer.getLinearEquation(window.drawer.pathData[n], window.drawer.pathData[n + 1], window.drawer.pathData[n + 2]);
-            var sheight = Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment));
+			nextLine.draw(window.drawer.drawContext, "green", window.drawer.pathData[n + 1].y - 50, window.drawer.pathData[n + 1].y + 50);
+            var sheight = window.drawer.pathData[n].h ? Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment)) : h;
             var perLine1 = new LinearEquation(-1 / currentDegree.a, window.drawer.pathData[n].y + window.drawer.pathData[n].x * 1 / currentDegree.a);
 
             // We have: x1*x1*(1 + a*a) + x1*(-2*c      +2*a*b      -2*a*d)     + c*c     + b*b      +2*b*d          +d*d - R*R = 0
@@ -647,11 +649,22 @@
     function LinearEquation(a, b, angle) {
         this.a = a;
         this.b = b;
-        this.angle = angle;
+        this.angle = angle ? angle : (Math.atan(a) + 3/2*Math.PI)%(Math.PI*2);
         this.findX = function (y) {
             return (y - b) / a;
         }
 
+		this.draw = function(ctx, color, fromY, toY)
+		{
+			ctx.save();
+			ctx.strokeStyle = color;
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+            ctx.moveTo(this.findX(fromY), fromY);
+			ctx.lineTo(this.findX(toY), toY);
+            ctx.stroke();
+		}
+		
         this.findIntersectPoint = function (linearEquation) {
             var x = -(b - linearEquation.b) / (a - linearEquation.a);
             return { x: x, y: a * x + b };
