@@ -223,7 +223,7 @@
 
         degree = window.drawer.getDegree(window.drawer.pathData[0].x, window.drawer.pathData[0].y,
                 window.drawer.pathData[6].x, window.drawer.pathData[6].y);
-		var JUMP_STEPS = 1;
+		var JUMP_STEPS = 4;
 		
         // iterate over all slices      
         for (var n = 0; n < numSlices - JUMP_STEPS; n+=JUMP_STEPS) {
@@ -271,9 +271,6 @@
             var sheight = window.drawer.pathData[n].h ? Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment)) : h;
             var perLine1 = new LinearEquation(-1 / currentDegree.a, window.drawer.pathData[n].y + window.drawer.pathData[n].x * 1 / currentDegree.a);
 
-            // We have: x1*x1*(1 + a*a) + x1*(-2*c      +2*a*b      -2*a*d)     + c*c     + b*b      +2*b*d          +d*d - R*R = 0
-            // and current line: y1 = a*x1 + b.
-
             var top = 1, bottom = 1;
             var resultTopBottom = window.drawer.getTopBottom(currentLine, window.drawer.pathData[n], sheight, nextLine);
             top = resultTopBottom.top;
@@ -319,12 +316,17 @@
 
     window.drawer.getTopBottom = function (currentLine, currentPoint, sheight, nextLine)
     {
+		window.drawer.drawLine(window.drawer.drawContext, "orange", currentPoint.x, currentPoint.y);
         var top = 1, bottom = 1;
         // Find x: 
-        var aa = 1 + currentLine.a * currentLine.a,
+        
+		// We have: x1*x1*(1 + a*a) + x1*(-2*c      +2*a*b      -2*a*d)     + c*c     + b*b      +2*b*d          +d*d - R*R = 0
+		// and current line: y1 = a*x1 + b.
+
+		var aa = 1 + currentLine.a * currentLine.a,
             bb = 2 * (-currentPoint.x + currentLine.a * currentLine.b - currentLine.a * currentPoint.y),
-            cc = currentPoint.x * currentPoint.x + currentPoint.y *
-            currentPoint.y + 2 * currentLine.b * currentPoint.y + currentLine.b * currentLine.b - sheight * sheight / 4;
+            cc = currentPoint.x * currentPoint.x + currentLine.b * currentLine.b + currentPoint.y * currentPoint.y + 
+			2 * currentLine.b * currentPoint.y - sheight * sheight / 4;
         var delta = bb * bb - 4 * aa * cc;
 
         if (delta >= 0 && currentLine.a != 0) {
@@ -339,6 +341,9 @@
             var bottomRPoint = perBottomLine.findIntersectPoint(nextLine);
             top = window.drawer.distance(topPoint.x, topPoint.y, topRPoint.x, topRPoint.y);
             bottom = window.drawer.distance(bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
+			
+			window.drawer.drawLine(window.drawer.drawContext, "green", topPoint.x, topPoint.y,topRPoint.x, topRPoint.y);
+			window.drawer.drawLine(window.drawer.drawContext, "orqange", bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
         }
 
         return { top: top, bottom: bottom };
@@ -618,6 +623,32 @@
         return Math.abs(degree1 - degreeCD) < Math.abs(degree2 - degreeCD) ? degree1 : degree2;
     };
 
+	window.drawer.drawLine = function(ctx,color, x1,y1,x2,y2)
+	{
+		ctx.save();
+		ctx.strokeStyle = color;
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.moveTo(x1, y1);
+		
+		if (x2 && y2)
+		{
+			ctx.lineTo(x2, y2);
+		}
+		
+		ctx.stroke();
+		
+		ctx.beginPath();
+		ctx.fillStyle = "brown";
+		ctx.arc(x1,y1,2,0,Math.PI*2);
+		if (x2 && y2)
+		{
+			ctx.arc(x2,y2,2,0,Math.PI*2);
+		}
+		
+		ctx.fill();
+	};
+	
     // Calculate degree that is created by line A(x1,y1) and C(x2,y2) with Ox axis. B(x3, y3) is center point.
     window.drawer.getDegree = function (x1, y1, x2, y2, x3, y3) {
         // if y1 < y2 -> degree > 0, else degree < 0;
@@ -682,4 +713,6 @@
     var intersect41 = line4.findIntersectPoint(line1);
     var intersect31 = line3.findIntersectPoint(line1);
     window.drawer.getTopBottom(line1, { x: 1, y: 0 }, 2 * Math.sqrt(2), line3);
+	
+	
 })();
