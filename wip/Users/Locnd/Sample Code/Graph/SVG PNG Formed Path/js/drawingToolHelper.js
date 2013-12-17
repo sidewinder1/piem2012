@@ -46,8 +46,8 @@
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
 		THRESHOLD_DIST = 0.8,
-		STEP_COUNT = 5,
-        SMALLEST_DISTANCE = 9,
+		STEP_COUNT = 2,
+        SMALLEST_DISTANCE = 5,
 		lastDrawPoint = { x: -3, y: -3 };
 
         var getBsplinePoint = function (t) {
@@ -195,7 +195,7 @@
 
     // This function create a image from source image and transform it to form to current path.
     window.drawer.formImageToPath = function () {
-        var SMALLEST_WIDTH = 5,
+        var SMALLEST_WIDTH = 0,
         img = $("#fillSource")[0];
         var alpha = $("#slider").slider("option", "value");
 
@@ -223,7 +223,7 @@
 
         degree = window.drawer.getDegree(window.drawer.pathData[0].x, window.drawer.pathData[0].y,
                 window.drawer.pathData[6].x, window.drawer.pathData[6].y);
-		var JUMP_STEPS = 4;
+		var JUMP_STEPS = 1;
 		
         // iterate over all slices      
         for (var n = 0; n < numSlices - JUMP_STEPS; n+=JUMP_STEPS) {
@@ -276,15 +276,20 @@
             top = resultTopBottom.top;
             bottom = resultTopBottom.bottom;
 
+			if (top > 70 || bottom > 70)
+			{
+				top = bottom = 1;
+			}
             for (var u = 0; u < img.height; u++) {
                 var delta = u * sheight/img.height;
                 var correctWidth = (top * (sheight - delta) + delta * bottom) / sheight;
                 // Draw new points.
                 drawContext.drawImage(img, n * sliceWidth, u,
                     Math.max(sliceWidth, 1), 1,
-                    0, -sheight / 2 + delta,
+                    0, Math.ceil(-sheight / 2) + delta,
                     Math.max(correctWidth, SMALLEST_WIDTH), sheight / img.height);
-
+				
+				console.log("id: %d, width: %f, top point: %f", u, correctWidth, Math.ceil(-sheight / 2) + delta);
                 // OLD METHOD.
                 //drawContext.drawImage(img, n * sliceWidth, 0,
                 //   Math.max(sliceWidth, 1), img.height,
@@ -325,7 +330,7 @@
 
 		var aa = 1 + currentLine.a * currentLine.a,
             bb = 2 * (-currentPoint.x + currentLine.a * currentLine.b - currentLine.a * currentPoint.y),
-            cc = currentPoint.x * currentPoint.x + currentLine.b * currentLine.b + currentPoint.y * currentPoint.y + 
+            cc = currentPoint.x * currentPoint.x + currentLine.b * currentLine.b + currentPoint.y * currentPoint.y - 
 			2 * currentLine.b * currentPoint.y - sheight * sheight / 4;
         var delta = bb * bb - 4 * aa * cc;
 
