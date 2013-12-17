@@ -45,8 +45,8 @@
 		nextParameter,
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
-		THRESHOLD_DIST = 0.8,
-		STEP_COUNT = 2,
+		THRESHOLD_DIST = 0.1,
+		STEP_COUNT = 22,
         SMALLEST_DISTANCE = 5,
 		lastDrawPoint = { x: -3, y: -3 };
 
@@ -350,8 +350,10 @@
 			window.drawer.drawLine(window.drawer.drawContext, "green", topPoint.x, topPoint.y,topRPoint.x, topRPoint.y);
 			window.drawer.drawLine(window.drawer.drawContext, "orqange", bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
         }
-
-        return { top: top, bottom: bottom };
+        var max = Math.max(top, bottom);
+        var min = Math.min(top, bottom);
+        var isReducing = nextLine.angle > currentLine.angle;
+        return { top: isReducing ? max : min, bottom: isReducing ? min : max };
     }
 
     window.drawer.formImageToPath1 = function () {
