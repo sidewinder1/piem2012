@@ -46,7 +46,7 @@
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
 		THRESHOLD_DIST = 0.1,
-		STEP_COUNT = 22,
+		STEP_COUNT = 32,
         SMALLEST_DISTANCE = 5,
 		lastDrawPoint = { x: -3, y: -3 };
 
@@ -280,16 +280,18 @@
 			{
 				top = bottom = 1;
 			}
-            for (var u = 0; u < img.height; u++) {
-                var delta = u * sheight/img.height;
-                var correctWidth = (top * (sheight - delta) + delta * bottom) / sheight;
+			
+			var step_Width = 2;
+            for (var u = 0; u < sheight; u+= step_Width) {
+                var delta = img.height/sheight;
+                var correctWidth = (top * (sheight - u) + u * bottom) / sheight;
                 // Draw new points.
-                drawContext.drawImage(img, n * sliceWidth, u,
-                    Math.max(sliceWidth, 1), 1,
-                    0, Math.ceil(-sheight / 2) + delta,
-                    Math.max(correctWidth, SMALLEST_WIDTH), sheight / img.height);
+                drawContext.drawImage(img, n * sliceWidth, u*delta,
+                    Math.max(sliceWidth, 1), delta * step_Width,
+                    0, Math.ceil(-sheight / 2) + u,
+                    Math.max(correctWidth, SMALLEST_WIDTH), step_Width);
 				
-				console.log("id: %d, width: %f, top point: %f", u, correctWidth, Math.ceil(-sheight / 2) + delta);
+				console.log("id: %d, width: %f, top point: %f", u, correctWidth, Math.ceil(-sheight / 2) + u);
                 // OLD METHOD.
                 //drawContext.drawImage(img, n * sliceWidth, 0,
                 //   Math.max(sliceWidth, 1), img.height,
