@@ -281,7 +281,7 @@
 				top = bottom = 1;
 			}
 			
-			var step_Width = 2;
+			var step_Width = 1;
             for (var u = 0; u < sheight; u+= step_Width) {
                 var delta = img.height/sheight;
                 var correctWidth = (top * (sheight - u) + u * bottom) / sheight;
@@ -354,7 +354,7 @@
         }
         var max = Math.max(top, bottom);
         var min = Math.min(top, bottom);
-        var isReducing = nextLine.angle > currentLine.angle;
+        var isReducing = nextLine.angle > currentLine.angle || currentLine.angle - nextLine.angle > Math.PI / 2;
         return { top: isReducing ? max : min, bottom: isReducing ? min : max };
     }
 
@@ -634,6 +634,7 @@
 
 	window.drawer.drawLine = function(ctx,color, x1,y1,x2,y2)
 	{
+	    return;
 		ctx.save();
 		ctx.strokeStyle = color;
 		ctx.lineWidth = 2;
@@ -696,6 +697,7 @@
 
 		this.draw = function(ctx, color, fromY, toY)
 		{
+		    return;
 			ctx.save();
 			ctx.strokeStyle = color;
 			ctx.lineWidth = 1;
