@@ -45,8 +45,8 @@
 		nextParameter,
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
-		THRESHOLD_DIST = 0.1,
-		STEP_COUNT = 32,
+		THRESHOLD_DIST = 0.8,
+		STEP_COUNT = 12,
         SMALLEST_DISTANCE = 5,
 		lastDrawPoint = { x: -3, y: -3 };
 
@@ -191,7 +191,7 @@
         };
     });
 
-    var Epsilon = 0.005;
+    var Epsilon = 0.000000000000000000000000000000001;
 
     // This function create a image from source image and transform it to form to current path.
     window.drawer.formImageToPath = function () {
@@ -202,6 +202,7 @@
         // Create new canvas.
         var newCanvas = $('<canvas/>', { 'width': window.drawer.canvasSize, 'height': window.drawer.canvasSize, 'class': 'canvasPanel' }).appendTo(document.body);
         var drawContext = newCanvas[0].getContext("2d");
+        drawContext.imageSmoothingEnabled = false;
         newCanvas[0].height = window.drawer.canvasSize;
         newCanvas[0].width = window.drawer.canvasSize;
 
@@ -268,7 +269,7 @@
             var adjustment = 1.1;
             var nextLine = window.drawer.getLinearEquation(window.drawer.pathData[n], window.drawer.pathData[n + 1], window.drawer.pathData[n + 2]);
 			nextLine.draw(window.drawer.drawContext, "green", window.drawer.pathData[n + 1].y - 50, window.drawer.pathData[n + 1].y + 50);
-            var sheight = window.drawer.pathData[n].h ? Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment)) : h;
+			var sheight = window.drawer.pathData[n].h ? Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment)) : h;
             var perLine1 = new LinearEquation(-1 / currentDegree.a, window.drawer.pathData[n].y + window.drawer.pathData[n].x * 1 / currentDegree.a);
 
             var top = 1, bottom = 1;
@@ -281,15 +282,15 @@
 				top = bottom = 1;
 			}
 			
-			var step_Width = 1;
+			var step_Width = sheight/5;
             for (var u = 0; u < sheight; u+= step_Width) {
                 var delta = img.height/sheight;
                 var correctWidth = (top * (sheight - u) + u * bottom) / sheight;
                 // Draw new points.
                 drawContext.drawImage(img, n * sliceWidth, u*delta,
                     Math.max(sliceWidth, 1), delta * step_Width,
-                    0, Math.ceil(-sheight / 2) + u,
-                    Math.max(correctWidth, SMALLEST_WIDTH), step_Width);
+                    0, (-sheight / 2) + u, // Math.ceil(-sheight / 2) + u,
+                    correctWidth, step_Width);
 				
 				console.log("id: %d, width: %f, top point: %f", u, correctWidth, Math.ceil(-sheight / 2) + u);
                 // OLD METHOD.
@@ -298,19 +299,6 @@
                 //   0, -sheight / 2,
                 //   Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
             }
-            //if ((window.drawer.pathData[n].h) / maxHeight < 0.15)
-            //{
-            //    var xx = window.drawer.getLinearEquation(window.drawer.pathData[n], window.drawer.pathData[n + 1], window.drawer.pathData[n + 2]).a;
-            //    for (var ex = 0; ex < 6; ex++)
-            //    {
-            //        drawContext.rotate((xx - currentDegree)/4);
-            //        // Draw new points.
-            //        drawContext.drawImage(img, (n + ex/n) * sliceWidth, 0,
-            //            Math.max(sliceWidth, 1), img.height,
-            //            0, -sheight / 2,
-            //            Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
-            //    }
-            //}
 
             console.log("Max  %d to %d ", Math.round(degree / Math.PI * 180), Math.round(currentDegree / Math.PI * 180));
 
@@ -346,6 +334,9 @@
             var perBottomLine = new LinearEquation(-1 / currentLine.a, bottomPoint.y + 1 / currentLine.a * bottomPoint.x);
             var topRPoint = perTopLine.findIntersectPoint(nextLine);
             var bottomRPoint = perBottomLine.findIntersectPoint(nextLine);
+
+            var curNxtIntersect = currentLine.findIntersectPoint(nextLine);
+
             top = window.drawer.distance(topPoint.x, topPoint.y, topRPoint.x, topRPoint.y);
             bottom = window.drawer.distance(bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
 			
