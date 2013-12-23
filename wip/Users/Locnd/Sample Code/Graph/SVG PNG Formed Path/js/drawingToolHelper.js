@@ -45,9 +45,9 @@
 		nextParameter,
 		bSpline = { x: 0, y: 0 },
 		nextPos = { x: 0, y: 0 },
-		THRESHOLD_DIST = 0.8,
-		STEP_COUNT = 12,
-        SMALLEST_DISTANCE = 5,
+		THRESHOLD_DIST = 0.1,
+		STEP_COUNT = 52,
+        SMALLEST_DISTANCE = 9,
 		lastDrawPoint = { x: -3, y: -3 };
 
         var getBsplinePoint = function (t) {
@@ -118,7 +118,8 @@
             // Initialize pathData for stroke.
             // Clear old data.
             window.drawer.pathData = [];
-            window.drawer.pathData.push({ x: evt.offsetX, y: evt.offsetY });
+            // window.drawer.pathData.push({ x: evt.offsetX, y: evt.offsetY });
+            window.drawer.pushPoint(evt.offsetX, evt.offsetY);
 
             painting = true;
             window.drawer.drawContext.beginPath();
@@ -142,7 +143,8 @@
                         bSpline = getBsplinePoint(parameter);
                         sumDistance += Math.sqrt((nextPos.x - bSpline.x) * (nextPos.x - bSpline.x) + (nextPos.y - bSpline.y) * (nextPos.y - bSpline.y));
                         if (sumDistance > THRESHOLD_DIST) {
-                            window.drawer.pathData.push({ x: bSpline.x, y: bSpline.y, h: bSpline.h });
+                            window.drawer.pushPoint(bSpline.x, bSpline.y, bSpline.h);
+                            // window.drawer.pathData.push({ x: bSpline.x, y: bSpline.y, h: bSpline.h });
                             window.drawer.drawContext.lineTo(bSpline.x, bSpline.y);
                             window.drawer.drawContext.stroke();
                             sumDistance -= THRESHOLD_DIST;
@@ -178,7 +180,8 @@
 
 
             // Push data to pathData.
-            window.drawer.pathData.push({ x: evt.offsetX, y: evt.offsetY });
+            window.drawer.pushPoint(evt.offsetX, evt.offsetY);
+            // window.drawer.pathData.push({ x: evt.offsetX, y: evt.offsetY });
             window.drawer.drawContext.lineTo(evt.offsetX, evt.offsetY);
             window.drawer.drawContext.stroke();
 
@@ -195,7 +198,7 @@
 
     // This function create a image from source image and transform it to form to current path.
     window.drawer.formImageToPath = function () {
-        var SMALLEST_WIDTH = 0,
+        var SMALLEST_WIDTH = 5,
         img = $("#fillSource")[0];
         var alpha = $("#slider").slider("option", "value");
 
@@ -224,10 +227,10 @@
 
         degree = window.drawer.getDegree(window.drawer.pathData[0].x, window.drawer.pathData[0].y,
                 window.drawer.pathData[6].x, window.drawer.pathData[6].y);
-		var JUMP_STEPS = 1;
-		
+        var JUMP_STEPS = 1;
+
         // iterate over all slices      
-        for (var n = 0; n < numSlices - JUMP_STEPS; n+=JUMP_STEPS) {
+        for (var n = 0; n < numSlices - JUMP_STEPS; n += JUMP_STEPS) {
             drawContext.save();
 
             var id1 = n, id2 = n + 1;
@@ -241,64 +244,39 @@
             //    window.drawer.pathData[id2].x, window.drawer.pathData[id2].y);
             var currentLine = window.drawer.getLinearEquation(window.drawer.pathData[n - 1], window.drawer.pathData[n], window.drawer.pathData[n + 1]);
             var currentDegree = currentLine.angle;
-			currentLine.draw(window.drawer.drawContext, "blue", window.drawer.pathData[n].y - 50, window.drawer.pathData[n].y + 50);
+
+            currentLine.draw(window.drawer.drawContext, "blue", window.drawer.pathData[n].y - 50, window.drawer.pathData[n].y + 50);
             console.log("<<<%d-height:%d>>>Current degree: %d (%d, %d) ", n, h, Math.round(currentDegree / Math.PI * 180), window.drawer.pathData[n].x, window.drawer.pathData[n].y);
+
+            var adjustment = 1.1;
+            var nextLine = window.drawer.getLinearEquation(window.drawer.pathData[n], window.drawer.pathData[n + 1], window.drawer.pathData[n + 2]);
+            nextLine.draw(window.drawer.drawContext, "green", window.drawer.pathData[n + 1].y - 50, window.drawer.pathData[n + 1].y + 50);
+            var sheight = window.drawer.pathData[n].h ? Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment)) : h;
+            var perLine1 = new LinearEquation(-1 / currentDegree.a, window.drawer.pathData[n].y + window.drawer.pathData[n].x * 1 / currentDegree.a);
+
+            var deltaAngle = currentDegree - degree;
 
             // Translate to correct position.
             drawContext.translate(window.drawer.pathData[n].x, window.drawer.pathData[n].y);
 
             drawContext.rotate(currentDegree);
 
-            // Calculate small adjustment.
-            //if ((window.drawer.pathData[n].h) / maxHeight < 0.1) {
-
-            //    var color = (window.drawer.pathData[n].h) / maxHeight < 0.1 ? "blue" :
-            //        (window.drawer.pathData[n].h) / maxHeight < 0.2 ? "lightgreen" :
-            //        (window.drawer.pathData[n].h) / maxHeight < 0.3 ? "green" :
-            //        (window.drawer.pathData[n].h) / maxHeight < 0.4 ? "yellow" : "orange";
-
-            //    drawContext.beginPath();
-            //    drawContext.fillStyle = color;
-            //    drawContext.rect(0, -h / 2, 4, h);
-            //    drawContext.fill();
-            //}
-
+            // Calculate small adjustment.           
             console.log("Changed degree from %d to %d ", Math.round(degree / Math.PI * 180), Math.round(currentDegree / Math.PI * 180));
             degree = currentDegree;
 
-            var adjustment = 1.1;
-            var nextLine = window.drawer.getLinearEquation(window.drawer.pathData[n], window.drawer.pathData[n + 1], window.drawer.pathData[n + 2]);
-			nextLine.draw(window.drawer.drawContext, "green", window.drawer.pathData[n + 1].y - 50, window.drawer.pathData[n + 1].y + 50);
-			var sheight = window.drawer.pathData[n].h ? Math.min(h, ((window.drawer.pathData[n].h) / maxHeight * h + h * adjustment) / (1 + adjustment)) : h;
-            var perLine1 = new LinearEquation(-1 / currentDegree.a, window.drawer.pathData[n].y + window.drawer.pathData[n].x * 1 / currentDegree.a);
-
-            var top = 1, bottom = 1;
-            var resultTopBottom = window.drawer.getTopBottom(currentLine, window.drawer.pathData[n], sheight, nextLine);
-            top = resultTopBottom.top;
-            bottom = resultTopBottom.bottom;
-
-			if (top > 70 || bottom > 70)
-			{
-				top = bottom = 1;
-			}
-			
-			var step_Width = sheight/5;
-            for (var u = 0; u < sheight; u+= step_Width) {
-                var delta = img.height/sheight;
-                var correctWidth = (top * (sheight - u) + u * bottom) / sheight;
-                // Draw new points.
-                drawContext.drawImage(img, n * sliceWidth, u*delta,
-                    Math.max(sliceWidth, 1), delta * step_Width,
-                    0, (-sheight / 2) + u, // Math.ceil(-sheight / 2) + u,
-                    correctWidth, step_Width);
-				
-				console.log("id: %d, width: %f, top point: %f", u, correctWidth, Math.ceil(-sheight / 2) + u);
-                // OLD METHOD.
-                //drawContext.drawImage(img, n * sliceWidth, 0,
-                //   Math.max(sliceWidth, 1), img.height,
-                //   0, -sheight / 2,
-                //   Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
-            }
+            drawContext.globalCompositeOperation = "destination-out";
+            // OLD METHOD.
+            drawContext.drawImage(img, n * sliceWidth, 0,
+               Math.max(sliceWidth, 1), img.height,
+               0, -sheight / 2,
+               Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
+            drawContext.globalCompositeOperation = "source-over";
+            // OLD METHOD.
+            drawContext.drawImage(img, n * sliceWidth, 0,
+               Math.max(sliceWidth, 1), img.height,
+               0, -sheight / 2,
+               Math.max(sliceWidth, SMALLEST_WIDTH), sheight);
 
             console.log("Max  %d to %d ", Math.round(degree / Math.PI * 180), Math.round(currentDegree / Math.PI * 180));
 
@@ -309,18 +287,45 @@
         maxHeight = 0;
     };
 
-    window.drawer.getTopBottom = function (currentLine, currentPoint, sheight, nextLine)
-    {
-		window.drawer.drawLine(window.drawer.drawContext, "orange", currentPoint.x, currentPoint.y);
+    var isXIncrease = 0, isYIncrease = 0;
+    window.drawer.pushPoint = function (x, y, h) {
+        if (window.drawer.pathData.length > 2) {
+            var xSubtract = window.drawer.pathData[window.drawer.pathData.length - 1].x -
+                window.drawer.pathData[window.drawer.pathData.length - 2].x;
+            var ySubtract = window.drawer.pathData[window.drawer.pathData.length - 1].y -
+                window.drawer.pathData[window.drawer.pathData.length - 2].y;
+
+            if (Math.abs(isXIncrease - xSubtract) > 0.0001 || Math.abs(isYIncrease - ySubtract) > 0.0001) {
+                isXIncrease = xSubtract;
+                isYIncrease = ySubtract;
+                var degree = window.drawer.getDegree(
+                    window.drawer.pathData[window.drawer.pathData.length - 1].x,
+                    window.drawer.pathData[window.drawer.pathData.length - 1].y,
+                    window.drawer.pathData[window.drawer.pathData.length - 3].x,
+                    window.drawer.pathData[window.drawer.pathData.length - 3].y,
+                    window.drawer.pathData[window.drawer.pathData.length - 2].x,
+                    window.drawer.pathData[window.drawer.pathData.length - 2].y)
+                console.log("a: %d", degree);
+                if (degree < 0.05) {
+                    return;
+                }
+            }
+        }
+
+        window.drawer.pathData.push({ x: x, y: y, h: h });
+    }
+
+    window.drawer.getTopBottom = function (currentLine, currentPoint, sheight, nextLine) {
+        window.drawer.drawLine(window.drawer.drawContext, "orange", currentPoint.x, currentPoint.y);
         var top = 1, bottom = 1;
         // Find x: 
-        
-		// We have: x1*x1*(1 + a*a) + x1*(-2*c      +2*a*b      -2*a*d)     + c*c     + b*b      +2*b*d          +d*d - R*R = 0
-		// and current line: y1 = a*x1 + b.
 
-		var aa = 1 + currentLine.a * currentLine.a,
+        // We have: x1*x1*(1 + a*a) + x1*(-2*c      +2*a*b      -2*a*d)     + c*c     + b*b      +2*b*d          +d*d - R*R = 0
+        // and current line: y1 = a*x1 + b.
+
+        var aa = 1 + currentLine.a * currentLine.a,
             bb = 2 * (-currentPoint.x + currentLine.a * currentLine.b - currentLine.a * currentPoint.y),
-            cc = currentPoint.x * currentPoint.x + currentLine.b * currentLine.b + currentPoint.y * currentPoint.y - 
+            cc = currentPoint.x * currentPoint.x + currentLine.b * currentLine.b + currentPoint.y * currentPoint.y -
 			2 * currentLine.b * currentPoint.y - sheight * sheight / 4;
         var delta = bb * bb - 4 * aa * cc;
 
@@ -339,9 +344,9 @@
 
             top = window.drawer.distance(topPoint.x, topPoint.y, topRPoint.x, topRPoint.y);
             bottom = window.drawer.distance(bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
-			
-			window.drawer.drawLine(window.drawer.drawContext, "green", topPoint.x, topPoint.y,topRPoint.x, topRPoint.y);
-			window.drawer.drawLine(window.drawer.drawContext, "orqange", bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
+
+            window.drawer.drawLine(window.drawer.drawContext, "green", topPoint.x, topPoint.y, topRPoint.x, topRPoint.y);
+            window.drawer.drawLine(window.drawer.drawContext, "orqange", bottomPoint.x, bottomPoint.y, bottomRPoint.x, bottomRPoint.y);
         }
         var max = Math.max(top, bottom);
         var min = Math.min(top, bottom);
@@ -349,77 +354,22 @@
         return { top: isReducing ? max : min, bottom: isReducing ? min : max };
     }
 
-    window.drawer.formImageToPath1 = function () {
-        img = $("#fillSource")[0];
-        var alpha = $("#slider").slider("option", "value");
+    window.drawer.copy = function (srcCanvas, desCanvas, x, y, w, h) {
+        var image = new Image();
+        img.src = srcCanvas.toDataURL("image/png");
 
-        // Create new canvas.
-        var newCanvas = $('<canvas/>', { 'width': window.drawer.canvasSize, 'height': window.drawer.canvasSize, 'class': 'canvasPanel' }).appendTo(document.body);
-        var drawContext = newCanvas[0].getContext("2d");
-        newCanvas[0].height = window.drawer.canvasSize;
-        newCanvas[0].width = window.drawer.canvasSize;
+        img.style.zIndex = i;
+        img.width = Number(srcCanvas.style.width.replace("px", ""));
+        img.height = Number(srcCanvas.style.height.replace("px", ""));
 
-        newCanvas.css("-moz-opacity", alpha);/* For older FF versions */
-        newCanvas.css("-khtml-opacity", alpha);
-        newCanvas.css("opacity", alpha);
-        newCanvas.css("-moz-opacity", alpha);
-
-        var h = img.height,
-            w = img.width,
-            lengthPath = window.drawer.pathData.length,
-            JUMP_STEP = 4;
-
-        // Loop all point of pathData with number of jump steps are 4.
-        for (var id = 0; id < lengthPath - JUMP_STEP; id += JUMP_STEP) {
-            var sheight = Math.min(h, (((window.drawer.pathData[id].h) / maxHeight + 1) * h) / 2);
-            if (!sheight) { sheight = h; }
-            var centerPoint = window.drawer.pathData[id + JUMP_STEP / 2];
-            var lLine = window.drawer.getLinearEquation(window.drawer.pathData[id - 1], window.drawer.pathData[id], window.drawer.pathData[id + 1]);
-            var cLine = window.drawer.getLinearEquation(window.drawer.pathData[id - 1 + JUMP_STEP / 2], centerPoint, window.drawer.pathData[id + 1 + JUMP_STEP / 2]);
-            var rLine = window.drawer.getLinearEquation(window.drawer.pathData[id - 1 + JUMP_STEP], window.drawer.pathData[id + JUMP_STEP], window.drawer.pathData[id + 1 + JUMP_STEP]);
-
-            var topPointY = centerPoint.y - (sheight / 2) / Math.cos(cLine.angle);
-            var topPointX = cLine.findX(topPointY);
-            var aEdge = (-1 / cLine.a);
-            var topEdge = new LinearEquation(aEdge, topPointY - aEdge * topPointX);
-
-            drawContext.beginPath();
-            drawContext.fillStyle = "green";
-            drawContext.rect(topPointX, topPointY, 5, 15);
-            drawContext.fill();
-
-            var bottomPointY = centerPoint.y + sheight / 2;
-            var bottomPointX = cLine.findX(bottomPointY);
-            var bottomEdge = new LinearEquation(aEdge, bottomPointY - aEdge * bottomPointX);
-
-            var leftTopIntersect = topEdge.findIntersectPoint(lLine);
-            var rightTopIntersect = topEdge.findIntersectPoint(rLine);
-            var leftBottomIntersect = bottomEdge.findIntersectPoint(lLine);
-            var rightBottomIntersect = bottomEdge.findIntersectPoint(rLine);
-
-            // Save current canvas setting.
-            drawContext.save();
-            drawContext.rotate(cLine.angle);
-            drawContext.translate(leftTopIntersect.x, leftTopIntersect.y);
-
-            drawContext.beginPath();
-            drawContext.fillStyle = "blue";
-            drawContext.rect(0, 0, 4, 4);
-            drawContext.fill();
-            drawContext.beginPath();
-            drawContext.fillStyle = "red";
-            drawContext.rect(0, -5, 2, 10);
-            drawContext.fill();
-
-            window.drawer.drawImage(drawContext, img, id / lengthPath * img.width, img.width / lengthPath, img.height, leftTopIntersect,
-                rightTopIntersect, leftBottomIntersect, rightBottomIntersect, sheight, Math.tan(cLine.angle + lLine.angle));
-
-            // Save current canvas setting.
-            drawContext.restore();
-        }
+        img.onload = function () {
+            var savedContext = desCanvas.getContext('2d');
+            savedContext.drawImage(this, x, y,
+            this.width, this.height);
+        };
     };
 
-    window.drawer.testDrawImage = function () {
+     window.drawer.testDrawImage = function () {
         img = $("#fillSource")[0];
         var alpha = $("#slider").slider("option", "value");
 
@@ -492,7 +442,7 @@
         if (Math.abs(angle - a1) > Math.PI / 2 && Math.abs(angle - a2) > Math.PI / 2) {
             angle = (angle + Math.PI) % (2 * Math.PI);
         }
-        a = angle%Math.PI == Math.PI/2 ? 1 : Math.tan((angle + Math.PI *3/2) % (2 * Math.PI));
+        a = angle % Math.PI == Math.PI / 2 ? 1 : Math.tan((angle + Math.PI * 3 / 2) % (2 * Math.PI));
         // And calculate b:
         var b = cPoint.y - a * cPoint.x;
         ret = new LinearEquation(a, b, angle);
@@ -623,33 +573,30 @@
         return Math.abs(degree1 - degreeCD) < Math.abs(degree2 - degreeCD) ? degree1 : degree2;
     };
 
-	window.drawer.drawLine = function(ctx,color, x1,y1,x2,y2)
-	{
-	    return;
-		ctx.save();
-		ctx.strokeStyle = color;
-		ctx.lineWidth = 2;
-		ctx.beginPath();
-		ctx.moveTo(x1, y1);
-		
-		if (x2 && y2)
-		{
-			ctx.lineTo(x2, y2);
-		}
-		
-		ctx.stroke();
-		
-		ctx.beginPath();
-		ctx.fillStyle = "brown";
-		ctx.arc(x1,y1,2,0,Math.PI*2);
-		if (x2 && y2)
-		{
-			ctx.arc(x2,y2,2,0,Math.PI*2);
-		}
-		
-		ctx.fill();
-	};
-	
+    window.drawer.drawLine = function (ctx, color, x1, y1, x2, y2) {
+        return;
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+
+        if (x2 && y2) {
+            ctx.lineTo(x2, y2);
+        }
+
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "brown";
+        ctx.arc(x1, y1, 2, 0, Math.PI * 2);
+        if (x2 && y2) {
+            ctx.arc(x2, y2, 2, 0, Math.PI * 2);
+        }
+
+        ctx.fill();
+    };
+
     // Calculate degree that is created by line A(x1,y1) and C(x2,y2) with Ox axis. B(x3, y3) is center point.
     window.drawer.getDegree = function (x1, y1, x2, y2, x3, y3) {
         // if y1 < y2 -> degree > 0, else degree < 0;
@@ -681,40 +628,25 @@
     function LinearEquation(a, b, angle) {
         this.a = a;
         this.b = b;
-        this.angle = angle ? angle : (Math.atan(a) + 3/2*Math.PI)%(Math.PI*2);
+        this.angle = angle ? angle : (Math.atan(a) + 3 / 2 * Math.PI) % (Math.PI * 2);
         this.findX = function (y) {
             return (y - b) / a;
         }
 
-		this.draw = function(ctx, color, fromY, toY)
-		{
-		    return;
-			ctx.save();
-			ctx.strokeStyle = color;
-			ctx.lineWidth = 1;
-			ctx.beginPath();
+        this.draw = function (ctx, color, fromY, toY) {
+            return;
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
             ctx.moveTo(this.findX(fromY), fromY);
-			ctx.lineTo(this.findX(toY), toY);
+            ctx.lineTo(this.findX(toY), toY);
             ctx.stroke();
-		}
-		
+        }
+
         this.findIntersectPoint = function (linearEquation) {
             var x = -(b - linearEquation.b) / (a - linearEquation.a);
             return { x: x, y: a * x + b };
         }
     };
-
-    var a = Math.tan(Math.PI / 4), a1 = Math.tan(Math.PI / 3);
-    var line1 = new LinearEquation(a, 1 - a * 2);
-    var line2 = new LinearEquation(0, 1 - 0 * 2);
-    var line3 = new LinearEquation(a1, 0 - a1 * 2);
-    var line4 = new LinearEquation(0, 3 - 0 * 2);
-    var intersect12 = line1.findIntersectPoint(line2);
-    var intersect13 = line1.findIntersectPoint(line3);
-    var intersect14 = line1.findIntersectPoint(line4);
-    var intersect41 = line4.findIntersectPoint(line1);
-    var intersect31 = line3.findIntersectPoint(line1);
-    window.drawer.getTopBottom(line1, { x: 1, y: 0 }, 2 * Math.sqrt(2), line3);
-	
-	
 })();
