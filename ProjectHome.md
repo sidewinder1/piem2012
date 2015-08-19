@@ -1,0 +1,1 @@
+This project's product is an Android application. It helps the user manages income and expenditure.
